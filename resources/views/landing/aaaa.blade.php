@@ -1,0 +1,1 @@
+@extends("layouts.landing")@section("title", "Aaaa")@section("content")@endsection
