@@ -75,7 +75,7 @@ class CronjobController extends Controller
             if (!empty($message->file)) {
                 $email_content .= "<br>Prisegtas dokumentas: <a href='".\Config::get('app.url')."/uploads/messages/".$message->file."'>".\Config::get('app.url')."/uploads/messages/".$message->file."</a>";
             }
-            $email_content .= "</p><p>Linkėjimai,<br>Pasakos komanda</p>";
+            $email_content .= "</p><p>Linkėjimai<br>Pasakos komanda</p>";
 
             $user = $message->user;
 

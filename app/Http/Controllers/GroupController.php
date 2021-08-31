@@ -312,7 +312,7 @@ class GroupController extends Controller
 
             }
 //            <br>Peržiūrėti galite čia: <a href='".\Config::get('app.url')."/dashboard/groups/".$request->input("group_id")."'>".\Config::get('app.url')."/dashboard/groups/".$group_message->group_id."</a>
-            $html .="</p><p>Linkėjimai,<br>Pasakos komanda</p>";
+            $html .="</p><p>Linkėjimai<br>Pasakos komanda</p>";
 
             foreach($teachers as $email) {
                 Mail::send([], [], function ($message) use ($html, $email, $group) {
@@ -412,7 +412,7 @@ class GroupController extends Controller
             $html .=  "Prisegtas dokumentas: <a href='".\Config::get('app.url')."/uploads/".$originalFile->name."'>".\Config::get('app.url')."/uploads/".$originalFile->name."</a>";
         }
 //        <br>Peržiūrėti galite čia: <a href='".\Config::get('app.url')."/dashboard/groups/".$request->input("group_id")."'>".\Config::get('app.url')."/dashboard/groups/".$request->input("group_id")."</a>
-        $html .= "</p><p>Linkėjimai,<br>Pasakos komanda</p>";
+        $html .= "</p><p>Linkėjimai<br>Pasakos komanda</p>";
         foreach($studentBygroup as $student) {
             Mail::send([], [], function ($message) use ($html, $student, $originalFile) {
                 $message
@@ -478,7 +478,7 @@ class GroupController extends Controller
         }
 
 //        <br>Peržiūrėti galite čia: <a href='".\Config::get('app.url')."/dashboard/groups/".$request->input("group_id")."'>".\Config::get('app.url')."/dashboard/groups/".$request->input("group_id")."</a>
-        $html .= "</p><p>Linkėjimai,<br>Pasakos komanda</p>";
+        $html .= "</p><p>Linkėjimai<br>Pasakos komanda</p>";
 
         foreach($studentBygroup as $student) {
             Mail::send([], [], function ($message) use ($html, $student) {
@@ -576,7 +576,7 @@ class GroupController extends Controller
         }
 
 //       <br>Peržiūrėti galite čia: <a href='".\Config::get('app.url')."/dashboard/groups/".$request->input("group_id")."'>".\Config::get('app.url')."/dashboard/groups/".$originalGroupMessage->group_id."</a>
-        $html .= "</p><p>Linkėjimai,<br>Pasakos komanda</p>";
+        $html .= "</p><p>Linkėjimai<br>Pasakos komanda</p>";
 
         foreach($teachers as $email) {
             Mail::send([], [], function ($message) use ($html, $email, $group) {
