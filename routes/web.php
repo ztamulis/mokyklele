@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Route;
@@ -80,15 +81,21 @@ Route::get('/courses_free', function () {
     return view('landing_other.courses_free');
 });
 
-Route::get("/cronjob/main", [CronjobController::class, 'main']);
-Route::get("/cronjob/checkPaymentsFromStripe", [CronjobController::class, 'checkPaymentsFromStripe']);
+//Route::get("/cronjob/main", [CronjobController::class, 'main']);
+//Route::get("/cronjob/voucher", [GroupController::class, 'voucher']);
+//Route::get("/cronjob/checkPaymentsFromStripe", [CronjobController::class, 'checkPaymentsFromStripe']);
+
+
+// coupons
+Route::get('/dashboard/coupons', [CouponController::class, 'index'])->middleware(['auth']);
+
 
 
 Route::post('/set-region', [UserController::class, 'setRegion']);
 Route::post('/register-free', [UserController::class, 'registerFree']);
 Route::get('/change-timezone', [UserController::class, 'clearRegion']);
-Route::get('/select-group/{id}', [UserController::class, 'selectGroup']);
-Route::post('/select-group/{id}', [UserController::class, 'selectGroupPost']);
+//Route::get('/select-group/{id}', [UserController::class, 'selectGroup']);
+//Route::post('/select-group/{id}', [UserController::class, 'selectGroupPost']);
 
 // reworked orders
 Route::get('/payments/checkout/response', [OrderController::class, 'checkoutResponse'])->middleware(['auth']);
