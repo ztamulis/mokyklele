@@ -62,7 +62,8 @@
                         </div>
                         @endforeach
                 @endforeach
-            @if(\App\Http\Controllers\UserController::hasGroup() && !\App\Http\Controllers\UserController::hasDemoLesson())
+                    @if((\App\Http\Controllers\UserController::hasGroup() && !\App\Http\Controllers\UserController::hasDemoLesson())
+            || (Auth::user()->role === 'admin' && !empty($meetings)))
                     @foreach($meetings as $meeting)
                         <div class="group--item">
                             <div class="group--icon">
