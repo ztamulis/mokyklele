@@ -7,6 +7,7 @@ use App\TimeZoneUtils;
 
 class Group extends Model
 {
+
     protected $dates = ['time' , 'time_2'];
 
     public function students(){
@@ -49,8 +50,13 @@ class Group extends Model
         return "pamokų";
     }
 
-    public function adjustedPrice() {
-        return max(0, $this->price - $this->events()->where("date_at", "<", \Carbon\Carbon::now())->count() * $this->price_drop);
+    public function adjustedPrice($coupon = null) {
+
+        $price = max(0, $this->price - $this->events()->where("date_at", "<", \Carbon\Carbon::now())->count() * $this->price_drop);
+        if (!empty($coupon) && $coupon->type === 'percent') {
+            $price = $price - ($price * $coupon->discount / 100);
+        }
+        return $price;
     }
 
     public function hasAdjustedPrice() {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Coupon;
 use App\Models\Event;
 use App\Models\Meeting;
 use App\Models\Message;
@@ -11,7 +12,9 @@ use App\Models\Reward;
 use App\Models\Student;
 use App\Models\Group;
 use App\Models\User;
+use App\Models\UserCoupon;
 use App\TimeZoneUtils;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
@@ -165,6 +168,9 @@ class CronjobController extends Controller
                 }
 
                 $payment->payment_status = 'paid';
+                if (!empty($payment->discount_code)) {
+                    $this->registerUserCoupon($payment);
+                }
                 $payment->save();
 
 
@@ -246,6 +252,17 @@ class CronjobController extends Controller
             }
         }
         return $teachers;
+    }
+
+    private function registerUserCoupon($payment) {
+        $coupon = Coupon::where('code', $payment->discount_code)->first();
+
+        if (!empty($coupon)) {
+            $userCoupon = new UserCoupon();
+            $userCoupon->user_id = $payment->user_id;
+            $userCoupon->coupon_id = $coupon->id;
+            $userCoupon->redeemed_at = Carbon::now()->timestamp;
+        }
     }
 
 }

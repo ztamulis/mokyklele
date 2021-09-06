@@ -38,10 +38,30 @@
     @endif
 
 
-    @if(Auth::check())
+
+        @if(Auth::check())
+            @if($group->type !=='individual' && $group->type !=='free' && empty($coupon))
+
+                <form method="GET" action="/select-group/order/{{ $group->id }}">
+                    <div class="row" style="margin-bottom: 20px;">
+                        Kupono įvedimas:
+                        <div class="col-md-12">
+                            <input type="text" name="coupon" value="">
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn" style="width: 23%!important" type="submit">Įvesti kuponą</button>
+                        </div>
+                    </div>
+                </form>
+            @endif
         <div class="order--dialog">
-            <form method="POST" action="/select-group/create-order/{{$group->id}}" novalidate>
+            <form method="POST" action="/select-group/create-order/{{$group->id}}" novalidate payment-form>
                 @csrf
+                @if(!empty($coupon))
+                    <input type="hidden" name="coupon-code" value="{{$coupon->code}}">
+                    <input type="hidden" id="coupon-type" name="coupon_type" value="{{$coupon->type}}">
+                    <input type="hidden" id="coupon-discount" name="coupon_discount" value="{{$coupon->discount}}">
+                @endif
                 <input type="hidden" name="action" value="order">
                 Vaikas:
                 <input type="hidden" name="students" value="">
@@ -53,12 +73,13 @@
                 @endif
                 <br><br>
                 <input type="hidden" name="payment_type" value="single">
-                <input type="hidden" id="single-student-price" name="price" value="{{ $group->adjustedPrice() }}">
+                <input type="hidden" id="single-student-price" name="price" value="{{ $group->adjustedPrice($coupon) }}">
                 <input type="hidden" name="payment_method" value="default">
                 <div class="payment--loading-buy-notification" style="display: none; color: red">
                     <h4>Ačiū, kad patvirtinote mokėjimą. Norėdami pabaigti užsakymą, spauskite "Pirkti"</h4>
                 </div>
-                <button id="price-button" type="submit">Pirkti (£{{ $group->adjustedPrice() }})</button>
+                <button id="price-button" type="submit">Pirkti (£{{ !empty($coupon) && $coupon->type === 'fixed'
+                ?  $group->adjustedPrice($coupon) - $coupon->discount : $group->adjustedPrice($coupon) }})</button>
             </form>
         </div>
         <script>
@@ -107,11 +128,9 @@
 
             function deleteStudent(id) {
                 $('#children-'+id).remove();
-                var studentsCount = $(".student--select select").length;
-                var price = $('#single-student-price').val();
-                var discountedPrice = parseInt(price) / 2;
-                var newPrice = parseInt(price) + ((parseInt(studentsCount) - 1) * discountedPrice);
 
+
+                newPrice = recalculatePrice();
                 var buttonText = 'Užsakyti (£ '+newPrice+')' ;
                 $("#price-button").html(buttonText);
             }
@@ -134,11 +153,7 @@
                 studentsHtml += '<input type="text" name="new_student_name" data-new-student-input="'+selectIndex+'" placeholder="Vaiko vardas, pavardė">';
                 studentsHtml += '<small data-birthday-label='+selectIndex+' style="display: none;">Vaiko gimtadienis:</small><input required type="date" name="new_student_birthday" data-new-student-input-age="'+selectIndex+'" placeholder="{{ date("Y-m-d") }}"></div>';
                 $(".student--select").append(studentsHtml);
-                var studentsCount = $(".student--select select").length;
-                var price = $('#single-student-price').val();
-                var discountedPrice = parseInt(price) / 2;
-                var newPrice = parseInt(price) + ((parseInt(studentsCount) - 1) * discountedPrice);
-
+                var newPrice = recalculatePrice();
                 var buttonText = 'Užsakyti (£ '+newPrice+')' ;
                 $("#price-button").html(buttonText);
 
@@ -156,6 +171,18 @@
                 }
             });
 
+            function recalculatePrice() {
+                var studentsCount = $(".student--select select").length;
+                var price = $('#single-student-price').val();
+                var discountedPrice = parseInt(price) / 2;
+                var newPrice = parseInt(price) + ((parseInt(studentsCount) - 1) * discountedPrice);
+                if ($("#coupon-type").val() === 'fixed') {
+                    newPrice = newPrice - parseInt(($("#coupon-discount").val()));
+                }
+
+                return newPrice
+            }
+
             function rebindSelect() {
                 $("[data-select-student]").unbind().change(function() {
                     if($(this).val() == "new") {
@@ -169,7 +196,7 @@
 
             var pushingCardInformation = false;
 
-            $("form").submit(function(event) {
+            $("[payment-form]").submit(function(event) {
                 var students = [];
                 var dublicates = false;
                 var form = $(this);

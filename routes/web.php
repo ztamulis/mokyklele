@@ -87,7 +87,7 @@ Route::get('/courses_free', function () {
 
 
 // coupons
-Route::get('/dashboard/coupons', [CouponController::class, 'index'])->middleware(['auth']);
+Route::resource('/dashboard/coupons', CouponController::class)->middleware(['auth']);
 
 
 

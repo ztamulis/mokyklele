@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coupon;
 use App\Models\Payment;
 use App\Models\Student;
+use App\Models\UserCoupon;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
 use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
@@ -91,6 +94,9 @@ class WebhookController extends CashierController
                 $student_birthDays[] = $student->birthday;
             }
 
+            if (!empty($payment->discount_code)) {
+                $this->registerUserCoupon($payment);
+            }
             $payment->payment_status = 'paid';
             $payment->save();
 //            Student::whereIn('id', $studentsIds)->update(['group_id' => $payment->group_id]);
@@ -141,6 +147,17 @@ class WebhookController extends CashierController
         Log::info($data);
     }
 
+    private function registerUserCoupon($payment) {
+        $coupon = Coupon::where('code', $payment->discount_code)->first();
+
+        if (!empty($coupon)) {
+            $userCoupon = new UserCoupon();
+            $userCoupon->user_id = $payment->user_id;
+            $userCoupon->coupon_id = $coupon->id;
+            $userCoupon->redeemed_at = Carbon::now()->timestamp;
+        }
+    }
+
     /**
      * @param $payload
      */
@@ -168,6 +185,11 @@ class WebhookController extends CashierController
             }
 
             $payment->payment_status = 'paid';
+
+            if (!empty($payment->discount_code)) {
+                $this->registerUserCoupon($payment);
+            }
+
             $payment->save();
 //            Student::whereIn('id', $studentsIds)->update(['group_id' => $payment->group_id]);
 
