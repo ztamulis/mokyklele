@@ -37,12 +37,6 @@ class CreateCouponsTable extends Migration
             $table->foreign('coupon_id')->references('id')->on('coupons');
         });
 
-        Schema::table('payments', function($table)
-        {
-            $table->string('discount_code')->nullable();
-            $table->double('discount_amount')->nullable();
-        });
-
     }
 
     /**

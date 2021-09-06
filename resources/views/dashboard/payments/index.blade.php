@@ -32,6 +32,7 @@
                                 <th>Naudotojas</th>
                                 <th>Laikas</th>
                                 <th>Suma</th>
+                                <th>Nuolaida</th>
                                 <th>Statusas</th>
                             </tr>
                         </thead>
@@ -45,6 +46,8 @@
                                     <td>
                                         {{ $payment->amount / 100 }}
                                     </td>
+                                    <td>{{ $payment->discount_amount ? $payment->discount_amount : "-" }}</td>
+
                                     <td>{{ $payment->payment_status }}</td>
                                 </tr>
                             @endforeach
