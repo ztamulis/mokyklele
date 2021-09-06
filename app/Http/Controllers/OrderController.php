@@ -3,9 +3,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coupon;
 use App\Models\Group;
 use App\Models\Payment;
 use App\Models\Student;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -25,13 +27,43 @@ class OrderController extends Controller {
         return view("lessons_order.group_create_free_order")->with("group", $group);
     }
 
-    public function selectGroupOrder($id) {
+    public function selectGroupOrder(Request $request, $id) {
         $group = Group::find($id);
         if(!$group) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
         }
+        $coupon = $request->input('coupon');
+        if (isset($coupon)) {
+            $coupon = Coupon::where('code', $coupon)->first();
 
-        return view("lessons_order.group_create_order")->with("group", $group);
+            if (empty($coupon)) {
+                return view("lessons_order.group_create_order")
+                    ->with("group", $group)
+                    ->with('coupon', $coupon)
+                    ->with("couponError", 1)
+                    ->with("error", "Kuponas nerastas");
+            }
+            if (!empty($coupon->expires_at)
+                && Carbon::createFromDate($coupon->expires_at)->timestamp < Carbon::now()->timestamp) {
+                $coupon = [];
+                return view("lessons_order.group_create_order")
+                    ->with("group", $group)
+                    ->with('coupon', $coupon)
+                    ->with("couponError", 1)
+                    ->with("error", "Kupono galiojimas pasibaigė");
+            }
+
+            if ($coupon->userCoupons->where('user_id', Auth::user()->id)->count() >= 2) {
+                $coupon = [];
+
+                return view("lessons_order.group_create_order")
+                    ->with("group", $group)
+                    ->with('coupon', $coupon)
+                    ->with("couponError", 1)
+                    ->with("error", "Kupono limitas vartotojui išnaudotas");
+            }
+        }
+        return view("lessons_order.group_create_order")->with("group", $group)->with('coupon', $coupon);
     }
 
     public function showSuccessPage($id) {
@@ -145,6 +177,7 @@ class OrderController extends Controller {
 
 
 
+
     public function checkoutResponse(Request $request) {
         $user = Auth::user();
 
@@ -171,6 +204,135 @@ class OrderController extends Controller {
             return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message", "Užsakymas jau įvykdytas!");
         }
 
+    }
+
+
+
+    public function createOrderCheckout(Request $request, $id) {
+        $group = Group::find($id);
+        if(!$group) {
+            return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
+        }
+        $json_students = json_decode($request->input("students"));
+        $students = [];
+        $user= Auth::user();
+        $dublicatedUsers = [];
+        foreach ($json_students as $student_id) {
+            if(Str::startsWith($student_id, "new_")){
+                $student_info = explode("_", str_replace("new_", "", $student_id));
+                $studentCheck = Student::where('name', $student_info)->where('user_id', $user->id)
+                    ->where('group_id', $group->id)
+                    ->first();
+
+                if (!empty($studentCheck)) {
+                    $dublicatedUsers[] = $student_info[0];
+                    continue;
+                }
+
+                $student = new Student;
+                $student->name = $student_info[0];
+                $student->user_id = $user->id;
+                $student->group_id = -1;
+                $student->birthday = \Carbon\Carbon::parse($student_info[1]);
+                if (empty($student->birthday)) {
+                    return view("lessons_order.group_create_free_order")
+                        ->with("group", $group)
+                        ->with("error", "Neparinktas mokinio gimtadienis");
+                }
+                $student->save();
+                $students[] = $student;
+            }else{
+                $student = Student::find($student_id);
+                if(!$student) {
+                    return view("lessons_order.group_create_free_order")
+                        ->with("group", $group)
+                        ->with("error", "Klaida studentų pateikime");
+                }
+                $studentCheck = Student::where('name', $student->name)->where('user_id', $user->id)
+                    ->where('group_id', $group->id)
+                    ->first();
+                if (!empty($studentCheck)) {
+                    $dublicatedUsers[] = $student->name;
+                    continue;
+                }
+
+
+                if($student->group_id != -1) {
+                    $student = $student->replicate();
+                    $student->group_id = -1;
+                    $student->save();
+                }
+
+                $students[] = $student;
+            }
+        }
+
+        if (!empty($dublicatedUsers)) {
+            return view("lessons_order.group_create_order")
+                ->with("group", $group)
+                ->with("error", join(", ", $dublicatedUsers)." jau priskirti grupei");
+        }
+
+        $price = $this->countPriceByStudentsAmount($students, $group->adjustedPrice());
+        $coupon = Coupon::where('code', $request->input('coupon-code'))->first();
+        $price = $this->applyCoupon($price, $coupon);
+        try {
+            $session['success_url'] = route('index').'/payments/checkout/response?session_id={CHECKOUT_SESSION_ID}';
+            $session['cancel_url'] = route('index').'/payments/checkout/response?payment=cnl&session_id={CHECKOUT_SESSION_ID}';
+            $transaction = $user->checkoutCharge($price * 100, $user->fullName(), 1, $session);
+
+        } catch (IncompletePayment $exception) {
+            $transaction = $exception->payment;
+            if ($exception->payment->status !== 'succeeded') {
+                return view("landing_other.group_order")->with("group", $group)->with("error", "Užsakymo įvykdyti NEPAVYKO!");
+            }
+        }
+        $student_ids = [];
+
+        foreach ($students as $student){
+            $student_ids[] = $student->id;
+        }
+
+        $payment = new Payment;
+        $payment->user_id = $user->id;
+        $payment->amount = $transaction->amount_total;
+        $payment->payment_id = $transaction->payment_intent;
+        $payment->payment_status = 'checkoutStarted';
+        if (!empty($coupon)) {
+            $payment->discount_code = $coupon->code;
+            $payment->discount_amount = $coupon->discount;
+        }
+        $payment->group_id = $group->id;
+        $payment->students = json_encode($student_ids);
+        $payment->url = $transaction->url;
+        $payment->session_id = $transaction->id;
+        $payment->save();
+
+        $user->time_zone = Cookie::get("user_timezone", "GMT");
+        $user->save();
+
+        return Redirect::to('/select-group/order/'.$group->id.'/confirm')->with('paymentInfo', $payment)->with('checkoutUrl', $transaction->url);
+    }
+
+    private function applyCoupon($price, $coupon) {
+        if (empty($coupon)) {
+            return $price;
+        }
+
+        if (
+            empty($coupon)
+            ||  ((!empty($coupon->expires_at) && Carbon::createFromDate($coupon->expires_at)->timestamp < Carbon::now()->timestamp))
+            || $coupon->userCoupons->where('user_id', Auth::user()->id)->count() >= 2) {
+            return $price;
+        }
+
+        if ($coupon->type === 'fixed') {
+            return $price - $coupon->discount;
+        }
+
+        if ($coupon->type === 'percent') {
+            return $price - ($price * $coupon->discount / 100);
+        }
     }
 
     private function sendOrderConfirmAdminEmail($group, $student_names, $student_birthDays, $user) {
@@ -237,112 +399,10 @@ class OrderController extends Controller {
 
 
 
-    public function createOrderCheckout(Request $request, $id) {
-        $group = Group::find($id);
-        if(!$group) {
-            return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
-        }
-        $json_students = json_decode($request->input("students"));
-        $students = [];
-        $user= Auth::user();
-        $dublicatedUsers = [];
-        foreach ($json_students as $student_id) {
-            if(Str::startsWith($student_id, "new_")){
-                $student_info = explode("_", str_replace("new_", "", $student_id));
-                $studentCheck = Student::where('name', $student_info)->where('user_id', $user->id)
-                    ->where('group_id', $group->id)
-                    ->first();
-
-                if (!empty($studentCheck)) {
-                    $dublicatedUsers[] = $student_info[0];
-                    continue;
-                }
-
-                $student = new Student;
-                $student->name = $student_info[0];
-                $student->user_id = $user->id;
-                $student->group_id = -1;
-                $student->birthday = \Carbon\Carbon::parse($student_info[1]);
-                    if (empty($student->birthday)) {
-                        return view("lessons_order.group_create_free_order")
-                            ->with("group", $group)
-                            ->with("error", "Neparinktas mokinio gimtadienis");
-                    }
-                $student->save();
-                $students[] = $student;
-            }else{
-                $student = Student::find($student_id);
-                if(!$student) {
-                    return view("lessons_order.group_create_free_order")
-                        ->with("group", $group)
-                        ->with("error", "Klaida studentų pateikime");
-                }
-                $studentCheck = Student::where('name', $student->name)->where('user_id', $user->id)
-                    ->where('group_id', $group->id)
-                    ->first();
-                if (!empty($studentCheck)) {
-                    $dublicatedUsers[] = $student->name;
-                    continue;
-                }
-
-
-                if($student->group_id != -1) {
-                    $student = $student->replicate();
-                    $student->group_id = -1;
-                    $student->save();
-                }
-
-                $students[] = $student;
-            }
-        }
-
-        if (!empty($dublicatedUsers)) {
-            return view("lessons_order.group_create_order")
-                ->with("group", $group)
-                ->with("error", join(", ", $dublicatedUsers)." jau priskirti grupei");
-        }
-
-        $price = $this->countPriceByStudentsAmount($students, $group->adjustedPrice());
-
-        try {
-            $session['success_url'] = route('index').'/payments/checkout/response?session_id={CHECKOUT_SESSION_ID}';
-            $session['cancel_url'] = route('index').'/payments/checkout/response?payment=cnl&session_id={CHECKOUT_SESSION_ID}';
-            $transaction = $user->checkoutCharge($price * 100, $user->fullName(), 1, $session);
-
-        } catch (IncompletePayment $exception) {
-            $transaction = $exception->payment;
-            if ($exception->payment->status !== 'succeeded') {
-                return view("landing_other.group_order")->with("group", $group)->with("error", "Užsakymo įvykdyti NEPAVYKO!");
-            }
-        }
-        $student_ids = [];
-
-        foreach ($students as $student){
-            $student_ids[] = $student->id;
-        }
-
-        $payment = new Payment;
-        $payment->user_id = $user->id;
-        $payment->amount = $transaction->amount_total;
-        $payment->payment_id = $transaction->payment_intent;
-        $payment->payment_status = 'checkoutStarted';
-
-
-        $payment->group_id = $group->id;
-        $payment->students = json_encode($student_ids);
-        $payment->url = $transaction->url;
-        $payment->session_id = $transaction->id;
-        $payment->save();
-
-        $user->time_zone = Cookie::get("user_timezone", "GMT");
-        $user->save();
-
-        return Redirect::to('/select-group/order/'.$group->id.'/confirm')->with('paymentInfo', $payment)->with('checkoutUrl', $transaction->url);
-    }
-
     private function countPriceByStudentsAmount($students, $price): float {
         $numberOfStudents = count($students);
         if ($numberOfStudents === 1) {
+
             return $price;
         }
 

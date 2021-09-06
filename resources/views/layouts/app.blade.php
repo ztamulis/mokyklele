@@ -83,6 +83,7 @@
 {{--                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/navbar')) active @endif " href="/dashboard/navbar"><i class="fa fa-navicon"></i><span>Meniu juosta</span></a></li>--}}
                         <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a></li>
                         <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a></li>
+                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/coupons')) active @endif " href="/dashboard/coupons"><i class="fa fa-patreon"></i><span>Nuolaidų kuponai</span></a></li>
                     @endif
                     <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/profile')) active @endif " href="/dashboard/profile"><i class="fas fa-user"></i><span>Mano paskyra</span></a></li>
             </ul>
@@ -206,7 +207,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <div class="nav-item dropdown no-arrow">
                                 <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
-                                    <img class="border rounded-circle img-profile" src="{{ Auth::user()->photo ? "/uploads/users/".Auth::user()->photo : "/images/icons/avatar.png" }}" />
+                                    <img class="border rounded-circle img-profile img-fluid" src="{{ Auth::user()->photo ? "/uploads/users/".Auth::user()->photo : "/images/icons/avatar.png" }}" />
                                     <span class="d-none d-lg-inline ml-2 text-gray-600 small">{{ Auth::user()->name }} {{ Auth::user()->surname }}</span>
                                 </a>
                                 <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in">
