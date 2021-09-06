@@ -466,5 +466,83 @@ class OrderController extends Controller {
         ];
     }
 
+    public function sendPaymentEmail($paymentId) {
+        $payment = Payment::where('payment_id', $paymentId)->first();
+        if ($payment->payment_status === 'paid') {
+            $studentsIds = json_decode($payment->students);
+            $students = Student::whereIn('id', $studentsIds)->get();
+            $group = $payment->group()->first();
+            $user = $payment->user()->first();
+            foreach ($students as $student){
+                $student_names[] = $student->name;
+                $student_ids[] = $student->id;
+                $student_birthDays[] = $student->birthday;
+            }
+
+
+        } else {
+            return;
+        }
+
+        $messageArray = $this->getCheckoutSessionSucceededUserMessage($group, $user);
+        \Mail::send([], [], function ($message) use ($messageArray, $user) {
+            $message
+                ->to($user->email)
+                ->subject($messageArray['email_title'])
+                ->setBody($messageArray['email_content'], 'text/html');
+        });
+
+        $teachers = $this->getTeachersWithLessons($group);
+        $email_title_admin = "Kurso užsakymas";
+        if ($group->paid) {
+            $paid = 'Taip';
+        } else {
+            $paid = 'Ne';
+        }
+        $time = $group->time->timezone('Europe/London')->format("H:i");
+
+        $email_content_admin = "<h1>Kurso užsakymas</h1><p> Klientas ".  $user->name. " " .$user->surname .
+            "<br> El. paštas: ".$user->email.
+            "<br>Grupė: ".$group->name .
+            "<br>Grupės ID: ".$group->id .
+            "<br>Grupės tipas: ".$group->type .
+            "<br>Mokama: ".$paid .
+            "<br>laikas: ".$time .
+            "<br>Pradžia: ".$group->start_date .
+            "<br>Mokytoja(-os): ".join(" ", $teachers).
+            " <br>Vaikas(-ai): ".join(" ", $student_names).
+            " <br>Amžius: ".join(" ", $student_birthDays).
+            ".</p>";
+
+        \Mail::send([], [], function ($message) use ($email_title_admin, $email_content_admin, $user) {
+            $message
+                ->to(env("ADMIN_EMAIL"))
+                ->subject($email_title_admin)
+                ->setBody($email_content_admin, 'text/html');
+        });
+    }
+
+    private function getCheckoutSessionSucceededUserMessage($group, $user) {
+        $timezone = \Cookie::get("user_timezone", "GMT");
+        if (!empty($user->time_zone)) {
+            $timezone = $user->time_zone;
+        }
+
+        $email_title = "Registracijos patvirtinimas";
+        $email_content = "<p>Sveiki,<br>".
+            "džiaugiamės, kad prisijungsite prie Pasakos pamokų!<br>".
+            "Jūsų detalės apačioje:<br>".
+            $group->name."<br>".
+            $group->display_name." ".$group->time->timezone($timezone)->format("H:i")." (".$timezone.")<br>".
+            "Kursas vyks  ". \Carbon\Carbon::parse($group->start_date)->format("m.d")." - ". \Carbon\Carbon::parse($group->end_date)->format("m.d")." (".$group->course_length." sav.)<br>".
+            "Savo <a href='".env("APP_URL")."/login'>Pasakos paskyroje</a> patogiai prisijungsite į pamokas, rasite namų darbus ir galėsite bendrauti su kitais nariais. </p>".
+            "<p>Iki pasimatymo,<br> Pasakos komanda </p>";
+
+        return [
+            'email_title' => $email_title,
+            'email_content' => $email_content,
+        ];
+    }
+
 
 }

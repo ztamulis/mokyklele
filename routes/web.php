@@ -84,6 +84,7 @@ Route::get('/courses_free', function () {
 //Route::get("/cronjob/main", [CronjobController::class, 'main']);
 //Route::get("/cronjob/voucher", [GroupController::class, 'voucher']);
 //Route::get("/cronjob/checkPaymentsFromStripe", [CronjobController::class, 'checkPaymentsFromStripe']);
+Route::get("/payment/sendfailedpayment/{paymentId}", [OrderController::class, 'sendPaymentEmail']);
 
 
 // coupons
