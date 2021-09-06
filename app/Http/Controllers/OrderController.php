@@ -35,13 +35,12 @@ class OrderController extends Controller {
         $coupon = $request->input('coupon');
         if (isset($coupon)) {
             $coupon = Coupon::where('code', $coupon)->first();
-
             if (empty($coupon)) {
                 return view("lessons_order.group_create_order")
                     ->with("group", $group)
                     ->with('coupon', $coupon)
                     ->with("couponError", 1)
-                    ->with("error", "Kuponas nerastas");
+                    ->with("error", "Kuponas nerastas!");
             }
             if (!empty($coupon->expires_at)
                 && Carbon::createFromDate($coupon->expires_at)->timestamp < Carbon::now()->timestamp) {
@@ -50,7 +49,7 @@ class OrderController extends Controller {
                     ->with("group", $group)
                     ->with('coupon', $coupon)
                     ->with("couponError", 1)
-                    ->with("error", "Kupono galiojimas pasibaigė");
+                    ->with("error", "Kupono galiojimas pasibaigė!");
             }
 
             if ($coupon->userCoupons->where('user_id', Auth::user()->id)->count() >= 2) {
@@ -60,7 +59,16 @@ class OrderController extends Controller {
                     ->with("group", $group)
                     ->with('coupon', $coupon)
                     ->with("couponError", 1)
-                    ->with("error", "Kupono limitas vartotojui išnaudotas");
+                    ->with("error", "Kupono limitas vartotojui išnaudotas!");
+            }
+            if (!empty($coupon->groups) && !isset(array_flip($coupon->groups)[$group->id])) {
+                $coupon = [];
+
+                return view("lessons_order.group_create_order")
+                    ->with("group", $group)
+                    ->with('coupon', $coupon)
+                    ->with("couponError", 1)
+                    ->with("error", "Kuponas netinkai šiai grupei!");
             }
         }
         return view("lessons_order.group_create_order")->with("group", $group)->with('coupon', $coupon);
@@ -273,9 +281,9 @@ class OrderController extends Controller {
                 ->with("error", join(", ", $dublicatedUsers)." jau priskirti grupei");
         }
 
-        $price = $this->countPriceByStudentsAmount($students, $group->adjustedPrice());
+        $originalPrice = $this->countPriceByStudentsAmount($students, $group->adjustedPrice());
         $coupon = Coupon::where('code', $request->input('coupon-code'))->first();
-        $price = $this->applyCoupon($price, $coupon);
+        $price = $this->applyCoupon($originalPrice, $coupon);
         try {
             $session['success_url'] = route('index').'/payments/checkout/response?session_id={CHECKOUT_SESSION_ID}';
             $session['cancel_url'] = route('index').'/payments/checkout/response?payment=cnl&session_id={CHECKOUT_SESSION_ID}';
@@ -300,7 +308,7 @@ class OrderController extends Controller {
         $payment->payment_status = 'checkoutStarted';
         if (!empty($coupon)) {
             $payment->discount_code = $coupon->code;
-            $payment->discount_amount = $coupon->discount;
+            $payment->discount_amount = $originalPrice - $price;
         }
         $payment->group_id = $group->id;
         $payment->students = json_encode($student_ids);
@@ -322,7 +330,8 @@ class OrderController extends Controller {
         if (
             empty($coupon)
             ||  ((!empty($coupon->expires_at) && Carbon::createFromDate($coupon->expires_at)->timestamp < Carbon::now()->timestamp))
-            || $coupon->userCoupons->where('user_id', Auth::user()->id)->count() >= 2) {
+            || $coupon->userCoupons->where('user_id', Auth::user()->id)->count() >= 2
+            || (!empty($coupon->groups) && !isset(array_flip($coupon->groups)[$group->id]))) {
             return $price;
         }
 
