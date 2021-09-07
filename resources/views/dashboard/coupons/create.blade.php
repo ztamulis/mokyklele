@@ -86,9 +86,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="formCheck-2" name="active" value="{{!empty(old('active')) ? old('active') : 1}}" checked="">
-                                <label class="form-check-label" for="formCheck-2">Aktyvus</label>
+                                <small class="form-text bold mb-1">Aktyvus</small>
+                                <select class="form-select" name="active" aria-label="Default select example">
+                                    <option {{old('active') == 0 ? 'selected' : ''}} value="0">Ne</option>
+                                    <option {{old('active') == 1 ? 'selected' : ''}} value="1">Taip</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -105,4 +107,5 @@
             </div>
         </div>
     </form>
+
 </x-app-layout>
