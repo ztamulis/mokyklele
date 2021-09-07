@@ -41,7 +41,6 @@
 
         @if(Auth::check())
             @if($group->type !=='individual' && $group->type !=='free' && empty($coupon))
-
                 <form method="GET" action="/select-group/order/{{ $group->id }}">
                     <div class="row" style="margin-bottom: 20px;">
                         Kupono įvedimas:
@@ -49,7 +48,7 @@
                             <input type="text" name="coupon" value="">
                         </div>
                         <div class="col-md-6">
-                            <button class="btn" style="width: 23%!important" type="submit">Įvesti kuponą</button>
+                            <button class="btn" style="width: 220px!important;" type="submit">Įvesti kuponą</button>
                         </div>
                     </div>
                 </form>
