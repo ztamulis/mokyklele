@@ -29,6 +29,11 @@ class OrderController extends Controller {
 
     public function selectGroupOrder(Request $request, $id) {
         $group = Group::find($id);
+
+        if ($group->slots <= $group->students()->count()) {
+            return view("landing_other.error")->with("error", "Pasirinkta grupė pilna.");
+        }
+
         if(!$group) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
         }
