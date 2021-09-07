@@ -86,10 +86,10 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="formCheck-2" name="active" value="{{!empty(old('active')) ? old('active') : $coupon->active}}" checked="">
-                                <label class="form-check-label" for="formCheck-2">Aktyvus</label>
-                            </div>
+                            <select class="form-select" name="active" aria-label="Default select example">
+                                <option {{old('active') == 1 ? 'selected' || $coupon->type == 1 : ''}} value="1">Taip</option>
+                                <option {{old('active') == 0 ? 'selected' || $coupon->type == 1 : ''}} value="0">Ne</option>
+                            </select>
                         </div>
                     </div>
                 </div>

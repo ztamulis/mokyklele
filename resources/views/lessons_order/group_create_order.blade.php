@@ -40,19 +40,7 @@
 
 
         @if(Auth::check())
-            @if($group->type !=='individual' && $group->type !=='free' && empty($coupon))
-                <form method="GET" action="/select-group/order/{{ $group->id }}">
-                    <div class="row" style="margin-bottom: 20px;">
-                        Kupono įvedimas:
-                        <div class="col-md-12">
-                            <input type="text" name="coupon" value="">
-                        </div>
-                        <div class="col-md-6">
-                            <button class="btn" style="width: 220px!important;" type="submit">Įvesti kuponą</button>
-                        </div>
-                    </div>
-                </form>
-            @endif
+
         <div class="order--dialog">
             <form method="POST" action="/select-group/create-order/{{$group->id}}" novalidate payment-form>
                 @csrf
@@ -71,6 +59,18 @@
                     </div>
                 @endif
                 <br><br>
+
+                @if($group->type !=='individual' && $group->type !=='free' && empty($coupon))
+                        <div class="row" style="margin-bottom: 20px;">
+                            Nuolaidos kodas:
+                            <div class="col-md-12">
+                                <input id="coupon" type="text" name="coupon" value="">
+                            </div>
+                            <div class="col-md-6">
+                                <span id="coupon-btn" class="button" style="width: 220px!important; cursor: pointer;">Naudoti kodą</span>
+                            </div>
+                        </div>
+                @endif
                 <input type="hidden" name="payment_type" value="single">
                 <input type="hidden" id="single-student-price" name="price" value="{{ $group->adjustedPrice($coupon) }}">
                 <input type="hidden" name="payment_method" value="default">
@@ -82,6 +82,15 @@
             </form>
         </div>
         <script>
+            $( document ).ready(function() {
+                $('#coupon-btn').click(function() {
+                    window.location.href="/select-group/order/{{$group->id}}?coupon="+$('#coupon').val()
+                });
+            });
+
+
+
+
             // $("[name=student_id]").change(function () {
             //     if($(this).val() == "new"){
             //         $(".new_student").show();
