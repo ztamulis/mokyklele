@@ -43,22 +43,22 @@
                     {{$coupon->code}}
                 </div>
                 <div class="col-md-1">
-                    {{$coupon->type}}
+                    {{$coupon->type === 'fixed' ? 'Fiksuotas' : 'Procentas'}}
                 </div>
                 <div class="col-md-1">
                     {{$coupon->discount}}
                 </div>
                 <div class="col-md-1 mr-4">
-                    {{$coupon->used}}
+                    {{!empty($coupon->used) ? $coupon->used : '-'}}
                 </div>
                 <div class="col-md-2">
-                    {{$coupon->use_limit}}
+                    {{!empty($coupon->use_limit) ? $coupon->use_limit : '-'}}
                 </div>
                 <div class="col-md-1">
-                    {{$coupon->expires_at}}
+                    {{!empty($coupon->expires_at) ? $coupon->expires_at : '-'}}
                 </div>
                 <div class="col-md-1">
-                    {{$coupon->active}}
+                    {{$coupon->active ? 'Taip' : 'Ne'}}
                 </div>
                 <div class="col-md-1">
                     <a href="/dashboard/coupons/{{$coupon->id}}/edit" class="btn btn-info" type="button" style="margin: 0px 4px 0px;">Redaguoti</a>
@@ -73,7 +73,7 @@
     </div>
 
 
-    <div class="d-md-block d-lg-none mt-5 ">
+    <div class="d-md-block d-lg-none mt-5">
         @foreach ($coupons as $coupon)
             <div class="row border-bottom mt-2">
                 <div class="col-12 font-weight-bold">
@@ -86,7 +86,7 @@
                     <b>Tipas</b>
                 </div>
                 <div class="col-12">
-                    {{$coupon->type}}
+                    {{$coupon->type === 'fixed' ? 'Fiksuotas' : 'Procentas'}}
                 </div>
                 <div class="col-12 font-weight-bold">
                     <b>Dydis</b>
@@ -98,29 +98,29 @@
                     <b>Panaudota kartų</b>
                 </div>
                 <div class="col-12">
-                    {{$coupon->used}}
+                    {{!empty($coupon->used) ? $coupon->used : '-'}}
                 </div>
                 <div class="col-12 font-weight-bold">
                     <b>Panaudojimo limitas</b>
                 </div>
                 <div class="col-12">
-                    {{$coupon->use_limit}}
+                    {{!empty($coupon->use_limit) ? $coupon->use_limit : '-'}}
                 </div>
                 <div class="col-12 font-weight-bold">
                     <b>Galioja iki</b>
                 </div>
                 <div class="col-12">
-                    {{$coupon->expires_at}}
+                    {{!empty($coupon->expires_at) ? $coupon->expires_at : '-'}}
                 </div>
                 <div class="col-12 font-weight-bold">
                     <b>Veiksmai</b>
                 </div>
-                <div class="col-12">
-                    <a href="/dashboard/coupons/{{$coupon->id}}/edit" class="btn btn-info" type="button" style="margin: 0px 4px 0px;">Redaguoti</a>
+                <div class="col-12 mb-2">
+                    <a href="/dashboard/coupons/{{$coupon->id}}/edit" class="btn btn-info" type="button">Redaguoti</a>
                     <form action="/dashboard/coupons/{{$coupon->id}}" method="POST" onsubmit="return confirm('Ar tikrai norite ištrinti kuponą?')" style="display: inline-block;">
                         @csrf
                         @method('DELETE')
-                        <button class="btn btn-danger" style="margin: 0px 4px 0px;" type="submit">Ištrinti</button>
+                        <button class="btn btn-danger " style="margin: 0px 4px 0px;" type="submit">Ištrinti</button>
                     </form>
                 </div>
             </div>
