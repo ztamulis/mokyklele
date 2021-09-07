@@ -55,7 +55,7 @@ class OrderController extends Controller {
                     ->with("group", $group)
                     ->with('coupon', $coupon)
                     ->with("couponError", 1)
-                    ->with("error", "Kuponas galiojimas pasibaigė!");
+                    ->with("error", "Kupono galiojimas pasibaigė!");
             }
 
             if ($coupon->userCoupons->where('user_id', Auth::user()->id)->count() >= 2) {
@@ -74,7 +74,7 @@ class OrderController extends Controller {
                     ->with("group", $group)
                     ->with('coupon', $coupon)
                     ->with("couponError", 1)
-                    ->with("error", "Kuponas netinkai šiai grupei!");
+                    ->with("error", "Kuponas netinka šiai grupei!");
             }
         }
         return view("lessons_order.group_create_order")->with("group", $group)->with('coupon', $coupon);
