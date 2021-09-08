@@ -77,7 +77,7 @@
                         <div class="form-group">
                             <div class="form-group">
                                 <small class="form-text bold">Galiojimo pabaiga ({{ date("H:i") }} formatu,  {{ \App\TimeZoneUtils::currentGmtModifierText() }})</small>
-                                <input class="form-control" type="datetime-local" name="expires_at" placeholder="{{ date("H:i") }}" value="{{!empty(old('expires_at')) ? old('expires_at') : $coupon->expires_at}}"></div>
+                                <input class="form-control" type="datetime-local" name="expires_at" placeholder="{{ date("H:i") }}" value="{{!empty(old('expires_at')) ? old('expires_at') : Carbon\Carbon::parse($coupon->expires_at)->format('Y-m-d\TH:i')}}"></div>
                         </div>
                     </div>
                 </div>
