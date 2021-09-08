@@ -53,10 +53,7 @@ class MeetingController extends Controller
         $meeting->description = $request->input("description");
         $meeting->join_link = $request->input("join_link");
 
-        $date = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"));
-        if(TimeZoneUtils::isSummerTime()){
-            $date = $date->subHour();
-        }
+        $date = Carbon::parse($request->input("date_at"));
 
         $meeting->date_at = $date;
 
@@ -96,11 +93,7 @@ class MeetingController extends Controller
         $meeting->description = $request->input("description");
         $meeting->join_link = $request->input("join_link");
 
-        $date = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"));
-        if(TimeZoneUtils::isSummerTime()){
-            $date = $date->subHour();
-        }
-
+        $date = Carbon::parse($request->input("date_at"));
         $meeting->date_at = $date;
 
         $file = $request->file('file');
