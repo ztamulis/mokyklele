@@ -51,8 +51,12 @@ class Group extends Model
     }
 
     public function adjustedPrice($coupon = null) {
+        $price = $this->price;
 
-        $price = max(0, $this->price - $this->events()->where("date_at", "<", \Carbon\Carbon::now())->count() * $this->price_drop);
+        if ($this->type !== 'individual') {
+            $price = max(0, $this->price - $this->events()->where("date_at", "<", \Carbon\Carbon::now())->count() * 8);
+        }
+
         if (!empty($coupon) && $coupon->type === 'percent') {
             $price = $price - ($price * $coupon->discount / 100);
         }
