@@ -48,7 +48,7 @@
             </div>
                 @if ($group->price > 0)
                 <div class="price">
-                    £{{ $group->price }}
+                    £{{ $group->adjustedPrice() }}
                 </div>
                 @else
                 <div class="free--lesson">
@@ -61,7 +61,7 @@
                         Vietų nebėra
                     </a>
                 @else
-                    @if ($group->price > 0)
+                    @if ($group->adjustedPrice() > 0)
                         <a href="/select-group/order/{{ $group->id }}" class="button course--select--button">
                             Pasirinkti
                         </a>
