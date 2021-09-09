@@ -57,14 +57,12 @@
                                     <td>{{ Str::limit(strip_tags($reward->description), 50) }}</td>
                                     <td>{{ $reward->attendance_to_get_reward >= 0 ? $reward->attendance_to_get_reward : "Šis apdovanojimas skirtas priskyrimui."}}</td>
                                     <td class="text-right">
-                                        @if(Auth::user()->role == "admin")
-                                            <a href="/dashboard/rewards/{{ $reward->id }}/edit" class="btn btn-warning" type="button" style="margin: 0px 4px 0px;">Redaguoti</a>
-                                            <form action="/dashboard/rewards/{{ $reward->id }}" method="POST" onsubmit="return confirm('Ar tikrai norite ištrinti apdovanojimą?')" style="display: inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-danger" type="submit">Ištrinti</button>
-                                            </form>
-                                        @endif
+                                    <a href="/dashboard/rewards/{{ $reward->id }}/edit" class="btn btn-warning" type="button" style="margin: 0px 4px 0px;">Redaguoti</a>
+                                    <form action="/dashboard/rewards/{{ $reward->id }}" method="POST" onsubmit="return confirm('Ar tikrai norite ištrinti apdovanojimą?')" style="display: inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger" type="submit">Ištrinti</button>
+                                    </form>
                                     </td>
                                 </tr>
                             @endforeach
@@ -76,10 +74,7 @@
             </div>
             <div class="row">
                 <div class="col-xl-3">
-                    @if(Auth::user()->role == "admin")
-                        <a href="/dashboard/rewards/create" class="btn btn-success" type="button">Sukurti naują apdovanojimą</a>
-                    @endif
-
+                    <a href="/dashboard/rewards/create" class="btn btn-success" type="button">Sukurti naują apdovanojimą</a>
                     <a href="/dashboard/users" class="btn btn-primary" type="button">Priskirti apdovanojimą</a>
                 </div>
                 <div class="col-md-6 offset-xl-3">
