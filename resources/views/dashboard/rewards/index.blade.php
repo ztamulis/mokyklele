@@ -57,14 +57,12 @@
                                     <td>{{ Str::limit(strip_tags($reward->description), 50) }}</td>
                                     <td>{{ $reward->attendance_to_get_reward >= 0 ? $reward->attendance_to_get_reward : "Šis apdovanojimas skirtas priskyrimui."}}</td>
                                     <td class="text-right">
-                                        @if(Auth::user()->role == "admin")
-                                            <a href="/dashboard/rewards/{{ $reward->id }}/edit" class="btn btn-warning" type="button" style="margin: 0px 4px 0px;">Redaguoti</a>
-                                            <form action="/dashboard/rewards/{{ $reward->id }}" method="POST" onsubmit="return confirm('Ar tikrai norite ištrinti apdovanojimą?')" style="display: inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-danger" type="submit">Ištrinti</button>
-                                            </form>
-                                        @endif
+                                    <a href="/dashboard/rewards/{{ $reward->id }}/edit" class="btn btn-warning" type="button" style="margin: 0px 4px 0px;">Redaguoti</a>
+                                    <form action="/dashboard/rewards/{{ $reward->id }}" method="POST" onsubmit="return confirm('Ar tikrai norite ištrinti apdovanojimą?')" style="display: inline-block;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger" type="submit">Ištrinti</button>
+                                    </form>
                                     </td>
                                 </tr>
                             @endforeach

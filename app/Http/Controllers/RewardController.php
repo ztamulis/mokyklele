@@ -29,7 +29,7 @@ class RewardController extends Controller
 
     public function create()
     {
-        if(Auth::user()->role != "admin"){
+        if(Auth::user()->role === "user"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         return view("dashboard.rewards.create");
@@ -37,7 +37,7 @@ class RewardController extends Controller
 
     public function store(Request $request)
     {
-        if(Auth::user()->role != "admin"){
+        if(Auth::user()->role === "user"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $request->validate([
@@ -65,7 +65,7 @@ class RewardController extends Controller
 
     public function edit(Reward $reward)
     {
-        if(Auth::user()->role != "admin"){
+        if(Auth::user()->role === "user"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         return view("dashboard.rewards.edit")->with("reward", $reward);
@@ -73,9 +73,10 @@ class RewardController extends Controller
 
     public function update(Request $request, Reward $reward)
     {
-        if(Auth::user()->role != "admin"){
+        if(Auth::user()->role === "user"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
+
         $request->validate([
             'name' => 'required|string|max:64',
             'description' => 'required|string|max:512',
@@ -102,7 +103,7 @@ class RewardController extends Controller
 
     public function destroy(Reward $reward)
     {
-        if(Auth::user()->role != "admin"){
+        if(Auth::user()->role === "user"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $reward->delete();
@@ -115,7 +116,7 @@ class RewardController extends Controller
     }
 
     public function adminUserRewards(Request $request, User $user) {
-        if(Auth::user()->role != "admin"){
+        if(Auth::user()->role != "admin" && Auth::user()->role != "teacher"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
 
@@ -123,7 +124,7 @@ class RewardController extends Controller
     }
 
     public function adminUserRewardsPost(Request $request, User $user) {
-        if(Auth::user()->role != "admin"){
+        if(Auth::user()->role != "admin" && Auth::user()->role != "teacher"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
 

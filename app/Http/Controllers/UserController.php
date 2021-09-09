@@ -19,8 +19,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Laravel\Cashier\Exceptions\IncompletePayment;
 
-class UserController extends Controller
-{
+class UserController extends Controller {
     /**
      * Display a listing of the resource.
      *
@@ -28,7 +27,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        if(Auth::user()->role != "admin"){
+        if(Auth::user()->role != "admin" && Auth::user()->role != "teacher"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $users = User::where("id", ">", 0);
@@ -43,6 +42,16 @@ class UserController extends Controller
         if($request->input("role") && $request->input("role") !== "showall"){
             $users = $users->where("role", "LIKE", $request->role);
         }
+
+        if (Auth::user()->role === 'teacher') {
+            $users->whereHas('students', function($q){
+                $q->whereIn('group_id', Auth::user()->getGroups()->pluck('id'));
+                $q->where('user_id', '!=', 15);
+                $q->where('user_id', '!=', 23);
+            });
+        }
+
+
         return view("dashboard.users.index")->with("users", $users->orderBy("id","DESC")->paginate(15)->withQueryString());
     }
 
@@ -345,10 +354,6 @@ class UserController extends Controller
 
         return view("lessons_order.group_create_order")->with("group", $group);
     }
-
-
-
-
 
 
 
@@ -841,4 +846,7 @@ class UserController extends Controller
         }
         return view("landing_other.error")->with("error","404 - puslapis nerastas.");
     }
+
+
+
 }
