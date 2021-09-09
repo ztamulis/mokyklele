@@ -76,7 +76,10 @@
             </div>
             <div class="row">
                 <div class="col-xl-3">
-                    <a href="/dashboard/rewards/create" class="btn btn-success" type="button">Sukurti naują apdovanojimą</a>
+                    @if(Auth::user()->role == "admin")
+                        <a href="/dashboard/rewards/create" class="btn btn-success" type="button">Sukurti naują apdovanojimą</a>
+                    @endif
+
                     <a href="/dashboard/users" class="btn btn-primary" type="button">Priskirti apdovanojimą</a>
                 </div>
                 <div class="col-md-6 offset-xl-3">

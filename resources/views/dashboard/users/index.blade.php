@@ -51,7 +51,7 @@
                             <th>Naudotojas</th>
                             <th>Vaikai</th>
                             <th>Apdovanojimai</th>
-                            <th></th>
+                            <th class="text-center">Veiksmai</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -74,21 +74,27 @@
                                         <img src="/uploads/rewards/{{ $reward->file }}" style="height: 25px"> {{ $reward->name }}<br>
                                     @endforeach
                                 </td>
-                                <td class="text-right">
+                                <td class="{{Auth::user()->role === 'teacher' ? 'text-center' : 'text-right'}}">
+                                    @if(Auth::user()->role === "admin")
                                     <a href="/dashboard/students/?user_id={{ $user->id }}" class="btn btn-success" style="margin: 0px 4px 0px;">Vaikai</a>
+                                    @endif
                                     <a href="/dashboard/user-rewards/{{ $user->id }}" class="btn btn-warning" style="margin: 0px 4px 0px;">Apdovanojimai</a>
-                                    <a href="/dashboard/users/{{ $user->id }}/edit" class="btn btn-info" style="margin: 0px 4px 0px;">Redaguoti</a>
-                                    <form action="/dashboard/users/{{ $user->id }}" method="POST" onsubmit="return confirm('Ar tikrai norite ištrinti naudotoją?')" style="display: inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-danger" type="submit">Ištrinti</button>
-                                    </form>
+                                        @if(Auth::user()->role === "admin")
+                                            <a href="/dashboard/users/{{ $user->id }}/edit" class="btn btn-info" style="margin: 0px 4px 0px;">Redaguoti</a>
+                                            <form action="/dashboard/users/{{ $user->id }}" method="POST" onsubmit="return confirm('Ar tikrai norite ištrinti naudotoją?')" style="display: inline-block;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger" type="submit">Ištrinti</button>
+                                            </form>
+                                        @endif
+
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
+            @if(Auth::user()->role === "admin")
             <div class="row">
                 <div class="col-md-9">
                     <a href="/dashboard/users/export" class="btn btn-success">Eksportuoti EXCEL formatu</a>
@@ -101,6 +107,7 @@
                     </nav>
                 </div>
             </div>
+            @endif
         </div>
     </div>
 </x-app-layout>

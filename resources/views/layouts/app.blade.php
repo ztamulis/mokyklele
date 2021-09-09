@@ -69,23 +69,26 @@
             </a>
             <hr class="sidebar-divider my-0">
             <ul class="nav navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link @if(Request::is('dashboard')) active @endif " href="/dashboard"><i class="fas fa-tachometer-alt"></i><span>Pagrindinis puslapis</span></a></li>
-                    <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/attendance')) active @endif " href="/dashboard/attendance"><i class="fa fa-bell"></i><span>Lankomumas</span></a></li>
-                    <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/events*')) active @endif " href="/dashboard/events"><i class="fa fa-calendar"></i><span>Užsiėmimai</span></a></li>
-                    @if(Auth::user()->role == "admin")
-                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/groups*')) active @endif " href="/dashboard/groups"><i class="fa fa-users"></i><span>Grupių valdymas</span></a></li>
-                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/users*')) active @endif " href="/dashboard/users"><i class="fa fa-user-md"></i><span>Naudotojų valdymas</span></a></li>
-                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/tableData')) active @endif " href="/dashboard/tableData"><i class="fa fa-files-o"></i><span>Duomenų lentelė</span></a></li>
+            <li class="nav-item"><a class="nav-link @if(Request::is('dashboard')) active @endif " href="/dashboard"><i class="fas fa-tachometer-alt"></i><span>Pagrindinis puslapis</span></a></li>
+            <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/attendance')) active @endif " href="/dashboard/attendance"><i class="fa fa-bell"></i><span>Lankomumas</span></a></li>
+            <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/events*')) active @endif " href="/dashboard/events"><i class="fa fa-calendar"></i><span>Užsiėmimai</span></a></li>
+
+            @if (Auth::user()->role === 'admin' || Auth::user()->role === 'teacher')
+                <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/rewards')) active @endif " href="/dashboard/rewards"><i class="fa fa-trophy"></i><span>Apdovanojimai</span></a></li>
+            @endif
+            @if(Auth::user()->role == "admin")
+                <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/groups*')) active @endif " href="/dashboard/groups"><i class="fa fa-users"></i><span>Grupių valdymas</span></a></li>
+                <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/users*')) active @endif " href="/dashboard/users"><i class="fa fa-user-md"></i><span>Naudotojų valdymas</span></a></li>
+                <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/tableData')) active @endif " href="/dashboard/tableData"><i class="fa fa-files-o"></i><span>Duomenų lentelė</span></a></li>
 {{--                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/messages/create')) active @endif " href="/dashboard/messages/create"><i class="fa fa-newspaper-o"></i><span>Rašyti žinutę</span></a></li>--}}
-                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/payments')) active @endif " href="/dashboard/payments"><i class="fas fa-money-bill"></i><span>Apmokėjimai</span></a></li>
-                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/meetings')) active @endif " href="/dashboard/meetings"><i class="fa fa-calendar-check-o"></i><span>Susitikimai</span></a></li>
-                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/rewards')) active @endif " href="/dashboard/rewards"><i class="fa fa-trophy"></i><span>Apdovanojimai</span></a></li>
+                <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/payments')) active @endif " href="/dashboard/payments"><i class="fas fa-money-bill"></i><span>Apmokėjimai</span></a></li>
+                <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/meetings')) active @endif " href="/dashboard/meetings"><i class="fa fa-calendar-check-o"></i><span>Susitikimai</span></a></li>
 {{--                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/navbar')) active @endif " href="/dashboard/navbar"><i class="fa fa-navicon"></i><span>Meniu juosta</span></a></li>--}}
-                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a></li>
-                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a></li>
-                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/coupons')) active @endif " href="/dashboard/coupons"><i class="fa fa-patreon"></i><span>Nuolaidų kuponai</span></a></li>
-                    @endif
-                    <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/profile')) active @endif " href="/dashboard/profile"><i class="fas fa-user"></i><span>Mano paskyra</span></a></li>
+                <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a></li>
+                <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a></li>
+                <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/coupons')) active @endif " href="/dashboard/coupons"><i class="fa fa-patreon"></i><span>Nuolaidų kuponai</span></a></li>
+            @endif
+            <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/profile')) active @endif " href="/dashboard/profile"><i class="fas fa-user"></i><span>Mano paskyra</span></a></li>
             </ul>
 {{--            <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>--}}
         </div>

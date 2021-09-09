@@ -76,6 +76,7 @@ class RewardController extends Controller
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
+
         $request->validate([
             'name' => 'required|string|max:64',
             'description' => 'required|string|max:512',
@@ -115,7 +116,7 @@ class RewardController extends Controller
     }
 
     public function adminUserRewards(Request $request, User $user) {
-        if(Auth::user()->role != "admin"){
+        if(Auth::user()->role != "admin" && Auth::user()->role != "teacher"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
 
@@ -123,7 +124,7 @@ class RewardController extends Controller
     }
 
     public function adminUserRewardsPost(Request $request, User $user) {
-        if(Auth::user()->role != "admin"){
+        if(Auth::user()->role != "admin" && Auth::user()->role != "teacher"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
 
