@@ -30,6 +30,9 @@ class StudentController extends Controller
         if($request->input("user_id")){
             $students = $students->where("user_id", $request->input("user_id"));
         }
+
+        $students->orderBy('id', 'desc');
+
         return view("dashboard.students.index")->with("students", $students->paginate(15)->withQueryString());
     }
 
