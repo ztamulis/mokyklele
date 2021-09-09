@@ -128,7 +128,7 @@
             </div>
 
             <div class="dashboard--misc--buttons">
-                <button type="submit" class="dashboard--button dashboard--button--main">
+                <button id="send-message" type="submit" class="dashboard--button dashboard--button--main">
                     Siųsti žinutę
                 </button>
             </div>
@@ -231,6 +231,14 @@
 {{--                        </div>--}}
 {{--                    </div>--}}
                     <script>
+
+                        $( document ).ready(function() {
+
+                            $('#send-message').click(function() {
+                                $(this).prop('disabled', true);
+                                $(this).parents('form').submit();
+                            });
+                        });
                         $("[data-select-all]").click(function() {
                             var checked = $(this).is(":checked");
                             if(checked){
@@ -266,6 +274,7 @@
                                 { targets: 0, sortable: false},
                             ],
                         } );
+
                         /*$(document).ready(function(){
                             $("#search").on("keyup", function() {
                                 var value = $(this).val().toLowerCase();
