@@ -5,21 +5,37 @@
         <b>Svarbu:</b> Laikas nurodomas jūsų vietiniu laiku <small>({{ Cookie::get("user_timezone", "GMT") }})</small>
     </div>
     <div class="learning--group--select--selector">
-        <div class="learning--group--select--item active" data-filter="yellow">
-            Geltona (2-4m.)
-        </div>
-        <div class="learning--group--select--item" data-filter="green">
-            Žalia (5-6m.)
-        </div>
-        <div class="learning--group--select--item" data-filter="blue">
-            Mėlyna (7-9m.)
-        </div>
-        <div class="learning--group--select--item" data-filter="red">
-            Raudona (10-13m.)
-        </div>
-        <div class="learning--group--select--item" data-filter="individual">
-            Individualios pamokos
-        </div>
+        @php $groupsGrouped  = \App\Models\Group::where("paid", 1)->where("hidden", 0)->get()->groupBy("type"); @endphp
+
+        @if($groupsGrouped['yellow'])
+            <div class="learning--group--select--item active" data-filter="yellow">
+                Geltona (2-4m.)
+            </div>
+        @endif
+
+        @if($groupsGrouped['yellow'])
+            <div class="learning--group--select--item" data-filter="green">
+                Žalia (5-6m.)
+            </div>
+        @endif
+        @if($groupsGrouped['yellow'])
+            <div class="learning--group--select--item" data-filter="blue">
+                Mėlyna (7-9m.)
+            </div>
+        @endif
+
+        @if($groupsGrouped['yellow'])
+            <div class="learning--group--select--item" data-filter="red">
+                Raudona (10-13m.)
+            </div>
+        @endif
+
+        @if($groupsGrouped['yellow'])
+            <div class="learning--group--select--item" data-filter="individual">
+                Individualios pamokos
+            </div>
+        @endif
+
     </div>
     @foreach(\App\Models\Group::where("paid", 1)->where("hidden",0)->orderBy("weight","ASC")->get() as $group)
         <div class="learning--group--select--row" data-group="{{ $group->type }}">
