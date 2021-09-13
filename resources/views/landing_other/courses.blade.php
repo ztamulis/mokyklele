@@ -21,6 +21,7 @@
             } elseif(isset($groupsGrouped['individual'])) {
                 $type = 'individual';
             }
+        
 
         @endphp
 
