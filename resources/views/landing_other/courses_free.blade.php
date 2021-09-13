@@ -6,7 +6,7 @@
     </div>
     <div class="learning--group--select--selector">
         @php $groupsGrouped  = \App\Models\Group::where("paid", 0)->where("hidden", 0)->get()->groupBy("type"); @endphp
-            @if($groupsGrouped['yellow'])
+            @if(isset($groupsGrouped['yellow']))
                 <div class="learning--group--select--item active" data-filter-free="yellow">
                     Geltona (2-4m.)
                 </div>
