@@ -7,30 +7,30 @@
     <div class="learning--group--select--selector">
         @php $groupsGrouped  = \App\Models\Group::where("paid", 1)->where("hidden", 0)->get()->groupBy("type"); @endphp
 
-        @if($groupsGrouped['yellow'])
+        @if(isset($groupsGrouped['yellow']))
             <div class="learning--group--select--item active" data-filter="yellow">
                 Geltona (2-4m.)
             </div>
         @endif
 
-        @if($groupsGrouped['yellow'])
+        @if(isset($groupsGrouped['yellow']))
             <div class="learning--group--select--item" data-filter="green">
                 Žalia (5-6m.)
             </div>
         @endif
-        @if($groupsGrouped['yellow'])
+        @if(isset($groupsGrouped['yellow']))
             <div class="learning--group--select--item" data-filter="blue">
                 Mėlyna (7-9m.)
             </div>
         @endif
 
-        @if($groupsGrouped['yellow'])
+        @if(isset($groupsGrouped['yellow']))
             <div class="learning--group--select--item" data-filter="red">
                 Raudona (10-13m.)
             </div>
         @endif
 
-        @if($groupsGrouped['yellow'])
+        @if(isset($groupsGrouped['yellow']))
             <div class="learning--group--select--item" data-filter="individual">
                 Individualios pamokos
             </div>
