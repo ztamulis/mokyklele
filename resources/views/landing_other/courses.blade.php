@@ -5,7 +5,24 @@
         <b>Svarbu:</b> Laikas nurodomas jūsų vietiniu laiku <small>({{ Cookie::get("user_timezone", "GMT") }})</small>
     </div>
     <div class="learning--group--select--selector">
-        @php $groupsGrouped  = \App\Models\Group::where("paid", 1)->where("hidden", 0)->get()->groupBy("type"); @endphp
+        @php
+            $groupsGrouped  = \App\Models\Group::where("paid", 1)->where("hidden", 0)->get()->groupBy("type");
+            $type = '';
+            if (isset($groupsGrouped['yellow'])) {
+            $type = 'yellow';
+            } elseif(isset($groupsGrouped['green'])) {
+                $type = 'green';
+
+            } elseif(isset($groupsGrouped['blue'])) {
+                $type = 'blue';
+
+            } elseif(isset($groupsGrouped['red'])) {
+                $type = 'red';
+            } elseif(isset($groupsGrouped['individual'])) {
+                $type = 'individual';
+            }
+
+        @endphp
 
         @if(isset($groupsGrouped['yellow']))
             <div class="learning--group--select--item active" data-filter="yellow">
@@ -13,24 +30,24 @@
             </div>
         @endif
 
-        @if(isset($groupsGrouped['yellow']))
+        @if(isset($groupsGrouped['green']))
             <div class="learning--group--select--item" data-filter="green">
                 Žalia (5-6m.)
             </div>
         @endif
-        @if(isset($groupsGrouped['yellow']))
+        @if(isset($groupsGrouped['blue']))
             <div class="learning--group--select--item" data-filter="blue">
                 Mėlyna (7-9m.)
             </div>
         @endif
 
-        @if(isset($groupsGrouped['yellow']))
+        @if(isset($groupsGrouped['red']))
             <div class="learning--group--select--item" data-filter="red">
                 Raudona (10-13m.)
             </div>
         @endif
 
-        @if(isset($groupsGrouped['yellow']))
+        @if(isset($groupsGrouped['individual']))
             <div class="learning--group--select--item" data-filter="individual">
                 Individualios pamokos
             </div>
@@ -104,52 +121,5 @@
     $("[data-filter]").click(function () {
         filterBy($(this).attr("data-filter"));
     });
-    filterBy("yellow");
+    filterBy('{{$type}}');
 </script>
-{{--
-    <div class="learning--group--select--wrapper" data-vvveb-disabled>
-        <div class="learning--group--select--title">
-            <h2>Išsirinkite grupę</h2>
-            <b>Svarbu:</b> Visų pamokų laikas nurodomas Didžiosios Britanijos laiku (GMT)
-        </div>
-        <div class="learning--group--select--selector">
-            <div class="learning--group--select--item active" data-filter="yellow">
-                Geltona (2-4m.)
-            </div>
-            <div class="learning--group--select--item" data-filter="green">
-                Žalia (5-6m.)
-            </div>
-            <div class="learning--group--select--item" data-filter="blue">
-                Mėlyna (7-9m.)
-            </div>
-            <div class="learning--group--select--item" data-filter="red">
-                Raudona (10-13m.)
-            </div>
-            <div class="learning--group--select--item" data-filter="individual">
-                Individualios pamokos
-            </div>
-        </div>
-        @foreach(\App\Models\Group::where("type", "NOT LIKE", "free")->get() as $group)
-            <div class="learning--group--select--row" data-group="{{ $group->type }}">
-                <div class="color background--{{ $group->type }}"></div>
-                <div class="text">
-                    <a href="/select-group/{{ $group->id }}">{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a><br>
-                    <span>{{ $group->display_name }}</span>
-                </div>
-                <div class="price">
-                    £{{ $group->price }}
-                </div>
-                <div class="actions">
-                    @if($group->students()->count() >= $group->slots)
-                        <a class="button-disabled">
-                            Vietų nebėra
-                        </a>
-                    @else
-                        <a href="/select-group/{{ $group->id }}" class="button">
-                            Pasirinkti
-                        </a>
-                    @endif
-                </div>
-            </div>
-        @endforeach
-    </div>--}}
