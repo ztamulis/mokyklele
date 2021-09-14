@@ -53,7 +53,7 @@
                                 <tr>
                                     <td><div class="color--small background--blue" @if($meeting->photo) style="background-image: url('/uploads/meetings/{{ $meeting->photo }}')" @endif ></div></td>
                                     <td>{{ $meeting->name }}</td>
-                                    <td>{{ $meeting->date_at }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($meeting->date_at)->timezone('Europe/London') }}</td>
                                     <td class="text-right">
                                         @if(Auth::user()->role == "admin")
                                             <a href="/dashboard/meetings/{{ $meeting->id }}/edit" class="btn btn-warning" type="button" style="margin: 0px 4px 0px;">Redaguoti</a>

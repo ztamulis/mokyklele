@@ -53,8 +53,9 @@ class MeetingController extends Controller
         $meeting->description = $request->input("description");
         $meeting->join_link = $request->input("join_link");
 
-        $date = Carbon::parse($request->input("date_at"));
-
+        $date = Carbon::parse($request->input("date_at"), 'Europe/London');
+        $date->setTimezone('GMT');
+        
         $meeting->date_at = $date;
 
         $file = $request->file('file');
@@ -93,7 +94,8 @@ class MeetingController extends Controller
         $meeting->description = $request->input("description");
         $meeting->join_link = $request->input("join_link");
 
-        $date = Carbon::parse($request->input("date_at"));
+        $date = Carbon::parse($request->input("date_at"), 'Europe/London');
+        $date->setTimezone('GMT');
         $meeting->date_at = $date;
 
         $file = $request->file('file');
