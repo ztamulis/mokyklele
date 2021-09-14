@@ -59,9 +59,9 @@
         <div class="learning--group--select--row" data-group="{{ $group->type }}">
             <div class="color background--{{ $group->type }}"></div>
             <div class="text">
-                <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else href="/select-group/order/{{ $group->id }}" @endif >{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a>
+                <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else href="/select-group/order/{{ $group->slug }}" @endif >{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a>
                 @if($group->time_2)
-                    / <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else href="/select-group/order/{{ $group->id }}" @endif ><b>{{ $group->time_2->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a>
+                    / <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else href="/select-group/order/{{ $group->slug }}" @endif ><b>{{ $group->time_2->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a>
                 @endif
                 <br>
                 <span>{{ $group->display_name }}</span>
@@ -96,11 +96,11 @@
                     </a>
                 @else
                     @if ($group->adjustedPrice() > 0)
-                        <a href="/select-group/order/{{ $group->id }}" class="button course--select--button">
+                        <a href="/select-group/order/{{ $group->slug }}" class="button course--select--button">
                             Pasirinkti
                         </a>
                     @else
-                        <a href="/select-group/order/free/{{ $group->id }}" class="button course--select--button">
+                        <a href="/select-group/order/free/{{ $group->slug }}" class="button course--select--button">
                             Pasirinkti
                         </a>
                     @endif
