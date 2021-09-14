@@ -184,6 +184,9 @@ class MessageController extends Controller
                     }
                 }
             }
+            if(Auth::user()->role !== "teacher") {
+                $userIds = array_merge($userIds, User::where("role", "LIKE", "admin")->pluck('id')->toArray());
+            }
         }
         return User::find($userIds);
     }
