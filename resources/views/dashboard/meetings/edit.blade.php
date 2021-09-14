@@ -37,7 +37,7 @@
                             @php 
                                 $todayY = date("Y-m-d\TH:i", strtotime("+1 years"));
                             @endphp
-                            <input class="form-control" type="datetime-local" name="date_at" max="{{ $todayY }}" placeholder="{{ date("Y-m-d\TH:i") }}" value="{{ Carbon\Carbon::parse($meeting->date_at)->format('Y-m-d\TH:i')}}">
+                            <input class="form-control" type="datetime-local" name="date_at" max="{{ $todayY }}" placeholder="{{ date("Y-m-d\TH:i") }}" value="{{ Carbon\Carbon::parse($meeting->date_at)->timezone('Europe/London')->format('Y-m-d\TH:i')}}">
                         </div>
                         <div class="form-group">
                             <small class="form-text text-muted">Aprašymas</small>
