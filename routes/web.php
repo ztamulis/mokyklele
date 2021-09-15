@@ -12,7 +12,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MeetingController;
-use App\Http\Controllers\RewardController;;
+use App\Http\Controllers\RewardController;
 use App\Http\Controllers\CronjobController;
 use \App\Http\Controllers\NavbarController;
 
@@ -100,12 +100,12 @@ Route::get('/change-timezone', [UserController::class, 'clearRegion']);
 
 // reworked orders
 Route::get('/payments/checkout/response', [OrderController::class, 'checkoutResponse'])->middleware(['auth']);
-Route::get('/select-group/order/{id}', [OrderController::class, 'selectGroupOrder'])->middleware(['auth']);
-Route::get('/select-group/order/{id}/confirm', [OrderController::class, 'orderConfirmation'])->middleware(['auth']);
-Route::post('/select-group/create-order/{id}', [OrderController::class, 'createOrderCheckout'])->middleware(['auth']);
-Route::get('/select-group/order/free/{id}', [OrderController::class, 'selectFreeOrder'])->middleware(['auth']);
-Route::post('/select-group/order/free/create/{id}', [OrderController::class, 'createFreeOrder'])->middleware(['auth']);
-Route::get('/select-group/order/free/success/{id}', [OrderController::class, 'showSuccessPage'])->middleware(['auth'])->name('orderFreeSuccess');
+Route::get('/select-group/order/{slug}', [OrderController::class, 'selectGroupOrder'])->middleware(['auth']);
+Route::get('/select-group/order/{slug}/confirm', [OrderController::class, 'orderConfirmation'])->middleware(['auth']);
+Route::post('/select-group/create-order/{slug}', [OrderController::class, 'createOrderCheckout'])->middleware(['auth']);
+Route::get('/select-group/order/free/{slug}', [OrderController::class, 'selectFreeOrder'])->middleware(['auth']);
+Route::post('/select-group/order/free/create/{slug}', [OrderController::class, 'createFreeOrder'])->middleware(['auth']);
+Route::get('/select-group/order/free/success/{slug}', [OrderController::class, 'showSuccessPage'])->middleware(['auth'])->name('orderFreeSuccess');
 
 
 Route::get('/dashboard', function () {

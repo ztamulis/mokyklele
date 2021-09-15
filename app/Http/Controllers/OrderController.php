@@ -18,8 +18,8 @@ use Laravel\Cashier\Exceptions\IncompletePayment;
 class OrderController extends Controller {
 
 
-    public function selectFreeOrder($id) {
-        $group = Group::find($id);
+    public function selectFreeOrder($slug) {
+        $group = Group::where('slug', $slug)->first();
         if(!$group) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
         }
@@ -27,8 +27,8 @@ class OrderController extends Controller {
         return view("lessons_order.group_create_free_order")->with("group", $group);
     }
 
-    public function selectGroupOrder(Request $request, $id) {
-        $group = Group::find($id);
+    public function selectGroupOrder(Request $request, $slug) {
+        $group = Group::where('slug', $slug)->first();
 
         if ($group->slots <= $group->students()->count()) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė pilna.");
@@ -80,8 +80,8 @@ class OrderController extends Controller {
         return view("lessons_order.group_create_order")->with("group", $group)->with('coupon', $coupon);
     }
 
-    public function showSuccessPage($id) {
-        $group = Group::find($id);
+    public function showSuccessPage($slug) {
+        $group = Group::where('slug', $slug)->first();
         if(!$group) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
         }
@@ -91,8 +91,9 @@ class OrderController extends Controller {
             ->with("message", "Ačiū, lauksime pamokoje!");
     }
 
-    public function createFreeOrder(Request $request, $id) {
-        $group = Group::find($id);
+    public function createFreeOrder(Request $request, $slug) {
+        $group = Group::where('slug', $slug)->first();
+
         $user = Auth::user();
         if(!$group) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
@@ -186,7 +187,7 @@ class OrderController extends Controller {
         });
 
         $this->sendOrderConfirmAdminEmail($group, $student_names, $student_birthDays, $user);
-        return redirect()->route('orderFreeSuccess', ['id' => $group->id])->withInput();
+        return redirect()->route('orderFreeSuccess', ['slug' => $group->slug])->withInput();
     }
 
 
@@ -222,8 +223,8 @@ class OrderController extends Controller {
 
 
 
-    public function createOrderCheckout(Request $request, $id) {
-        $group = Group::find($id);
+    public function createOrderCheckout(Request $request, $slug) {
+        $group = Group::where('slug', $slug)->first();
         if(!$group) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
         }
@@ -330,7 +331,7 @@ class OrderController extends Controller {
         $user->time_zone = Cookie::get("user_timezone", "GMT");
         $user->save();
 
-        return Redirect::to('/select-group/order/'.$group->id.'/confirm')->with('paymentInfo', $payment)->with('checkoutUrl', $transaction->url);
+        return Redirect::to('/select-group/order/'.$group->slug.'/confirm')->with('paymentInfo', $payment)->with('checkoutUrl', $transaction->url);
     }
 
     private function applyCoupon($price, $coupon) {

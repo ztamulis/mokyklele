@@ -70,8 +70,8 @@ class CronjobController extends Controller
             }
 
             $email_title = "Gavote žinutę";
-            $email_content = "<p>Sveiki,<br>gavote žinutę Pasakos paskyroje nuo ".($message->author->role == "admin" ? "Pasakos" :  $message->author->name." ". $message->author->surname);
-//            <br>Pranešimą galite peržiūrėti čia: <a href='".\Config::get('app.url')."/dashboard/messages/".$message->id."'>".\Config::get('app.url')."/dashboard/messages/".$message->id."</a>";
+            $email_content = "<p>Sveiki,<br>gavote žinutę Pasakos paskyroje nuo ".($message->author->role == "admin" ? "Pasakos" :  $message->author->name." ". $message->author->surname).
+            "<br>Pranešimą galite peržiūrėti čia: <a href='".\Config::get('app.url')."/dashboard/messages/".$message->id."'>".\Config::get('app.url')."/dashboard/messages/".$message->id."</a>";
             if (!empty($message->message)) {
                 $email_content .= "<br>Žinutė: <p>" . strip_tags($message->message)."</p>";
             }

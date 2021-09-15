@@ -42,7 +42,7 @@
         @if(Auth::check())
 
         <div class="order--dialog">
-            <form method="POST" action="/select-group/create-order/{{$group->id}}" novalidate payment-form>
+            <form method="POST" action="/select-group/create-order/{{$group->slug}}" novalidate payment-form>
                 @csrf
                 @if(!empty($coupon))
                     <input type="hidden" name="coupon-code" value="{{$coupon->code}}">
@@ -84,7 +84,7 @@
         <script>
             $( document ).ready(function() {
                 $('#coupon-btn').click(function() {
-                    window.location.href="/select-group/order/{{$group->id}}?coupon="+$('#coupon').val()
+                    window.location.href="/select-group/order/{{$group->slug}}?coupon="+$('#coupon').val()
                 });
             });
 

@@ -18,7 +18,7 @@
 
                         <h3>{{Auth::user()->getWeekDayName($weekday)}}</h3>
                         @foreach($groups as $group)
-                        <div class="group--item" data-href="/dashboard/groups/{{$group->id}}">
+                        <div class="group--item" data-href="/dashboard/groups/{{$group->slug}}">
                             <div class="group--icon">
                                 <div class="color background--{{ $group->type }}"></div>
                             </div>
@@ -45,7 +45,7 @@
                                 @endforeach
                             </div>
                             <div class="group--actions">
-                                <a href="/dashboard/groups/{{$group->id}}" class="dashboard--button btn-success">
+                                <a href="/dashboard/groups/{{$group->slug}}" class="dashboard--button btn-success">
                                     Grupė
                                 </a>
                             </div>
