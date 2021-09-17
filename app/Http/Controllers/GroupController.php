@@ -476,12 +476,15 @@ class GroupController extends Controller
 
         $html .= "<br>Peržiūrėti galite čia: <a href='".\Config::get('app.url')."/dashboard/groups/".$fileObj->group()->first()->slug."'>".\Config::get('app.url')."/dashboard/groups/".$fileObj->group()->first()->slug."</a>
         </p><p>Linkėjimai<br>Pasakos komanda</p>";
-
         foreach($studentBygroup as $student) {
-            Mail::send([], [], function ($message) use ($html, $student) {
+            $studentGroup = $student->group()->where('id', $request->input("group_id"))->first();
+            $groupName = $studentGroup->name;
+            $email =  $student->user->email;
+
+            Mail::send([], [], function ($message) use ($html, $groupName, $email) {
                 $message
-                    ->to($student->user->email)
-                    ->subject("Namų darbai | grupė: ".  $student->group->name)
+                    ->to($email)
+                    ->subject("Namų darbai | grupė: ".  $groupName)
                     ->setBody($html, 'text/html');
             });
         }
