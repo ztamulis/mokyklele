@@ -479,8 +479,7 @@ class GroupController extends Controller
         foreach($studentBygroup as $student) {
             $studentGroup = $student->group()->where('id', $request->input("group_id"))->first();
             $groupName = $studentGroup->name;
-            $email =  $student->user->email;
-
+            $email =  $student->user()->first()->email;
             Mail::send([], [], function ($message) use ($html, $groupName, $email) {
                 $message
                     ->to($email)
