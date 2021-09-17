@@ -61,7 +61,7 @@ class Group extends Model
         if($this->type == "blue"){
             return "Mėlyna";
         }
-        if($this->type == "red"){
+        if($this->type == "red") {
             return "Raudona";
         }
     }
@@ -77,7 +77,6 @@ class Group extends Model
 
     public function adjustedPrice($coupon = null) {
         $price = $this->price;
-
         if ($this->type !== 'individual') {
             $price = max(0, $this->price - $this->events()->where("date_at", "<", \Carbon\Carbon::now())->count() * 8);
         }
@@ -90,6 +89,18 @@ class Group extends Model
 
     public function hasAdjustedPrice() {
         return $this->adjustedPrice() != $this->price;
+    }
+
+    public function getGroupStartDateAndCount() {
+        $events = $this->events()->where("date_at", ">", \Carbon\Carbon::now())->get()->toArray();
+        if (empty($events)) {
+            return [];
+        }
+        $eventsCount = count($events);
+        $startDate = $events[0];
+        return ['eventsCount' => $eventsCount,
+            'startDate' => $startDate['date_at']
+        ];
     }
 
     public function getAdminTimeAttribute() {

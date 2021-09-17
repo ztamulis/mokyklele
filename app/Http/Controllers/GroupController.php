@@ -314,7 +314,6 @@ class GroupController extends Controller
             foreach($teachers as $email) {
                 Mail::send([], [], function ($message) use ($html, $email, $group) {
                     $message
-                        ->to('zygintas.tamulis@gmail.com')
                         ->to($email)
                         ->subject("Pokalbiai | grupė: ".  $group->name)
                         ->setBody($html, 'text/html');

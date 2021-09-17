@@ -67,17 +67,20 @@
                 <span>{{ $group->display_name }}</span>
             </div>
             <div class="date">
-                {{\Carbon\Carbon::parse($group->start_date)->format("m.d")}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}} ({{$group->course_length}}
-                @if($group->course_length == 1)
-                    pamoka)
-                @elseif($group->course_length > 1 && $group->course_length < 10)
-                    pamokos)
-                @elseif($group->course_length > 9 && $group->course_length < 21)
-                    pamokų)
-                @elseif($group->course_length == 21)
-                    pamoka)
-                @elseif($group->course_length > 21)
-                    pamokos)
+                @php $descriptionData = $group->getGroupStartDateAndCount() @endphp
+                @if (!empty($descriptionData))
+                    {{\Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d")}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}} ({{$group->course_length}}
+                    @if($descriptionData['eventsCount'] == 1)
+                        pamoka)
+                    @elseif($descriptionData['eventsCount'] > 1 && $descriptionData['eventsCount'] < 10)
+                        pamokos)
+                    @elseif($descriptionData['eventsCount'] > 9 && $descriptionData['eventsCount'] < 21)
+                        pamokų)
+                    @elseif($descriptionData['eventsCount'])
+                        pamoka)
+                    @elseif($descriptionData['eventsCount'] > 21)
+                        pamokos)
+                    @endif
                 @endif
             </div>
                 @if ($group->price > 0)
