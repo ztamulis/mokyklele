@@ -69,7 +69,7 @@
             <div class="date">
                 @php $descriptionData = $group->getGroupStartDateAndCount() @endphp
                 @if (!empty($descriptionData))
-                    {{\Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d")}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}} ({{$group->course_length}}
+                    {{\Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d")}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}} ({{$descriptionData['eventsCount']}}
                     @if($descriptionData['eventsCount'] == 1)
                         pamoka)
                     @elseif($descriptionData['eventsCount'] > 1 && $descriptionData['eventsCount'] < 10)
