@@ -75,11 +75,8 @@ class WebhookController extends CashierController
 
 
     public function handleCheckoutSessionCompleted($payload) {
-        Log::info('handleCheckoutSessionCompleted');
         $data = $payload['data']['object'];
 
-        Log::info($data['id']);
-        Log::info($data);
         $payment = Payment::where('payment_id', $data['payment_intent'])->first();
         if ($payment->payment_status !== 'paid') {
             $studentsIds = json_decode($payment->students);
@@ -140,11 +137,10 @@ class WebhookController extends CashierController
 
         \Mail::send([], [], function ($message) use ($email_title_admin, $email_content_admin, $user) {
             $message
-                ->to(env("ADMIN_EMAIL"))
+                ->to(\Config::get('app.email'))
                 ->subject($email_title_admin)
                 ->setBody($email_content_admin, 'text/html');
         });
-        Log::info($data);
     }
 
     private function registerUserCoupon($payment) {
@@ -161,15 +157,8 @@ class WebhookController extends CashierController
     /**
      * @param $payload
      */
-    public function handleChargeSucceeded($payload)
-    {
-        Log::info('handleChargeSucceeded');
+    public function handleChargeSucceeded($payload) {
         $data = $payload['data']['object'];
-
-        Log::info($data['id']);
-        Log::info($data['amount_captured']);
-        Log::info($data['paid']);
-        Log::info($data['payment_intent']);
         $payment = Payment::where('payment_id', $data['payment_intent'])->first();
         if ($payment->payment_status !== 'paid') {
             $studentsIds = json_decode($payment->students);
@@ -230,7 +219,7 @@ class WebhookController extends CashierController
 
         \Mail::send([], [], function ($message) use ($email_title_admin, $email_content_admin, $user) {
             $message
-                ->to(env("ADMIN_EMAIL"))
+                ->to(\Config::get('app.email'))
                 ->subject($email_title_admin)
                 ->setBody($email_content_admin, 'text/html');
         });
@@ -249,7 +238,7 @@ class WebhookController extends CashierController
             $group->name."<br>".
             $group->display_name." ".$group->time->timezone($timezone)->format("H:i")." (".$timezone.")<br>".
             "Kursas vyks  ". \Carbon\Carbon::parse($group->start_date)->format("m.d")." - ". \Carbon\Carbon::parse($group->end_date)->format("m.d")." (".$group->course_length." sav.)<br>".
-            "Savo <a href='".env("APP_URL")."/login'>Pasakos paskyroje</a> patogiai prisijungsite į pamokas, rasite namų darbus ir galėsite bendrauti su kitais nariais. </p>".
+            "Savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyroje</a> patogiai prisijungsite į pamokas, rasite namų darbus ir galėsite bendrauti su kitais nariais. </p>".
             "<p>Iki pasimatymo,<br> Pasakos komanda </p>";
 
         return [
@@ -283,21 +272,14 @@ class WebhookController extends CashierController
     public function handleCustomerSubscriptionCreated($payload)
     {
         // Handle the incoming event...
-
-        Log::info('handleCustomerSubscriptionCreated');
-        Log::info($payload->status);
-        Log::info($payload->id);
         $payment = Payment::where('payment_id', $payload->id)->first();
         if ($payload->status === 'succeeded' && $payment->status !== 'paid') {
-            Log::info($payment->students);
             $payment->status = 'paid';
             $payment->save();
 //            Student::whereIn('id', $payment->students)->update(['group_id', $payment->group_id]);
 
-            Log::info($payment);
 
         }
-        Log::info($payload);
 
 
         echo $payload;

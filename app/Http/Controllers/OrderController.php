@@ -382,7 +382,7 @@ class OrderController extends Controller {
 //        env("ADMIN_EMAIL")
         \Mail::send([], [], function ($message) use ($email_title_admin, $email_content_admin, $user) {
             $message
-                ->to(env("ADMIN_EMAIL"))
+                ->to(\Config::get('app.email'))
                 ->subject($email_title_admin)
                 ->setBody($email_content_admin, 'text/html');
         });
@@ -468,7 +468,7 @@ class OrderController extends Controller {
             "ačiū, kad registravotės į nemokamą Pasakos pamoką! Jūsų nemokamos pamokos detalės čia:<br>".
             $group->name."<br>".
             $group->display_name." ".$group->time->timezone($timezone)->format("H:i")." (".$timezone.")<br>".
-            "Į pamoką prisijungsite iš savo <a href='".env("APP_URL")."/login'>Pasakos paskyros</a>.</p>".
+            "Į pamoką prisijungsite iš savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyros</a>.</p>".
             "<p>Grupes tolimesniam mokymuisi skirstome ne tik pagal amžių, bet ir pagal kalbos mokėjimo lygį - taip galime užtikrinti, kad vaikai pasieks geriausių rezultatų ir drąsiau jausis pamokoje.<br>".
             "Nemokamos pamokos metu mokytoja įvertins vaiko kalbos mokėjimo lygį ir vėliau mes pasiūlysime tinkamiausią grupę jūsų vaikui.<br>".
             "<small>Jei negalėsite dalyvauti pamokoje, labai prašome iš anksto pranešti - vietų skaičius ribotas, o norinčiųjų daug!</small></p>".
@@ -498,13 +498,13 @@ class OrderController extends Controller {
             return;
         }
 
-        $messageArray = $this->getCheckoutSessionSucceededUserMessage($group, $user);
-        \Mail::send([], [], function ($message) use ($messageArray, $user) {
-            $message
-                ->to($user->email)
-                ->subject($messageArray['email_title'])
-                ->setBody($messageArray['email_content'], 'text/html');
-        });
+//        $messageArray = $this->getCheckoutSessionSucceededUserMessage($group, $user);
+//        \Mail::send([], [], function ($message) use ($messageArray, $user) {
+//            $message
+//                ->to($user->email)
+//                ->subject($messageArray['email_title'])
+//                ->setBody($messageArray['email_content'], 'text/html');
+//        });
 
         $teachers = $this->getTeachersWithLessons($group);
         $email_title_admin = "Kurso užsakymas";
@@ -530,7 +530,7 @@ class OrderController extends Controller {
 
         \Mail::send([], [], function ($message) use ($email_title_admin, $email_content_admin, $user) {
             $message
-                ->to(env("ADMIN_EMAIL"))
+                ->to(\Config::get('app.email'))
                 ->subject($email_title_admin)
                 ->setBody($email_content_admin, 'text/html');
         });
@@ -549,7 +549,7 @@ class OrderController extends Controller {
             $group->name."<br>".
             $group->display_name." ".$group->time->timezone($timezone)->format("H:i")." (".$timezone.")<br>".
             "Kursas vyks  ". \Carbon\Carbon::parse($group->start_date)->format("m.d")." - ". \Carbon\Carbon::parse($group->end_date)->format("m.d")." (".$group->course_length." sav.)<br>".
-            "Savo <a href='".env("APP_URL")."/login'>Pasakos paskyroje</a> patogiai prisijungsite į pamokas, rasite namų darbus ir galėsite bendrauti su kitais nariais. </p>".
+            "Savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyroje</a> patogiai prisijungsite į pamokas, rasite namų darbus ir galėsite bendrauti su kitais nariais. </p>".
             "<p>Iki pasimatymo,<br> Pasakos komanda </p>";
 
         return [
