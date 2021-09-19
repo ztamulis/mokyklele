@@ -557,6 +557,7 @@ class OrderController extends Controller {
             'email_content' => $email_content,
         ];
     }
+    
 
 
 }
