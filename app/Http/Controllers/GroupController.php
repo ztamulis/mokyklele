@@ -438,7 +438,7 @@ class GroupController extends Controller
         }
         $displayText = $request->input("file_name");
         if ($displayText === 'undefined') {
-            $displayText = '';
+            return json_encode(["status" => "error", "message" => "Blogai įvestas textas"]);
         }
 
         if (empty($displayText) && empty($request->file('file'))) {
