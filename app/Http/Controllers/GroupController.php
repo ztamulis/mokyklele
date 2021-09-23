@@ -431,13 +431,17 @@ class GroupController extends Controller
         return true;
     }
 
-    public function uploadFile(Request $request){
+    public function uploadFile(Request $request) {
 
         if(Auth::user()->role == "user"){
             return json_encode(["status" => "error", "message" => "Not allowed"]);
         }
+        $displayText = $request->input("file_name");
+        if ($displayText === 'undefined') {
+            $displayText = '';
+        }
 
-        if (empty($request->input("file_name")) && empty($request->file('file'))) {
+        if (empty($displayText) && empty($request->file('file'))) {
             return json_encode(["status" => "error", "message" => "Nieko neįvesta"]);
 
         }
@@ -455,7 +459,7 @@ class GroupController extends Controller
         }
 
 
-        $fileObj->display_name = $request->input("file_name");
+        $fileObj->display_name = $displayText;
         $fileObj->group_id = $request->input("group_id");
         $fileObj->user_id = Auth::user()->id;
         $fileObj->save();
