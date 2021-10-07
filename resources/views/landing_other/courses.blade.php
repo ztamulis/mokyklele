@@ -76,11 +76,12 @@
                         pamokos)
                     @elseif($descriptionData['eventsCount'] > 9 && $descriptionData['eventsCount'] < 21)
                         pamokų)
-                    @elseif($descriptionData['eventsCount'])
-                        pamoka)
                     @elseif($descriptionData['eventsCount'] > 21)
                         pamokos)
                     @endif
+                    @elseif($descriptionData['eventsCount'])
+                        pamoka)
+
                 @endif
             </div>
                 @if ($group->price > 0)
