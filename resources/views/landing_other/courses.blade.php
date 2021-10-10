@@ -21,8 +21,6 @@
             } elseif(isset($groupsGrouped['individual'])) {
                 $type = 'individual';
             }
-        
-
         @endphp
 
         @if(isset($groupsGrouped['yellow']))
@@ -68,7 +66,7 @@
             </div>
             <div class="date">
                 @php $descriptionData = $group->getGroupStartDateAndCount() @endphp
-                @if (!empty($descriptionData))
+                @if (!empty($descriptionData) && isset($descriptionData['eventsCount']))
                     {{\Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d")}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}} ({{$descriptionData['eventsCount']}}
                     @if($descriptionData['eventsCount'] == 1)
                         pamoka)
@@ -108,9 +106,6 @@
                             Pasirinkti
                         </a>
                     @endif
-{{--                        <a href="/select-group/order/{{ $group->id }}" class="button course--select--button">--}}
-{{--                            Pasirinkti--}}
-{{--                        </a>--}}
                 @endif
             </div>
         </div>
