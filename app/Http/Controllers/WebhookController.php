@@ -121,6 +121,12 @@ class WebhookController extends CashierController
             $paid = 'Ne';
         }
 
+        $groupData = $group->getGroupStartDateAndCount();
+        if (isset($groupData['startDate'])) {
+            $startDate = \Carbon\Carbon::parse($groupData['startDate'])->format('Y-m-d');
+        } else {
+            $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+        }
 
         $email_content_admin = "<h1>Kurso užsakymas</h1><p> Klientas ".  $user->name. " " .$user->surname .
             "<br> El. paštas: ".$user->email.
@@ -129,7 +135,7 @@ class WebhookController extends CashierController
             "<br>Grupės tipas: ".$group->type .
             "<br>Mokama: ".$paid .
             "<br>laikas: ".$time .
-            "<br>Pradžia: ".$group->start_date .
+            "<br>Pradžia: ".$startDate .
             "<br>Mokytoja(-os): ".join(" ", $teachers).
             " <br>Vaikas(-ai): ".join(" ", $student_names).
             " <br>Amžius: ".join(" ", $student_birthDays).
@@ -204,6 +210,13 @@ class WebhookController extends CashierController
         }
         $time = $group->time->timezone('Europe/London')->format("H:i");
 
+        $groupData = $group->getGroupStartDateAndCount();
+        if (isset($groupData['startDate'])) {
+            $startDate = \Carbon\Carbon::parse($groupData['startDate'])->format('Y-m-d');
+        } else {
+            $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+        }
+
         $email_content_admin = "<h1>Kurso užsakymas</h1><p> Klientas ".  $user->name. " " .$user->surname .
             "<br> El. paštas: ".$user->email.
             "<br>Grupė: ".$group->name .
@@ -211,7 +224,7 @@ class WebhookController extends CashierController
             "<br>Grupės tipas: ".$group->type .
             "<br>Mokama: ".$paid .
             "<br>laikas: ".$time .
-            "<br>Pradžia: ".$group->start_date .
+            "<br>Pradžia: ".$startDate .
             "<br>Mokytoja(-os): ".join(" ", $teachers).
             " <br>Vaikas(-ai): ".join(" ", $student_names).
             " <br>Amžius: ".join(" ", $student_birthDays).
@@ -231,13 +244,21 @@ class WebhookController extends CashierController
             $timezone = $user->time_zone;
         }
 
+
+        $groupData = $group->getGroupStartDateAndCount();
+        if (isset($groupData['startDate'])) {
+            $startDate = \Carbon\Carbon::parse($groupData['startDate'])->format("m.d");
+        } else {
+            $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format("m.d");
+        }
+
         $email_title = "Registracijos patvirtinimas";
         $email_content = "<p>Sveiki,<br>".
             "džiaugiamės, kad prisijungsite prie Pasakos pamokų!<br>".
             "Jūsų detalės apačioje:<br>".
             $group->name."<br>".
             $group->display_name." ".$group->time->timezone($timezone)->format("H:i")." (".$timezone.")<br>".
-            "Kursas vyks  ". \Carbon\Carbon::parse($group->start_date)->format("m.d")." - ". \Carbon\Carbon::parse($group->end_date)->format("m.d")." (".$group->course_length." sav.)<br>".
+            "Kursas vyks  ". $startDate." - ". \Carbon\Carbon::parse($group->end_date)->format("m.d")." (".$group->course_length." sav.)<br>".
             "Savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyroje</a> patogiai prisijungsite į pamokas, rasite namų darbus ir galėsite bendrauti su kitais nariais. </p>".
             "<p>Iki pasimatymo,<br> Pasakos komanda </p>";
 
