@@ -364,7 +364,13 @@ class OrderController extends Controller {
         $paid = $group->paid ? 'Taip' : 'Ne';
 
 
-        $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+        $groupData = $group->getGroupStartDateAndCount();
+        if (isset($groupData['startDate'])) {
+            $startDate = \Carbon\Carbon::parse($groupData['startDate'])->format('Y-m-d');
+        } else {
+            $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+        }
+
         $time = $group->time->timezone('Europe/London')->format("H:i");
 
         $email_content_admin = "<h1>Kurso užsakymas</h1><p> Klientas ".  $user->name. " " .$user->surname .
@@ -404,7 +410,13 @@ class OrderController extends Controller {
 
         $group = $payment->group()->first();
         $studentsName = join("; ", $student_names);
-        $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+        $groupData = $group->getGroupStartDateAndCount();
+        if (isset($groupData['startDate'])) {
+            $startDate = \Carbon\Carbon::parse($groupData['startDate'])->format('Y-m-d');
+        } else {
+            $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+        }
+
         $endDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->end_date)->format('Y-m-d');
         $data = [
             'students' => $studentsName,
@@ -515,6 +527,14 @@ class OrderController extends Controller {
         }
         $time = $group->time->timezone('Europe/London')->format("H:i");
 
+
+        $groupData = $group->getGroupStartDateAndCount();
+        if (isset($groupData['startDate'])) {
+            $startDate = \Carbon\Carbon::parse($groupData['startDate'])->format('Y-m-d');
+        } else {
+            $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+        }
+
         $email_content_admin = "<h1>Kurso užsakymas</h1><p> Klientas ".  $user->name. " " .$user->surname .
             "<br> El. paštas: ".$user->email.
             "<br>Grupė: ".$group->name .
@@ -522,7 +542,7 @@ class OrderController extends Controller {
             "<br>Grupės tipas: ".$group->type .
             "<br>Mokama: ".$paid .
             "<br>laikas: ".$time .
-            "<br>Pradžia: ".$group->start_date .
+            "<br>Pradžia: ".$startDate .
             "<br>Mokytoja(-os): ".join(" ", $teachers).
             " <br>Vaikas(-ai): ".join(" ", $student_names).
             " <br>Amžius: ".join(" ", $student_birthDays).
@@ -534,28 +554,6 @@ class OrderController extends Controller {
                 ->subject($email_title_admin)
                 ->setBody($email_content_admin, 'text/html');
         });
-    }
-
-    private function getCheckoutSessionSucceededUserMessage($group, $user) {
-        $timezone = \Cookie::get("user_timezone", "GMT");
-        if (!empty($user->time_zone)) {
-            $timezone = $user->time_zone;
-        }
-
-        $email_title = "Registracijos patvirtinimas";
-        $email_content = "<p>Sveiki,<br>".
-            "džiaugiamės, kad prisijungsite prie Pasakos pamokų!<br>".
-            "Jūsų detalės apačioje:<br>".
-            $group->name."<br>".
-            $group->display_name." ".$group->time->timezone($timezone)->format("H:i")." (".$timezone.")<br>".
-            "Kursas vyks  ". \Carbon\Carbon::parse($group->start_date)->format("m.d")." - ". \Carbon\Carbon::parse($group->end_date)->format("m.d")." (".$group->course_length." sav.)<br>".
-            "Savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyroje</a> patogiai prisijungsite į pamokas, rasite namų darbus ir galėsite bendrauti su kitais nariais. </p>".
-            "<p>Iki pasimatymo,<br> Pasakos komanda </p>";
-
-        return [
-            'email_title' => $email_title,
-            'email_content' => $email_content,
-        ];
     }
     
 

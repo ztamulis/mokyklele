@@ -9,19 +9,23 @@
         <br>
         {{ $group->display_name }}
         <br>
-        <span>Kursas vyks: {{\Carbon\Carbon::parse($group->start_date)->format("m.d")}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}} ({{$group->course_length}}
-            @if($group->course_length == 1)
-                pamoka)
-            @elseif($group->course_length > 1 && $group->course_length < 10)
-                pamokos)
-            @elseif($group->course_length > 9 && $group->course_length < 21)
-                pamokų)
-            @elseif($group->course_length == 21)
-                pamoka)
-            @elseif($group->course_length > 21)
-                pamokos)
-            @endif
-            </span>
+        @php $descriptionData = $group->getGroupStartDateAndCount() @endphp
+        @if (!empty($descriptionData) && isset($descriptionData['eventsCount']))
+
+            <span>Kursas vyks: {{\Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d")}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}} ({{$descriptionData['eventsCount']}}
+                @if($descriptionData['eventsCount'] == 1)
+                    pamoka)
+                @elseif($descriptionData['eventsCount'] > 1 && $descriptionData['eventsCount'] < 10)
+                    pamokos)
+                @elseif($descriptionData['eventsCount'] > 9 && $descriptionData['eventsCount'] < 21)
+                    pamokų)
+                @elseif($descriptionData['eventsCount'] > 21)
+                    pamokos)
+                @elseif($descriptionData['eventsCount'])
+                    pamoka)
+                @endif
+                </span>
+        @endif
         <br>
     </div>
 
