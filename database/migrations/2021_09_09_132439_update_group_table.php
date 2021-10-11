@@ -14,7 +14,7 @@ class UpdateGroupTable extends Migration
     public function up() {
         Schema::table('groups', function($table)
         {
-            $table->string('slug');
+//            $table->string('slug');
         });
     }
 

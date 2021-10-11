@@ -275,6 +275,7 @@
             $("#courses-list").load( "courses" );
             $("#free-lessons-form").load( "free-l-form" );
             $("#courses-free").load( "courses_free" );
+            $("#question-form").load( "question_form" );
         });
         if(window.location.href.endsWith('change-timezone')) {
             window.location.href = "/";

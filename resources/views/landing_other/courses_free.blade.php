@@ -7,7 +7,7 @@
     <div class="learning--group--select--selector">
         @php
             $groupsGrouped  = \App\Models\Group::where("paid", 0)->where("hidden", 0)->get()->groupBy("type");
-            $type = '';
+            $type = ' ';
             if (isset($groupsGrouped['yellow'])) {
             $type = 'yellow';
             } elseif(isset($groupsGrouped['green'])) {
