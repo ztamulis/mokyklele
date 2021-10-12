@@ -87,7 +87,8 @@
                 <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a></li>
                 <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a></li>
                 <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/coupons')) active @endif " href="/dashboard/coupons"><i class="fa fa-cc-discover"></i><span>Nuolaidų kuponai</span></a></li>
-                <li class="nav-item"><a class="nav-link @if(Request::is('questions-form')) active @endif " href="/questions-form"><i class="fa fa-question"></i><span>Klausimų forma</span></a></li>
+                <li class="nav-item"><a class="nav-link @if(Request::is('questions-form')) active @endif " href="/questions-form"><i class="fa fa-question"></i><span>Mokamos pamokos forma</span></a></li>
+                <li class="nav-item"><a class="nav-link @if(Request::is('register-free/admin')) active @endif " href="/register-free/admin"><i class="fa fa-registered"></i><span>Nemokamos pamokos forma</span></a></li>
             @endif
             <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/profile')) active @endif " href="/dashboard/profile"><i class="fas fa-user"></i><span>Mano paskyra</span></a></li>
             </ul>

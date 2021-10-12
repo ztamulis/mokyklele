@@ -3,6 +3,7 @@
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\QuestionFormController;
+use App\Http\Controllers\RegisterFreeController;
 use App\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\InfoChangeController;
@@ -99,6 +100,8 @@ Route::get("/payment/sendfailedpayment/{paymentId}", [OrderController::class, 's
 Route::resource('/dashboard/coupons', CouponController::class)->middleware(['auth']);
 
 Route::resource('/questions-form', QuestionFormController::class);
+
+Route::resource('/register-free/admin', RegisterFreeController::class);
 
 
 
