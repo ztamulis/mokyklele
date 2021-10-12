@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\QuestionFormController;
 use App\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\InfoChangeController;
@@ -81,6 +82,13 @@ Route::get('/courses_free', function () {
     return view('landing_other.courses_free');
 });
 
+Route::get('/question_form', function () {
+    return view('landing_other.question_form');
+});
+
+Route::post('/', [UserController::class, 'setRegion']);
+
+
 Route::get("/cronjob/main", [CronjobController::class, 'main']);
 //Route::get("/cronjob/voucher", [GroupController::class, 'voucher']);
 //Route::get("/cronjob/checkPaymentsFromStripe", [CronjobController::class, 'checkPaymentsFromStripe']);
@@ -89,6 +97,8 @@ Route::get("/payment/sendfailedpayment/{paymentId}", [OrderController::class, 's
 
 // coupons
 Route::resource('/dashboard/coupons', CouponController::class)->middleware(['auth']);
+
+Route::resource('/questions-form', QuestionFormController::class);
 
 
 

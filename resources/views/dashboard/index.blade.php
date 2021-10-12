@@ -23,7 +23,7 @@
                                 <div class="color background--{{ $group->type }}"></div>
                             </div>
                             <div class="group--info">
-                                <h3>{{$group->name}}</h3>
+                                <h3>{{Auth::user()->role === 'admin' || Auth::user()->role === 'teacher' ? '#'.$group->id : ''}} {{$group->name}}</h3>
                                 <p>
                                 @if(\App\Http\Controllers\GroupController::nextLesson($group))
                                     <p>Kita pamoka: {{ \App\Http\Controllers\GroupController::nextLesson($group)->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }} <small>({{ Cookie::get("user_timezone", "GMT") }})</small> </p>

@@ -68,7 +68,7 @@ function changeNodeName(node, newNodeName)
 	return newNode;
 }
 
-Vvveb.ComponentsGroup['Mokyklele Pasaka'] = ["html/free-lessons", "html/courses", "html/courses-free"];
+Vvveb.ComponentsGroup['Mokyklele Pasaka'] = ["html/free-lessons", "html/courses", "html/courses-free", "html/question-form"];
 
 Vvveb.ComponentsGroup['Components'] =
 ["html/container", "html/gridrow", "html/heading", "html/paragraph", "html/image", "html/jumbotron", "html/carousel","html/listgroup","html/listitem", "html/hr", "html/taglabel", "html/table", "html/link", "html/video"];
@@ -1186,6 +1186,13 @@ Vvveb.Components.extend("_base", "html/courses-free", {
     nodes: ["courses-free"],
     name: "Kursai Nemokamai",
     html: '<div id="courses-free"><span>Nemokamų kursų sąrašas</span></div>',
+    image: "icons/slide-show.svg"
+});
+
+Vvveb.Components.extend("_base", "html/question-form", {
+    nodes: ["question-form"],
+    name: "Klausimai",
+    html: '<div id="question-form"><span>Klausimynas</span></div>',
     image: "icons/slide-show.svg"
 });
 
