@@ -15,10 +15,11 @@
         </div>
 
         <div class="message--preview dashboard--block">
-            <div class="message--text">
-
-                <?php $message->message = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $message->message); ?>
-                    <?php echo $message->message ?>
+            <div class="message--text" style="  word-wrap: break-word;
+">
+                <?php $messageText = strip_tags($message->message) ?>
+                <?php $messageText = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $messageText); ?>
+                    <?php echo  $messageText ?>
             </div>
             <div class="message--author">
                 <div class="group--icon">
