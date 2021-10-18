@@ -16,7 +16,9 @@
 
         <div class="message--preview dashboard--block">
             <div class="message--text">
-                {!! $message->message !!}
+
+                <?php $message->message = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $message->message); ?>
+                    <?php echo strip_tags($message->message) ?>
             </div>
             <div class="message--author">
                 <div class="group--icon">
