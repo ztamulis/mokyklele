@@ -1170,7 +1170,7 @@ Vvveb.Components.extend("_base", "html/carousel", {
 
 Vvveb.Components.extend("_base", "html/free-lessons", {
     nodes: ["free-lessons"],
-    name: "Free-L form",
+    name: "Nemokamos pamokos anketa",
     html: '<div id="free-lessons-form"><span>Nemokamos pamokos FORM</span></div>',
     image: "icons/slide-show.svg"
 });
@@ -1191,7 +1191,7 @@ Vvveb.Components.extend("_base", "html/courses-free", {
 
 Vvveb.Components.extend("_base", "html/question-form", {
     nodes: ["question-form"],
-    name: "Klausimai",
+    name: "Suaugusiu kursu anketa",
     html: '<div id="question-form"><span>Klausimynas</span></div>',
     image: "icons/slide-show.svg"
 });
