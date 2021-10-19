@@ -601,7 +601,7 @@ class GroupController extends Controller
 
     public function message(Request $request) {
         $request->validate([
-            'message' => 'required|string|max:2000',
+            'message' => 'required|string|max:40000',
             'user_id' => 'required|int',
             'user_from' => 'required|string|max:255'
         ]);
