@@ -109,6 +109,7 @@ class GroupController extends Controller
         }else{
             $group->time_2 = $time_2;
         }
+
         $group->save();
 
         foreach($request->input("weight") as $w) {
@@ -125,7 +126,7 @@ class GroupController extends Controller
 
         $group->stripe_plan = Str::slug("plan-".$group->id . "-" . $request->input("name"));
 
-        \Stripe\Stripe::setApiKey(env("STRIPE_SECRET"));
+        \Stripe\Stripe::setApiKey(\Config::get("app.stripe_secret"));
 
         \Stripe\Plan::create(array(
             "amount" => $group->price*100,
