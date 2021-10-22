@@ -146,7 +146,7 @@ class CronjobController extends Controller
 
     public function checkPaymentsFromStripe(Request $request) {
         $stripe = new \Stripe\StripeClient(
-            env("STRIPE_SECRET")
+            \Config::get("app.stripe_secret")
         );
 
         $data = $stripe->checkout->sessions->all(['limit' => 1000])->data;
