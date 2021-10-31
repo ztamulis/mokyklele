@@ -25,7 +25,7 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="msapplication-config" content="/favicon/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data.js"></script>
@@ -216,9 +216,10 @@
 
     @if(!Cookie::get("user_timezone"))
         <?php
-            $ipinfo = json_decode(file_get_contents("http://ip-api.com/json/".Request::ip()));
-            $country = $ipinfo->country;
-            $timezone = $ipinfo->timezone;
+//            $ipinfo = json_decode(file_get_contents("http://ip-api.com/json/".Request::ip()));
+//            $country = $ipinfo->country;
+//            $timezone = $ipinfo->timezone;
+                $country = 'Lithuania';
 //            $country = Location::get(Request::ip())->countryName;
         ?>
         <div class="landing--modal">
@@ -274,6 +275,7 @@
             $("#courses-list").load( "courses" );
             $("#free-lessons-form").load( "free-l-form" );
             $("#courses-free").load( "courses_free" );
+            $("#question-form").load( "question_form" );
         });
         if(window.location.href.endsWith('change-timezone')) {
             window.location.href = "/";
