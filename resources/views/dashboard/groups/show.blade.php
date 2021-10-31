@@ -28,7 +28,7 @@
                             $nextLesson = \App\Http\Controllers\GroupController::nextLesson($group);
                         @endphp
                         @if (!empty($nextLesson))
-                            {{ \App\Http\Controllers\GroupController::nextLesson($group)->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }} <small>({{ Cookie::get("user_timezone", "GMT") }})</small>
+                            {{ App\TimeZoneUtils::updateTime(\App\Http\Controllers\GroupController::nextLesson($group)->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i")) }} <small>({{ Cookie::get("user_timezone", "GMT") }})</small>
                         @endif
                     </small>
                 </h3>
@@ -382,7 +382,7 @@
                                 <div class="dashboard--time--date">{{ mb_strtoupper(mb_substr($eventDate->translatedFormat("F"),0,3)) }}<br><span>{{ $eventDate->format("d") }}</span></div>
                                 <div class="dashboard--time--info">
                                     <b>{{ $event->name }}</b> ∙ {{ $event->teacher->name }} {{ $event->teacher->surname }}<br>
-                                    {{ $eventDate->format("Y-m-d H:i") }}
+                                    {{ \App\TimeZoneUtils::updateTime($eventDate->format("Y-m-d H:i")) }}
                                 </div>
                             </div>
                         @endforeach
