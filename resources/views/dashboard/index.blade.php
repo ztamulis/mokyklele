@@ -26,7 +26,7 @@
                                 <h3>{{Auth::user()->role === 'admin' || Auth::user()->role === 'teacher' ? '#'.$group->id : ''}} {{$group->name}}</h3>
                                 <p>
                                 @if(\App\Http\Controllers\GroupController::nextLesson($group))
-                                    <p>Kita pamoka: {{ \App\Http\Controllers\GroupController::nextLesson($group)->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }} <small>({{ Cookie::get("user_timezone", "GMT") }})</small> </p>
+                                    <p>Kita pamoka: {{ App\TimeZoneUtils::updateTime(\App\Http\Controllers\GroupController::nextLesson($group)->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i")) }} <small>({{ Cookie::get("user_timezone", "GMT") }})</small> </p>
                                 @else
                                     <p>Kita pamoka: nėra</p>
                                     @endif
@@ -74,7 +74,7 @@
                                 {!! strip_tags($meeting->description) !!}
                             </div>
                             <div class="group--students text--center">
-                                <span>{{$meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i")}}</span>
+                                <span>{{App\TimeZoneUtils::updateTime($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i"))}}</span>
                                 <br>
                                 {{ Cookie::get("user_timezone", "GMT") }}
                             </div>
