@@ -74,7 +74,7 @@
                                 {!! strip_tags($meeting->description) !!}
                             </div>
                             <div class="group--students text--center">
-                                <span>{{App\TimeZoneUtils::updateTime($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i"))}}</span>
+                                <span>{{$meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i")}}</span>
                                 <br>
                                 {{ Cookie::get("user_timezone", "GMT") }}
                             </div>
