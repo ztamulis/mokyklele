@@ -25,7 +25,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-xl-8">
-                    <form action="/dashboard/groups/{{ $group->id }}" method="POST">
+                    <form action="/dashboard/groups/{{ $group->slug }}" method="POST">
                         @csrf
                         @method("PUT")
                         <div class="form-group"><small class="form-text text-muted">Pavadinimas</small><input class="form-control" type="text" name="name" placeholder="Geltonoji grupė (Pavasaris)" value="{{ $group->name }}"></div>

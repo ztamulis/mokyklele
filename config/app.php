@@ -15,6 +15,9 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+
+    'email' => env("ADMIN_EMAIL", 'labas@mokyklelepasaka.com'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -53,6 +56,9 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+
+    'stripe_secret' => env("STRIPE_SECRET"),
+
 
     'asset_url' => env('ASSET_URL', null),
 

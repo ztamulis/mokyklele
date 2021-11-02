@@ -18,8 +18,8 @@ use Laravel\Cashier\Exceptions\IncompletePayment;
 class OrderController extends Controller {
 
 
-    public function selectFreeOrder($id) {
-        $group = Group::find($id);
+    public function selectFreeOrder($slug) {
+        $group = Group::where('slug', $slug)->first();
         if(!$group) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
         }
@@ -27,8 +27,8 @@ class OrderController extends Controller {
         return view("lessons_order.group_create_free_order")->with("group", $group);
     }
 
-    public function selectGroupOrder(Request $request, $id) {
-        $group = Group::find($id);
+    public function selectGroupOrder(Request $request, $slug) {
+        $group = Group::where('slug', $slug)->first();
 
         if ($group->slots <= $group->students()->count()) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė pilna.");
@@ -80,8 +80,8 @@ class OrderController extends Controller {
         return view("lessons_order.group_create_order")->with("group", $group)->with('coupon', $coupon);
     }
 
-    public function showSuccessPage($id) {
-        $group = Group::find($id);
+    public function showSuccessPage($slug) {
+        $group = Group::where('slug', $slug)->first();
         if(!$group) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
         }
@@ -91,8 +91,9 @@ class OrderController extends Controller {
             ->with("message", "Ačiū, lauksime pamokoje!");
     }
 
-    public function createFreeOrder(Request $request, $id) {
-        $group = Group::find($id);
+    public function createFreeOrder(Request $request, $slug) {
+        $group = Group::where('slug', $slug)->first();
+
         $user = Auth::user();
         if(!$group) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
@@ -186,7 +187,7 @@ class OrderController extends Controller {
         });
 
         $this->sendOrderConfirmAdminEmail($group, $student_names, $student_birthDays, $user);
-        return redirect()->route('orderFreeSuccess', ['id' => $group->id])->withInput();
+        return redirect()->route('orderFreeSuccess', ['slug' => $group->slug])->withInput();
     }
 
 
@@ -222,8 +223,8 @@ class OrderController extends Controller {
 
 
 
-    public function createOrderCheckout(Request $request, $id) {
-        $group = Group::find($id);
+    public function createOrderCheckout(Request $request, $slug) {
+        $group = Group::where('slug', $slug)->first();
         if(!$group) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
         }
@@ -330,7 +331,7 @@ class OrderController extends Controller {
         $user->time_zone = Cookie::get("user_timezone", "GMT");
         $user->save();
 
-        return Redirect::to('/select-group/order/'.$group->id.'/confirm')->with('paymentInfo', $payment)->with('checkoutUrl', $transaction->url);
+        return Redirect::to('/select-group/order/'.$group->slug.'/confirm')->with('paymentInfo', $payment)->with('checkoutUrl', $transaction->url);
     }
 
     private function applyCoupon($price, $coupon) {
@@ -363,7 +364,13 @@ class OrderController extends Controller {
         $paid = $group->paid ? 'Taip' : 'Ne';
 
 
-        $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+        $groupData = $group->getGroupStartDateAndCount();
+        if (isset($groupData['startDate'])) {
+            $startDate = \Carbon\Carbon::parse($groupData['startDate'])->format('Y-m-d');
+        } else {
+            $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+        }
+
         $time = $group->time->timezone('Europe/London')->format("H:i");
 
         $email_content_admin = "<h1>Kurso užsakymas</h1><p> Klientas ".  $user->name. " " .$user->surname .
@@ -381,7 +388,7 @@ class OrderController extends Controller {
 //        env("ADMIN_EMAIL")
         \Mail::send([], [], function ($message) use ($email_title_admin, $email_content_admin, $user) {
             $message
-                ->to(env("ADMIN_EMAIL"))
+                ->to(\Config::get('app.email'))
                 ->subject($email_title_admin)
                 ->setBody($email_content_admin, 'text/html');
         });
@@ -403,7 +410,13 @@ class OrderController extends Controller {
 
         $group = $payment->group()->first();
         $studentsName = join("; ", $student_names);
-        $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+        $groupData = $group->getGroupStartDateAndCount();
+        if (isset($groupData['startDate'])) {
+            $startDate = \Carbon\Carbon::parse($groupData['startDate'])->format('Y-m-d');
+        } else {
+            $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+        }
+
         $endDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->end_date)->format('Y-m-d');
         $data = [
             'students' => $studentsName,
@@ -467,7 +480,7 @@ class OrderController extends Controller {
             "ačiū, kad registravotės į nemokamą Pasakos pamoką! Jūsų nemokamos pamokos detalės čia:<br>".
             $group->name."<br>".
             $group->display_name." ".$group->time->timezone($timezone)->format("H:i")." (".$timezone.")<br>".
-            "Į pamoką prisijungsite iš savo <a href='".env("APP_URL")."/login'>Pasakos paskyros</a>.</p>".
+            "Į pamoką prisijungsite iš savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyros</a>.</p>".
             "<p>Grupes tolimesniam mokymuisi skirstome ne tik pagal amžių, bet ir pagal kalbos mokėjimo lygį - taip galime užtikrinti, kad vaikai pasieks geriausių rezultatų ir drąsiau jausis pamokoje.<br>".
             "Nemokamos pamokos metu mokytoja įvertins vaiko kalbos mokėjimo lygį ir vėliau mes pasiūlysime tinkamiausią grupę jūsų vaikui.<br>".
             "<small>Jei negalėsite dalyvauti pamokoje, labai prašome iš anksto pranešti - vietų skaičius ribotas, o norinčiųjų daug!</small></p>".
@@ -497,13 +510,13 @@ class OrderController extends Controller {
             return;
         }
 
-        $messageArray = $this->getCheckoutSessionSucceededUserMessage($group, $user);
-        \Mail::send([], [], function ($message) use ($messageArray, $user) {
-            $message
-                ->to($user->email)
-                ->subject($messageArray['email_title'])
-                ->setBody($messageArray['email_content'], 'text/html');
-        });
+//        $messageArray = $this->getCheckoutSessionSucceededUserMessage($group, $user);
+//        \Mail::send([], [], function ($message) use ($messageArray, $user) {
+//            $message
+//                ->to($user->email)
+//                ->subject($messageArray['email_title'])
+//                ->setBody($messageArray['email_content'], 'text/html');
+//        });
 
         $teachers = $this->getTeachersWithLessons($group);
         $email_title_admin = "Kurso užsakymas";
@@ -514,6 +527,14 @@ class OrderController extends Controller {
         }
         $time = $group->time->timezone('Europe/London')->format("H:i");
 
+
+        $groupData = $group->getGroupStartDateAndCount();
+        if (isset($groupData['startDate'])) {
+            $startDate = \Carbon\Carbon::parse($groupData['startDate'])->format('Y-m-d');
+        } else {
+            $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+        }
+
         $email_content_admin = "<h1>Kurso užsakymas</h1><p> Klientas ".  $user->name. " " .$user->surname .
             "<br> El. paštas: ".$user->email.
             "<br>Grupė: ".$group->name .
@@ -521,7 +542,7 @@ class OrderController extends Controller {
             "<br>Grupės tipas: ".$group->type .
             "<br>Mokama: ".$paid .
             "<br>laikas: ".$time .
-            "<br>Pradžia: ".$group->start_date .
+            "<br>Pradžia: ".$startDate .
             "<br>Mokytoja(-os): ".join(" ", $teachers).
             " <br>Vaikas(-ai): ".join(" ", $student_names).
             " <br>Amžius: ".join(" ", $student_birthDays).
@@ -529,33 +550,12 @@ class OrderController extends Controller {
 
         \Mail::send([], [], function ($message) use ($email_title_admin, $email_content_admin, $user) {
             $message
-                ->to(env("ADMIN_EMAIL"))
+                ->to(\Config::get('app.email'))
                 ->subject($email_title_admin)
                 ->setBody($email_content_admin, 'text/html');
         });
     }
-
-    private function getCheckoutSessionSucceededUserMessage($group, $user) {
-        $timezone = \Cookie::get("user_timezone", "GMT");
-        if (!empty($user->time_zone)) {
-            $timezone = $user->time_zone;
-        }
-
-        $email_title = "Registracijos patvirtinimas";
-        $email_content = "<p>Sveiki,<br>".
-            "džiaugiamės, kad prisijungsite prie Pasakos pamokų!<br>".
-            "Jūsų detalės apačioje:<br>".
-            $group->name."<br>".
-            $group->display_name." ".$group->time->timezone($timezone)->format("H:i")." (".$timezone.")<br>".
-            "Kursas vyks  ". \Carbon\Carbon::parse($group->start_date)->format("m.d")." - ". \Carbon\Carbon::parse($group->end_date)->format("m.d")." (".$group->course_length." sav.)<br>".
-            "Savo <a href='".env("APP_URL")."/login'>Pasakos paskyroje</a> patogiai prisijungsite į pamokas, rasite namų darbus ir galėsite bendrauti su kitais nariais. </p>".
-            "<p>Iki pasimatymo,<br> Pasakos komanda </p>";
-
-        return [
-            'email_title' => $email_title,
-            'email_content' => $email_content,
-        ];
-    }
+    
 
 
 }

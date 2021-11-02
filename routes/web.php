@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\QuestionFormController;
+use App\Http\Controllers\RegisterFreeController;
 use App\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\InfoChangeController;
@@ -12,7 +14,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MeetingController;
-use App\Http\Controllers\RewardController;;
+use App\Http\Controllers\RewardController;
 use App\Http\Controllers\CronjobController;
 use \App\Http\Controllers\NavbarController;
 
@@ -81,6 +83,13 @@ Route::get('/courses_free', function () {
     return view('landing_other.courses_free');
 });
 
+Route::get('/question_form', function () {
+    return view('landing_other.question_form');
+});
+
+Route::post('/', [UserController::class, 'setRegion']);
+
+
 Route::get("/cronjob/main", [CronjobController::class, 'main']);
 //Route::get("/cronjob/voucher", [GroupController::class, 'voucher']);
 //Route::get("/cronjob/checkPaymentsFromStripe", [CronjobController::class, 'checkPaymentsFromStripe']);
@@ -89,6 +98,10 @@ Route::get("/payment/sendfailedpayment/{paymentId}", [OrderController::class, 's
 
 // coupons
 Route::resource('/dashboard/coupons', CouponController::class)->middleware(['auth']);
+
+Route::resource('/questions-form', QuestionFormController::class);
+
+Route::resource('/register-free/admin', RegisterFreeController::class);
 
 
 
@@ -100,12 +113,12 @@ Route::get('/change-timezone', [UserController::class, 'clearRegion']);
 
 // reworked orders
 Route::get('/payments/checkout/response', [OrderController::class, 'checkoutResponse'])->middleware(['auth']);
-Route::get('/select-group/order/{id}', [OrderController::class, 'selectGroupOrder'])->middleware(['auth']);
-Route::get('/select-group/order/{id}/confirm', [OrderController::class, 'orderConfirmation'])->middleware(['auth']);
-Route::post('/select-group/create-order/{id}', [OrderController::class, 'createOrderCheckout'])->middleware(['auth']);
-Route::get('/select-group/order/free/{id}', [OrderController::class, 'selectFreeOrder'])->middleware(['auth']);
-Route::post('/select-group/order/free/create/{id}', [OrderController::class, 'createFreeOrder'])->middleware(['auth']);
-Route::get('/select-group/order/free/success/{id}', [OrderController::class, 'showSuccessPage'])->middleware(['auth'])->name('orderFreeSuccess');
+Route::get('/select-group/order/{slug}', [OrderController::class, 'selectGroupOrder'])->middleware(['auth']);
+Route::get('/select-group/order/{slug}/confirm', [OrderController::class, 'orderConfirmation'])->middleware(['auth']);
+Route::post('/select-group/create-order/{slug}', [OrderController::class, 'createOrderCheckout'])->middleware(['auth']);
+Route::get('/select-group/order/free/{slug}', [OrderController::class, 'selectFreeOrder'])->middleware(['auth']);
+Route::post('/select-group/order/free/create/{slug}', [OrderController::class, 'createFreeOrder'])->middleware(['auth']);
+Route::get('/select-group/order/free/success/{slug}', [OrderController::class, 'showSuccessPage'])->middleware(['auth'])->name('orderFreeSuccess');
 
 
 Route::get('/dashboard', function () {

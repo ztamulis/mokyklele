@@ -70,8 +70,8 @@ class CronjobController extends Controller
             }
 
             $email_title = "Gavote žinutę";
-            $email_content = "<p>Sveiki,<br>gavote žinutę Pasakos paskyroje nuo ".($message->author->role == "admin" ? "Pasakos" :  $message->author->name." ". $message->author->surname);
-//            <br>Pranešimą galite peržiūrėti čia: <a href='".\Config::get('app.url')."/dashboard/messages/".$message->id."'>".\Config::get('app.url')."/dashboard/messages/".$message->id."</a>";
+            $email_content = "<p>Sveiki,<br>gavote žinutę Pasakos paskyroje nuo ".($message->author->role == "admin" ? "Pasakos" :  $message->author->name." ". $message->author->surname).
+            "<br>Pranešimą galite peržiūrėti čia: <a href='".\Config::get('app.url')."/dashboard/messages/".$message->id."'>".\Config::get('app.url')."/dashboard/messages/".$message->id."</a>";
             if (!empty($message->message)) {
                 $email_content .= "<br>Žinutė: <p>" . strip_tags($message->message)."</p>";
             }
@@ -146,7 +146,7 @@ class CronjobController extends Controller
 
     public function checkPaymentsFromStripe(Request $request) {
         $stripe = new \Stripe\StripeClient(
-            env("STRIPE_SECRET")
+            \Config::get("app.stripe_secret")
         );
 
         $data = $stripe->checkout->sessions->all(['limit' => 1000])->data;
@@ -208,7 +208,7 @@ class CronjobController extends Controller
 
                 \Mail::send([], [], function ($message) use ($email_title_admin, $email_content_admin, $user) {
                     $message
-                        ->to(env("ADMIN_EMAIL"))
+                        ->to(\Config::get('app.email'))
                         ->subject($email_title_admin)
                         ->setBody($email_content_admin, 'text/html');
                 });
@@ -229,7 +229,7 @@ class CronjobController extends Controller
             $group->name."<br>".
             $group->display_name." ".$group->time->timezone($timezone)->format("H:i")." (".$timezone.")<br>".
             "Kursas vyks  ". \Carbon\Carbon::parse($group->start_date)->format("m.d")." - ". \Carbon\Carbon::parse($group->end_date)->format("m.d")." (".$group->course_length." sav.)<br>".
-            "Savo <a href='".env("APP_URL")."/login'>Pasakos paskyroje</a> patogiai prisijungsite į pamokas, rasite namų darbus ir galėsite bendrauti su kitais nariais. </p>".
+            "Savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyroje</a> patogiai prisijungsite į pamokas, rasite namų darbus ir galėsite bendrauti su kitais nariais. </p>".
             "<p>Iki pasimatymo,<br> Pasakos komanda </p>";
 
         return [

@@ -283,7 +283,7 @@ class UserController extends Controller {
 //            "<br>Slaptažodis: ".$password."<br><br>Detalesnė paskyros informacija atsiųsta Jums el. paštu<br><br><a class='button' href='/dashboard'>Prisijungti</a>";
 //
 //        $email_title = "Registracija prie nemokamos pamokos";
-//        $email_content = "<h1>Sveikiname prisijungus!</h1><p>Prisijungti galite čia: <a href='".env("APP_URL")."/login'>".env("APP_URL")."/login</a><br>Prisijungimo vardas: ".$request->input("email")."<br>Slaptažodis: $password</p>".
+//        $email_content = "<h1>Sveikiname prisijungus!</h1><p>Prisijungti galite čia: <a href='".\Config::get('app.url')."/login'>".\Config::get('app.url')."/login</a><br>Prisijungimo vardas: ".$request->input("email")."<br>Slaptažodis: $password</p>".
 //            "<p>Jūsų vardas: ".$request->input("name")."<br>Vaiko vardas: ".$request->input("student_name")."<br>Vaiko amžius: ".$request->input("student_age")."<br>Komentaras: ". $request->input("comment")."</p>";
 //
 //        $email_title_admin = "Registracija prie nemokamos pamokos";
@@ -308,7 +308,7 @@ class UserController extends Controller {
         });
         \Mail::send([], [], function ($message) use ($email_title_admin, $email_content_admin) {
             $message
-                ->to(env("ADMIN_EMAIL"))
+                ->to(\Config::get('app.email'))
                 ->subject($email_title_admin)
                 ->setBody($email_content_admin, 'text/html');
         });
@@ -376,7 +376,7 @@ class UserController extends Controller {
             CURLOPT_TIMEOUT => 30,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => "grant_type=authorization_code&code=$code&redirect_uri=".env("APP_URL")."/dashboard/profile/zoom",
+            CURLOPT_POSTFIELDS => "grant_type=authorization_code&code=$code&redirect_uri=".\Config::get('app.url')."/dashboard/profile/zoom",
             CURLOPT_HTTPHEADER => array(
                 "authorization: Basic ".base64_encode(env("ZOOM_CLIENT_ID").":".env("ZOOM_CLIENT_SECRET"))
             ),
@@ -450,8 +450,8 @@ class UserController extends Controller {
                 $meetingInfo["settings"]["auto_recording"] = "none";
                 $meetingInfo["settings"]["close_registration"] = false;
                 $meetingInfo["settings"]["waiting_room"] = true;
-                $meetingInfo["settings"]["contact_name"] = env("ADMIN_EMAIL");
-                $meetingInfo["settings"]["contact_email"] = env("ADMIN_EMAIL");
+                $meetingInfo["settings"]["contact_name"] = \Config::get('app.email');
+                $meetingInfo["settings"]["contact_email"] = \Config::get('app.email');
                 $meetingInfo["settings"]["meeting_authentication"] = false;
 
 
@@ -637,7 +637,7 @@ class UserController extends Controller {
                     $subscription->save();
 
                     $email_title = "Kurso prenumerata";
-                    $email_content = "<h1>Sveikiname prisijungus!</h1><p>Jūs sėkmingai užsiprenumeravote ".$group->name." kursą šiam(-iems) vaikui(-ams): ".join(" ", $student_names).".<br><br>Prisijungti galite čia: <a href='".env("APP_URL")."/login'>".env("APP_URL")."/login</a></p>";
+                    $email_content = "<h1>Sveikiname prisijungus!</h1><p>Jūs sėkmingai užsiprenumeravote ".$group->name." kursą šiam(-iems) vaikui(-ams): ".join(" ", $student_names).".<br><br>Prisijungti galite čia: <a href='".\Config::get('app.url')."/login'>".\Config::get('app.url')."/login</a></p>";
 
                     \Mail::send([], [], function ($message) use ($email_title, $email_content, $user) {
                         $message
@@ -651,7 +651,7 @@ class UserController extends Controller {
 
                     \Mail::send([], [], function ($message) use ($email_title_admin, $email_content_admin, $user) {
                         $message
-                            ->to(env("ADMIN_EMAIL"))
+                            ->to(\Config::get('app.email'))
                             ->subject($email_title_admin)
                             ->setBody($email_content_admin, 'text/html');
                     });
@@ -755,7 +755,7 @@ class UserController extends Controller {
 
                         \Mail::send([], [], function ($message) use ($email_title_admin, $email_content_admin, $user) {
                             $message
-                                ->to(env("ADMIN_EMAIL"))
+                                ->to(\Config::get('app.email'))
                                 ->subject($email_title_admin)
                                 ->setBody($email_content_admin, 'text/html');
                         });
@@ -787,7 +787,7 @@ class UserController extends Controller {
             $group->name."<br>".
             $group->display_name." ".$group->time->timezone(\Cookie::get("user_timezone", "GMT"))->format("H:i")."<br>".
             "Kursas vyks  ". \Carbon\Carbon::parse($group->start_date)->format("m.d")." - ". \Carbon\Carbon::parse($group->start_date)->format("m.d")." (".$group->course_length." sav.<br>".
-            "Savo <a href='".env("APP_URL")."/login'>Pasakos paskyroje</a> patogiai prisijungsite į pamokas, rasite namų darbus ir galėsite bendrauti su kitais nariais. </p>".
+            "Savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyroje</a> patogiai prisijungsite į pamokas, rasite namų darbus ir galėsite bendrauti su kitais nariais. </p>".
             "<p>Iki pasimatymo,<br> Pasakos komanda </p>";
 
         if($group->adjustedPrice() == 0) {
@@ -796,7 +796,7 @@ class UserController extends Controller {
                 "ačiū, kad registravotės į nemokamą Pasakos pamoką! Jūsų nemokamos pamokos detalės čia:<br>".
                 $group->name."<br>".
                 $group->display_name." ".$group->time->timezone(\Cookie::get("user_timezone", "GMT"))->format("H:i")."<br>".
-                "Į pamoką prisijungsite iš savo <a href='".env("APP_URL")."/login'>Pasakos paskyros</a>.</p>".
+                "Į pamoką prisijungsite iš savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyros</a>.</p>".
                 "<p>Grupes tolimesniam mokymuisi skirstome ne tik pagal amžių, bet ir pagal kalbos mokėjimo lygį - taip galime užtikrinti, kad vaikai pasieks geriausių rezultatų ir drąsiau jausis pamokoje.<br>".
                 "Nemokamos pamokos metu mokytoja įvertins vaiko kalbos mokėjimo lygį ir vėliau mes pasiūlysime tinkamiausią grupę jūsų vaikui.<br>".
                 "<small>Jei negalėsite dalyvauti pamokoje, labai prašome iš anksto pranešti - vietų skaičius ribotas, o norinčiųjų daug!</small></p>".
