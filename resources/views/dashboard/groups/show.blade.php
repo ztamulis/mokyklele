@@ -623,15 +623,19 @@
 
             $("[data-upload]").submit(function(event){
                 event.preventDefault();
-                file = '';
+                 var file = '';
 
                 var form_data = new FormData();
 
                 if (typeof $("#upload-photo").prop('files')[0] !== 'undefined') {
-                    var file = $("#upload-photo").prop('files')[0];
+                    file = $("#upload-photo").prop('files')[0];
                 }
-                var file_name = $("#home-work-input").val();
 
+                var file_name = '';
+                console.log(typeof $("#home-work-input").val());
+                if (typeof $("#home-work-input").val() !== 'undefined') {
+                    file_name = $("#home-work-input").val();
+                }
                 form_data.append('file', file);
                 form_data.append('file_name', file_name);
                 form_data.append('_token', "{{ csrf_token() }}");
@@ -931,4 +935,5 @@
     </script>
 
 </x-app-layout>
+>>>>>>> 34e4692e040501de843b4be093bc155b8e227165
 {{--https://stackoverflow.com/questions/15389833/laravel-redirect-back-to-original-destination-after-login/39595605#39595605--}}
