@@ -54,7 +54,7 @@
                                     $nextLesson = \App\Http\Controllers\GroupController::nextLesson($group);
                                 @endphp
                                 @if($nextLesson)
-                                    <a @if($nextLesson->join_link) href="{{ $nextLesson->join_link }}" target="_blank" @else href="/dashboard/groups/{{$group->id}}#joinmeeting" @endif class="dashboard--button dashboard--button--main">
+                                    <a @if($nextLesson->join_link) href="{{ $nextLesson->join_link }}" target="_blank" @else href="/dashboard/groups/{{$group->slug}}#joinmeeting" @endif class="dashboard--button dashboard--button--main">
                                         Prisijungti
                                     </a>
                                 @endif
