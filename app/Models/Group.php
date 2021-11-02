@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\TimeZoneUtils;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Group extends Model
 {
+    use HasSlug;
 
     protected $dates = ['time' , 'time_2'];
 
@@ -26,6 +29,28 @@ class Group extends Model
         return $this->belongsToMany(Event::class);
     }
 
+    /**
+     * Get the options for generating the slug.
+     */
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug')
+            ->preventOverwrite();
+
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public function color(){
         if($this->type == "yellow"){
             return "Geltona";
@@ -36,7 +61,7 @@ class Group extends Model
         if($this->type == "blue"){
             return "Mėlyna";
         }
-        if($this->type == "red"){
+        if($this->type == "red") {
             return "Raudona";
         }
     }
@@ -52,7 +77,6 @@ class Group extends Model
 
     public function adjustedPrice($coupon = null) {
         $price = $this->price;
-
         if ($this->type !== 'individual') {
             $price = max(0, $this->price - $this->events()->where("date_at", "<", \Carbon\Carbon::now())->count() * 8);
         }
@@ -65,6 +89,18 @@ class Group extends Model
 
     public function hasAdjustedPrice() {
         return $this->adjustedPrice() != $this->price;
+    }
+
+    public function getGroupStartDateAndCount() {
+        $events = $this->events()->where("date_at", ">", \Carbon\Carbon::now())->get()->toArray();
+        if (empty($events)) {
+            return [];
+        }
+        $eventsCount = count($events);
+        $startDate = $events[0];
+        return ['eventsCount' => $eventsCount,
+            'startDate' => $startDate['date_at']
+        ];
     }
 
     public function getAdminTimeAttribute() {

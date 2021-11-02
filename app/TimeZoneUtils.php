@@ -3,7 +3,6 @@
 namespace App;
 
 use Carbon\Carbon;
-use Faker\Provider\DateTime;
 
 class TimeZoneUtils
 {

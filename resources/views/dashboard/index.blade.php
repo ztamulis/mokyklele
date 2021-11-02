@@ -18,12 +18,12 @@
 
                         <h3>{{Auth::user()->getWeekDayName($weekday)}}</h3>
                         @foreach($groups as $group)
-                        <div class="group--item" data-href="/dashboard/groups/{{$group->id}}">
+                        <div class="group--item" data-href="/dashboard/groups/{{$group->slug}}">
                             <div class="group--icon">
                                 <div class="color background--{{ $group->type }}"></div>
                             </div>
                             <div class="group--info">
-                                <h3>{{$group->name}}</h3>
+                                <h3>{{Auth::user()->role === 'admin' || Auth::user()->role === 'teacher' ? '#'.$group->id : ''}} {{$group->name}}</h3>
                                 <p>
                                 @if(\App\Http\Controllers\GroupController::nextLesson($group))
                                     <p>Kita pamoka: {{ App\TimeZoneUtils::updateTime(\App\Http\Controllers\GroupController::nextLesson($group)->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i")) }} <small>({{ Cookie::get("user_timezone", "GMT") }})</small> </p>
@@ -45,7 +45,7 @@
                                 @endforeach
                             </div>
                             <div class="group--actions">
-                                <a href="/dashboard/groups/{{$group->id}}" class="dashboard--button btn-success">
+                                <a href="/dashboard/groups/{{$group->slug}}" class="dashboard--button btn-success">
                                     Grupė
                                 </a>
                             </div>
@@ -54,7 +54,7 @@
                                     $nextLesson = \App\Http\Controllers\GroupController::nextLesson($group);
                                 @endphp
                                 @if($nextLesson)
-                                    <a @if($nextLesson->join_link) href="{{ $nextLesson->join_link }}" target="_blank" @else href="/dashboard/groups/{{$group->id}}#joinmeeting" @endif class="dashboard--button dashboard--button--main">
+                                    <a @if($nextLesson->join_link) href="{{ $nextLesson->join_link }}" target="_blank" @else href="/dashboard/groups/{{$group->slug}}#joinmeeting" @endif class="dashboard--button dashboard--button--main">
                                         Prisijungti
                                     </a>
                                 @endif

@@ -28,7 +28,7 @@
                             $nextLesson = \App\Http\Controllers\GroupController::nextLesson($group);
                         @endphp
                         @if (!empty($nextLesson))
-                            {{ App\TimeZoneUtils::updateTime(\App\Http\Controllers\GroupController::nextLesson($group)->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i")) }} <small>({{ Cookie::get("user_timezone", "GMT") }})</small>
+                            {{ App\TimeZoneUtils::updateTime(\App\Http\Controllers\GroupController::nextLesson($group)->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i")) }} <small>({{ Cookie::get("user_timezone", "GMT") }})</small>
                         @endif
                     </small>
                 </h3>
