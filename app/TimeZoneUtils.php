@@ -27,10 +27,10 @@ class TimeZoneUtils
     }
 
     public static function updateTime($date) {
-        if (is_int(strpos(\Cookie::get("user_timezone", "GMT"), 'Europe'))) {
+//        if (is_int(strpos(\Cookie::get("user_timezone", "GMT"), 'Europe'))) {
             return Carbon::createFromDate($date)->addHour()->format('Y-m-d H:i');
-        }
-        return $date;
+//        }
+//        return $date;
     }
 
 
