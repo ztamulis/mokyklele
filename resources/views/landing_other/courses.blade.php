@@ -7,7 +7,7 @@
     <div class="learning--group--select--selector">
         @php
             $groupsGrouped  = \App\Models\Group::where("paid", 1)->where("hidden", 0)->get()->groupBy("type");
-            $type = '';
+            $type = '  ';
             if (isset($groupsGrouped['yellow'])) {
             $type = 'yellow';
             } elseif(isset($groupsGrouped['green'])) {
@@ -21,7 +21,6 @@
             } elseif(isset($groupsGrouped['individual'])) {
                 $type = 'individual';
             }
-
         @endphp
 
         @if(isset($groupsGrouped['yellow']))
@@ -58,25 +57,29 @@
         <div class="learning--group--select--row" data-group="{{ $group->type }}">
             <div class="color background--{{ $group->type }}"></div>
             <div class="text">
-                <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else href="/select-group/order/{{ $group->id }}" @endif >{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a>
+                <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else href="/select-group/order/{{ $group->slug }}" @endif >{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a>
                 @if($group->time_2)
-                    / <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else href="/select-group/order/{{ $group->id }}" @endif ><b>{{ $group->time_2->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a>
+                    / <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else href="/select-group/order/{{ $group->slug }}" @endif ><b>{{ $group->time_2->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a>
                 @endif
                 <br>
                 <span>{{ $group->display_name }}</span>
             </div>
             <div class="date">
-                {{\Carbon\Carbon::parse($group->start_date)->format("m.d")}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}} ({{$group->course_length}}
-                @if($group->course_length == 1)
-                    pamoka)
-                @elseif($group->course_length > 1 && $group->course_length < 10)
-                    pamokos)
-                @elseif($group->course_length > 9 && $group->course_length < 21)
-                    pamokų)
-                @elseif($group->course_length == 21)
-                    pamoka)
-                @elseif($group->course_length > 21)
-                    pamokos)
+                @php $descriptionData = $group->getGroupStartDateAndCount() @endphp
+                @if (!empty($descriptionData) && isset($descriptionData['eventsCount']))
+                    {{\Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d")}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}} ({{$descriptionData['eventsCount']}}
+                    @if($descriptionData['eventsCount'] == 1)
+                        pamoka)
+                    @elseif($descriptionData['eventsCount'] > 1 && $descriptionData['eventsCount'] < 10)
+                        pamokos)
+                    @elseif($descriptionData['eventsCount'] > 9 && $descriptionData['eventsCount'] < 21)
+                        pamokų)
+                    @elseif($descriptionData['eventsCount'] > 21)
+                        pamokos)
+                    @elseif($descriptionData['eventsCount'])
+                        pamoka)
+                    @endif
+
                 @endif
             </div>
                 @if ($group->price > 0)
@@ -95,17 +98,14 @@
                     </a>
                 @else
                     @if ($group->adjustedPrice() > 0)
-                        <a href="/select-group/order/{{ $group->id }}" class="button course--select--button">
+                        <a href="/select-group/order/{{ $group->slug }}" class="button course--select--button">
                             Pasirinkti
                         </a>
                     @else
-                        <a href="/select-group/order/free/{{ $group->id }}" class="button course--select--button">
+                        <a href="/select-group/order/free/{{ $group->slug }}" class="button course--select--button">
                             Pasirinkti
                         </a>
                     @endif
-{{--                        <a href="/select-group/order/{{ $group->id }}" class="button course--select--button">--}}
-{{--                            Pasirinkti--}}
-{{--                        </a>--}}
                 @endif
             </div>
         </div>

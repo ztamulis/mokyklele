@@ -931,5 +931,4 @@
     </script>
 
 </x-app-layout>
-
 {{--https://stackoverflow.com/questions/15389833/laravel-redirect-back-to-original-destination-after-login/39595605#39595605--}}

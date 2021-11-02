@@ -23,7 +23,8 @@ class CouponController extends Controller
         }
 
         $coupons = Coupon::latest('created_at')->get();
-        return view("dashboard.coupons.index")->with("coupons", $coupons);    }
+        return view("dashboard.coupons.index")->with("coupons", $coupons);
+    }
 
     /**
      * Show the form for creating a new resource.
