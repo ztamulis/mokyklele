@@ -27,7 +27,7 @@
 
 
         <div class="order--dialog">
-            <form method="POST" action="/select-group/order/free/create/{{$group->id}}">
+            <form method="POST" action="/select-group/order/free/create/{{$group->slug}}">
                 @csrf
                 <input type="hidden" name="action" value="order">
                 Vaikas:
@@ -340,7 +340,6 @@
                         data = JSON.parse(data);
                         $(".payment--loading").html("Kortelė: <b>**** **** **** " + data.card_last + "</b>");
                         $(".payment--loading-buy-notification").show();
-
                     });
                 }
             });

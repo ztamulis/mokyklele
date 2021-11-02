@@ -157,7 +157,7 @@ class InfoChangeController extends Controller
 
         $file->storeAs("uploads/page-uploads", $newfilename);
 
-        return env("APP_URL")."/uploads/page-uploads/".$newfilename;
+        return \Config::get('app.url')."/uploads/page-uploads/".$newfilename;
     }
 
 }

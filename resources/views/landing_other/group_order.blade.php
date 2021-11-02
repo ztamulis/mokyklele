@@ -1,4 +1,4 @@
-@extends("layouts.landing")
+color background--yellow@extends("layouts.landing")
 
 @section("title", "Komanda")
 

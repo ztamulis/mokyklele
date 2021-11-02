@@ -72,7 +72,6 @@ class GroupController extends Controller
             'course_length' => 'required|integer|max:52|min:1',
             'time' => 'required',
         ]);
-
         $group = new Group;
         $group->name = $request->input("name");
         $group->display_name = $request->input("display_name");
@@ -110,6 +109,7 @@ class GroupController extends Controller
         }else{
             $group->time_2 = $time_2;
         }
+
         $group->save();
 
         foreach($request->input("weight") as $w) {
@@ -126,7 +126,7 @@ class GroupController extends Controller
 
         $group->stripe_plan = Str::slug("plan-".$group->id . "-" . $request->input("name"));
 
-        \Stripe\Stripe::setApiKey(env("STRIPE_SECRET"));
+        \Stripe\Stripe::setApiKey(\Config::get("app.stripe_secret"));
 
         \Stripe\Plan::create(array(
             "amount" => $group->price*100,
@@ -269,7 +269,7 @@ class GroupController extends Controller
 
     public function createMessage(Request $request){
         $request->validate([
-//            'text' => 'required|string|max:2000',
+            'text' => 'required|string|max:2000',
             'groupID' => 'required|int'
         ]);
 
