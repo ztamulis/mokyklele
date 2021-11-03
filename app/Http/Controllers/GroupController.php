@@ -97,12 +97,12 @@ class GroupController extends Controller
             $group->end_date = \Carbon\Carbon::parse($request->input("end_date"));
         }
 
-        if(TimeZoneUtils::isSummerTime()){
-            $time = $time->subHour();
-            if(!empty($request->input("time_2"))){
-                $time_2 = $time_2->subHour();
-            }
-        }
+//        if(TimeZoneUtils::isSummerTime()){
+//            $time = $time->subHour();
+//            if(!empty($request->input("time_2"))){
+//                $time_2 = $time_2->subHour();
+//            }
+//        }
         $group->time = $time;
         if(empty($request->input("time_2"))){
             $group->time_2 = null;
@@ -125,7 +125,6 @@ class GroupController extends Controller
         }
 
         $group->stripe_plan = Str::slug("plan-".$group->id . "-" . $request->input("name"));
-
         \Stripe\Stripe::setApiKey(\Config::get("app.stripe_secret"));
 
         \Stripe\Plan::create(array(
@@ -219,12 +218,12 @@ class GroupController extends Controller
             $time_2 = \Carbon\Carbon::parse(date("Y-m-d") . " " . $request->input("time_2"));
         }
 
-        if(TimeZoneUtils::isSummerTime()){
-            $time = $time->subHour();
-            if(!empty($request->input("time_2"))){
-                $time_2 = $time_2->subHour();
-            }
-        }
+//        if(TimeZoneUtils::isSummerTime()){
+//            $time = $time->subHour();
+//            if(!empty($request->input("time_2"))){
+//                $time_2 = $time_2->subHour();
+//            }
+//        }
         $group->time = $time;
         if(empty($request->input("time_2"))){
             $group->time_2 = null;

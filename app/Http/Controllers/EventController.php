@@ -75,9 +75,9 @@ class EventController extends Controller
 
         $date = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"));
 
-        if(TimeZoneUtils::isSummerTime()){
-            $date = $date->subHour();
-        }
+//        if(TimeZoneUtils::isSummerTime()){
+//            $date = $date->subHour();
+//        }
 
         if($create_method == "multi"){
             $request->validate([
@@ -176,9 +176,9 @@ class EventController extends Controller
         $event->join_link = $request->input("join_link");
 
         $date = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"));
-        if(TimeZoneUtils::isSummerTime()){
-            $date = $date->subHour();
-        }
+//        if(TimeZoneUtils::isSummerTime()){
+//            $date = $date->subHour();
+//        }
         $event->date_at = $date;
 
         $event->save();

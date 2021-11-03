@@ -20,17 +20,21 @@ class TimeZoneUtils
     }
 
     public static function currentGmtModifierText() {
-        if(TimeZoneUtils::isSummerTime()){
+//        if(TimeZoneUtils::isSummerTime()){
             return "GMT+1";
-        }
-        return "GMT+0";
+//        }
+//        return "GMT+0";
     }
 
+    /**
+     * @param $date
+     * @return string
+     */
     public static function updateTime($date) {
-//        if (is_int(strpos(\Cookie::get("user_timezone", "GMT"), 'Europe'))) {
-            return Carbon::createFromDate($date)->addHour()->format('Y-m-d H:i');
-//        }
-//        return $date;
+        if (self::isSummerTime()) {
+            return $date;
+        }
+        return Carbon::createFromDate($date)->addHour()->format('Y-m-d H:i');
     }
 
 
