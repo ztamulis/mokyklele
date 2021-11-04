@@ -31,11 +31,11 @@ class TimeZoneUtils
      * @param $date
      * @return string
      */
-    public static function updateTime($date) {
-        if (self::isDateInSummerTime($date)) {
-            return $date;
+    public static function updateTime($date, $updatedAt) {
+        if ($updatedAt < Carbon::parse('2021-10-31') && !Carbon::now()->timezone('Europe/London')->isDST()) {
+            return Carbon::createFromDate($date)->addHour()->format('Y-m-d H:i');
         }
-        return Carbon::createFromDate($date)->addHour()->format('Y-m-d H:i');
+        return $date;
     }
 
     public static function isDateInSummerTime($date) {
