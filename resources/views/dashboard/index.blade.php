@@ -59,7 +59,7 @@
                         <div class="meeting-block justify-content-center mt-4">
                             <div class="icon color background--blue">
                                 @if($meeting->photo)
-                                    <img src="url('/uploads/meetings/'{{ $meeting->photo }}" alt="">
+                                    <img src="uploads/meetings/{{ $meeting->photo }}" alt="">
                                 @endif
                             </div>
                             <h3>{{$meeting->name}}</h3>
