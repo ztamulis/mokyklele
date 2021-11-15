@@ -1,94 +1,78 @@
-<x-app-layout>
+<x-user>
 
     <div class="client--dashboard">
         @if(Auth::user()->role != "teacher")
-        <div class="dashboard--misc--buttons">
-            <a href="/dashboard/user-rewards" class="dashboard--button">
-                Apdovanojimai
-            </a>
-            <a href="/lietuviu_kalbos_pamokos" class="dashboard--button dashboard--button--main">
-                <img src="/images/icons/plus.svg"> Užsakyti kursą
-            </a>
-        </div>
+            <div class="dashboard--misc--buttons">
+                <a href="/dashboard/user-rewards" class="dashboard--button">
+                    Apdovanojimai
+                </a>
+                <a href="/lietuviu_kalbos_pamokos" class="dashboard--button dashboard--button--main">
+                    <img src="/images/icons/plus.svg"> Užsakyti kursą
+                </a>
+            </div>
         @endif
-                <h3>Labas!</h3>
-                <p>Sveikiname prisijungus prie virtualios lituanistinės mokyklėlės.</p>
-                <div class="group--list">
-                    @foreach(Auth::user()->getGroupedGroups() as $weekday => $groups)
-
-                        <h3>{{Auth::user()->getWeekDayName($weekday)}}</h3>
-                        @foreach($groups as $group)
-                        <div class="group--item" data-href="/dashboard/groups/{{$group->slug}}">
-                            <div class="group--icon">
-                                <div class="color background--{{ $group->type }}"></div>
-                            </div>
-                            <div class="group--info">
-                                <h3>{{Auth::user()->role === 'admin' || Auth::user()->role === 'teacher' ? '#'.$group->id : ''}} {{$group->name}}</h3>
-                                <p>
-                                @if(\App\Http\Controllers\GroupController::nextLesson($group))
-                                    <p>Kita pamoka: {{ \App\Http\Controllers\GroupController::nextLesson($group)->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }} <small>({{ Cookie::get("user_timezone", "GMT") }})</small> </p>
-                                @else
-                                    <p>Kita pamoka: nėra</p>
-                                    @endif
-                                    </p>
-                            </div>
-                            <div class="group--students">
-                                @foreach(Auth::user()->students()->where("group_id", $group->id)->get() as $student)
-                                    <div class="group--student">
-                                        <div class="group--student--image" @if($student->photo) style="background-image: url('/uploads/students/{{ $student->photo }}')" @endif ></div>
-                                        <div class="group--student--name">
-                                            <span>{{ $student->name }}</span>
-                                            <br>
-                                            {{ $student->age }}
-                                        </div>
+        <h3>Labas!</h3>
+        <p>Sveikiname prisijungus prie virtualios lituanistinės mokyklėlės.</p>
+        <div class="lessons-list">
+            @foreach(Auth::user()->getGroupedGroups() as $weekday => $groups)
+                @foreach($groups as $group)
+                    @php
+                        $nextLesson = \App\Http\Controllers\GroupController::nextLesson($group);
+                    @endphp
+                    <div class="lesson-area {{ $group->type }}">
+                        <a href="/dashboard/groups/{{$group->slug}}"><h3>{{Auth::user()->role !== 'user' ? '#'.$group->id : ''}} {{$group->name}}</h3></a>
+                        @if($nextLesson)
+                            <div class="info">{{ App\TimeZoneUtils::updateTime($nextLesson->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i"), $nextLesson->updated_at) }} ({{ Cookie::get("user_timezone", "GMT") }})</div>
+                        @else
+                            <div class="info">Kita pamoka: nėra</div>
+                        @endif
+                        <div class="row d-flex justify-content-center mb-2">
+                            @foreach(Auth::user()->students()->where("group_id", $group->id)->get() as $student)
+                                <div class="group--student">
+                                    <div class="group--student--image" @if($student->photo) style="background-image: url('/uploads/students/{{ $student->photo }}')" @endif ></div>
+                                    <div class="group--student--name">
+                                        <span>{{ $student->name }}</span>
+                                        <br>
+                                        {{ $student->age }}
                                     </div>
-                                @endforeach
-                            </div>
-                            <div class="group--actions">
-                                <a href="/dashboard/groups/{{$group->slug}}" class="dashboard--button btn-success">
-                                    Grupė
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="row d-flex justify-content-center">
+                            <a href="/dashboard/groups/{{$group->slug}}">
+                                <button class="btn blue mx-1">Grupė</button>
+                            </a>
+                            @if($nextLesson)
+                                <a @if($nextLesson->join_link) href="{{ $nextLesson->join_link }}" target="_blank" @else href="/dashboard/groups/{{$group->id}}#joinmeeting" @endif>
+                                    <button class="btn green mx-1">Prisijungti</button>
                                 </a>
-                            </div>
-                            <div class="group--actions">
-                                @php
-                                    $nextLesson = \App\Http\Controllers\GroupController::nextLesson($group);
-                                @endphp
-                                @if($nextLesson)
-                                    <a @if($nextLesson->join_link) href="{{ $nextLesson->join_link }}" target="_blank" @else href="/dashboard/groups/{{$group->id}}#joinmeeting" @endif class="dashboard--button dashboard--button--main">
-                                        Prisijungti
-                                    </a>
+                            @endif
+                        </div>
+                    </div>
+                @endforeach
+            @endforeach
+            @if((\App\Http\Controllers\UserController::hasGroup() && !\App\Http\Controllers\UserController::hasDemoLesson())
+    || (Auth::user()->role === 'admin' && !empty($meetings)))
+                <div class="meetings">
+                    <h3 class="day">Nemokami susitikimai</h3>
+                    @foreach($meetings as $meeting)
+                        <div class="meeting-block justify-content-center mt-4">
+                            <div class="icon color background--blue">
+                                @if($meeting->photo)
+                                    <img src="url('/uploads/meetings/{{ $meeting->photo }}" alt="">
                                 @endif
                             </div>
-                        </div>
-                        @endforeach
-                @endforeach
-                    @if((\App\Http\Controllers\UserController::hasGroup() && !\App\Http\Controllers\UserController::hasDemoLesson())
-            || (Auth::user()->role === 'admin' && !empty($meetings)))
-                    @foreach($meetings as $meeting)
-                        <div class="group--item">
-                            <div class="group--icon">
-                                <div class="color background--blue" @if($meeting->photo) style="background-image: url('/uploads/meetings/{{ $meeting->photo }}')" @endif ></div>
-                            </div>
-                            <div class="group--info" >
-                                <h3>{{$meeting->name}}</h3>
-                                {!! strip_tags($meeting->description) !!}
-                            </div>
-                            <div class="group--students text--center">
-                                <span>{{$meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i")}}</span>
-                                <br>
-                                {{ Cookie::get("user_timezone", "GMT") }}
-                            </div>
-                            {{-- @if(\App\Http\Controllers\MeetingController::nextMeetingButton($meeting)) // use if meeting link should appear only on meeting day --}}
-                            <div class="group--actions">
-                                <a href="{{ $meeting->join_link }}" class="dashboard--button dashboard--button--main">
-                                    Prisijungti
-                                </a>
-                            </div>
-                            {{-- @endif --}}
+                            <h3>{{$meeting->name}}</h3>
+                            <div class="info"><span>2021-10-03</span> Sekmadienis, <span>12:00</span> (Europe/Vilnius)</div>
+                            <div class="desc">{!! strip_tags($meeting->description) !!}</div>
+                            <a href="{{ $meeting->join_link }}">
+                                <button class="btn green">Prisijungti</button>
+                            </a>
                         </div>
                     @endforeach
-                @endif
-            </div>
+                </div>
+            @endif
+        </div>
     </div>
 
 
@@ -107,4 +91,4 @@
         });
     </script>
 
-</x-app-layout>
+</x-user>

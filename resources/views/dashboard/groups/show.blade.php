@@ -1,398 +1,345 @@
-<x-app-layout>
+<x-user>
 
-    <div class="client--dashboard">
-        <div class="dashboard--misc--buttons">
-            <?php $nextEvent = \App\Http\Controllers\GroupController::nextLesson($group); ?>
-            @if($nextEvent && $nextEvent->zoom_meeting_id)
-                <a href="#" zoom-join class="dashboard--button dashboard--button--main">
-                    Prisijungti į pamoką
-                </a>
-            @endif
-            @if($nextEvent && $nextEvent->join_link)
-                <a href="{{ $nextEvent->join_link }}" target="_blank" class="dashboard--button dashboard--button--main">
-                    Prisijungti į pamoką
-                </a>
-            @endif
-            @if($nextEvent && Auth::user()->role != "user" && !$nextEvent->zoom_meeting_id)
-                <a href="/dashboard/create-zoom-meeting/{{ $nextEvent->id }}" class="dashboard--button dashboard--button--main">
-                    Sukurti Zoom susitikimą
-                </a>
-            @endif
-        </div>
-        <div class="client--dashboard--title">
-            <div class="client--dashboard--color group--color group--{{ $group->type }}"></div>
-            <div class="client--dashboard--title--text">
-                <h3>{{$group->name}}
-                    <small>
-                        @php
-                            $nextLesson = \App\Http\Controllers\GroupController::nextLesson($group);
-                        @endphp
-                        @if (!empty($nextLesson))
-                            {{ \App\Http\Controllers\GroupController::nextLesson($group)->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }} <small>({{ Cookie::get("user_timezone", "GMT") }})</small>
+    @php
+        $groupMessage = false;
+        $groupMessageSession = Session::get('groupMessage');
+    if (!empty($groupMessageSession)) {
+        $groupMessage = $groupMessageSession;
+         Session::put('groupMessage', '');
+    }
+
+    @endphp
+
+    <div class="modal-spinner"><!-- Place at bottom of page --></div>
+    <div class="container" id="content">
+            <div class="lesson-head">
+                <div class="circle group--color group--{{ $group->type }}"></div>
+                <div class="lesson-info">
+                    <a onclick="goToHomeTab()" style="cursor: pointer">
+                    <div class="title">{{ $group->name }}</div>
+                    <?php $nextLesson = \App\Http\Controllers\GroupController::nextLesson($group); ?>
+                    </a>
+
+                    @if ($nextLesson)
+                        <div class="time">{{ App\TimeZoneUtils::updateTime($nextLesson->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i"), $nextLesson->updated_at) }} {{ Cookie::get("user_timezone", "GMT") }}</div>
+                    @endif
+                    <small></small>
+
+                    <div class="age-info">{{ $group->display_name }}
+                        @if(Auth::user()->role != 'user')
+                            (#g{{$group->id}})
                         @endif
-                    </small>
-                </h3>
-                <p>{!! $group->display_name !!}</p>
-            </div>
-        </div>
-
-        @if(isset($message))
-            <div class="dashboard--alert">
-                <div class="dashboard--alert--image">
-                    <img src="/images/icons/information.svg">
-                </div>
-                <div class="dashboard--alert--text">
-                    <h3>Pranešimas</h3>
-                    <p>{{ $message }}</p>
-                </div>
-            </div>
-        @endif
-
-        @if ($errors->any())
-            <div class="dashboard--alert">
-                <div class="dashboard--alert--image">
-                    <img src="/images/icons/warning.svg">
-                </div>
-                <div class="dashboard--alert--text">
-                    <h3>Klaida!</h3>
-                    <p>
-                        @foreach ($errors->all() as $error)
-                            {{ $error }}<br>
-                        @endforeach
-                    </p>
-                </div>
-            </div>
-        @endif
-
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="dashboard--block">
-                    <h3>Informacija</h3>
-                    <p>
-                        {!! $group->information !!}
-                    </p>
-                </div>
-                <div class="dashboard--block no--padding">
-                    <div class="dashboard--block--inner dashboard--block--header">
-                        <h3>Namų darbai ir refleksija</h3>
-                        Peržiūrėkite įkeltus mokytojo dokumentus
                     </div>
-                    <div id="homework-files" class="files dashboard--scrolling--wrapper message-block-overflow">
-                        @foreach($group->files as $file)
-                            <?php
+                </div>
+                @php  \Carbon\Carbon::setLocale('lt'); @endphp
 
-                            $fileNameExploded = explode(".", $file->name);
-                            $fileExtension = $fileNameExploded[count($fileNameExploded)-1];
-                            ?>
-                            <div id="homework-main-{{$file->id}}">
-                                <div class="dashboard--block--hr"></div>
-                                <?php $displayName = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $file->display_name); ?>
-                                @if(Auth::user()->role != 'user')
-                                    <b><textarea class="dashboard--media" id="homework-message-{{$file->id}}" oninput="auto_grow(this)" name="message" style="border-width: 0px; width: 100%; height: 100%; color: black;" ><?php $displayName = $displayName ?? str_replace(".".$fileExtension, "", $file->display_name); echo strip_tags($displayName); ?></textarea></b>
-                                @else
-                                    <b> <span class="dashboard--media" style="color: black;"><?php $displayName = $displayName ?? str_replace(".".$fileExtension, "", $file->display_name); echo $displayName; ?></span></b><br>
-                                @endif
-                                <div class="row" style="margin-top: 30px;">
-                                    <div class="col-md-6">
-                                        <div class="row">
-                                            <div class="col-md-12" style="padding-left: 30px;<?= Auth::user()->role == 'user' ? 'margin-bottom: 12px;' : ''?>">
-                                                <div class="row">
-                                                    <div class="col-md-6 chat--div">
-                                                        <span class="timezone-group-span">{{ $file->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</span>
-                                                    </div>
-                                                    <div class="col-md-6 chat--div" id="add-document-{{$file->id}}">
-                                                        @if (!empty($file->name))
-                                                            <u id="file-label-{{$file->id}}">
-                                                                <a class="" href="{{ url("/uploads/".$file->name) }}" target="_blank">Prisegtas dokumentas</a>
-                                                            </u>
-                                                            @if(Auth::user()->role != "user")
-                                                                <span id="close-btn-{{$file->id}}" onclick="deleteFile({{$file->id}})" class="close-btn-groups">x</span>
-                                                            @endif
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="row">
-                                            <div class="col-md-12 right--buttons--block">
-                                                <div class="row">
-                                                    <div class="col-md-3 col-sm-12 chat--div" >
-                                                    </div>
-                                                    @if(Auth::user()->role != "user")
+                <div class="login-btn-area">
+                    @if($nextLesson && $nextLesson->zoom_meeting_id)
+                        <a href="#" zoom-join>Prisijungti į pamoką</a>
+                    @endif
+                    @if($nextLesson && $nextLesson->join_link)
+                        <a href="{{ $nextLesson->join_link }}" target="_blank">Prisijungti į pamoką</a>
+                    @endif
 
-                                                        <div class="col-md-3 col-sm-12 chat--div" >
-                                                            <button type="button" class="dashboard--send--message--button dashboard--upload-file--button"  onclick="homeWorkChatFileName({{$file->id}}, this)">
-                                                                <img src="/images/icons/upload.svg">
-                                                            </button>
-                                                            <input id="upload-photo-{{$file->id}}" data-homework-file-{{$file->id}} name="upload_file" type="file" class="dashboard--media--input" value="{{$file->name}}" style="display: none;"/>
-                                                        </div>
-                                                        <div class="col-md-3 col-sm-12 chat--div" >
-                                                            <button type="submit" onclick="homeWorkChatEdit({{$file->id}})" class="dashboard--send--message--button file--upload--button">
-                                                                <img src="/images/icons/paper-plane.svg">
-                                                            </button>
-                                                        </div>
-                                                        <div class="col-md-3 col-sm-12 chat--div">
-                                                            @if(Auth::user()->role != "user")
-                                                                <a data-file-delete="{{ $file->id }}" class="dashboard--media--delete"><img src="/images/icons/trash.svg"> Ištrinti</a>
-                                                            @endif
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="clear--fix"></div>
-                            </div>
-
-                        @endforeach
-
-
-                    </div>
-                    @if(Auth::user()->role != "user")
-                        <div class="dashboard--block--hr"></div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <form data-upload>
-                                    <textarea oninput="auto_grow(this)" id="home-work-input" name="file_name" type="text" class="dashboard--send--message--input" placeholder="Įrašykite namų darbus" ></textarea>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <label id="upload-label" for="upload-photo" class="mb-5 mr-5 dasboard-add-document-button" ><b>Pridėti dokumentą</b></label>
-                                                    <input id="upload-photo" name="upload_file" type="file" class="dashboard--media--input" style="display: none;"/>
-                                                </div>
-                                                <div class="col-md-4 add-document-new" id="homework-new-file-add-document">
-
-                                                </div>
-                                                <div class="col-md-2 offset-1">
-                                                    <button type="submit" class="dashboard--send--message--button file--upload--button">
-                                                        <img src="/images/icons/paper-plane.svg">
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="row text-center" id="flash-message" style="display: block;">
+                <div class="text-center">
+                    @if(Session::has('message'))
+                        <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('message') }}</p>
                     @endif
                 </div>
-
-                <div class="dashboard--block">
-                    <h3>Nariai</h3>
-                    Kurse esantys nariai
-                    <div class="dashboard--user--list">
-                        @foreach($group->students as $student)
-                            <div class="dashboard--user">
-                                @if($student->user_id != Auth::user()->id)
-                                    <div class="dashboard--misc--buttons dashboard--user--actions">
-                                        <button class="dashboard--button dashboard--button--main only--desktop" value="{{$student->id}}" data-toggle="modal" data-target="#sendMessageModal" data-user-name="{{ $student->name }}" data-user-id="{{ $student->id }}">
-                                            Siųsti žinutę
-                                        </button>
-                                        <button class="dashboard--button dashboard--button--main only--mobile" value="{{$student->id}}" data-toggle="modal" data-target="#sendMessageModal" data-user-name="{{ $student->name }}" data-user-id="{{ $student->id }}">
-                                            <img src="/images/icons/paper-plane.svg">
-                                        </button>
-                                    </div>
-                                @endif
-                                <div class="dashboard--user--photo" @if($student->photo) style="background-image: url('/uploads/students/{{ $student->photo }}')" @endif></div>
-                                <div class="dashboard--user--info">
-                                    <b>{{$student->name}}</b><br>
-                                    @if($student->birthday){{ $student->age }} ∙ @endif @if($student->user) {{ $student->user->name }} {{ $student->user->surname }} @endif
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
             </div>
-            <div class="col-lg-6">
-                <div class="dashboard--block no--padding ">
-                    <div class="dashboard--block--inner dashboard--block--header">
-                        <h3>Pokalbiai</h3>
-                        Bendraukite su grupės draugais.
-                    </div>
-                    <div class="dashboard--block--hr"></div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="dashboard--scrolling--wrapper message-block-overflow" data-chat-messages>
+            <section class="main-tabs-area">
+                <div class="tabs">
+                    <button class="tablinks active" data-country="tab-1">Namų darbai</button>
+                    <button class="tablinks" data-country="tab-2">Pokalbiai ir nariai</button>
+                    <button class="tablinks" data-country="tab-3">Apdovanojimai</button>
+                </div>
 
-                                @foreach($group->group_message()->orderBy("id", "ASC")->get() as $msg)
-                                    <?php
-                                    $student = null;
-                                    if($msg->author && count($msg->author->studentsInGroup($group)))
-                                        $student = $msg->author->studentsInGroup($group)[0];
-                                    ?>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="user--message">
-                                                <div class="user--message--info">
-                                                    <div class="user--message--photo" @if($student && $student->photo) style="background-image: url('/uploads/students/{{ $student->photo }}')" @elseif($msg->author && $msg->author->photo) style="background-image: url('/uploads/users/{{ $msg->author->photo }}')" @endif ></div>
-                                                    <div class="user--message--name">
-                                                        @if($student)
-                                                            <b>{{ $student->name }}</b> ∙ {{ $msg->lithuanianDate() }}<br>
-                                                            @if($student->birthday){{ $student->age }} ∙ @endif {{ $msg->author->name }} {{ $msg->author->surname }}
-                                                        @elseif($msg->author)
-                                                            <b>{{ $msg->author->name }} {{ $msg->author->surname }}</b> ∙ {{ $msg->lithuanianDate() }}<br>
-                                                            {{ $msg->author->name }} {{ $msg->author->surname }}
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @if($msg->author_id == Auth::user()->id)
-                                        <form method="POST" action="/dashboard/groups/message/{{$msg->id}}/edit" enctype="multipart/form-data">
-                                            {{ csrf_field() }}
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="dashboard--media" >
-                                                        <?php $msg->message = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $msg->message); ?>
-                                                        <textarea oninput="auto_grow(this)"  name="message" style="border-width: 0px; width: 100%; height: 100%; color: black;" ><?php echo strip_tags($msg->message) ?></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @else
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="dashboard--media">
-                                                            <p style="color: black;">
-                                                                <?php $msg->message = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $msg->message);
-                                                                echo $msg->message; ?>
-                                                            </p>
+                <!-- Tab content -->
+                <div class="row">
+                    <div class="wrapper_tabcontent">
+                        <div id="tab-1" class="tabcontent active">
+                            <div class="main-tab-area col-lg-7 col-sm-12 col-12">
+                                <div class="main-info">
+                                    <h3>Namų darbai</h3>
+                                    <div class="subtitle">Pamokos refleksija ir paskirtos užduotys</div>
+                                    @if(Auth::user()->role != "user")
+                                        <button  class="btn blue new-post" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Naujas įrašas</button>
+                                        <div class="collapse multi-collapse" id="multiCollapseExample1">
+                                            <div class="author-comment pl-0">
+                                                <form action="{{route('homework-store')}}" new-homework-file method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <textarea name="file_name" id="ckeditor"></textarea>
+                                                    <input type="hidden" name="group_id" value="{{$group->id}}">
+                                                    <div class="edit-buttons" id="home-work-main-store">
+                                                        <div class="left-col mt-2">
+                                                            <button id="button" name="file-homework-store" type="button" value="Upload" onclick="addHomeworkFile('home-work-main-store');" class="btn blue attachment align-bottom">Prisegti dokumentą</button>
+                                                            <input name="file" type="file" id="file-homework-store" style="display:none;"/>
+                                                        </div>
+                                                        <div class="right-col mt-2">
+                                                            <button type="submit" class="btn blue post">Skelbti</button>
                                                         </div>
                                                     </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                                @foreach($group->files()->orderBy('created_at', 'desc')->get() as $file)
+                                    <div class="author-comment" id="homework-file-main-{{$file->id}}">
+                                        <div class="author">{{$file->user->name}} {{$file->user->surname}}</div>
+                                        <div class="date">{{ $file->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</div>
+                                        <?php $displayName = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $file->display_name); ?>
+                                        <div class="desc">@php echo strip_tags($displayName); @endphp</div>
+                                        @if (!empty($file->name))
+                                            <div class="attachments">
+                                                <div class="attachment">
+                                                    <a target="_blank" href="{{ url("/uploads/".$file->name) }}" class="file">Prisegtas dokumentas</a>
                                                 </div>
-                                            @endif
-                                            <div class="row">
-                                                <div class="col-md-12" style="padding-left: 30px;">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="row">
-{{--                                                                <div class="col-md-6" style="padding-left:0px; padding-right:0px;" >--}}
-{{--                                                                    <span class="timezone-group-span"></span>--}}
-{{--                                                                </div>--}}
-                                                                <div class="col-md-6"  id="add-chat-document-{{$msg->id}}" style="padding-left: 6px; padding-right:0px; font-size: 10px;">
-                                                                    @if($msg->file)
-                                                                        <u id="file-label-chat-{{$msg->id}}">
-                                                                            <a href="{{ url('uploads/group-messages/'.$msg->file)}}" style="color: #000;" target="_blank">Prisegtas dokumentas </a>
-                                                                            <input id="chat-file-{{$msg->id}}" name="chat-file" type="hidden" value="1">
-                                                                        </u>
-                                                                        @if(Auth::user()->role != "user")
-                                                                            <span id="close-chat-btn-{{$msg->id}}" onclick="deleteFileChat({{$msg->id}})" class="close-btn-groups">x</span>
-                                                                        @endif
+                                            </div>
+                                        @endif
+                                        @if(Auth::user()->role == "admin" || (Auth::user()->role == 'teacher' && Auth::user()->id === $file->user_id))
+                                            <div class="edit-buttons">
+                                                <div class="left-col">
+                                                    <button data-toggle="modal" type="button" data-target="#edit-modal-{{$file->id}}" class="btn blue edit">Redaguoti</button>
+                                                </div>
+                                                <div class="right-col">
+                                                    <form delete-homework action="{{route('delete-homework-file', $file->id)}}" method="POST">
+                                                        @method('POST')
+                                                        @csrf
+                                                        <input type="hidden" name="group_id" value="{{$group->id}}">
+                                                        <button type="submit" class="btn blue remove-post">Ištrinti</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        @endif
+                                        <div class="modal fade" id="edit-modal-{{ $file->id }}" tabindex="-1" role="dialog">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <form action="{{route('homework-edit', $file->id)}}" homework-edit-file method="POST" enctype="multipart/form-data">
+                                                        <div class="author-comment">
+                                                            <div class="author">{{$file->user->name}} {{$file->user->surname}}</div>
+                                                            <div class="date mb-2">{{ $file->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</div>
+                                                            <div class="desc edit"><textarea name="file_name" rows="5" style="width: 100%;overflow-y: hidden; border: 0px">@php echo strip_tags($displayName);; @endphp</textarea></div>
+                                                            <div class="edit-buttons mt-2" id="homework-add-file-{{$file->id}}">
+                                                                <div class="left-col">
+                                                                    <button type="button" onclick="addHomeworkFile('homework-add-file-'+{{$file->id}})" name="file-homework-edit-input-{{$file->id}}" class="btn blue attachment">Prisegti dokumentą</button>
+                                                                    <input name="file" id="file-homework-edit-input-{{$file->id}}" value="{{$file->name}}" type="file" style="display:none;">
+                                                                </div>
+                                                                <div class="right-col">
+                                                                    @if (!empty($file->name))
+                                                                        <div class="attachments pl-2" id="homework-add-file-{{$file->id}}">
+                                                                            <div class="attachment">
+                                                                                <a target="_blank" href="{{ url("/uploads/".$file->name) }}" class="file">Prisegtas dokumentas</a>
+                                                                                <a onclick="deleteEditHomeworkFile('homework-add-file-'+{{$file->id}})" class="remove-attachment"></a>
+                                                                            </div>
+                                                                        </div>
                                                                     @endif
+                                                                    <button type="submit" class="btn blue post active">Skelbti</button>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        @if($msg->author_id == Auth::user()->id || Auth::user()->role == 'admin')
-                                                            <div class="col-md-6">
-                                                                <div class="row">
-                                                                    <div class="col-md-12 right--buttons--block">
-                                                                        <div class="row">
-                                                                            <div class="col-md-3 col-sm-12 chat--div">
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <form  method="POST" action="{{ route('comments.store') }}" comments-form id="comment-post-{{$file->id}}" enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="comment-form">
+                                                <input type="hidden" name="commentable_encrypted_key" value="{{ $file->getEncryptedKey() }}"/>
+                                                <input type="text" class="comment" placeholder="Komentuoti" value="" name="message">
+                                                <input type="hidden" name="group_id" value="{{$group->id}}">
+                                                <label  onclick="addCommentFile('comment-post-'+{{$file->id}})" class="file"></label>
+                                                <input type="file" name="file" id="file-attachment-post-{{ $file->id }}" class="file-attachment" />
+                                                <button type="submit" class="submit" id="submit"></button>
+                                            </div>
+                                        </form>
+                                        <x-comment-custom :model="$file"/>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div class="sidebar-area col-lg-5 col-sm-12 col-12">
+                                <div class="information-block">
+                                    <h3>Informacija</h3>
+                                    <div class="desc">{!! $group->information !!}</div>
+                                </div>
+                                <div class="schedule-block">
+                                    <div class="dashboard--block">
+                                        <h3>Tvarkaraštis</h3>
+                                        <div class="dashboard--timetable">
+                                            @foreach($group->events()->where("date_at", ">" ,\Carbon\Carbon::now('utc')->addHours(3)->format('Y-m-d H:i:s'))->orderBy("date_at","ASC")->get() as $event)
+                                                <div class="dashboard--time">
+                                                    <?php
+                                                    $eventDate = $event->date_at->timezone(Cookie::get("user_timezone", "GMT"));
+                                                    ?>
+                                                    <div class="dashboard--time--date">{{ mb_strtoupper(mb_substr($eventDate->translatedFormat("F"),0,3)) }}<br><span>{{ $eventDate->format("d") }}</span></div>
+                                                    <div class="dashboard--time--info">
+                                                        <b>{{ $event->name }}</b> ∙ {{ $event->teacher->name }} {{ $event->teacher->surname }}<br>
+                                                        {{\App\TimeZoneUtils::updateTime($eventDate->format("Y-m-d H:i"), $event->updated_at)}}                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-2" class="tabcontent">
+                            <div class="main-tab-area col-lg-7 col-sm-12 col-12">
+                                <div class="main-info">
+                                    <h3>Pokalbiai ir nariai</h3>
+                                    <div class="subtitle">Bendraukite su grupės draugais</div>
+                                </div>
+
+                                <div class="chat-form">
+                                    <div class="comments-list">
+                                        @php $messages = $group->group_message()->orderBy("id", "Desc")->get(); @endphp
+                                        @if (!$messages->isEmpty())
+                                            @foreach($messages as $msg)
+                                                <?php
+                                                $student = null;
+                                                if($msg->author && count($msg->author->studentsInGroup($group)))
+                                                    $student = $msg->author->studentsInGroup($group)[0];
+
+                                                ?>
+                                                <div class="comment-area" id="group-message-list-{{$msg->id}}">
+                                                    <div class="author-icon">
+                                                        @if($student && $student->photo)
+                                                            <img src="/uploads/students/{{ $student->photo }}">
+                                                        @elseif($msg->author && $msg->author->photo)
+                                                            <img src="/uploads/users/{{ $msg->author->photo }}">
+                                                        @else
+                                                            <span class="icon-user"></span>
+                                                        @endif
+                                                    </div>
+                                                    <div class="author-info">
+                                                        <div class="author">
+                                                            @if($student)
+                                                                <b>{{ $student->name }}</b> ∙ <br>
+                                                                @if($student->birthday){{ $student->age }} ∙ @endif {{ $msg->author->name }} {{ $msg->author->surname }}
+                                                            @elseif($msg->author)
+                                                                <b>{{ $msg->author->name }} {{ $msg->author->surname }}</b> ∙<br>
+                                                            @endif
+                                                        </div>
+                                                        <div class="time">{{$msg->updated_at->diffForHumans()}}</div>
+                                                    </div>
+                                                    <div class="comment">
+                                                        <div class="text">
+                                                            <?php $msg->message = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $msg->message);
+                                                            echo $msg->message; ?>
+                                                        </div>
+                                                        @if($msg->file)
+                                                        <div class="attachments">
+                                                            <div class="attachment">
+                                                                <a href="{{ url('uploads/group-messages/'.$msg->file)}}"  target="_blank" class="file">Prisegtas dokumentas</a>
+                                                            </div>
+                                                        </div>
+                                                        @endif
+                                                            @if($msg->author_id == Auth::user()->id || Auth::user()->role == 'admin')
+                                                                <div class="edit-buttons mt-2">
+                                                                    <div class="left-col" style="float: left;">
+                                                                        <button data-toggle="modal" data-target="#edit-group-messages-{{$msg->id}}" class="btn blue edit">Redaguoti</button>
+                                                                    </div>
+                                                                    <div class="right-col">
+                                                                        <form delete-group-message action="{{route('delete-group-message', $msg->id)}}" method="POST">
+                                                                            @method('POST')
+                                                                            @csrf
+                                                                            <input type="hidden" name="group_id" value="{{$group->id}}">
+                                                                            <button type="submit" class="btn blue remove-post">Ištrinti</button>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal fade" id="edit-group-messages-{{ $msg->id }}" tabindex="-1" role="dialog">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <form action="{{route('edit-group-message', $msg->id)}}" edit-group-message-form  method="POST" enctype="multipart/form-data">
+                                                                    <div class="author-comment">
+                                                                        <div class="author">{{$msg->author->name}} {{$msg->author->surname}}</div>
+                                                                        <div class="date mb-2">{{ $msg->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</div>
+                                                                        <input type="hidden" name="group_id" value="{{$group->id}}">
+                                                                        <div class="desc edit"><textarea name="message" rows="5" style="width: 100%;overflow-y: hidden; border: 0px">@php echo strip_tags($msg->message);; @endphp</textarea></div>
+                                                                        <div class="edit-buttons mt-2" id="group-message-add-file-{{$msg->id}}">
+                                                                            <div class="left-col">
+                                                                                <button type="button" onclick="addHomeworkFile('group-message-add-file-'+{{$msg->id}})" name="group-message-edit-input-{{$msg->id}}" class="btn blue attachment">Prisegti dokumentą</button>
+                                                                                <input name="file" id="group-message-edit-input-{{$msg->id}}" value="{{$msg->file}}" type="file" style="display:none;">
                                                                             </div>
-                                                                            <div class="col-md-3  col-sm-12 chat--div">
-                                                                                <input type="hidden" name="groupID" value="{{$group->id}}">
-                                                                                <input id="data-chat-file-input-{{$msg->id}}" type="file" name="file" style="display: none;" data-chat-file-{{$msg->id}} accept=".doc,.docx,.xls,.xlsx,.pdf,.ppt,.pptx,.jpg,.jpeg,.png,.gif,.mp4">
-                                                                                <button type="button" class="dashboard--send--message--button dashboard--upload-file--button" onclick="chatFileName({{$msg->id}}, this)">
-                                                                                    <img src="/images/icons/upload.svg">
-                                                                                </button>
-                                                                            </div>
-                                                                            <div class="col-md-3  col-sm-12 chat--div">
-                                                                                <button type="submit" class="dashboard--send--message--button">
-                                                                                    <img src="/images/icons/paper-plane.svg">
-                                                                                </button>
-                                                                            </div>
-                                                                            <div class="col-md-3  col-sm-12 chat--div" >
-                                                                                <a data-message-delete="{{ $msg->id }}" class="dashboard--media--delete"><img src="/images/icons/trash.svg"> Ištrinti</a>
-                                                                                <div class="clear--fix"></div>
+                                                                            <div class="right-col">
+                                                                                @if($msg->file)
+                                                                                    <div class="attachments pl-2" id="group-message-add-file-{{$msg->id}}">
+                                                                                        <div class="attachment">
+                                                                                            <a target="_blank" href="{{ url("/uploads/".$msg->file) }}" class="file">Prisegtas dokumentas</a>
+                                                                                            <a onclick="deleteEditHomeworkFile('group-message-add-file-'+{{$msg->id}})" class="remove-attachment"></a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                @endif
+                                                                                <button type="submit" class="btn blue post active">Skelbti</button>
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                </form>
                                                             </div>
-                                                        @endif
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            @if($msg->author_id == Auth::user()->id)
-                                        </form>
-                                    @endif
+                                            @endforeach
+                                        @else
+                                            <div class="desc text-center">Nėra įrašų.</div>
+                                        @endif
 
-
-                                    <div class="dashboard--block--hr"></div>
-                                @endforeach
-                            </div>
-                        </div>
-                        <div class="dashboard--block--hr"></div>
-                        {{--                    <div class="dashboard--send--message">--}}
-                        <div class="col-md-12">
-                            <div class="dashboard--block--hr"></div>
-                            <form method="POST" action="/dashboard/groups/createMessage" enctype="multipart/form-data">
-                                @csrf
-                                @method("OPTIONS")
-                                <textarea oninput="auto_grow(this)" type="text" name="text" class="dashboard--send--message--input" placeholder="Įrašykite žinutę..."></textarea>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="col-md-4">
+                                    </div>
+                                    <div class="align-content-end">
+                                        <form  method="POST" class="align-bottom" new-group-message action="{{ route('create-message-conversations') }}" id="group-message-store" enctype="multipart/form-data">
+                                            @csrf
+                                            @method("OPTIONS")
+                                            <div class="comment-form">
+                                                <input type="text" class="comment" placeholder="Rašyti" value="" name="text">
                                                 <input type="hidden" name="groupID" value="{{$group->id}}">
-                                                <label id="upload-label" for="upload-chat-file" class="mb-5 mr-5 dasboard-add-document-button" ><b>Pridėti dokumentą</b></label>
-                                                <input id="upload-chat-file" type="file" name="file" style="display:none;" data-chat-file accept=".doc,.docx,.xls,.xlsx,.pdf,.ppt,.pptx,.jpg,.jpeg,.png,.gif,.mp4">
-                                                <div class="file--name" style="display: none;">
-                                                </div>
+                                                <label onclick="addCommentFile('group-message-store')" class="file"></label>
+                                                <input  type="file" name="file" id="file-attachment-group-message-store" class="file-attachment" />
+                                                <button type="submit" class="submit" id="submit">
                                             </div>
-                                            <div class="col-md-4 add-document-new" id="new-file-add-document">
+                                        </form>
+                                    </div>
 
-                                            </div>
-                                            <div class="col-md-2 offset-1" style="margin-left: 10px;">
-                                                <button type="submit" class="dashboard--send--message--button">
-                                                    <img src="/images/icons/paper-plane.svg">
-                                                </button>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="dashboard--block">
-                    <h3>Tvarkaraštis</h3>
-                    <div class="dashboard--timetable">
-                        <?php
-                        setlocale(LC_TIME, 'lt_LT');
-                        \Carbon\Carbon::setLocale('lt');
-                        ?>
-                        @foreach($group->events()->where("date_at", ">" ,\Carbon\Carbon::now('utc')->addHours(3))->orderBy("date_at","ASC")->get() as $event)
-                            <div class="dashboard--time">
-                                <?php
-                                $eventDate = $event->date_at->timezone(Cookie::get("user_timezone", "GMT"));
-                                /*$today = date("Y-m-d H:i");
-                                $summerday = date("Y-03-28 5:00");
-                                $winterday = date("Y-10-31 5:00");
-                                if($today >= $summerday){
-                                    $eventDate = $event->date_at->timezone(Cookie::get("user_timezone", "GMT"))->subHour();
-                                }else if($today == $winterday){
-                                    $eventDate = $event->date_at->timezone(Cookie::get("user_timezone", "GMT"))->addHour();
-                                }*/
-                                ?>
-                                <div class="dashboard--time--date">{{ mb_strtoupper(mb_substr($eventDate->translatedFormat("F"),0,3)) }}<br><span>{{ $eventDate->format("d") }}</span></div>
-                                <div class="dashboard--time--info">
-                                    <b>{{ $event->name }}</b> ∙ {{ $event->teacher->name }} {{ $event->teacher->surname }}<br>
-                                    {{ $eventDate->format("Y-m-d H:i") }}
+                            <div class="sidebar-area col-lg-5 col-sm-12 col-12">
+                                <div class="members-block">
+                                    <h3>Nariai</h3>
+{{--                                    <div class="subtitle">{!! $group->information !!}</div>--}}
+                                    <div class="members-list">
+                                        @foreach($group->students as $student)
+                                            <div class="member">
+                                                <div class="author-icon">
+                                                    @if($student->photo)
+                                                        <img src="/uploads/students/{{ $student->photo }}">
+                                                    @else
+                                                        <span class="icon-user"></span>
+                                                    @endif
+                                                </div>
+                                                <div class="author-info">
+                                                    <div class="author-nick">{{$student->name}}</div>
+                                                    <div class="author-fullname">@if($student->user) {{ $student->user->name }} {{ $student->user->surname }} @endif</div>
+                                                </div>
+                                                <button class="btn blue" value="{{$student->id}}" data-toggle="modal" data-target="#sendMessageModal" data-user-name="{{ $student->name }}" data-user-id="{{ $student->id }}">Siųsti žinutę</button>
+                                            </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
-                        @endforeach
                     </div>
+                        <div id="tab-3" class="tabcontent">
+                            <div class="row mt-5">
+                            </div>
+                        </div>
                 </div>
             </div>
+            </section>
         </div>
-    </div>
-
-    </div>
 
 
     <!-- Modal -->
@@ -433,73 +380,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        $("[data-chat-messages] .dashboard--block--hr:last-child").remove();
-        $("[data-chat-messages]").scrollTop(999999999);
-
-        function homeWorkChatFileName(id) {
-
-            $('[data-homework-file-'+id+']').unbind().click();
-            $('[data-homework-file-'+id+']').unbind().change(id, function() {
-                if($('#upload-photo-'+id).prop('files')[0].size > 20971520) {
-                    alert("Dokumentas per didelis!");
-                } else {
-                    if ($('#file-label-'+id).find('a').length === 0) {
-                        var appenderString = '<u id="file-label-'+id+'">' +
-                            '<a class="" target="_blank">Prisegtas dokumentas</a>' +
-                            '</u><span id="close-btn-'+id+'" onclick="deleteFile('+id+')" class="close-btn-groups">x</span>';
-                        $('#add-document-'+id).append(appenderString);
-                    } else {
-                        $('#file-label-'+id).find('a').html('Prisegtas dokumentas');
-                        $('#close-btn-'+id).html('x');
-                    }
-
-                }
-            });
-        }
-
-        function chatFileName(id) {
-            $('[data-chat-file-'+id+']').unbind().click();
-            $('[data-chat-file-'+id+']').unbind().change(id, function() {
-                if($('#data-chat-file-input-'+id).prop('files')[0].size > 20971520) {
-                    alert("Dokumentas per didelis!");
-                    // $('#data-chat-file-input-'+id).val('');
-
-                } else {
-
-                    if ($('#file-label-chat-'+id).find('a').length === 0) {
-                        var appenderString = '<u id="file-label-chat-'+id+'">' +
-                            '<a class="" target="_blank">Prisegtas dokumentas</a>' +
-                            '</u><span id="close-chat-btn-'+id+'" style="color: #000; onclick="deleteFileChat('+id+')" class="close-btn-groups">x</span>';
-                        $('#add-chat-document-'+id).append(appenderString);
-                    } else {
-                        $('#file-label-chat-'+id).find('a').html('Prisegtas dokumentas');
-                        $('#close-chat-btn-'+id).html('x');
-                    }
-
-                }
-            });
-        }
-
-
-
-
-
-        // $("[data-chat-file]").change(function() {
-        //     if(this.files[0].size > 20971520) {
-        //         alert("Dokumentas per didelis!");
-        //         this.value = "";
-        //     }
-        //     var filename = $(this)[0].files.length ? $(this)[0].files[0].name : "";
-        //     $(".file--name").html(filename).show();
-        // });
-        // $(".file--name").click(function() {
-        //     $("[data-chat-file]").val('');
-        //     $(this).hide();
-        // })
-    </script>
-
     <script>
         $('[data-target="#sendMessageModal"]').click(function () {
             var name = $(this).attr("data-user-name");
@@ -568,352 +448,50 @@
                 {{--});--}}
             });
         });
-    </script>
+        $( document ).ready(function() {
+            setTimeout(function(){
+                $("#flash-message").remove();
+            }, 3000 );
 
-    <script>
-        $(document).ready(function() {
-
-            $(function() {
-                $('textarea').each(function() {
-                    $(this).height($(this).prop('scrollHeight'));
-                });
-            });
-
-            $(".clickableElement").click(function() {
-                $(".nav a").removeClass("active");
-
-                $("#members, #timetable, #chat, #media, #attendance, #information").hide();
-
-                if($(this).text() == "Pokalbiai"){
-                    $(this).addClass("active");
-
-                    $("#chat").toggle();
-                }
-                if($(this).text() == "Nariai"){
-                    $(this).addClass("active");
-
-                    $("#members").toggle();
-                }
-                if($(this).text() == "Mokytojo media"){
-                    $(this).addClass("active");
-
-                    $("#media").toggle();
-                }
-
-                if($(this).text() == "Tvarkaraštis"){
-                    $(this).addClass("active");
-
-                    $("#timetable").toggle();
-                }
-
-                if($(this).text() == "Lankomumas"){
-                    $(this).addClass("active");
-
-                    $("#attendance").toggle();
-                }
-
-                if($(this).text() == "Informacija"){
-                    $(this).addClass("active");
-
-                    $("#information").toggle();
-                }
-            });
-            console.log($("#homework-files").scrollTop(90000000000));
-            $("#homework-files").scrollTop(90000000000);
-
-            $("[data-upload]").submit(function(event){
-                event.preventDefault();
-                file = '';
-
-                var form_data = new FormData();
-
-                if (typeof $("#upload-photo").prop('files')[0] !== 'undefined') {
-                    var file = $("#upload-photo").prop('files')[0];
-                }
-                var file_name = $("#home-work-input").val();
-
-                form_data.append('file', file);
-                form_data.append('file_name', file_name);
-                form_data.append('_token', "{{ csrf_token() }}");
-                form_data.append('group_id', "{{ $group->id }}");
-                $(".progress").show();
-                $(".file--upload--button").hide();
-                $(".progress .progress-bar").css("width", 0);
-                $.ajax({
-                    url: '/dashboard/groups/upload', // point to server-side PHP script
-                    dataType: 'text',  // what to expect back from the PHP script, if anything
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    data: form_data,
-                    type: 'post',
-                    xhr: function() {
-                        var myXhr = $.ajaxSettings.xhr();
-                        if(myXhr.upload){
-                            myXhr.upload.addEventListener('progress',progress, false);
-                        }
-                        return myXhr;
-                    },
-                    success: function(response){
-                        $(".progress").hide();
-                        $(".file--upload--button").show();
-                        response = JSON.parse(response);
-                        var displayName = response.display_name;
-                        // if(!displayName) {
-                        //     displayName = response.file.replace("." + extension, "");
-                        // }
-                        var prependString = '' +
-                            '                                <b><textarea class="dashboard--media" id="homework-message-'+response.file.id+'" oninput="auto_grow(this)" name="message" style="border-width: 0px; width: 100%; height: 100%; color: black;" >'+displayName+'</textarea></b>'+
-                            '                            <div class="row" style="margin-top: 30px;">'+
-                            '                                <div class="col-md-6">'+
-                            '                                    <div class="row">'+
-                            '                                        <div class="col-md-12" style="padding-left: 30px;">'+
-                            '                                            <div class="row">'+
-                            '                                                <div class="col-md-6 chat--div">'+
-                            '                                                    <span class="timezone-group-span">'+response.date+'</span>'+
-                            '                                                </div>'+
-                            '                                                <div class="col-md-6 chat--div" style="font-size: 10px;">\n';
-                        if (response.file !== '') {
-                            prependString += '<u id="file-label-'+response.id+'">' +
-                                '<a class="" href="/uploads/'+response.file+'" target="_blank">Prisegtas dokumentas</a>' +
-                                '</u><span id="close-btn-'+response.id+'" onclick="deleteFile('+response.id+')" class="close-btn-groups">x</span>';
-                        }
-                        prependString += ''+
-                            '</div>'+
-                            '</div>'+
-                            '</div>'+
-                            '                                    </div>'+
-                            '                                </div>'+
-                            '                                <div class="col-md-6">'+
-                            '                                    <div class="row">'+
-                            '                                        <div class="col-md-12 right--buttons--block">'+
-                            '                                            <div class="row">'+
-                            '                                                <div class="col-md-3 col-sm-12 chat--div" >'+
-                            '                                                </div>'+
-                            '                                                    <div class="col-md-3 col-sm-12 chat--div" >'+
-                            '                                                        <button type="button" class="dashboard--send--message--button dashboard--upload-file--button"  onclick="homeWorkChatFileName('+response.id+', this)">'+
-                            '                                                            <img src="/images/icons/upload.svg">'+
-                            '                                                        </button>'+
-                            '                                                        <input id="upload-photo-'+response.id+'" data-homework-file-'+response.id+' name="upload_file" type="file" class="dashboard--media--input" value="'+response.file+'" style="display: none;"/>'+
-                            '                                                    </div>'+
-                            '                                                    <div class="col-md-3 col-sm-12 chat--div" >'+
-                            '                                                        <button type="submit" onclick="homeWorkChatEdit('+response.id+')" class="dashboard--send--message--button file--upload--button">'+
-                            '                                                            <img src="/images/icons/paper-plane.svg">'+
-                            '                                                        </button>'+
-                            '                                                    </div>'+
-                            '                                                    <div class="col-md-3 col-sm-12 chat--div" >'+
-                            '                                                            <a data-file-delete="'+response.id+'" class="dashboard--media--delete"><img src="/images/icons/trash.svg"> Ištrinti</a>'+
-                            '                                                    </div>'+
-                            '                                            </div>'+
-                            '                                        </div>'+
-                            '                                    </div>'+
-                            '                                </div>'+
-                            '                            </div>'+
-                            '                            <div class="clear--fix"></div>';
-                        $('#upload-photo').val('');
-                        $('#home-work-input').val('');
-
-                        $(".files").append(prependString);
-                        // rebindFileEvents();
-                    },
-                    error: function (response) {
-                        $(".progress").hide();
-                        $(".file--upload--button").show();
-                        alert("Klaida įkeliant bylą!");
-                    }
-                });
-            });
-
-
-
-            $('#upload-chat-file').unbind();
-            $('#upload-chat-file').unbind().change(function() {
-                console.log($('#upload-chat-file').prop('files'));
-                if($('#upload-chat-file').prop('files')[0].size > 20971520) {
-                    alert("Dokumentas per didelis!");
-                    // $('#data-chat-file-input-'+id).val('');
-
-                } else {
-                    if ($('#new-file-add-document').find('a').length === 0) {
-                        var appenderString = '<u id="file-label-chat">' +
-                            '<a class="" target="_blank">Prisegtas dokumentas</a>' +
-                            '</u><span id="close-chat-btn" style="color: #000;" onclick="deleteNewFileChat()" class="close-btn-groups">x</span>';
-                        $('#new-file-add-document').append(appenderString);
-                    } else {
-                        $('#new-file-add-document').find('a').html('Prisegtas dokumentas');
-                        $('#close-chat-btn').html('x');
-                    }
-
-                }
-            });
-
-            $('#upload-photo').unbind();
-            $('#upload-photo').unbind().change(function() {
-                console.log($('#upload-photo').prop('files'));
-                if($('#upload-photo').prop('files')[0].size > 20971520) {
-                    alert("Dokumentas per didelis!");
-                    // $('#data-chat-file-input-'+id).val('');
-
-                } else {
-                    if ($('#homework-new-file-add-document').find('a').length === 0) {
-                        var appenderString = '<u id="file-label-chat">' +
-                            '<a class="" target="_blank">Prisegtas dokumentas</a>' +
-                            '</u><span id="close-chat-btn" style="color: #000;" onclick="deleteHomeworkNewFileChat()" class="close-btn-groups">x</span>';
-                        $('#homework-new-file-add-document').append(appenderString);
-                    } else {
-                        $('#homework-new-file-add-document').find('a').html('Prisegtas dokumentas');
-                        $('#homework-new-file-add-document').html('x');
-                    }
-
-                }
-            });
+            var groupMessage = @json($groupMessage);
+                if(groupMessage == true) {
+                $('[data-country="tab-2"]').click();
+            }
         });
+
+        //
+        $("[comments-form],[homework-edit-file], [edit-group-message-form], [new-group-message], [delete-homework], [delete-group-message], [delete-comment], [comment-reply], [comment-edit]").submit(function() {
+            var pass = true;
+            //some validations
+
+            if(pass == false){
+                return false;
+            }
+            var body = $("body");
+
+            body.addClass("loading");
+
+            return true;
+        });
+        function thisFileUpload(element) {
+            document.getElementById(element.name).click();
+        };
+
+        function goToHomeTab() {
+             $('[data-country="tab-1"]').click();
+        }
+
         function auto_grow(element) {
             element.style.height = "5px";
-            element.style.height = (element.scrollHeight)+"px";
+            element.style.height = (element.scrollHeight) + "px";
         }
 
-        function deleteFile(id) {
-            $('#upload-photo-'+id).val('');
-            $('#file-label-'+id).find('a').html('');
-            $('#file-label-'+id).find('a').removeAttr('href');
-            $('#close-btn-'+id).html('');
-
-            // self.html('');
-        }
-
-        function deleteFileChat(id) {
-            $('#file-label-chat-'+id).find('a').html('');
-            $('#file-label-chat-'+id).find('a').removeAttr('href');
-            $('#chat-file-'+id).remove();
-            $('#close-chat-btn-'+id).html('');
-        }
-
-        function deleteNewFileChat() {
-            $('#new-file-add-document').html('');
-        }
-
-        function deleteHomeworkNewFileChat() {
-            $('#homework-new-file-add-document').html('');
-        }
-
-        function homeWorkChatEdit(id) {
-            var file = '';
-            var oldFile = 0;
-            if (typeof $("#upload-photo-"+id).prop('files')[0] !== 'undefined') {
-                file = $("#upload-photo-"+id).prop('files')[0];
-            }
-
-            if (typeof $('#file-label-'+id).find('a').attr('href') !== 'undefined') {
-                oldFile = 1;
-            }
-
-            var file_name = $("#homework-message-"+id).val();
-            var form_data = new FormData();
-            form_data.append('file', file);
-            form_data.append('oldFile', oldFile);
-            form_data.append('message', file_name);
-            form_data.append('_token', "{{ csrf_token() }}");
-            form_data.append('group_id', "{{ $group->id }}");
-            form_data.append('id', id);
-            $(".progress").show();
-            $(".file--upload--button").hide();
-            $(".progress .progress-bar").css("width", 0);
-            $.ajax({
-                url: '/dashboard/groups/homework/'+id+'/edit', // point to server-side PHP script
-                dataType: 'text',  // what to expect back from the PHP script, if anything
-                cache: false,
-                contentType: false,
-                processData: false,
-                data: form_data,
-                type: 'post',
-                xhr: function() {
-                    var myXhr = $.ajaxSettings.xhr();
-                    if(myXhr.upload){
-                        myXhr.upload.addEventListener('progress',progress, false);
-                    }
-                    return myXhr;
-                },
-                success: function(response){
-                    response = JSON.parse(response);
-                    console.log(response.name);
-                    if (response.name !== '') {
-                        $('#file-label-'+response.id).find('a').attr('href', '/uploads/'+response.name);
-                    }
-                    $(".progress").hide();
-                    $(".file--upload--button").show();
-                    rebindFileEvents();
-                    alert('Sekmingai pataisytas irasas');
-                },
-                error: function (response) {
-                    $(".progress").hide();
-                    $(".file--upload--button").show();
-                    alert("Klaida įkeliant bylą!");
-                }
-            });
-        }
-
-
-
-        function rebindFileEvents() {
-            $("[data-file-delete]").click(function (){
-                var element = $(this);
-                $(this).html("...").addClass("btn-disabled");
-                var id = $(this).attr("data-file-delete");
-                $.post("/dashboard/groups/upload/"+id+"/delete", {_token: "{{ csrf_token() }}"}, function (data) {
-                    data = JSON.parse(data);
-                    if(data.status == "success"){
-                        alert(data.message);
-                        $('#homework-main-'+id).remove();
-                        element.prev().remove();
-                        element.prev().remove();
-                        element.remove();
-                    }else{
-                        alert("KLAIDA! "+data.message);
-                    }
-                });
-            });
-        }
-
-        rebindFileEvents();
-
-        function rebindChatEvents() {
-            $("[data-message-delete]").click(function (){
-                $(this).html("...").addClass("btn-disabled");
-                var id = $(this).attr("data-message-delete");
-                $.post("/dashboard/groups/message/"+id+"/delete", {_token: "{{ csrf_token() }}"}, function (data) {
-                    if(data.message != undefined){
-                        alert(data.message);
-                    }else{
-                        alert("Žinutė sėkmingai ištrinta!");
-                    }
-                    window.location = window.location.href;
-                });
-            });
-        }
-
-        rebindChatEvents();
-
-        function progress(e){
-
-            if(e.lengthComputable){
-                var max = e.total;
-                var current = e.loaded;
-
-                var percentage = (current * 100)/max;
-                $(".progress .progress-bar").css("width", percentage);
-
-            }
-        }
-
-    </script>
-    <script>
         $("[zoom-join]").click(function() {
             joinMeeting(this);
         });
         function joinMeeting(button) {
-            if($("#zoomModal iframe").attr("src") != "{{ url("/dashboard/events/".($nextEvent ? $nextEvent->id : '')."/zoom") }}"){
-                $("#zoomModal iframe").attr("src", "{{ url("/dashboard/events/".($nextEvent ? $nextEvent->id : '')."/zoom") }}");
+            if($("#zoomModal iframe").attr("src") != "{{ url("/dashboard/events/".($nextLesson ? $nextLesson->id : '')."/zoom") }}"){
+                $("#zoomModal iframe").attr("src", "{{ url("/dashboard/events/".($nextLesson ? $nextLesson->id : '')."/zoom") }}");
             }
             $("#zoomModal").modal("show");
             setTimeout(function() {
@@ -928,8 +506,64 @@
                 }
             }
         },500);
-    </script>
 
-</x-app-layout>
+        function addHomeworkFile(id) {
+            var mainDiv = $('#'+id);
+            mainDiv.find('input:file').click();
+            if (mainDiv.find('div.attachment').length === 0) {
+                $('#'+mainDiv.find('input:file').attr('id')).unbind();
+                $('#'+mainDiv.find('input:file').attr('id')).unbind().change(function(e) {
+                    if($(this).prop('files')[0].size > 20971520) {
+                        alert("Dokumentas per didelis!");
+
+                    } else {
+                        mainDiv.find('.right-col').prepend('<div class="attachments">\n' +
+                            '<div class="attachment">\n' +
+                            '<a class="file">Prisegtas dokumentas</a>\n' +
+                            '<a onclick="deleteEditHomeworkFile(\''+id+'\')" class="remove-attachment"></a>\n' +
+                            '</div>\n' +
+                            '</div>')
+                    }
+                });
+
+            }
+        }
+
+        function addCommentFile(id) {
+            var mainDiv = $('#'+id);
+            mainDiv.find('input:file').click();
+            if (mainDiv.find('div.attachment').length < 1) {
+                $('#'+mainDiv.find('input:file').attr('id')).unbind();
+                $('#'+mainDiv.find('input:file').attr('id')).unbind().change(function(e) {
+                    if($(this).prop('files')[0].size > 20971520) {
+                        alert("Dokumentas per didelis!");
+
+                    } else {
+                        mainDiv.append('<div class="attachments mt-2">\n' +
+                            '<div class="attachment">\n' +
+                            '<a class="file">Prisegtas dokumentas</a>\n' +
+                            '<a onclick="deleteEditHomeworkFile(\''+id+'\')" class="remove-attachment" style="cursor: pointer"></a>\n' +
+                            '</div>\n' +
+                            '</div>')
+                    }
+                });
+
+            }
+        }
+
+        function deleteEditHomeworkFile(id) {
+            var mainDiv = $('#'+id);
+
+            mainDiv.find('div.attachments').remove();
+            mainDiv.find('input:file').val('');
+        }
+
+        function deleteHomeworkFile(element) {
+            document.getElementById('file-homework-store').value = '';
+            element.parentNode.parentNode.remove();
+        }
+
+    </script>
+    </x-user>
 
 {{--https://stackoverflow.com/questions/15389833/laravel-redirect-back-to-original-destination-after-login/39595605#39595605--}}

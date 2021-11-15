@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\QuestionFormController;
@@ -159,12 +160,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dashboard/events/{id}/attendances', [EventController::class, 'attendancesPost']);
     Route::get('/dashboard/events/{id}/clone', [EventController::class, 'clone']);
     Route::get('/dashboard/events/deleteEvents', [EventController::class, 'deleteEvent']);
-    Route::post('/dashboard/groups/upload', [GroupController::class, 'uploadFile']);
-    Route::post('/dashboard/groups/homework/{id}/edit', [GroupController::class, 'editGroupHomework']);
-    Route::post('/dashboard/groups/upload/{id}/delete', [GroupController::class, 'deleteFile']);
+    Route::post('/dashboard/groups/upload', [GroupController::class, 'uploadFile'])->name('homework-store')->middleware('auth');
+    Route::post('/dashboard/groups/homework/{id}/edit', [GroupController::class, 'editGroupHomework'])->name('homework-edit');
+    Route::post('/dashboard/groups/upload/{id}/delete', [GroupController::class, 'deleteFile'])->name('delete-homework-file');
     Route::post('/dashboard/groups/message', [GroupController::class, 'message']);
-    Route::post('/dashboard/groups/message/{id}/delete', [GroupController::class, 'deleteMessage']);
-    Route::post('/dashboard/groups/message/{id}/edit', [GroupController::class, 'editMessage']);
+    Route::post('/dashboard/groups/message/{id}/delete', [GroupController::class, 'deleteMessage'])->name('delete-group-message');
+    Route::post('/dashboard/groups/message/{id}/edit', [GroupController::class, 'editMessage'])->name('edit-group-message');
     Route::get('/dashboard/messages/sent', [MessageController::class, 'sentMessages']);
     Route::resource('/dashboard/users', UserController::class);
     Route::resource('/dashboard/groups', GroupController::class);
@@ -180,7 +181,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dashboard/profile/profile-photo-change', [InfoChangeController::class, 'profilePhotoChange']);
     Route::post('/dashboard/announcements/message', [MessageController::class, 'sendMessage']);
     Route::post('/dashboard/announcements/news', [MessageController::class, 'sendNew']);
-    Route::options('/dashboard/groups/createMessage', [GroupController::class, 'createMessage']);
+    Route::options('/dashboard/groups/createMessage', [GroupController::class, 'createMessage'])->name('create-message-conversations');
     Route::post('/dashboard/generate-zoom-signature', [GroupController::class, 'generateZoomSignature']);
     Route::get('/dashboard/create-zoom-meeting/{id}', [EventController::class, 'createZoomMetting']);
     Route::get('/dashboard/events/{event}/zoom', [EventController::class, 'zoom']);
@@ -192,7 +193,21 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dashboard/wbuilder/page-delete', [InfoChangeController::class, 'pageDelete']);
     Route::post('/dashboard/wbuilder/file-upload', [InfoChangeController::class, 'fileUpload']);
     Route::post('/dashboard/save-navbar', [NavbarController::class, 'save']);
+    if (config('comments.route.custom') !== null) {
+        Route::group(['prefix' => config('comments.route.custom')], static function () {
+            Route::group(['prefix' => config('comments.route.group'), 'as' => 'comments.',], static function () {
+                Route::get('/', [CommentsController::class, 'get'])->name('get');
+                Route::post('/', [CommentsController::class, 'store'])->name('store');
+                Route::delete('/{comment}', [CommentsController::class, 'destroy'])->name('delete');
+                Route::put('/{comment}', [CommentsController::class, 'update'])->name('update');
+                Route::get('/{comment}', [CommentsController::class, 'show']);
+                Route::post('/{comment}', [CommentsController::class, 'reply'])->name('reply');
+            });
+        });
+    }
 });
+
+
 
 
 require __DIR__.'/auth.php';

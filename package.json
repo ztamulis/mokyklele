@@ -2,12 +2,12 @@
     "private": true,
     "scripts": {
         "dev": "npm run development",
-        "development": "mix",
-        "watch": "mix watch",
-        "watch-poll": "mix watch -- --watch-options-poll=1000",
-        "hot": "mix watch --hot",
+        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --config=node_modules/laravel-mix/setup/webpack.config.js",
+        "watch": "npm run development -- --watch",
+        "watch-poll": "npm run watch -- --watch-poll",
+        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
-        "production": "mix --production"
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
         "@tailwindcss/forms": "^0.2.1",
@@ -18,6 +18,21 @@
         "lodash": "^4.17.19",
         "postcss": "^8.2.1",
         "postcss-import": "^12.0.1",
-        "tailwindcss": "^2.0.2"
+        "sass": "^1.43.3",
+        "sass-loader": "^12.2.0",
+        "tailwindcss": "^2.0.2",
+        "webpack": "^5.60.0",
+        "browser-sync": "^2.26.7",
+        "cssnano": "^4.1.10",
+        "del": "^5.1.0",
+        "gulp": "^4.0.2",
+        "gulp-install": "^1.1.0",
+        "gulp-postcss": "^8.0.0",
+        "gulp-sass": "^4.0.2",
+        "gulp-sass-lint": "^1.4.0",
+        "gulp-sourcemaps": "^2.6.5"
+    },
+    "dependencies": {
+        "resolve-url-loader": "^4.0.0"
     }
 }
