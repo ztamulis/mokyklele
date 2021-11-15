@@ -74,8 +74,8 @@ class EventController extends Controller
         $create_method = $request->input("create_method");
 
         $date = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"));
-
-        if(TimeZoneUtils::isSummerTime()){
+        $isDst = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"))->timezone('Europe/London')->isDST();
+        if($isDst){
             $date = $date->subHour();
         }
 
@@ -84,7 +84,6 @@ class EventController extends Controller
                 'date_at_count' => 'required|int',
                 'date_at_interval' => 'required|int',
             ]);
-
             for ($i = 0; $i < $request->input("date_at_count"); $i++) {
                 $event = new Event;
                 $event->name = $request->input("name");
@@ -95,10 +94,9 @@ class EventController extends Controller
                 $event->join_link = $request->input("join_link");
                 $event->date_at = $date;
 
+
                 $event->save();
-
                 $event->groups()->sync($request->input("groups"));
-
                 $date = $date->addDays($request->input("date_at_interval"));
             }
         }else{
@@ -109,13 +107,13 @@ class EventController extends Controller
             $event->author_id = Auth::user()->id;
             $event->teacher_id = $request->input("teacher_id");
             $event->join_link = $request->input("join_link");
+
             $event->date_at = $date;
 
             $event->save();
 
             $event->groups()->sync($request->input("groups"));
         }
-
         Session::flash('message', "Užsiėmimas sėkmingai pridėtas");
         return Redirect::to('dashboard/events');
     }
@@ -176,9 +174,11 @@ class EventController extends Controller
         $event->join_link = $request->input("join_link");
 
         $date = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"));
-        if(TimeZoneUtils::isSummerTime()){
+        $isDst = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"))->timezone('Europe/London')->isDST();
+        if($isDst){
             $date = $date->subHour();
         }
+
         $event->date_at = $date;
 
         $event->save();

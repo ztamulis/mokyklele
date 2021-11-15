@@ -94,7 +94,7 @@
                     </tbody>
                 </table>
             </div>
-            @if(Auth::user()->role === "admin")
+            @if(Auth::user()->role === "admin" || Auth::user()->role === "teacher")
             <div class="row">
                 <div class="col-md-9">
                     <a href="/dashboard/users/export" class="btn btn-success">Eksportuoti EXCEL formatu</a>
