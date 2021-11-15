@@ -8,7 +8,6 @@ use App\Models\Group;
 use App\Models\File;
 use App\Models\Message;
 use App\TimeZoneUtils;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -98,16 +97,12 @@ class GroupController extends Controller
             $group->end_date = \Carbon\Carbon::parse($request->input("end_date"));
         }
 
-
-        $isDst = \Carbon\Carbon::parse(date("Y-m-d") . " " . $request->input("time"))->timezone('Europe/London')->isDST();
-
-        if($isDst){
+        if(TimeZoneUtils::isSummerTime()){
             $time = $time->subHour();
             if(!empty($request->input("time_2"))){
                 $time_2 = $time_2->subHour();
             }
         }
-
         $group->time = $time;
         if(empty($request->input("time_2"))){
             $group->time_2 = null;
@@ -130,6 +125,7 @@ class GroupController extends Controller
         }
 
         $group->stripe_plan = Str::slug("plan-".$group->id . "-" . $request->input("name"));
+
         \Stripe\Stripe::setApiKey(\Config::get("app.stripe_secret"));
 
         \Stripe\Plan::create(array(
@@ -155,9 +151,8 @@ class GroupController extends Controller
      * @param  \App\Models\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function show(Group $group)
+    public function show(Group $group, Request $request)
     {
-
         return view("dashboard.groups.show")->with("group", $group)->with("groups", Group::paginate(15));
     }
 
@@ -223,8 +218,7 @@ class GroupController extends Controller
             $time_2 = \Carbon\Carbon::parse(date("Y-m-d") . " " . $request->input("time_2"));
         }
 
-        $isDst = \Carbon\Carbon::parse(date("Y-m-d") . " " . $request->input("time"))->timezone('Europe/London')->isDST();
-        if($isDst){
+        if(TimeZoneUtils::isSummerTime()){
             $time = $time->subHour();
             if(!empty($request->input("time_2"))){
                 $time_2 = $time_2->subHour();
@@ -283,7 +277,11 @@ class GroupController extends Controller
 
         if(Auth::user()->role == "user" && !Auth::user()->checkGroup($gId)){
             //if(Auth::user()->role == "user" || !Auth::user()->checkGroup($gId)){
-            return view("dashboard.groups.show")->with("message", "Žinutės išsiųsti nepavyko.")->with("group", $group)->with("groups", Group::paginate(2));
+            Session::flash('message', 'Žinutės išsiųsti nepavyko.');
+            Session::flash('alert-class', 'alert-danger');
+
+            Session::put('groupMessage', true);
+            return redirect(url()->previous());
         }else {
             $group_message = new GroupMessage();
             $group_message->message = $request->input("text");
@@ -325,8 +323,11 @@ class GroupController extends Controller
                         ->setBody($html, 'text/html');
                 });
             }
+            Session::flash('message', 'Žinutė sukurta!');
+            Session::flash('alert-class', 'alert-success');
+            Session::put('groupMessage', true);
 
-            return back()->with("message", "Žinutė sėkmingai išsiųsta")->with("group", $group)->with("groups", Group::paginate(15));
+            return redirect(url()->previous() .'#group-message-list-'.$group_message->id);
         }
     }
 
@@ -365,18 +366,19 @@ class GroupController extends Controller
     }
 
     public function editGroupHomework(Request $request, $id) {
-        if(Auth::user()->role == "user"){
-            return json_encode(["status" => "error", "message" => "Not allowed"]);
-        }
-
-        if (empty($request->input("message")) && (empty($request->file('file')) && !(bool)$request->input('oldFile'))) {
-            return json_encode(["status" => "error", "message" => "Nieko neįvesta"]);
+        $group = Group::where('id', $request->input("group_id"))->first();
+        if (empty($request->input("file_name")) && (empty($request->file('file')) && !(bool)$request->input('oldFile'))) {
+            Session::flash('message', 'Nieko neįvesta!');
+            Session::flash('alert-class', 'alert-danger');
+            return Redirect::back()->with("group", $group);
 
         }
         $originalFile = File::find($id);
 
         if(empty($originalFile)) {
-            return json_encode(["status" => "error", "message" => "Byla nerasta."]);
+            Session::flash('message', 'Byla nerasta.');
+            Session::flash('alert-class', 'alert-danger');
+            return Redirect::back()->with("group", $group)->with("groupMessage", false);
         }
         if (!empty($originalFile->name) && !empty($request->file())) {
             $this->deleteHomeworkFile($originalFile);
@@ -399,9 +401,9 @@ class GroupController extends Controller
 
         }
 
-        $originalFile->display_name = $request->input('message');
+        $originalFile->display_name = $request->input('file_name');
 
-        if (empty($request->input('message'))) {
+        if (empty($request->input('file_name'))) {
             $originalFile->display_name = ' ';
         }
         $originalFile->save();
@@ -424,7 +426,9 @@ class GroupController extends Controller
                     ->setBody($html, 'text/html');
             });
         }
-        return json_encode(["status"=>"success", 'id' => $originalFile->id, 'name' => $originalFile->name]);
+        Session::flash('message', 'Žinutė readaguota sėkmingai.');
+        Session::flash('alert-class', 'alert-success');
+        return redirect()->to(url()->previous() . '#homework-file-main-' . $originalFile->id);
     }
 
     private function deleteHomeworkFile(File $file) {
@@ -438,26 +442,26 @@ class GroupController extends Controller
     }
 
     public function uploadFile(Request $request) {
-
+        $groupId = $request->input("group_id");
+        $group = Group::where('id', $request->input("group_id"))->first();
         if(Auth::user()->role == "user"){
-            return json_encode(["status" => "error", "message" => "Not allowed"]);
+            Session::flash('message', 'Neturite teisių');
+            Session::flash('alert-class', 'alert-danger');
+            return Redirect::back()->with("group", $group)->with("groups", Group::paginate(15));
         }
         $displayText = $request->input("file_name");
-        if ($displayText === 'undefined') {
-            return json_encode(["status" => "error", "message" => "Blogai įvestas textas"]);
-        }
-
         if (empty($displayText) && empty($request->file('file'))) {
-            return json_encode(["status" => "error", "message" => "Nieko neįvesta"]);
-
+            Session::flash('message', 'Laukeliai tušti!');
+            Session::flash('alert-class', 'alert-danger');
+            return Redirect::back()->with("group", $group)->with("groups", Group::paginate(15));
         }
 
         $file = $request->file('file');
+
         $fileObj = new File;
-        $filename = '';
         if (!empty($file)) {
             $request->validate([
-                'file' => ['max:20000', 'mimes:doc,docx,xls,xlsx,pdf,ppt,pptx,jpg,jpeg,png,gif,mp4']
+                'file' => ['max:20000', 'mimes:doc,docx,xls,xlsx,pdf,ppt,pptx,jpg,jpeg,png,gif,mp4,txt']
             ]);
             $file->storeAs("uploads", $file->getClientOriginalName());
             $filename = $file->getClientOriginalName();
@@ -466,7 +470,7 @@ class GroupController extends Controller
 
 
         $fileObj->display_name = $displayText;
-        $fileObj->group_id = $request->input("group_id");
+        $fileObj->group_id = $groupId;
         $fileObj->user_id = Auth::user()->id;
         $fileObj->save();
         $createdAt = $fileObj->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i");
@@ -501,53 +505,68 @@ class GroupController extends Controller
                     ->setBody($html, 'text/html');
             });
         }
-        return json_encode(["status"=>"success", "date" => $createdAt, "file"=>$filename, "id" => $fileObj->id, "display_name" => $fileObj->display_name]);
+        Session::flash('message', 'Namų darbai patalpinti!');
+        Session::flash('alert-class', 'alert-success');
+        return Redirect::to(url()->previous() . '#content');
     }
 
     public function deleteFile(Request $request, $id){
+        $group = Group::where('id', $request->input("group_id"))->first();
+
         if(Auth::user()->role == "user"){
-            return json_encode(["status" => "error", "message" => "Not allowed"]);
+            Session::flash('message', 'Neturite teisių');
+            Session::flash('alert-class', 'alert-danger');
+            return Redirect::back()->with("group", $group)->with("groups", Group::paginate(15));
         }
 
         $file = File::find($id);
         if(!$file) {
-            return json_encode(["status" => "error", "message" => "Byla nerasta. (jau ištrinta?)"]);
+            Session::flash('message', 'Byla nerasta!');
+            Session::flash('alert-class', 'alert-danger');
+            return Redirect::to(url()->previous() . '#content')->with("group", $group);
         }
 
         Storage::delete("uploads/".$file->name);
 
         $file->delete();
 
-        return json_encode(["status"=>"success","message"=>"Byla sėkmingai ištrinta."]);
+        Session::flash('message', 'Namų darbai ištrinti!');
+        Session::flash('alert-class', 'alert-success');
+        return Redirect::to(url()->previous() . '#content')->with("group", $group);
     }
 
     public function deleteMessage(Request $request, $id){
-//        if(Auth::user()->role == "user"){
-//            return json_encode(["status" => "error", "message" => "Not allowed"]);
-//        }
+        $group = Group::where('id', $request->input("group_id"))->first();
 
         $groupMessage = GroupMessage::find($id);
         if(!$groupMessage) {
-            return json_encode(["status" => "error", "message" => "Žinutė nerasta. (jau ištrinta?)"]);
-        }
+            Session::flash('message', 'Žinutė nerasta');
+            Session::flash('alert-class', 'alert-danger');
+
+            Session::put('groupMessage', true);
+            return Redirect::to(url()->previous() . '#content');        }
 
         if($groupMessage->file){
             Storage::delete("uploads/group-messages/".$groupMessage->file);
         }
 
         $groupMessage->delete();
-
-        return json_encode(["status"=>"success","message"=>"Žinutė sėkmingai ištrinta."]);
+        Session::flash('message', 'Žinutė sėkmingai ištrinta.');
+        Session::flash('alert-class', 'alert-success');
+        Session::put('groupMessage', true);
+        return Redirect::to(url()->previous() . '#content')->with("group", $group)->with("groups", Group::paginate(15))->with("groupMessage", true);
     }
 
     public function editMessage(Request $request, $id){
 
-//        if(Auth::user()->role == "user"){
-//            return json_encode(["status" => "error", "message" => "Not allowed"]);
-//        }
+        $group = Group::where('id', $request->input("group_id"))->first();
+
         $originalGroupMessage = GroupMessage::find($id);
         if(!$originalGroupMessage) {
-            return json_encode(["status" => "error", "message" => "Žinutė nerasta."]);
+            Session::flash('message', 'Neturite teisių');
+            Session::flash('alert-class', 'alert-danger');
+            Session::put('groupMessage', true);
+            return Redirect::back()->with("group", $group)->with("groups", Group::paginate(15));
         }
 
         if (!empty($originalGroupMessage->file) && !empty($request->file())) {
@@ -600,9 +619,10 @@ class GroupController extends Controller
             });
         }
 
-
-        return back()->with("message", "Žinutė sėkmingai readaguota")->with("group", $group)->with("groups", Group::paginate(15));
-
+        Session::flash('message', 'Žinutė sėkmingai readaguota');
+        Session::flash('alert-class', 'alert-success');
+        Session::put('groupMessage', true);
+        return redirect(url()->previous() . '#group-message-list-'.$originalGroupMessage->id)->with("group", $group);
     }
 
     public function message(Request $request) {
@@ -614,7 +634,9 @@ class GroupController extends Controller
 
         $student = Student::find($request->input("user_id"));
         if(!$student || empty($student->user)){
-            return json_encode(["status" => "error", "message" => "Mokinys nerastas."]);
+            Session::flash('message', 'Mokinys nerastas.');
+            Session::flash('alert-class', 'alert-danger');
+            return redirect(url()->previous());
         }
 
         $message = new Message;
@@ -639,7 +661,10 @@ class GroupController extends Controller
 
         $message->save();
 
-        return json_encode(["status"=>"success","message"=>"Žinutė sėkmingai išsiųsta."]);
+
+        Session::flash('message', 'Žinutė sėkmingai išsiųsta.');
+        Session::flash('alert-class', 'alert-success');
+        return redirect(url()->previous());
     }
 
     public function generateZoomSignature(Request $request) {

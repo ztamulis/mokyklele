@@ -41,6 +41,20 @@ class Group extends Model
 
     }
 
+    public function getGroupRewards() {
+        $rewards = [];
+        $users = User::whereIn('id', array_keys($this->students()->where('group_id', $this->id)->get()->keyBy('user_id')->toArray()))->get();
+        foreach ($users as $user) {
+            foreach($user->rewards as $reward) {
+                $rewards[] = $reward;
+            }
+            var_dump($user->rewards);
+
+        }
+
+        return $rewards;
+    }
+
     /**
      * Get the route key for the model.
      *

@@ -32,9 +32,10 @@ class TimeZoneUtils
      * @return string
      */
     public static function updateTime($date, $updatedAt) {
-        if (self::summerTimeStart() < $updatedAt
-            && $updatedAt < self::summerTimeEnd()
+        if ((self::summerTimeStart()." 5:00" < $updatedAt
+            && $updatedAt < self::summerTimeEnd()." 5:00")
             && !Carbon::now()->timezone('Europe/London')->isDST()) {
+
             return Carbon::createFromDate($date)->addHour()->format('Y-m-d H:i');
         }
         return $date;

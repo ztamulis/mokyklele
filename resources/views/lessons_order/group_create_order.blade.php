@@ -64,7 +64,7 @@
                 @endif
                 <br><br>
 
-                @if($group->type !=='individual' && $group->type !=='free' && empty($coupon))
+                @if($group->type !=='free' && empty($coupon))
                         <div class="row" style="margin-bottom: 20px;">
                             Nuolaidos kodas:
                             <div class="col-md-12">

@@ -21,15 +21,14 @@ class MeetingController extends Controller
         }
         $meetings = Meeting::where("id", ">", 0);
         if($request->input("search")){
-            $events = $meetings->where("name", "LIKE", "%" . $request->input("search") . "%");
+            $meetings = $meetings->where("name", "LIKE", "%" . $request->input("search") . "%");
         }
 
         $meetings = $meetings->orderBy("id", "ASC");
         return view("dashboard.meetings.index")->with("meetings", $meetings->paginate(15)->withQueryString());
     }
 
-    public function create()
-    {
+    public function create() {
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }

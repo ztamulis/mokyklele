@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use tizis\laraComments\Contracts\ICommentable;
+use tizis\laraComments\Traits\Commentable;
 
-class GroupMessage extends Model
-{
+class GroupMessage extends Model implements ICommentable {
+    use Commentable;
+
     public function group(){
         return $this->belongsTo(Group::class);
     }
