@@ -8,6 +8,7 @@ use Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use tizis\laraComments\Entity\Comment;
@@ -189,7 +190,10 @@ class CommentsController extends Controller
 		} catch (\DomainException $e) {
 			$response = response(['message' => $e->getMessage()], 401);
 		}
-
+        if (json_decode($response->content())->message === 'Comment has replies') {
+            Session::flash('message', 'Komentaras turi atsakymų.');
+            Session::flash('alert-class', 'alert-danger');
+        }
 
 		if ($request->ajax()) {
 			return $response;
