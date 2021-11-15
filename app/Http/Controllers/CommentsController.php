@@ -152,6 +152,8 @@ class CommentsController extends Controller
 
         if($comment->file){
             Storage::delete(\App\Models\Comment::$FILE_PATH.$comment->file);
+            $comment->file = '';
+            $comment->save();
         }
 
         $file = request()->file('file');
