@@ -22,7 +22,8 @@
                 <input type="checkbox" name="week_days[]" id="message" value="Trečiadieniais" /><label for="message">Trečiadieniais</label><br />
                 <input type="checkbox" name="week_days[]" id="message" value="Ketvirtadieniais" /><label for="message">Ketvirtadieniais</label><br />
                 <input type="checkbox" name="week_days[]" id="message" value="Penktadieniais" /><label for="message">Penktadieniais</label><br />
-                <input type="checkbox" name="week_days[]" id="message" value="Savaitgaliais" /><label for="message">Savaitgaliais</label><br />
+                <input type="checkbox" name="week_days[]" id="message" value="Šeštadieniais" /><label for="message">Šeštadieniais</label><br />
+                <input type="checkbox" name="week_days[]" id="message" value="Sekmadieniais" /><label for="message">Sekmadieniais</label><br />
             </fieldset>
         </div>
         <div class="form-group" style="margin-top: 15px;">
@@ -30,7 +31,6 @@
             <select required class="form-control" name="times_per_week" id="exampleFormControlSelect1" >
                 <option value="Vieną kartą">Vieną kartą</option>
                 <option value="Du kartus">Du kartus</option>
-                <option value="Rišliai kalbu">Rišliai kalbu</option>
             </select>
         </div>
 
