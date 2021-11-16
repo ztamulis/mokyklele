@@ -55,6 +55,20 @@ class Group extends Model
         return $rewards;
     }
 
+    public static function getWeekDay($key) {
+            $weekMap = [
+                1 => 'Pirmadienis',
+                2 => 'Antradienis',
+                3 => 'Trečiadienis',
+                4 => 'Ketvirtadienis',
+                5 => 'Penktadienis',
+                6 => 'Šeštadienis',
+                0 => 'Sekmadienis',
+            ];
+
+            return $weekMap[$key];
+    }
+
     /**
      * Get the route key for the model.
      *

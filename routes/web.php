@@ -123,7 +123,7 @@ Route::get('/select-group/order/free/success/{slug}', [OrderController::class, '
 
 
 Route::get('/dashboard', function () {
-    return view('dashboard.index')->with("meetings", \App\Models\Meeting::orderBy('date_at', 'asc')->get());
+    return view('dashboard.index')->with("meetings", \App\Models\Meeting::orderBy('date_at', 'asc')->where("date_at", ">" ,\Carbon\Carbon::now('utc')->subMinutes(120))->orderBy("date_at","ASC")->get());
 })->middleware(['auth'])->name('home');
 Route::get('/dashboard/navbar', function () {
     return view('dashboard.navbar');

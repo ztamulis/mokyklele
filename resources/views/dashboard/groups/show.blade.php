@@ -90,7 +90,7 @@
                                 @foreach($group->files()->orderBy('created_at', 'desc')->get() as $file)
                                     <div class="author-comment" id="homework-file-main-{{$file->id}}">
                                         <div class="author">{{$file->user->name}} {{$file->user->surname}}</div>
-                                        <div class="date">{{ $file->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</div>
+                                        <div class="date">{{ $file->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d") }}</div>
                                         <?php $displayName = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $file->display_name); ?>
                                         <div class="desc">@php echo strip_tags($displayName); @endphp</div>
                                         @if (!empty($file->name))
