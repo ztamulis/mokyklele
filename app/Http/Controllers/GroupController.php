@@ -450,6 +450,7 @@ class GroupController extends Controller
             return Redirect::back()->with("group", $group)->with("groups", Group::paginate(15));
         }
         $displayText = $request->input("file_name");
+        \Log::info($displayText);
         if (empty($displayText) && empty($request->file('file'))) {
             Session::flash('message', 'Laukeliai tušti!');
             Session::flash('alert-class', 'alert-danger');
