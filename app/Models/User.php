@@ -188,8 +188,7 @@ class User extends Authenticatable
             4 => 'Ketvirtadienis',
             5 => 'Penktadienis',
             6 => 'Šeštadienis',
-            7 => 'Sekmadienis',
-            8 => ' ',
+            0 => 'Sekmadienis',
         ];
 
         return $weekMap[$key];

@@ -451,6 +451,7 @@ class GroupController extends Controller
         }
         $displayText = $request->input("file_name");
         \Log::info($displayText);
+        \Log::info($groupId);
         if (empty($displayText) && empty($request->file('file'))) {
             Session::flash('message', 'Laukeliai tušti!');
             Session::flash('alert-class', 'alert-danger');
