@@ -194,6 +194,19 @@
 
                                 <div class="chat-form">
                                     <div class="comments-list">
+                                        <div class="mb-5">
+                                            <form  method="POST" class="align-bottom" new-group-message action="{{ route('create-message-conversations') }}" id="group-message-store" enctype="multipart/form-data">
+                                                @csrf
+                                                @method("OPTIONS")
+                                                <div class="comment-form">
+                                                    <input type="text" class="comment" placeholder="Rašyti" value="" name="text">
+                                                    <input type="hidden" name="groupID" value="{{$group->id}}">
+                                                    <label onclick="addCommentFile('group-message-store')" class="file"></label>
+                                                    <input  type="file" name="file" id="file-attachment-group-message-store" class="file-attachment" />
+                                                    <button type="submit" class="submit" id="submit">
+                                                </div>
+                                            </form>
+                                        </div>
                                         @php $messages = $group->group_message()->orderBy("id", "Desc")->get(); @endphp
                                         @if (!$messages->isEmpty())
                                             @foreach($messages as $msg)
@@ -206,9 +219,9 @@
                                                 <div class="comment-area" id="group-message-list-{{$msg->id}}">
                                                     <div class="author-icon">
                                                         @if($student && $student->photo)
-                                                            <img src="/uploads/students/{{ $student->photo }}">
+                                                            <img class="user-photo-group" src="/uploads/students/{{ $student->photo }}" alt="Avatar">
                                                         @elseif($msg->author && $msg->author->photo)
-                                                            <img src="/uploads/users/{{ $msg->author->photo }}">
+                                                            <img class="user-photo-group" src="/uploads/users/{{ $msg->author->photo }}" alt="Avatar">
                                                         @else
                                                             <span class="icon-user"></span>
                                                         @endif
@@ -219,7 +232,7 @@
                                                                 <b>{{ $student->name }}</b> ∙ <br>
                                                                 @if($student->birthday){{ $student->age }} ∙ @endif {{ $msg->author->name }} {{ $msg->author->surname }}
                                                             @elseif($msg->author)
-                                                                <b>{{ $msg->author->name }} {{ $msg->author->surname }}</b> ∙<br>
+                                                                <b>{{ $msg->author->name }} {{ $msg->author->surname }}</b><br>
                                                             @endif
                                                         </div>
                                                         <div class="time">{{$msg->updated_at->diffForHumans()}}</div>
@@ -291,19 +304,6 @@
                                         @endif
 
                                     </div>
-                                    <div class="align-content-end">
-                                        <form  method="POST" class="align-bottom" new-group-message action="{{ route('create-message-conversations') }}" id="group-message-store" enctype="multipart/form-data">
-                                            @csrf
-                                            @method("OPTIONS")
-                                            <div class="comment-form">
-                                                <input type="text" class="comment" placeholder="Rašyti" value="" name="text">
-                                                <input type="hidden" name="groupID" value="{{$group->id}}">
-                                                <label onclick="addCommentFile('group-message-store')" class="file"></label>
-                                                <input  type="file" name="file" id="file-attachment-group-message-store" class="file-attachment" />
-                                                <button type="submit" class="submit" id="submit">
-                                            </div>
-                                        </form>
-                                    </div>
 
                                     </div>
                                 </div>
@@ -323,7 +323,9 @@
                                                 </div>
                                                 <div class="author-info">
                                                     <div class="author-nick">{{$student->name}}</div>
-                                                    <div class="author-fullname">@if($student->user) {{ $student->user->name }} {{ $student->user->surname }} @endif</div>
+                                                    <div class="author-fullname">
+                                                        @if($student->birthday){{ $student->age }} ∙ @endif @if($student->user) {{ $student->user->name }} {{ $student->user->surname }} @endif
+                                                    </div>
                                                 </div>
                                                 <button class="btn blue" value="{{$student->id}}" data-toggle="modal" data-target="#sendMessageModal" data-user-name="{{ $student->name }}" data-user-id="{{ $student->id }}">Siųsti žinutę</button>
                                             </div>
