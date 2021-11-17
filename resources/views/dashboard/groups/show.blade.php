@@ -71,7 +71,7 @@
                                             <div class="author-comment pl-0">
                                                 <form action="{{route('homework-store')}}" new-homework-file method="POST" enctype="multipart/form-data">
                                                     @csrf
-                                                    <textarea name="file_name" id="ckeditor"></textarea>
+                                                    <textarea class="editor" placeholder="komentuoti" name="file_name" rows="1" id="ckeditor" style="width: 100%;overflow-y: hidden; border: 0px"></textarea>
                                                     <input type="hidden" name="group_id" value="{{$group->id}}">
                                                     <div class="edit-buttons" id="home-work-main-store">
                                                         <div class="left-col mt-2">
@@ -91,8 +91,8 @@
                                     <div class="author-comment" id="homework-file-main-{{$file->id}}">
                                         <div class="author">{{$file->user->name}} {{$file->user->surname}}</div>
                                         <div class="date">{{ $file->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d") }}</div>
-                                        <?php $displayName = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $file->display_name); ?>
-                                        <div class="desc">@php echo strip_tags($displayName); @endphp</div>
+<!--                                        --><?php //$displayName = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $file->display_name); ?>
+                                        <div class="desc">@php echo $file->display_name; @endphp</div>
                                         @if (!empty($file->name))
                                             <div class="attachments">
                                                 <div class="attachment">
@@ -103,7 +103,7 @@
                                         @if(Auth::user()->role == "admin" || (Auth::user()->role == 'teacher' && Auth::user()->id === $file->user_id))
                                             <div class="edit-buttons">
                                                 <div class="left-col">
-                                                    <button data-toggle="modal" type="button" data-target="#edit-modal-{{$file->id}}" class="btn blue edit">Redaguoti</button>
+                                                    <button data-toggle="modal" onclick="addCkeditor('text-area-edit-'+{{$file->id}})" type="button" data-target="#edit-modal-{{$file->id}}" class="btn blue edit">Redaguoti</button>
                                                 </div>
                                                 <div class="right-col">
                                                     <form delete-homework action="{{route('delete-homework-file', $file->id)}}" method="POST">
@@ -122,7 +122,9 @@
                                                         <div class="author-comment">
                                                             <div class="author">{{$file->user->name}} {{$file->user->surname}}</div>
                                                             <div class="date mb-2">{{ $file->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</div>
-                                                            <div class="desc edit"><textarea name="file_name" rows="5" style="width: 100%;overflow-y: hidden; border: 0px">@php echo strip_tags($displayName);; @endphp</textarea></div>
+                                                            <div class="desc edit">
+                                                                <textarea name="file_name" id="text-area-edit-{{$file->id}}" class="editor" rows="5" style="width: 100%;overflow-y: hidden; border: 0px" >{{$file->display_name}}</textarea>
+                                                            </div>
                                                             <div class="edit-buttons mt-2" id="homework-add-file-{{$file->id}}">
                                                                 <div class="left-col">
                                                                     <button type="button" onclick="addHomeworkFile('homework-add-file-'+{{$file->id}})" name="file-homework-edit-input-{{$file->id}}" class="btn blue attachment">Prisegti dokumentą</button>
@@ -149,7 +151,8 @@
                                             @csrf
                                             <div class="comment-form">
                                                 <input type="hidden" name="commentable_encrypted_key" value="{{ $file->getEncryptedKey() }}"/>
-                                                <input type="text" class="comment" placeholder="Komentuoti" value="" name="message">
+                                                <textarea name="message" class="comment" rows="1" cols="50" placeholder="komentuoti"></textarea>
+{{--                                                <input type="text" class="comment" placeholder="Komentuoti" value="" name="message">--}}
                                                 <input type="hidden" name="group_id" value="{{$group->id}}">
                                                 <label  onclick="addCommentFile('comment-post-'+{{$file->id}})" class="file"></label>
                                                 <input type="file" name="file" id="file-attachment-post-{{ $file->id }}" class="file-attachment" />
@@ -199,7 +202,7 @@
                                                 @csrf
                                                 @method("OPTIONS")
                                                 <div class="comment-form">
-                                                    <input type="text" class="comment" placeholder="Rašyti" value="" name="text">
+                                                    <textarea type="text" class="comment" placeholder="Rašyti"  name="text" style="width: 100%;overflow-y: hidden; border: 0px"></textarea>
                                                     <input type="hidden" name="groupID" value="{{$group->id}}">
                                                     <label onclick="addCommentFile('group-message-store')" class="file"></label>
                                                     <input  type="file" name="file" id="file-attachment-group-message-store" class="file-attachment" />
@@ -240,7 +243,8 @@
                                                     <div class="comment">
                                                         <div class="text">
                                                             <?php $msg->message = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $msg->message);
-                                                            echo $msg->message; ?>
+                                                             ?>
+                                                                <div class="desc edit">{!! nl2br($msg->message) !!}</div>
                                                         </div>
                                                         @if($msg->file)
                                                         <div class="attachments">
@@ -252,7 +256,7 @@
                                                             @if($msg->author_id == Auth::user()->id || Auth::user()->role == 'admin')
                                                                 <div class="edit-buttons mt-2">
                                                                     <div class="left-col" style="float: left;">
-                                                                        <button data-toggle="modal" data-target="#edit-group-messages-{{$msg->id}}" class="btn blue edit">Redaguoti</button>
+                                                                        <button data-toggle="modal" onclick="addCkeditor('text-area-group-message-'+{{$msg->id}})" data-target="#edit-group-messages-{{$msg->id}}" class="btn blue edit">Redaguoti</button>
                                                                     </div>
                                                                     <div class="right-col">
                                                                         <form delete-group-message action="{{route('delete-group-message', $msg->id)}}" method="POST">
@@ -275,7 +279,7 @@
                                                                         <div class="author">{{$msg->author->name}} {{$msg->author->surname}}</div>
                                                                         <div class="date mb-2">{{ $msg->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</div>
                                                                         <input type="hidden" name="group_id" value="{{$group->id}}">
-                                                                        <div class="desc edit"><textarea name="message" rows="5" style="width: 100%;overflow-y: hidden; border: 0px">@php echo strip_tags($msg->message);; @endphp</textarea></div>
+                                                                        <div class="desc edit" style="word-break: break-word;"><textarea name="message" id="text-area-group-message-{{$msg->id}}" rows="5" style="width: 100%;overflow-y: hidden; border: 0px">{!! nl2br($msg->message) !!}</textarea></div>
                                                                         <div class="edit-buttons mt-2" id="group-message-add-file-{{$msg->id}}">
                                                                             <div class="left-col">
                                                                                 <button type="button" onclick="addHomeworkFile('group-message-add-file-'+{{$msg->id}})" name="group-message-edit-input-{{$msg->id}}" class="btn blue attachment">Prisegti dokumentą</button>
@@ -382,6 +386,8 @@
             </div>
         </div>
     </div>
+    <script src="//cdn.ckeditor.com/4.16.2/full/ckeditor.js"></script>
+
     <script>
         $('[data-target="#sendMessageModal"]').click(function () {
             var name = $(this).attr("data-user-name");
@@ -440,17 +446,22 @@
                         }
                     }
                 });
-                {{--$.post("/dashboard/groups/message",{_token: "{{ csrf_token() }}", user_id: id, message: message, user_from: "{{ join(", ", $student_names) }}"}, function (data) {--}}
-                {{--    data = JSON.parse(data);--}}
-                {{--    if(data.status == "success"){--}}
-                {{--        $("#sendMessageModal .modal-body").html(data.message);--}}
-                {{--    }else{--}}
-                {{--        $("#sendMessageModal .modal-body").html("Klaida! "+data.message);--}}
-                {{--    }--}}
-                {{--});--}}
             });
         });
+        function addCkeditor(id) {
+            if ($('#cke_'+id).length != 1) {
+                CKEDITOR.replace( id, {
+                } );
+            }
+
+        }
         $( document ).ready(function() {
+            // $(".editor").each(function () {
+            //     let id = $(this).attr('id');
+            //     CKEDITOR.replace(id);
+            // });
+            CKEDITOR.replace( 'ckeditor', {
+            } );
             setTimeout(function(){
                 $("#flash-message").remove();
             }, 3000 );
@@ -565,6 +576,24 @@
             element.parentNode.parentNode.remove();
         }
 
+
+
+
+        CKEDITOR.on('instanceReady', function( ev ) {
+            var blockTags = ['div','h1','h2','h3','h4','h5','h6','p','pre','li','blockquote','ul','ol',
+                'table','thead','tbody','tfoot','td','th',];
+
+            for (var i = 0; i < blockTags.length; i++)
+            {
+                ev.editor.dataProcessor.writer.setRules( blockTags[i], {
+                    indent : false,
+                    breakBeforeOpen : true,
+                    breakAfterOpen : false,
+                    breakBeforeClose : false,
+                    breakAfterClose : true
+                });
+            }
+        });
     </script>
     </x-user>
 
