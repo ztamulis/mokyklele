@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Pasaka</title>
@@ -233,11 +233,7 @@
     {{ $slot }}
 
 {{--<script src="http://pagination.js.org/dist/2.1.5/pagination.min.js"></script>--}}
-    <script src="//cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
-    <script>
-        CKEDITOR.replace( 'ckeditor', {
-        } );
-    </script>
+
 <script>
     $(document).ready(function() {
         $('.summernote').summernote({
