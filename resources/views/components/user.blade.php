@@ -24,10 +24,10 @@
 
 
 
-    <link rel="stylesheet" href="/css/dashboard_custom.css">
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="{{asset('css/dashboard_custom.css')}}">
+    <link rel="stylesheet" href="{{asset('css/main.css')}}">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-    {{--<link href="http://pagination.js.org/dist/2.1.5/pagination.css" rel="stylesheet">--}}
+    <link href="https://pagination.js.org/dist/2.1.5/pagination.css" rel="stylesheet">
 
     <link href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.dataTables.min.css" rel="stylesheet">
@@ -46,13 +46,18 @@
     <meta name="theme-color" content="#ffffff">
 
 
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>    <script src="{{asset('assets/js/jquery.min.js')}}"></script>
 
-    <script src="/assets/js/jquery.min.js"></script>
+    <script src="{{asset('assets/js/custom.js')}}"></script>
 
-    <script src="/assets/js/custom.js"></script>
-    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
-    <script src="/assets/js/theme.js"></script>
+    <script src="{{asset('assets/js/theme.js')}}"></script>
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 
@@ -120,10 +125,10 @@
                     <a class="only--mobile" href="/dashboard">
                         {{Auth::user()->name}} {{Auth::user()->surname}} profilis
                     </a>
-                    <ul class="nav navbar-nav flex-nowrap">
+                    <ul class="nav navbar-nav flex-nowrap" >
                         <li class="nav-item dropdown no-arrow">
                             <div class="nav-item dropdown no-arrow">
-                                <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
+                                <a class="dropdown-toggle nav-link messages" data-toggle="dropdown" aria-expanded="false" href="#">
                                     <span class="icon-message-circle-lines"></span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in">
@@ -139,38 +144,6 @@
                                         </div>
                                     </a>
                                     @endforeach
-{{--                                    <a class="d-flex align-items-center dropdown-item" href="/dashboard/messages/4100">--}}
-{{--                                        <div class="font-weight-bold">--}}
-{{--                                            <div class="text-truncate">--}}
-{{--                                                <span> Sveiki, mes ką tik priisijungėme prie jūsų 😊 ir nelabai žinom kaip reikia prisij...</span>--}}
-{{--                                            </div>--}}
-{{--                                            <p class="small text-gray-500 mb-0">Rūta 2021-10-06</p>--}}
-{{--                                        </div>--}}
-{{--                                    </a>--}}
-{{--                                    <a class="d-flex align-items-center dropdown-item" href="/dashboard/messages/3528">--}}
-{{--                                        <div class="font-weight-bold">--}}
-{{--                                            <div class="text-truncate">--}}
-{{--                                                <span> Alyos klases piesinukas.</span>--}}
-{{--                                            </div>--}}
-{{--                                            <p class="small text-gray-500 mb-0">Kristina 2021-09-26</p>--}}
-{{--                                        </div>--}}
-{{--                                    </a>--}}
-{{--                                    <a class="d-flex align-items-center dropdown-item" href="/dashboard/messages/3252">--}}
-{{--                                        <div class="font-weight-bold">--}}
-{{--                                            <div class="text-truncate">--}}
-{{--                                                <span> Nerandu nuorodos kur prisijungti</span>--}}
-{{--                                            </div>--}}
-{{--                                            <p class="small text-gray-500 mb-0">Inga 2021-09-24</p>--}}
-{{--                                        </div>--}}
-{{--                                    </a>--}}
-{{--                                    <a class="d-flex align-items-center dropdown-item" href="/dashboard/messages/3250">--}}
-{{--                                        <div class="font-weight-bold">--}}
-{{--                                            <div class="text-truncate">--}}
-{{--                                                <span> Ačiū už priminimą!</span>--}}
-{{--                                            </div>--}}
-{{--                                            <p class="small text-gray-500 mb-0">Rūta 2021-09-23</p>--}}
-{{--                                        </div>--}}
-{{--                                    </a>--}}
                                     <a class="text-center dropdown-item small text-gray-500" href="/dashboard/messages/create">Rašyti naują pranešimą</a>
                                     <a class="text-center dropdown-item small text-gray-500" href="/dashboard/messages">Rodyti visus pranešimus</a>
                                     <div class="mobile-close"></div>
@@ -196,26 +169,23 @@
                                         <a class="@if(Request::is('dashboard/groups*')) active @endif " href="/dashboard/groups"><i class="fa fa-users"></i><span>Grupių valdymas</span></a>
                                         <a class=" @if(Request::is('dashboard/users*')) active @endif " href="/dashboard/users"><i class="fa fa-user-md"></i><span>Naudotojų valdymas</span></a>
                                         <a class=" @if(Request::is('dashboard/tableData')) active @endif " href="/dashboard/tableData"><i class="fa fa-files-o"></i><span>Duomenų lentelė</span></a>
-                                        {{--                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/messages/create')) active @endif " href="/dashboard/messages/create"><i class="fa fa-newspaper-o"></i><span>Rašyti žinutę</span></a></li>--}}
                                         <a class=" @if(Request::is('dashboard/payments')) active @endif " href="/dashboard/payments"><i class="fas fa-money-bill"></i><span>Apmokėjimai</span>
-                                            <a class=" @if(Request::is('dashboard/meetings')) active @endif " href="/dashboard/meetings"><i class="fa fa-calendar-check-o"></i><span>Susitikimai</span></a>
-                                            {{--                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/navbar')) active @endif " href="/dashboard/navbar"><i class="fa fa-navicon"></i><span>Meniu juosta</span></a></li>--}}
-                                            <a class=" @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a>
-                                            <a class=" @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a>
-                                            <a class=" @if(Request::is('dashboard/coupons')) active @endif " href="/dashboard/coupons"><i class="fa fa-cc-discover"></i><span>Nuolaidų kuponai</span></a>
-                                            <a class=" @if(Request::is('questions-form')) active @endif " href="/questions-form"><i class="fa fa-question"></i><span>Suaugusiųjų kursų forma</span></a>
-                                            <a class=" @if(Request::is('register-free/admin')) active @endif " href="/register-free/admin"><i class="fa fa-registered"></i><span>Nemokamos pamokos forma</span></a>
-                                            @endif
-                                            <a href="/dashboard/profile">Nustatymai</a>
-
-                                            <div class="dropdown-divider"></div>
-                                            <form method="POST" action="/logout">
-                                                <input type="hidden" name="_token" value="4o1WRFafmb97y4CGzftAVDmzqw2MLsAl2HaSB3IW">
-                                                <a href="#" onclick="event.preventDefault();this.closest('form').submit();" class="dropdown-item">
-                                                    Atsijungti
-                                                </a>
-                                            </form>
-                                            <div class="mobile-close"></div>
+                                        <a class=" @if(Request::is('dashboard/meetings')) active @endif " href="/dashboard/meetings"><i class="fa fa-calendar-check-o"></i><span>Susitikimai</span></a>
+                                        <a class=" @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a>
+                                        <a class=" @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a>
+                                        <a class=" @if(Request::is('dashboard/coupons')) active @endif " href="/dashboard/coupons"><i class="fa fa-cc-discover"></i><span>Nuolaidų kuponai</span></a>
+                                        <a class=" @if(Request::is('questions-form')) active @endif " href="/questions-form"><i class="fa fa-question"></i><span>Suaugusiųjų kursų forma</span></a>
+                                        <a class=" @if(Request::is('register-free/admin')) active @endif " href="/register-free/admin"><i class="fa fa-registered"></i><span>Nemokamos pamokos forma</span></a>
+                                    @endif
+                                    <a href="/dashboard/profile">Nustatymai</a>
+                                    <div class="dropdown-divider"></div>
+                                    <form method="POST" action="/logout">
+                                        <input type="hidden" name="_token" value="4o1WRFafmb97y4CGzftAVDmzqw2MLsAl2HaSB3IW">
+                                        <a href="#" onclick="event.preventDefault();this.closest('form').submit();" class="dropdown-item">
+                                            Atsijungti
+                                        </a>
+                                    </form>
+                                    <div class="mobile-close"></div>
                                 </div>
                             </div>
                         </li>
