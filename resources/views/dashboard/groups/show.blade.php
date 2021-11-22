@@ -87,7 +87,12 @@
                                         </div>
                                     @endif
                                 </div>
-                                @foreach($group->files()->orderBy('created_at', 'desc')->get() as $file)
+                                <ul id="homework-list-main" class="list-unstyled">
+                                @php $groupFiles = $group->files()->orderBy('created_at', 'desc')->get();
+                                $groupFilesCount = $groupFiles->count();
+                                @endphp
+                                @foreach($groupFiles as $file)
+                                    <li class="homework-list" style=" display:none;">
                                     <div class="author-comment" id="homework-file-main-{{$file->id}}">
                                         <div class="author">{{$file->user->name}} {{$file->user->surname}}</div>
                                         <div class="date">{{ $file->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d") }}</div>
@@ -161,7 +166,12 @@
                                         </form>
                                         <x-comment-custom :model="$file"/>
                                     </div>
+                                </li>
                                 @endforeach
+                                </ul>
+                                @if($groupFilesCount > 3)
+                                    <div id="loadMore-homework" class="text-center fa-bold mb-2" style="cursor: pointer;">Rodyti daugiau</div>
+                                @endif
                             </div>
                             <div class="sidebar-area col-lg-5 col-sm-12 col-12">
                                 <div class="information-block">
@@ -387,7 +397,25 @@
         </div>
     </div>
     <script src="//cdn.ckeditor.com/4.16.2/full/ckeditor.js"></script>
-
+    <script>
+        $(document).ready(function () {
+            var size_li = $("#homework-list-main li.homework-list").length;
+            console.log(size_li);
+            var x=3;
+            console.log($('#homework-list-main li.homework-list:lt('+x+')'));
+            $('#homework-list-main li.homework-list:lt('+x+')').show();
+            $('#loadMore-homework').click(function () {
+                x= (x+3 <= size_li) ? x+3 : size_li;
+                $('#homework-list-main li.homework-list:lt('+x+')').show();
+            });
+            $('#showLess-homework').click(function () {
+                console.log(x);
+                x=(x-3<0) ? 3 : x-3;
+                console.log(x);
+                $('#homework-list-main li.homework-list').not(':lt('+x+')').hide();
+            });
+        });
+    </script>
     <script>
         $('[data-target="#sendMessageModal"]').click(function () {
             var name = $(this).attr("data-user-name");
