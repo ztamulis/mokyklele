@@ -6,7 +6,7 @@
                 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-KWBT9QM');</script>
+        })(window,document,'script','dataLayer','GTM-P7XK43G');</script>
     <!-- End Google Tag Manager -->
     <title>@yield("title") Mokykėlė pasaka</title>
 
@@ -33,7 +33,7 @@
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KWBT9QM"
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P7XK43G"
                   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
     <div class="wrapper">
