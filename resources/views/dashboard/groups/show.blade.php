@@ -61,136 +61,290 @@
                 <div class="row">
                     <div class="wrapper_tabcontent">
                         <div id="tab-1" class="tabcontent active">
-                            <div class="main-tab-area col-lg-7 col-sm-12 col-12">
-                                <div class="main-info">
-                                    <h3>Namų darbai</h3>
-                                    <div class="subtitle">Pamokos refleksija ir paskirtos užduotys</div>
-                                    @if(Auth::user()->role != "user")
-                                        <button  class="btn blue new-post" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Naujas įrašas</button>
-                                        <div class="collapse multi-collapse" id="multiCollapseExample1">
-                                            <div class="author-comment pl-0">
-                                                <form action="{{route('homework-store')}}" new-homework-file method="POST" enctype="multipart/form-data">
-                                                    @csrf
-                                                    <textarea class="editor" placeholder="komentuoti" name="file_name" rows="1" id="ckeditor" style="width: 100%;overflow-y: hidden; border: 0px"></textarea>
+                            <div class="row no-gutters">
+                                <div class="main-tab-area col-lg-7 col-sm-12 col-12">
+                                    <div class="main-info">
+                                        <h3>Namų darbai</h3>
+                                        <div class="subtitle">Pamokos refleksija ir paskirtos užduotys</div>
+                                        @if(Auth::user()->role != "user")
+                                            <button  class="btn blue new-post" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Naujas įrašas</button>
+                                            <div class="collapse multi-collapse" id="multiCollapseExample1">
+                                                <div class="author-comment pl-0">
+                                                    <form action="{{route('homework-store')}}" new-homework-file method="POST" enctype="multipart/form-data">
+                                                        @csrf
+                                                        <textarea class="editor" placeholder="komentuoti" name="file_name" rows="1" id="ckeditor" style="width: 100%;overflow-y: hidden; border: 0px"></textarea>
+                                                        <input type="hidden" name="group_id" value="{{$group->id}}">
+                                                        <div class="edit-buttons" id="home-work-main-store">
+                                                            <div class="left-col mt-2">
+                                                                <button id="button" name="file-homework-store" type="button" value="Upload" onclick="addHomeworkFile('home-work-main-store');" class="btn blue attachment align-bottom">Prisegti dokumentą</button>
+                                                                <input name="file" type="file" id="file-homework-store" style="display:none;"/>
+                                                            </div>
+                                                            <div class="right-col mt-2">
+                                                                <button type="submit" class="btn blue post">Skelbti</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <ul id="homework-list-main" class="list-unstyled">
+                                    @php $groupFiles = $group->files()->orderBy('created_at', 'desc')->get();
+                                    $groupFilesCount = $groupFiles->count();
+                                    @endphp
+                                    @foreach($groupFiles as $file)
+                                        <li class="homework-list" style=" display:none;">
+                                        <div class="author-comment" id="homework-file-main-{{$file->id}}">
+                                            <div class="author">{{$file->user->name}} {{$file->user->surname}}</div>
+                                            <div class="date">{{ $file->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d") }}</div>
+    <!--                                        --><?php //$displayName = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $file->display_name); ?>
+                                            <div class="desc">@php echo $file->display_name; @endphp</div>
+                                            @if (!empty($file->name))
+                                                <div class="attachments">
+                                                    <div class="attachment">
+                                                        <a target="_blank" href="{{ url("/uploads/".$file->name) }}" class="file">Prisegtas dokumentas</a>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                            @if(Auth::user()->role == "admin" || (Auth::user()->role == 'teacher' && Auth::user()->id === $file->user_id))
+                                                <div class="edit-buttons">
+                                                    <div class="left-col">
+                                                        <button data-toggle="modal" onclick="addCkeditor('text-area-edit-'+{{$file->id}})" type="button" data-target="#edit-modal-{{$file->id}}" class="btn blue edit">Redaguoti</button>
+                                                    </div>
+                                                    <div class="right-col">
+                                                        <form delete-homework action="{{route('delete-homework-file', $file->id)}}" method="POST">
+                                                            @method('POST')
+                                                            @csrf
+                                                            <input type="hidden" name="group_id" value="{{$group->id}}">
+                                                            <button type="submit" class="btn blue remove-post">Ištrinti</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                            <div class="modal fade" id="edit-modal-{{ $file->id }}" tabindex="-1" role="dialog">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <form action="{{route('homework-edit', $file->id)}}" homework-edit-file method="POST" enctype="multipart/form-data">
+                                                            <div class="author-comment">
+                                                                <div class="author">{{$file->user->name}} {{$file->user->surname}}</div>
+                                                                <div class="date mb-2">{{ $file->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</div>
+                                                                <div class="desc edit">
+                                                                    <textarea name="file_name" id="text-area-edit-{{$file->id}}" class="editor" rows="5" style="width: 100%;overflow-y: hidden; border: 0px" >{{$file->display_name}}</textarea>
+                                                                </div>
+                                                                <div class="edit-buttons mt-2" id="homework-add-file-{{$file->id}}">
+                                                                    <div class="left-col">
+                                                                        <button type="button" onclick="addHomeworkFile('homework-add-file-'+{{$file->id}})" name="file-homework-edit-input-{{$file->id}}" class="btn blue attachment">Prisegti dokumentą</button>
+                                                                        <input name="file" id="file-homework-edit-input-{{$file->id}}" value="{{$file->name}}" type="file" style="display:none;">
+                                                                    </div>
+                                                                    <div class="right-col">
+                                                                        @if (!empty($file->name))
+                                                                            <div class="attachments pl-2" id="homework-add-file-{{$file->id}}">
+                                                                                <div class="attachment">
+                                                                                    <a target="_blank" href="{{ url("/uploads/".$file->name) }}" class="file">Prisegtas dokumentas</a>
+                                                                                    <a onclick="deleteEditHomeworkFile('homework-add-file-'+{{$file->id}})" class="remove-attachment"></a>
+                                                                                </div>
+                                                                            </div>
+                                                                        @endif
+                                                                        <button type="submit" class="btn blue post active">Skelbti</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <form  method="POST" action="{{ route('comments.store') }}" comments-form id="comment-post-{{$file->id}}" enctype="multipart/form-data">
+                                                @csrf
+                                                <div class="comment-form">
+                                                    <input type="hidden" name="commentable_encrypted_key" value="{{ $file->getEncryptedKey() }}"/>
+                                                    <textarea name="message" class="comment" rows="1" cols="50" placeholder="komentuoti"></textarea>
+    {{--                                                <input type="text" class="comment" placeholder="Komentuoti" value="" name="message">--}}
                                                     <input type="hidden" name="group_id" value="{{$group->id}}">
-                                                    <div class="edit-buttons" id="home-work-main-store">
-                                                        <div class="left-col mt-2">
-                                                            <button id="button" name="file-homework-store" type="button" value="Upload" onclick="addHomeworkFile('home-work-main-store');" class="btn blue attachment align-bottom">Prisegti dokumentą</button>
-                                                            <input name="file" type="file" id="file-homework-store" style="display:none;"/>
-                                                        </div>
-                                                        <div class="right-col mt-2">
-                                                            <button type="submit" class="btn blue post">Skelbti</button>
-                                                        </div>
+                                                    <label  onclick="addCommentFile('comment-post-'+{{$file->id}})" class="file"></label>
+                                                    <input type="file" name="file" id="file-attachment-post-{{ $file->id }}" class="file-attachment" />
+                                                    <button type="submit" class="submit" id="submit"></button>
+                                                </div>
+                                            </form>
+                                            <x-comment-custom :model="$file"/>
+                                        </div>
+                                    </li>
+                                    @endforeach
+                                    </ul>
+                                    @if($groupFilesCount > 3)
+                                        <div id="loadMore-homework" class="text-center fa-bold mb-2" style="cursor: pointer;">Rodyti daugiau</div>
+                                    @endif
+                                </div>
+                                <div class="sidebar-area col-lg-5 col-sm-12 col-12">
+                                    <div class="information-block">
+                                        <h3>Informacija</h3>
+                                        <div class="desc">{!! $group->information !!}</div>
+                                    </div>
+                                    <div class="schedule-block">
+                                        <div class="dashboard--block">
+                                            <h3>Tvarkaraštis</h3>
+                                            <div class="dashboard--timetable">
+                                                @foreach($group->events()->where("date_at", ">" ,\Carbon\Carbon::now('utc')->addHours(3)->format('Y-m-d H:i:s'))->orderBy("date_at","ASC")->get() as $event)
+                                                    <div class="dashboard--time">
+                                                        <?php
+                                                        $eventDate = $event->date_at->timezone(Cookie::get("user_timezone", "GMT"));
+                                                        ?>
+                                                        <div class="dashboard--time--date">{{ mb_strtoupper(mb_substr($eventDate->translatedFormat("F"),0,3)) }}<br><span>{{ $eventDate->format("d") }}</span></div>
+                                                        <div class="dashboard--time--info">
+                                                            <b>{{ $event->name }}</b> ∙ {{ $event->teacher->name }} {{ $event->teacher->surname }}<br>
+                                                            {{\App\TimeZoneUtils::updateTime($eventDate->format("Y-m-d H:i"), $event->updated_at)}}                                                    </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="tab-2" class="tabcontent">
+                            <div class="row no-gutters">
+                                <div class="main-tab-area col-lg-7 col-sm-12 col-12">
+                                    <div class="main-info">
+                                        <h3>Pokalbiai ir nariai</h3>
+                                        <div class="subtitle">Bendraukite su grupės draugais</div>
+                                    </div>
+
+                                    <div class="chat-form">
+                                        <div class="comments-list">
+                                            <div class="mb-5">
+                                                <form  method="POST" class="align-bottom" new-group-message action="{{ route('create-message-conversations') }}" id="group-message-store" enctype="multipart/form-data">
+                                                    @csrf
+                                                    @method("OPTIONS")
+                                                    <div class="comment-form">
+                                                        <textarea type="text" class="comment" placeholder="Rašyti"  name="text" style="width: 100%;overflow-y: hidden; border: 0px"></textarea>
+                                                        <input type="hidden" name="groupID" value="{{$group->id}}">
+                                                        <label onclick="addCommentFile('group-message-store')" class="file"></label>
+                                                        <input  type="file" name="file" id="file-attachment-group-message-store" class="file-attachment" />
+                                                        <button type="submit" class="submit" id="submit">
                                                     </div>
                                                 </form>
                                             </div>
-                                        </div>
-                                    @endif
-                                </div>
-                                <ul id="homework-list-main" class="list-unstyled">
-                                @php $groupFiles = $group->files()->orderBy('created_at', 'desc')->get();
-                                $groupFilesCount = $groupFiles->count();
-                                @endphp
-                                @foreach($groupFiles as $file)
-                                    <li class="homework-list" style=" display:none;">
-                                    <div class="author-comment" id="homework-file-main-{{$file->id}}">
-                                        <div class="author">{{$file->user->name}} {{$file->user->surname}}</div>
-                                        <div class="date">{{ $file->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d") }}</div>
-<!--                                        --><?php //$displayName = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $file->display_name); ?>
-                                        <div class="desc">@php echo $file->display_name; @endphp</div>
-                                        @if (!empty($file->name))
-                                            <div class="attachments">
-                                                <div class="attachment">
-                                                    <a target="_blank" href="{{ url("/uploads/".$file->name) }}" class="file">Prisegtas dokumentas</a>
-                                                </div>
-                                            </div>
-                                        @endif
-                                        @if(Auth::user()->role == "admin" || (Auth::user()->role == 'teacher' && Auth::user()->id === $file->user_id))
-                                            <div class="edit-buttons">
-                                                <div class="left-col">
-                                                    <button data-toggle="modal" onclick="addCkeditor('text-area-edit-'+{{$file->id}})" type="button" data-target="#edit-modal-{{$file->id}}" class="btn blue edit">Redaguoti</button>
-                                                </div>
-                                                <div class="right-col">
-                                                    <form delete-homework action="{{route('delete-homework-file', $file->id)}}" method="POST">
-                                                        @method('POST')
-                                                        @csrf
-                                                        <input type="hidden" name="group_id" value="{{$group->id}}">
-                                                        <button type="submit" class="btn blue remove-post">Ištrinti</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        @endif
-                                        <div class="modal fade" id="edit-modal-{{ $file->id }}" tabindex="-1" role="dialog">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <form action="{{route('homework-edit', $file->id)}}" homework-edit-file method="POST" enctype="multipart/form-data">
-                                                        <div class="author-comment">
-                                                            <div class="author">{{$file->user->name}} {{$file->user->surname}}</div>
-                                                            <div class="date mb-2">{{ $file->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</div>
-                                                            <div class="desc edit">
-                                                                <textarea name="file_name" id="text-area-edit-{{$file->id}}" class="editor" rows="5" style="width: 100%;overflow-y: hidden; border: 0px" >{{$file->display_name}}</textarea>
+                                            @php $messages = $group->group_message()->orderBy("id", "Desc")->get(); @endphp
+                                            @if (!$messages->isEmpty())
+                                                @foreach($messages as $msg)
+                                                    <?php
+                                                    $student = null;
+                                                    if($msg->author && count($msg->author->studentsInGroup($group)))
+                                                        $student = $msg->author->studentsInGroup($group)[0];
+
+                                                    ?>
+                                                    <div class="comment-area" id="group-message-list-{{$msg->id}}">
+                                                        <div class="author-icon">
+                                                            @if($student && $student->photo)
+                                                                <img class="user-photo-group" src="/uploads/students/{{ $student->photo }}" alt="Avatar">
+                                                            @elseif($msg->author && $msg->author->photo)
+                                                                <img class="user-photo-group" src="/uploads/users/{{ $msg->author->photo }}" alt="Avatar">
+                                                            @else
+                                                                <span class="icon-user"></span>
+                                                            @endif
+                                                        </div>
+                                                        <div class="author-info">
+                                                            <div class="author">
+                                                                @if($student)
+                                                                    <b>{{ $student->name }}</b> ∙ <br>
+                                                                    @if($student->birthday){{ $student->age }} ∙ @endif {{ $msg->author->name }} {{ $msg->author->surname }}
+                                                                @elseif($msg->author)
+                                                                    <b>{{ $msg->author->name }} {{ $msg->author->surname }}</b><br>
+                                                                @endif
                                                             </div>
-                                                            <div class="edit-buttons mt-2" id="homework-add-file-{{$file->id}}">
-                                                                <div class="left-col">
-                                                                    <button type="button" onclick="addHomeworkFile('homework-add-file-'+{{$file->id}})" name="file-homework-edit-input-{{$file->id}}" class="btn blue attachment">Prisegti dokumentą</button>
-                                                                    <input name="file" id="file-homework-edit-input-{{$file->id}}" value="{{$file->name}}" type="file" style="display:none;">
+                                                            <div class="time">{{$msg->updated_at->diffForHumans()}}</div>
+                                                        </div>
+                                                        <div class="comment">
+                                                            <div class="text">
+                                                                <?php $msg->message = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $msg->message);
+                                                                 ?>
+                                                                    <div class="desc edit">{!! nl2br($msg->message) !!}</div>
+                                                            </div>
+                                                            @if($msg->file)
+                                                            <div class="attachments">
+                                                                <div class="attachment">
+                                                                    <a href="{{ url('uploads/group-messages/'.$msg->file)}}"  target="_blank" class="file">Prisegtas dokumentas</a>
                                                                 </div>
-                                                                <div class="right-col">
-                                                                    @if (!empty($file->name))
-                                                                        <div class="attachments pl-2" id="homework-add-file-{{$file->id}}">
-                                                                            <div class="attachment">
-                                                                                <a target="_blank" href="{{ url("/uploads/".$file->name) }}" class="file">Prisegtas dokumentas</a>
-                                                                                <a onclick="deleteEditHomeworkFile('homework-add-file-'+{{$file->id}})" class="remove-attachment"></a>
+                                                            </div>
+                                                            @endif
+                                                                @if($msg->author_id == Auth::user()->id || Auth::user()->role == 'admin')
+                                                                    <div class="edit-buttons mt-2">
+                                                                        <div class="left-col" style="float: left;">
+                                                                            <button data-toggle="modal" onclick="addCkeditor('text-area-group-message-'+{{$msg->id}})" data-target="#edit-group-messages-{{$msg->id}}" class="btn blue edit">Redaguoti</button>
+                                                                        </div>
+                                                                        <div class="right-col">
+                                                                            <form delete-group-message action="{{route('delete-group-message', $msg->id)}}" method="POST">
+                                                                                @method('POST')
+                                                                                @csrf
+                                                                                <input type="hidden" name="group_id" value="{{$group->id}}">
+                                                                                <button type="submit" class="btn blue remove-post">Ištrinti</button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal fade" id="edit-group-messages-{{ $msg->id }}" tabindex="-1" role="dialog">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <form action="{{route('edit-group-message', $msg->id)}}" edit-group-message-form  method="POST" enctype="multipart/form-data">
+                                                                        <div class="author-comment">
+                                                                            <div class="author">{{$msg->author->name}} {{$msg->author->surname}}</div>
+                                                                            <div class="date mb-2">{{ $msg->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</div>
+                                                                            <input type="hidden" name="group_id" value="{{$group->id}}">
+                                                                            <div class="desc edit" style="word-break: break-word;"><textarea name="message" id="text-area-group-message-{{$msg->id}}" rows="5" style="width: 100%;overflow-y: hidden; border: 0px">{!! nl2br($msg->message) !!}</textarea></div>
+                                                                            <div class="edit-buttons mt-2" id="group-message-add-file-{{$msg->id}}">
+                                                                                <div class="left-col">
+                                                                                    <button type="button" onclick="addHomeworkFile('group-message-add-file-'+{{$msg->id}})" name="group-message-edit-input-{{$msg->id}}" class="btn blue attachment">Prisegti dokumentą</button>
+                                                                                    <input name="file" id="group-message-edit-input-{{$msg->id}}" value="{{$msg->file}}" type="file" style="display:none;">
+                                                                                </div>
+                                                                                <div class="right-col">
+                                                                                    @if($msg->file)
+                                                                                        <div class="attachments pl-2" id="group-message-add-file-{{$msg->id}}">
+                                                                                            <div class="attachment">
+                                                                                                <a target="_blank" href="{{ url("/uploads/".$msg->file) }}" class="file">Prisegtas dokumentas</a>
+                                                                                                <a onclick="deleteEditHomeworkFile('group-message-add-file-'+{{$msg->id}})" class="remove-attachment"></a>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    @endif
+                                                                                    <button type="submit" class="btn blue post active">Skelbti</button>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                    @endif
-                                                                    <button type="submit" class="btn blue post active">Skelbti</button>
+                                                                    </form>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </form>
-                                                </div>
-                                            </div>
+                                                @endforeach
+                                            @else
+                                                <div class="desc text-center">Nėra įrašų.</div>
+                                            @endif
+
                                         </div>
-                                        <form  method="POST" action="{{ route('comments.store') }}" comments-form id="comment-post-{{$file->id}}" enctype="multipart/form-data">
-                                            @csrf
-                                            <div class="comment-form">
-                                                <input type="hidden" name="commentable_encrypted_key" value="{{ $file->getEncryptedKey() }}"/>
-                                                <textarea name="message" class="comment" rows="1" cols="50" placeholder="komentuoti"></textarea>
-{{--                                                <input type="text" class="comment" placeholder="Komentuoti" value="" name="message">--}}
-                                                <input type="hidden" name="group_id" value="{{$group->id}}">
-                                                <label  onclick="addCommentFile('comment-post-'+{{$file->id}})" class="file"></label>
-                                                <input type="file" name="file" id="file-attachment-post-{{ $file->id }}" class="file-attachment" />
-                                                <button type="submit" class="submit" id="submit"></button>
-                                            </div>
-                                        </form>
-                                        <x-comment-custom :model="$file"/>
+
+                                        </div>
                                     </div>
-                                </li>
-                                @endforeach
-                                </ul>
-                                @if($groupFilesCount > 3)
-                                    <div id="loadMore-homework" class="text-center fa-bold mb-2" style="cursor: pointer;">Rodyti daugiau</div>
-                                @endif
-                            </div>
-                            <div class="sidebar-area col-lg-5 col-sm-12 col-12">
-                                <div class="information-block">
-                                    <h3>Informacija</h3>
-                                    <div class="desc">{!! $group->information !!}</div>
-                                </div>
-                                <div class="schedule-block">
-                                    <div class="dashboard--block">
-                                        <h3>Tvarkaraštis</h3>
-                                        <div class="dashboard--timetable">
-                                            @foreach($group->events()->where("date_at", ">" ,\Carbon\Carbon::now('utc')->addHours(3)->format('Y-m-d H:i:s'))->orderBy("date_at","ASC")->get() as $event)
-                                                <div class="dashboard--time">
-                                                    <?php
-                                                    $eventDate = $event->date_at->timezone(Cookie::get("user_timezone", "GMT"));
-                                                    ?>
-                                                    <div class="dashboard--time--date">{{ mb_strtoupper(mb_substr($eventDate->translatedFormat("F"),0,3)) }}<br><span>{{ $eventDate->format("d") }}</span></div>
-                                                    <div class="dashboard--time--info">
-                                                        <b>{{ $event->name }}</b> ∙ {{ $event->teacher->name }} {{ $event->teacher->surname }}<br>
-                                                        {{\App\TimeZoneUtils::updateTime($eventDate->format("Y-m-d H:i"), $event->updated_at)}}                                                    </div>
+                                <div class="sidebar-area col-lg-5 col-sm-12 col-12">
+                                    <div class="members-block">
+                                        <h3>Nariai</h3>
+    {{--                                    <div class="subtitle">{!! $group->information !!}</div>--}}
+                                        <div class="members-list">
+                                            @foreach($group->students as $student)
+                                                <div class="member">
+                                                    <div class="author-icon">
+                                                        @if($student->photo)
+                                                            <img src="/uploads/students/{{ $student->photo }}">
+                                                        @else
+                                                            <span class="icon-user"></span>
+                                                        @endif
+                                                    </div>
+                                                    <div class="author-info">
+                                                        <div class="author-nick">{{$student->name}}</div>
+                                                        <div class="author-fullname">
+                                                            @if($student->birthday){{ $student->age }} ∙ @endif @if($student->user) {{ $student->user->name }} {{ $student->user->surname }} @endif
+                                                        </div>
+                                                    </div>
+                                                    <button class="btn blue" value="{{$student->id}}" data-toggle="modal" data-target="#sendMessageModal" data-user-name="{{ $student->name }}" data-user-id="{{ $student->id }}">Siųsti žinutę</button>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -198,155 +352,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="tab-2" class="tabcontent">
-                            <div class="main-tab-area col-lg-7 col-sm-12 col-12">
-                                <div class="main-info">
-                                    <h3>Pokalbiai ir nariai</h3>
-                                    <div class="subtitle">Bendraukite su grupės draugais</div>
-                                </div>
-
-                                <div class="chat-form">
-                                    <div class="comments-list">
-                                        <div class="mb-5">
-                                            <form  method="POST" class="align-bottom" new-group-message action="{{ route('create-message-conversations') }}" id="group-message-store" enctype="multipart/form-data">
-                                                @csrf
-                                                @method("OPTIONS")
-                                                <div class="comment-form">
-                                                    <textarea type="text" class="comment" placeholder="Rašyti"  name="text" style="width: 100%;overflow-y: hidden; border: 0px"></textarea>
-                                                    <input type="hidden" name="groupID" value="{{$group->id}}">
-                                                    <label onclick="addCommentFile('group-message-store')" class="file"></label>
-                                                    <input  type="file" name="file" id="file-attachment-group-message-store" class="file-attachment" />
-                                                    <button type="submit" class="submit" id="submit">
-                                                </div>
-                                            </form>
-                                        </div>
-                                        @php $messages = $group->group_message()->orderBy("id", "Desc")->get(); @endphp
-                                        @if (!$messages->isEmpty())
-                                            @foreach($messages as $msg)
-                                                <?php
-                                                $student = null;
-                                                if($msg->author && count($msg->author->studentsInGroup($group)))
-                                                    $student = $msg->author->studentsInGroup($group)[0];
-
-                                                ?>
-                                                <div class="comment-area" id="group-message-list-{{$msg->id}}">
-                                                    <div class="author-icon">
-                                                        @if($student && $student->photo)
-                                                            <img class="user-photo-group" src="/uploads/students/{{ $student->photo }}" alt="Avatar">
-                                                        @elseif($msg->author && $msg->author->photo)
-                                                            <img class="user-photo-group" src="/uploads/users/{{ $msg->author->photo }}" alt="Avatar">
-                                                        @else
-                                                            <span class="icon-user"></span>
-                                                        @endif
-                                                    </div>
-                                                    <div class="author-info">
-                                                        <div class="author">
-                                                            @if($student)
-                                                                <b>{{ $student->name }}</b> ∙ <br>
-                                                                @if($student->birthday){{ $student->age }} ∙ @endif {{ $msg->author->name }} {{ $msg->author->surname }}
-                                                            @elseif($msg->author)
-                                                                <b>{{ $msg->author->name }} {{ $msg->author->surname }}</b><br>
-                                                            @endif
-                                                        </div>
-                                                        <div class="time">{{$msg->updated_at->diffForHumans()}}</div>
-                                                    </div>
-                                                    <div class="comment">
-                                                        <div class="text">
-                                                            <?php $msg->message = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $msg->message);
-                                                             ?>
-                                                                <div class="desc edit">{!! nl2br($msg->message) !!}</div>
-                                                        </div>
-                                                        @if($msg->file)
-                                                        <div class="attachments">
-                                                            <div class="attachment">
-                                                                <a href="{{ url('uploads/group-messages/'.$msg->file)}}"  target="_blank" class="file">Prisegtas dokumentas</a>
-                                                            </div>
-                                                        </div>
-                                                        @endif
-                                                            @if($msg->author_id == Auth::user()->id || Auth::user()->role == 'admin')
-                                                                <div class="edit-buttons mt-2">
-                                                                    <div class="left-col" style="float: left;">
-                                                                        <button data-toggle="modal" onclick="addCkeditor('text-area-group-message-'+{{$msg->id}})" data-target="#edit-group-messages-{{$msg->id}}" class="btn blue edit">Redaguoti</button>
-                                                                    </div>
-                                                                    <div class="right-col">
-                                                                        <form delete-group-message action="{{route('delete-group-message', $msg->id)}}" method="POST">
-                                                                            @method('POST')
-                                                                            @csrf
-                                                                            <input type="hidden" name="group_id" value="{{$group->id}}">
-                                                                            <button type="submit" class="btn blue remove-post">Ištrinti</button>
-                                                                        </form>
-                                                                    </div>
-                                                                </div>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="modal fade" id="edit-group-messages-{{ $msg->id }}" tabindex="-1" role="dialog">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <form action="{{route('edit-group-message', $msg->id)}}" edit-group-message-form  method="POST" enctype="multipart/form-data">
-                                                                    <div class="author-comment">
-                                                                        <div class="author">{{$msg->author->name}} {{$msg->author->surname}}</div>
-                                                                        <div class="date mb-2">{{ $msg->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</div>
-                                                                        <input type="hidden" name="group_id" value="{{$group->id}}">
-                                                                        <div class="desc edit" style="word-break: break-word;"><textarea name="message" id="text-area-group-message-{{$msg->id}}" rows="5" style="width: 100%;overflow-y: hidden; border: 0px">{!! nl2br($msg->message) !!}</textarea></div>
-                                                                        <div class="edit-buttons mt-2" id="group-message-add-file-{{$msg->id}}">
-                                                                            <div class="left-col">
-                                                                                <button type="button" onclick="addHomeworkFile('group-message-add-file-'+{{$msg->id}})" name="group-message-edit-input-{{$msg->id}}" class="btn blue attachment">Prisegti dokumentą</button>
-                                                                                <input name="file" id="group-message-edit-input-{{$msg->id}}" value="{{$msg->file}}" type="file" style="display:none;">
-                                                                            </div>
-                                                                            <div class="right-col">
-                                                                                @if($msg->file)
-                                                                                    <div class="attachments pl-2" id="group-message-add-file-{{$msg->id}}">
-                                                                                        <div class="attachment">
-                                                                                            <a target="_blank" href="{{ url("/uploads/".$msg->file) }}" class="file">Prisegtas dokumentas</a>
-                                                                                            <a onclick="deleteEditHomeworkFile('group-message-add-file-'+{{$msg->id}})" class="remove-attachment"></a>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                @endif
-                                                                                <button type="submit" class="btn blue post active">Skelbti</button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                            @endforeach
-                                        @else
-                                            <div class="desc text-center">Nėra įrašų.</div>
-                                        @endif
-
-                                    </div>
-
-                                    </div>
-                                </div>
-                            <div class="sidebar-area col-lg-5 col-sm-12 col-12">
-                                <div class="members-block">
-                                    <h3>Nariai</h3>
-{{--                                    <div class="subtitle">{!! $group->information !!}</div>--}}
-                                    <div class="members-list">
-                                        @foreach($group->students as $student)
-                                            <div class="member">
-                                                <div class="author-icon">
-                                                    @if($student->photo)
-                                                        <img src="/uploads/students/{{ $student->photo }}">
-                                                    @else
-                                                        <span class="icon-user"></span>
-                                                    @endif
-                                                </div>
-                                                <div class="author-info">
-                                                    <div class="author-nick">{{$student->name}}</div>
-                                                    <div class="author-fullname">
-                                                        @if($student->birthday){{ $student->age }} ∙ @endif @if($student->user) {{ $student->user->name }} {{ $student->user->surname }} @endif
-                                                    </div>
-                                                </div>
-                                                <button class="btn blue" value="{{$student->id}}" data-toggle="modal" data-target="#sendMessageModal" data-user-name="{{ $student->name }}" data-user-id="{{ $student->id }}">Siųsti žinutę</button>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
                     </div>
                         <div id="tab-3" class="tabcontent">
                             <div class="row mt-5">
@@ -400,18 +405,14 @@
     <script>
         $(document).ready(function () {
             var size_li = $("#homework-list-main li.homework-list").length;
-            console.log(size_li);
             var x=3;
-            console.log($('#homework-list-main li.homework-list:lt('+x+')'));
             $('#homework-list-main li.homework-list:lt('+x+')').show();
             $('#loadMore-homework').click(function () {
                 x= (x+3 <= size_li) ? x+3 : size_li;
                 $('#homework-list-main li.homework-list:lt('+x+')').show();
             });
             $('#showLess-homework').click(function () {
-                console.log(x);
                 x=(x-3<0) ? 3 : x-3;
-                console.log(x);
                 $('#homework-list-main li.homework-list').not(':lt('+x+')').hide();
             });
         });
@@ -484,10 +485,6 @@
 
         }
         $( document ).ready(function() {
-            // $(".editor").each(function () {
-            //     let id = $(this).attr('id');
-            //     CKEDITOR.replace(id);
-            // });
             CKEDITOR.replace( 'ckeditor', {
             } );
             setTimeout(function(){
