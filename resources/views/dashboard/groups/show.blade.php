@@ -201,7 +201,7 @@
                             </div>
                         </div>
                         <div id="tab-2" class="tabcontent">
-                            <div class="row no-gutters">
+                            <div class="row no-gutters w-100">
                                 <div class="main-tab-area col-lg-7 col-sm-12 col-12">
                                     <div class="main-info">
                                         <h3>Pokalbiai ir nariai</h3>
