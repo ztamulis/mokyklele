@@ -87,45 +87,31 @@
                 <span></span>
             </div>
             <ul class="left-menu">
-                <li>
-                    <a href="/apie-pamokas">
-                        Apie pamokas
-                    </a>
-                    <div class="arrow-down"></div>
-                    <div class="mv--dropdown">
-                        <ul>
-                            <li>
-                                <a href="/lietuviu_kalbos_pamokos">Lietuvių kalbos pamokos</a>
-                            </li>
-                            <li>
-                                <a href="/patarimai-tevams">Patarimai tėvams</a>
-                            </li>
-                            <li>
-                                <a href="/kaina">Kaina</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <a href="/susitikimai">
-                        Susitikimai
-                    </a>
-                </li>
-                <li>
-                    <a href="/nemokama-pamoka">
-                        Nemokama pamoka
-                    </a>
-                </li>
-                <li>
-                    <a href="/komanda">
-                        Komanda
-                    </a>
-                </li>
-                <li>
-                    <a href="/kontaktai">
-                        Kontaktai
-                    </a>
-                </li>
+                @foreach(\App\Models\Navbar::navBar() as $nav)
+                    @if(property_exists($nav,'children'))
+                        <li>
+                            <a href="{{$nav->href}}">
+                                {{$nav->text}}
+                            </a>
+                            <div class="mobile--arrow--down"></div>
+                            <div class="mv--dropdown">
+                                <ul>
+                                    @foreach($nav->children as $child)
+                                        <li>
+                                            <a href="{{$child->href}}">{{$child->text}}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </li>
+                    @else
+                        <li>
+                            <a href="{{$nav->href}}">
+                                {{$nav->text}}
+                            </a>
+                        </li>
+                    @endif
+                @endforeach
             </ul>
             <ul class="right-menu">
                 <li>
@@ -178,9 +164,10 @@
                                         <a class=" @if(Request::is('dashboard/tableData')) active @endif " href="/dashboard/tableData"><i class="fa fa-files-o"></i><span>Duomenų lentelė</span></a>
                                         <a class=" @if(Request::is('dashboard/payments')) active @endif " href="/dashboard/payments"><i class="fas fa-money-bill"></i><span>Apmokėjimai</span>
                                         <a class=" @if(Request::is('dashboard/meetings')) active @endif " href="/dashboard/meetings"><i class="fa fa-calendar-check-o"></i><span>Susitikimai</span></a>
-                                        <a class=" @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a>
-                                        <a class=" @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a>
-                                        <a class=" @if(Request::is('dashboard/coupons')) active @endif " href="/dashboard/coupons"><i class="fa fa-cc-discover"></i><span>Nuolaidų kuponai</span></a>
+                                            <a class=" @if(Request::is('dashboard/introductions')) active @endif " href="/dashboard/introductions"><i class="fa fa-cc-discover"></i><span>Vieši susitikimai</span></a>
+                                            <a class=" @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a>
+                                            <a class=" @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a>
+                                            <a class=" @if(Request::is('dashboard/coupons')) active @endif " href="/dashboard/coupons"><i class="fa fa-cc-discover"></i><span>Nuolaidų kuponai</span></a>
                                         <a class=" @if(Request::is('questions-form')) active @endif " href="/questions-form"><i class="fa fa-question"></i><span>Suaugusiųjų kursų forma</span></a>
                                         <a class=" @if(Request::is('register-free/admin')) active @endif " href="/register-free/admin"><i class="fa fa-registered"></i><span>Nemokamos pamokos forma</span></a>
                                     @endif

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\IntroductionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\QuestionFormController;
 use App\Http\Controllers\RegisterFreeController;
@@ -54,6 +55,11 @@ Route::get('/kaina', function () {
 });
 Route::get('/susitikimai', function () {
     return view('landing.susitikimai');
+});
+Route::get('/susitikimai/test', function () {
+    return view('landing_new.susitikimai_naujas')->with("meetings", \App\Models\Introduction::orderBy('date_at', 'asc')->get())
+        ->with("before", \App\Models\Introduction::orderBy('date_at', 'asc')->where('date_at', '<', \Carbon\Carbon::now('utc'))->get())
+            ->with("coming", \App\Models\Introduction::orderBy('date_at', 'asc')->where('date_at', '>', \Carbon\Carbon::now('utc'))->get());
 });
 Route::get('/nemokama-pamoka', function () {
     return view('landing.nemokama_pamoka');
@@ -172,6 +178,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/dashboard/students', StudentController::class);
     Route::resource('/dashboard/events', EventController::class);
     Route::resource('/dashboard/meetings', MeetingController::class);
+    Route::resource('/dashboard/introductions', IntroductionController::class);
     Route::resource('/dashboard/messages', MessageController::class);
     Route::resource('/dashboard/payments', PaymentController::class);
     Route::resource('/dashboard/rewards', RewardController::class);
