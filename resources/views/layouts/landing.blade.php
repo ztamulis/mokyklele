@@ -216,11 +216,11 @@
 
     @if(!Cookie::get("user_timezone"))
         <?php
-//            $ipinfo = json_decode(file_get_contents("http://ip-api.com/json/".Request::ip()));
-//            $country = $ipinfo->country;
-//            $timezone = $ipinfo->timezone;
+            $ipinfo = json_decode(file_get_contents("http://ip-api.com/json/".Request::ip()));
+            $country = $ipinfo->country;
+            $timezone = $ipinfo->timezone;
                 $country = 'Lithuania';
-//            $country = Location::get(Request::ip())->countryName;
+            $country = Location::get(Request::ip())->countryName;
         ?>
         <div class="landing--modal">
             <div class="landing--modal--inner">
