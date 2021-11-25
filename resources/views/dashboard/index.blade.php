@@ -66,7 +66,7 @@
                             <div class="info"><span>{{$meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d")}}</span>
                                 {{App\Models\Group::getWeekDay($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->dayOfWeek)}},
                                 <span>{{ App\TimeZoneUtils::updateTime($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i"), $meeting->updated_at) }}</span>
-                                (Europe/Vilnius)</div>
+                                ({{Cookie::get("user_timezone", "GMT")}})</div>
                             <div class="desc">{!! strip_tags($meeting->description) !!}</div>
                             <a href="{{ $meeting->join_link }}">
                                 <button class="btn green">Prisijungti</button>
