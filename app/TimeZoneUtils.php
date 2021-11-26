@@ -40,6 +40,19 @@ class TimeZoneUtils
         }
         return $date;
     }
+    /**
+     * @param $date
+     * @return string
+     */
+    public static function updateHours($date, $updatedAt) {
+        if ((self::summerTimeStart()." 5:00" < $updatedAt
+                && $updatedAt < self::summerTimeEnd()." 5:00")
+            && !Carbon::now()->timezone('Europe/London')->isDST()) {
+
+            return Carbon::createFromDate($date)->addHour()->format('H:i');
+        }
+        return $date;
+    }
 
 
     public static function isSummerTime() {

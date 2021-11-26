@@ -52,7 +52,7 @@
                 @endforeach
             @endforeach
             @if((\App\Http\Controllers\UserController::hasGroup() && !\App\Http\Controllers\UserController::hasDemoLesson())
-    || (Auth::user()->role === 'admin' && !empty($meetings)))
+    || (!empty($meetings)))
                 <div class="meetings">
                     <h3 class="day">Nemokami susitikimai</h3>
                     @foreach($meetings as $meeting)
@@ -65,7 +65,7 @@
                             <h3>{{$meeting->name}}</h3>
                             <div class="info"><span>{{$meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d")}}</span>
                                 {{App\Models\Group::getWeekDay($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->dayOfWeek)}},
-                                <span>{{ App\TimeZoneUtils::updateTime($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i"), $meeting->updated_at) }}</span>
+                                <span>{{ App\TimeZoneUtils::updateHours($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i"), $meeting->updated_at) }}</span>
                                 ({{Cookie::get("user_timezone", "GMT")}})</div>
                             <div class="desc">{!! strip_tags($meeting->description) !!}</div>
                             <a href="{{ $meeting->join_link }}">
