@@ -57,9 +57,9 @@ Route::get('/kaina', function () {
 //    return view('landing.susitikimai');
 //});
 Route::get('/susitikimai', function () {
-    return view('landing_new.susitikimai_naujas')->with("meetings", \App\Models\Introduction::orderBy('date_at', 'asc')->get())
-        ->with("before", \App\Models\Introduction::orderBy('date_at', 'asc')->where('date_at', '<', \Carbon\Carbon::now('utc'))->get())
-            ->with("coming", \App\Models\Introduction::orderBy('date_at', 'asc')->where('date_at', '>', \Carbon\Carbon::now('utc'))->get());
+    return view('landing_new.susitikimai_naujas')->with("meetings", \App\Models\Introduction::orderBy('date_at', 'desc')->get())
+        ->with("before", \App\Models\Introduction::orderBy('date_at', 'desc')->where('date_at', '<', \Carbon\Carbon::now('utc'))->get())
+            ->with("coming", \App\Models\Introduction::orderBy('date_at', 'desc')->where('date_at', '>', \Carbon\Carbon::now('utc'))->get());
 });
 Route::get('/nemokama-pamoka', function () {
     return view('landing.nemokama_pamoka');
