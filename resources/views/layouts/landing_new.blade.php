@@ -81,7 +81,15 @@
                         </li>
                     @endif
                 @endforeach
+                    @if(!Auth::check())
+                        <li>
+                        <a href="/login">
+                            Prisijungti
+                        </a>
+                        </li>
+                    @endif
             </ul>
+            @if(Auth::check())
             <ul class="right-menu">
                 <li>
                     <a class="only--mobile" href="/dashboard">
@@ -153,8 +161,11 @@
                             </div>
                         </li>
                     </ul>
+
                 </li>
+
             </ul>
+            @endif
         </nav>
         <div class="clear"></div>
     </header>

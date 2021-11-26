@@ -53,10 +53,10 @@ Route::get('/kaina', function () {
 Route::get('/kaina', function () {
     return view('landing.kaina');
 });
+//Route::get('/susitikimai', function () {
+//    return view('landing.susitikimai');
+//});
 Route::get('/susitikimai', function () {
-    return view('landing.susitikimai');
-});
-Route::get('/susitikimai/test', function () {
     return view('landing_new.susitikimai_naujas')->with("meetings", \App\Models\Introduction::orderBy('date_at', 'asc')->get())
         ->with("before", \App\Models\Introduction::orderBy('date_at', 'asc')->where('date_at', '<', \Carbon\Carbon::now('utc'))->get())
             ->with("coming", \App\Models\Introduction::orderBy('date_at', 'asc')->where('date_at', '>', \Carbon\Carbon::now('utc'))->get());
