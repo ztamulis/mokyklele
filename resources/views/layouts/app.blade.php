@@ -82,7 +82,7 @@
                 <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/tableData')) active @endif " href="/dashboard/tableData"><i class="fa fa-files-o"></i><span>Duomenų lentelė</span></a></li>
 {{--                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/messages/create')) active @endif " href="/dashboard/messages/create"><i class="fa fa-newspaper-o"></i><span>Rašyti žinutę</span></a></li>--}}
                 <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/payments')) active @endif " href="/dashboard/payments"><i class="fas fa-money-bill"></i><span>Apmokėjimai</span></a></li>
-                <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/introductions')) active @endif " href="dashboard/introductions"><i class="fa fa-calendar-check-o"></i><span>Vieši susitikimai</span></a></li>
+                <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/introductions')) active @endif " href="/dashboard/introductions"><i class="fa fa-calendar-check-o"></i><span>Vieši susitikimai</span></a></li>
 
                     {{--                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/navbar')) active @endif " href="/dashboard/navbar"><i class="fa fa-navicon"></i><span>Meniu juosta</span></a></li>--}}
                 <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a></li>
