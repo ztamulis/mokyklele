@@ -82,7 +82,7 @@ class IntroductionController extends Controller
             $meeting->photo = $newfilename;
 //            var_dump("uploads/introductions", $newfilename.'.'.$file->getClientOriginalExtension());die();
             Image::load("uploads/introductions/".$newfilename)
-                ->height(260)
+                ->height(560)
                 ->save();
         }
         $meeting->save();
@@ -149,7 +149,7 @@ class IntroductionController extends Controller
             $file->storeAs("uploads/introductions", $newfilename);
             $introduction->photo = $newfilename;
             Image::load("uploads/introductions/".$newfilename)
-                ->height(280)
+                ->height(560)
                 ->save();
         }
 
