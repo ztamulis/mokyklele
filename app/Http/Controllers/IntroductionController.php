@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use Spatie\Image\Image;
 
 class IntroductionController extends Controller
 {
@@ -79,6 +80,10 @@ class IntroductionController extends Controller
             $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
             $file->storeAs("uploads/introductions", $newfilename);
             $meeting->photo = $newfilename;
+//            var_dump("uploads/introductions", $newfilename.'.'.$file->getClientOriginalExtension());die();
+            Image::load("uploads/introductions/".$newfilename)
+                ->height(260)
+                ->save();
         }
         $meeting->save();
 
@@ -143,6 +148,9 @@ class IntroductionController extends Controller
             $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
             $file->storeAs("uploads/introductions", $newfilename);
             $introduction->photo = $newfilename;
+            Image::load("uploads/introductions/".$newfilename)
+                ->height(280)
+                ->save();
         }
 
         $introduction->save();
