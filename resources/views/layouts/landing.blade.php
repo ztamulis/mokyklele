@@ -8,7 +8,7 @@
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer','GTM-P7XK43G');</script>
     <!-- End Google Tag Manager -->
-    <title>@yield("title") Mokykėlė pasaka</title>
+    <title>@yield("title") Mokyklėlė pasaka</title>
 
     <link rel="stylesheet" type="text/css" href="/css/landing.css">
     <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
