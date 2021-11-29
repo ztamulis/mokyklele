@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>@yield("title") Mokykėlė pasaka</title>
+    <title>@yield("title") Mokyklėlė pasaka</title>
 
     <link rel="stylesheet" type="text/css" href="/css/landing.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
