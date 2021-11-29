@@ -5,13 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EditRequest;
 use App\Http\Requests\SaveRequest;
 use App\Models\File;
-use App\Models\Group;
 use App\Models\User;
 use Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Mail;
+use Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -237,13 +236,14 @@ class CommentsController extends Controller
         $file = request()->file('file');
 
         if (!empty($file)) {
-            $newfilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . "-" . \Illuminate\Support\Facades\Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
+            $filename =  preg_replace('/\s+/', '_', $file->getClientOriginalName());
+
+            $newfilename = pathinfo($filename, PATHINFO_FILENAME) . "-" . \Illuminate\Support\Facades\Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
 
             $file->storeAs(\App\Models\Comment::$FILE_PATH, $newfilename);
             $reply->file = $newfilename;
             $reply->save();
         }
-
         $this->SendNotificationEmail($reply);
 
 
@@ -254,7 +254,9 @@ class CommentsController extends Controller
 
 
 	private function SendNotificationEmail($record) {
-        $commenters = $record->allChildrenWithCommenter()->get()->pluck('commenter_id')->toArray();
+        $commenters = $record->parent()->first()->allChildrenWithCommenter()->get()->pluck('commenter_id')->toArray();
+        $commenters[] =  $record->parent()->first()->commenter_id;
+        $commenters = array_merge($commenters);
         $file = File::where('id', $record->commentable_id)->first();
 
         $commenters[] = $file->user_id;
@@ -273,11 +275,10 @@ class CommentsController extends Controller
 
         $html .="<br>Peržiūrėti galite čia: <a href='".\Config::get('app.url')."/dashboard/groups/".$file->group()->first()->slug. "#comment-". $record->id."'>".\Config::get('app.url')."/dashboard/groups/".$file->group()->first()->slug."</a>
             </p><p>Linkėjimai<br>Pasakos komanda</p>";
-
         $users = User::whereIn('id', $commenters)->where('id', '!=', Auth::user()->id)->pluck('email', 'id');
         if (!$users->isEmpty()) {
             foreach($users->toArray() as $userId => $email) {
-                if (Auth::user()->id == $userId) {
+                if (Auth::user()->id != $userId) {
                     Mail::send([], [], function ($message) use ($html, $email, $groupName) {
                         $message
                             ->to($email)
@@ -285,7 +286,6 @@ class CommentsController extends Controller
                             ->setBody($html, 'text/html');
                     });
                 }
-
             }
         }
     }
