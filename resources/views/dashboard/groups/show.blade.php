@@ -54,11 +54,11 @@
                 <div class="tabs">
                     <button class="tablinks active" data-country="tab-1">Namų darbai</button>
                     <button class="tablinks" data-country="tab-2">Pokalbiai ir nariai</button>
-                    <button class="tablinks" data-country="tab-3">Apdovanojimai</button>
+                    <button class="tablinks d-lg-none" data-country="tab-3">Informacija</button>
+                    <button class="tablinks" data-country="tab-4">Apdovanojimai</button>
                 </div>
 
                 <!-- Tab content -->
-                <div class="row">
                     <div class="wrapper_tabcontent">
                         <div id="tab-1" class="tabcontent active">
                             <div class="row no-gutters">
@@ -175,7 +175,7 @@
                                     @endif
                                 </div>
                                 <div class="sidebar-area col-lg-5 col-sm-12 col-12">
-                                    <div class="information-block">
+                                    <div class="information-block tab-content-display-none">
                                         <h3>Informacija</h3>
                                         <div class="desc">{!! $group->information !!}</div>
                                     </div>
@@ -353,11 +353,19 @@
                             </div>
                         </div>
                     </div>
-                        <div id="tab-3" class="tabcontent">
+                        <div id="tab-3" class="tabcontent d-lg-none">
+                            <div class="row mt-5 no-gutters">
+                                <div class="sidebar-area col-lg-5 col-sm-12 col-12">
+                                    <div class="information-block">
+                                        <h3>Informacija</h3>
+                                        <div class="desc">{!! $group->information !!}</div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div id="tab-4" class="tabcontent">
                             <div class="row mt-5">
                             </div>
                         </div>
-                </div>
             </div>
             </section>
         </div>
