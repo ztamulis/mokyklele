@@ -5,7 +5,7 @@
             <h1 class="meetings-h">Susitikimai</h1>
             <p class="meetings-text">
                 Kviečiame Pasakos vaikus į įdomius virtualius susitikimus su kūrybingais žmonėmis iš Lietuvos!
-                Kas gali būti smagiau, nei lavinti lietuvių kalbą tyrinėjant ir pažįstant Lietuvos kultūrą? Štai keli jau įvykę susitikimai, kuriais labai džiaugiamės:
+                Kas gali būti smagiau, nei lavinti lietuvių kalbą tyrinėjant ir pažįstant Lietuvos kultūrą?
             </p>
         </div>
         <div class="col-md-6 col-sm-12">
