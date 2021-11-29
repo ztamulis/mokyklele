@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EditRequest;
 use App\Http\Requests\SaveRequest;
+use App\Models\File;
+use App\Models\Group;
+use App\Models\User;
 use Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -72,15 +76,19 @@ class CommentsController extends Controller
 		);
         $file = request()->file('file');
         if (!empty($file)) {
+            $filename =  preg_replace('/\s+/', '_', $file->getClientOriginalName());
 
-            $newfilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . "-" . \Illuminate\Support\Facades\Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
+            $newfilename = pathinfo($filename, PATHINFO_FILENAME) . "-" . \Illuminate\Support\Facades\Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
 
             $file->storeAs(\App\Models\Comment::$FILE_PATH, $newfilename);
             $comment->file = $newfilename;
             $comment->save();
         }
 
-		return $request->ajax()
+
+        $this->SendNotificationEmail($comment);
+
+        return $request->ajax()
 			? [
 				'success' => true,
 				'comment' => new CommentResource($comment)
@@ -159,11 +167,15 @@ class CommentsController extends Controller
 
         $file = request()->file('file');
         if (!empty($file)) {
-            $newfilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . "-" . \Illuminate\Support\Facades\Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
+            $filename =  preg_replace('/\s+/', '_', $file->getClientOriginalName());
+
+            $newfilename = pathinfo($filename, PATHINFO_FILENAME) . "-" . \Illuminate\Support\Facades\Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
             $file->storeAs(\App\Models\Comment::$FILE_PATH, $newfilename);
             $comment->file = $newfilename;
             $comment->save();
         }
+        $this->SendNotificationEmail($comment);
+
 		return $request->ajax()
 			? ['success' => true, 'comment' => new CommentResource($comment)]
 			: redirect()->to(url()->previous() . '#comment-' . $comment->id);
@@ -222,7 +234,6 @@ class CommentsController extends Controller
 			$comment
 		);
 
-
         $file = request()->file('file');
 
         if (!empty($file)) {
@@ -233,9 +244,50 @@ class CommentsController extends Controller
             $reply->save();
         }
 
+        $this->SendNotificationEmail($reply);
+
+
 		return $request->ajax()
 			? ['success' => true, 'comment' => new CommentResource($reply)]
 			: redirect()->to(url()->previous() . '#comment-' . $reply->id);
 	}
+
+
+	private function SendNotificationEmail($record) {
+        $commenters = $record->allChildrenWithCommenter()->get()->pluck('commenter_id')->toArray();
+        $file = File::where('id', $record->commentable_id)->first();
+
+        $commenters[] = $file->user_id;
+        $commenters = array_unique($commenters);
+        $groupName = $file->group()->first()->name;
+        $html = "<p>Sveiki,<br> Po Jūsų įrašu grupėje ".$groupName." yra naujas komentaras:<br>
+         Autorius:  ".Auth::user()->name ." ". Auth::user()->surname."<br>";
+
+        if (!empty($record->comment)) {
+            $html .= "Žinutė: ".$record->comment;
+        }
+        if (!empty($record->file)) {
+            $html .=  "<br>Prisegtas dokumentas: <a href='".\Config::get('app.url')."/uploads/homework-comments".$record->file."'>".\Config::get('app.url')."/uploads/homework-comments".$record->file."</a>";
+
+        }
+
+        $html .="<br>Peržiūrėti galite čia: <a href='".\Config::get('app.url')."/dashboard/groups/".$file->group()->first()->slug. "#comment-". $record->id."'>".\Config::get('app.url')."/dashboard/groups/".$file->group()->first()->slug."</a>
+            </p><p>Linkėjimai<br>Pasakos komanda</p>";
+
+        $users = User::whereIn('id', $commenters)->where('id', '!=', Auth::user()->id)->pluck('email', 'id');
+        if (!$users->isEmpty()) {
+            foreach($users->toArray() as $userId => $email) {
+                if (Auth::user()->id == $userId) {
+                    Mail::send([], [], function ($message) use ($html, $email, $groupName) {
+                        $message
+                            ->to($email)
+                            ->subject("Komentaras | grupė: ".  $groupName)
+                            ->setBody($html, 'text/html');
+                    });
+                }
+
+            }
+        }
+    }
 
 }
