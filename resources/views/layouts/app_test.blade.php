@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>@yield("title") Mokykėlė pasaka</title>
+    <title>@yield("title") Mokyklėlė pasaka</title>
 
     <link rel="stylesheet" type="text/css" href="/css/landing.css">
     <link href="http://pagination.js.org/dist/2.1.5/pagination.css" rel="stylesheet">
