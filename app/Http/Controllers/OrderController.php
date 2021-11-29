@@ -101,6 +101,13 @@ class OrderController extends Controller {
         $json_students = json_decode($request->input("students"));
         $students = [];
         $dublicatedUsers = [];
+
+        $groupCount = $group->students()->count();
+        if (($groupCount + count($json_students)) > $group->slots) {
+            return view("lessons_order.group_create_free_order")
+                ->with("group", $group)
+                ->with("error",  $this->getFullGroupErrorText($groupCount, $group->slots));
+        }
         foreach ($json_students as $student_id) {
             if(Str::startsWith($student_id, "new_")){
                 $student_info = explode("_", str_replace("new_", "", $student_id));
@@ -190,6 +197,19 @@ class OrderController extends Controller {
         return redirect()->route('orderFreeSuccess', ['slug' => $group->slug])->withInput();
     }
 
+    private function getFullGroupErrorText($groupCount, $slots) {
+        $freeSlots = $slots - $groupCount;
+        $text = '';
+        if ($freeSlots == 1) {
+            $text = 'Grupėje laisva tik '.$freeSlots. ' vieta';
+        }
+        if ($freeSlots > 1) {
+            $text = 'Grupėje laisvos tik '.$freeSlots. ' vietos';
+
+        }
+        return $text;
+    }
+
 
 
 
@@ -234,6 +254,13 @@ class OrderController extends Controller {
         $dublicatedUsers = [];
         $coupon = Coupon::where('code', $request->input('coupon-code'))->first();
 
+        $groupCount = $group->students()->count();
+
+        if (($groupCount + count($json_students)) > $group->slots) {
+            return view("lessons_order.group_create_order")
+                ->with("group", $group)
+                ->with("error",  $this->getFullGroupErrorText($groupCount, $group->slots));
+        }
         foreach ($json_students as $student_id) {
             if(Str::startsWith($student_id, "new_")){
                 $student_info = explode("_", str_replace("new_", "", $student_id));
@@ -252,7 +279,7 @@ class OrderController extends Controller {
                 $student->group_id = -1;
                 $student->birthday = \Carbon\Carbon::parse($student_info[1]);
                 if (empty($student->birthday)) {
-                    return view("lessons_order.group_create_free_order")
+                    return view("lessons_order.group_create_order")
                         ->with("group", $group)
                         ->with("coupon", $coupon)
                         ->with("error", "Neparinktas mokinio gimtadienis");
@@ -262,7 +289,7 @@ class OrderController extends Controller {
             }else{
                 $student = Student::find($student_id);
                 if(!$student) {
-                    return view("lessons_order.group_create_free_order")
+                    return view("lessons_order.group_create_order")
                         ->with("group", $group)
                         ->with("coupon", $coupon)
                         ->with("error", "Klaida studentų pateikime");
