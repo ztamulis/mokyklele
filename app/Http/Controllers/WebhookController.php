@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Coupon;
+use App\Models\Group;
 use App\Models\Payment;
 use App\Models\Student;
 use App\Models\UserCoupon;
@@ -134,6 +135,7 @@ class WebhookController extends CashierController
             "<br>Grupės ID: ".$group->id .
             "<br>Grupės tipas: ".$group->type .
             "<br>Mokama: ".$paid .
+            "<br>Skirta: ".Group::$FOR_TRANSLATE[$group->for] .
             "<br>laikas: ".$time .
             "<br>Pradžia: ".$startDate .
             "<br>Mokytoja(-os): ".join(" ", $teachers).
@@ -223,6 +225,7 @@ class WebhookController extends CashierController
             "<br>Grupės ID: ".$group->id .
             "<br>Grupės tipas: ".$group->type .
             "<br>Mokama: ".$paid .
+            "<br>Skirta: ".Group::$FOR_TRANSLATE[$group->for] .
             "<br>laikas: ".$time .
             "<br>Pradžia: ".$startDate .
             "<br>Mokytoja(-os): ".join(" ", $teachers).

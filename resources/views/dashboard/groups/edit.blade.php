@@ -64,6 +64,13 @@
                                 <option @if($group->paid == 0) selected @endif value="0">Nemokama</option>
                             </select>
                         </div>
+                        <div class="form-group"><small class="form-text text-muted">Amžiaus kategorija</small>
+                            <select class="form-control" name="for" required>
+                                @foreach (App\Models\Group::$FOR_TRANSLATE as $key => $value)
+                                    <option @if($group->for == $key) selected @endif value="{{$key}}">{{$value}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group"><small class="form-text text-muted">Vieta</small>
                             <ul id="sortable">
                                 @foreach(\App\Models\Group::orderBy("weight", "ASC")->get() as $i => $g)

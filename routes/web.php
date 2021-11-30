@@ -56,6 +56,7 @@ Route::get('/kaina', function () {
 //Route::get('/susitikimai', function () {
 //    return view('landing.susitikimai');
 //});
+
 Route::get('/susitikimai', function () {
     return view('landing_new.susitikimai_naujas')->with("meetings", \App\Models\Introduction::orderBy('date_at', 'desc')->get())
         ->with("before", \App\Models\Introduction::orderBy('date_at', 'desc')->where('date_at', '<', \Carbon\Carbon::now('utc'))->get())
@@ -92,6 +93,14 @@ Route::get('/courses_free', function () {
 
 Route::get('/question_form', function () {
     return view('landing_other.question_form');
+});
+
+Route::get('/courses_adults_free', function () {
+    return view('landing_other.courses_adults_free');
+});
+
+Route::get('/courses_adults', function () {
+    return view('landing_other.courses_adults');
 });
 
 Route::post('/', [UserController::class, 'setRegion']);

@@ -406,6 +406,7 @@ class OrderController extends Controller {
             "<br>Grupės ID: ".$group->id .
             "<br>Grupės tipas: ".$group->type .
             "<br>Mokama: ".$paid .
+            "<br>Skirta: ".Group::$FOR_TRANSLATE[$group->for] .
             "<br>Laikas: ".$time .
             "<br>Pradžia: ".$startDate .
             "<br>Mokytoja(-os): ".join(" ", $teachers).

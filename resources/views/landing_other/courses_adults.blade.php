@@ -6,7 +6,7 @@
     </div>
     <div class="learning--group--select--selector">
         @php
-            $groupsGrouped  = \App\Models\Group::where("paid", 1)->where("hidden", 0)->where("for", 'children')->get()->groupBy("type");
+            $groupsGrouped  = \App\Models\Group::where("paid", 1)->where("hidden", 0)->where("for", '=', 'adults')->get()->groupBy("type");
             $type = '  ';
             if (isset($groupsGrouped['yellow'])) {
             $type = 'yellow';
@@ -24,37 +24,37 @@
         @endphp
 
         @if(isset($groupsGrouped['yellow']))
-            <div class="learning--group--select--item active" data-filter="yellow">
+            <div class="learning--group--select--item active" data-filter-adults="yellow">
                 Geltona (2-4m.)
             </div>
         @endif
 
         @if(isset($groupsGrouped['green']))
-            <div class="learning--group--select--item" data-filter="green">
+            <div class="learning--group--select--item" data-filter-adults="green">
                 Žalia (5-6m.)
             </div>
         @endif
         @if(isset($groupsGrouped['blue']))
-            <div class="learning--group--select--item" data-filter="blue">
+            <div class="learning--group--select--item" data-filter-adults="blue">
                 Mėlyna (7-9m.)
             </div>
         @endif
 
         @if(isset($groupsGrouped['red']))
-            <div class="learning--group--select--item" data-filter="red">
+            <div class="learning--group--select--item" data-filter-adults="red">
                 Raudona (10-13m.)
             </div>
         @endif
 
         @if(isset($groupsGrouped['individual']))
-            <div class="learning--group--select--item" data-filter="individual">
+            <div class="learning--group--select--item" data-filter-adults="individual">
                 Individualios pamokos
             </div>
         @endif
 
     </div>
-    @foreach(\App\Models\Group::where("paid", 1)->where("hidden",0)->where("for", 'children')->orderBy("weight","ASC")->get() as $group)
-        <div class="learning--group--select--row" data-group="{{ $group->type }}">
+    @foreach(\App\Models\Group::where("paid", 1)->where("hidden",0)->where("for", '=', 'adults')->orderBy("weight","ASC")->get() as $group)
+        <div class="learning--group--select--row" data-group-adults="{{ $group->type }}">
             <div class="color background--{{ $group->type }}"></div>
             <div class="text">
                 <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else href="/select-group/order/{{ $group->slug }}" @endif >{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a>
@@ -112,14 +112,14 @@
     @endforeach
 </div>
 <script>
-    function filterBy(group) {
-        $("[data-group]").hide();
-        $("[data-group='"+group+"']").show();
-        $("[data-filter]").removeClass("active");
-        $("[data-filter='"+group+"']").addClass("active");
+    function filterByAdults(group) {
+        $("[data-group-adults]").hide();
+        $("[data-group-adults='"+group+"']").show();
+        $("[data-filter-adults]").removeClass("active");
+        $("[data-filter-adults='"+group+"']").addClass("active");
     }
-    $("[data-filter]").click(function () {
-        filterBy($(this).attr("data-filter"));
+    $("[data-filter-adults]").click(function () {
+        filterByAdults($(this).attr("data-filter-adults"));
     });
-    filterBy('{{$type}}');
+    filterByAdults('{{$type}}');
 </script>

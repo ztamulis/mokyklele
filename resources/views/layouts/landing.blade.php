@@ -276,6 +276,8 @@
             $("#free-lessons-form").load( "free-l-form" );
             $("#courses-free").load( "courses_free" );
             $("#question-form").load( "question_form" );
+            $("#courses-adults-free").load( "courses_adults_free" );
+            $("#courses-adults").load( "courses_adults" );
         });
         if(window.location.href.endsWith('change-timezone')) {
             window.location.href = "/";
