@@ -7,7 +7,11 @@ use App\Http\Requests\SaveRequest;
 use App\Models\File;
 use App\Models\User;
 use Auth;
+use Config;
+use DomainException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Mail;
@@ -42,8 +46,8 @@ class CommentsController extends Controller
 	/**
 	 * Creates a new comment for given model.
 	 * @param SaveRequest $request
-	 * @return array|\Illuminate\Http\RedirectResponse
-	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 * @return array|RedirectResponse
+	 * @throws AuthorizationException
 	 */
 	public function store(SaveRequest $request) {
 		$this->authorize($this->policyPrefix . '.store');
@@ -54,15 +58,15 @@ class CommentsController extends Controller
 			$modelPath = $decryptedModelData['type'];
 
 		} catch (DecryptException $e) {
-			throw new \DomainException('Decryption error');
+			throw new DomainException('Decryption error');
 		}
 
 		if (!CommentService::modelIsExists($modelPath)) {
-			throw new \DomainException('Model don\'t exists');
+			throw new DomainException('Model don\'t exists');
 		}
 
 		if (!CommentService::isCommentable(new $modelPath)) {
-			throw new \DomainException('Model is\'t commentable');
+			throw new DomainException('Model is\'t commentable');
 		}
 
 		$model = $modelPath::findOrFail($commentableId);
@@ -109,11 +113,11 @@ class CommentsController extends Controller
 		$orderBy = CommentService::orderByRequestAdapter($request);
 
 		if (!CommentService::modelIsExists($modelPath)) {
-			throw new \DomainException('Model don\'t exists');
+			throw new DomainException('Model don\'t exists');
 		}
 
 		if (!CommentService::isCommentable(new $modelPath)) {
-			throw new \DomainException('Model is\'t commentable');
+			throw new DomainException('Model is\'t commentable');
 		}
 
 		$model = $modelPath::where('id', $modelId)->first();
@@ -146,8 +150,8 @@ class CommentsController extends Controller
 	 * Updates the message of the comment.
 	 * @param EditRequest $request
 	 * @param Comment $comment
-	 * @return array|\Illuminate\Http\RedirectResponse
-	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 * @return array|RedirectResponse
+	 * @throws AuthorizationException
 	 */
 	public function update(EditRequest $request, Comment $comment)
 	{
@@ -184,8 +188,8 @@ class CommentsController extends Controller
 	 * Deletes a comment.
 	 * @param Request $request
 	 * @param Comment $comment
-	 * @return array|\Illuminate\Http\RedirectResponse
-	 * @throws \Illuminate\Auth\Access\AuthorizationException
+	 * @return array|RedirectResponse
+	 * @throws AuthorizationException
 	 */
 	public function destroy(Request $request, Comment $comment)
 	{
@@ -198,7 +202,7 @@ class CommentsController extends Controller
 		try {
 			CommentService::deleteComment($comment);
 			$response = response(['message' => 'success']);
-		} catch (\DomainException $e) {
+		} catch (DomainException $e) {
 			$response = response(['message' => $e->getMessage()], 401);
 		}
         if (json_decode($response->content())->message === 'Comment has replies') {
@@ -213,15 +217,14 @@ class CommentsController extends Controller
 		return redirect()->back();
 	}
 
-	/**
-	 * Reply to comment
-	 *
-	 * @param Request $request
-	 * @param Comment $comment
-	 * @return array|\Illuminate\Http\RedirectResponse
-	 * @throws \Illuminate\Auth\Access\AuthorizationException
-	 * @throws \Illuminate\Validation\ValidationException
-	 */
+    /**
+     * Reply to comment
+     *
+     * @param Request $request
+     * @param Comment $comment
+     * @return array|RedirectResponse
+     * @throws AuthorizationException
+     */
 	public function reply(Request $request, Comment $comment)
 	{
 		$this->authorize($this->policyPrefix . '.reply', $comment);
@@ -269,11 +272,11 @@ class CommentsController extends Controller
             $html .= "Žinutė: ".$record->comment;
         }
         if (!empty($record->file)) {
-            $html .=  "<br>Prisegtas dokumentas: <a href='".\Config::get('app.url')."/uploads/homework-comments".$record->file."'>".\Config::get('app.url')."/uploads/homework-comments".$record->file."</a>";
+            $html .=  "<br>Prisegtas dokumentas: <a href='". Config::get('app.url')."/uploads/homework-comments".$record->file."'>". Config::get('app.url')."/uploads/homework-comments".$record->file."</a>";
 
         }
 
-        $html .="<br>Peržiūrėti galite čia: <a href='".\Config::get('app.url')."/dashboard/groups/".$file->group()->first()->slug. "#comment-". $record->id."'>".\Config::get('app.url')."/dashboard/groups/".$file->group()->first()->slug."</a>
+        $html .="<br>Peržiūrėti galite čia: <a href='". Config::get('app.url')."/dashboard/groups/".$file->group()->first()->slug. "#comment-". $record->id."'>". Config::get('app.url')."/dashboard/groups/".$file->group()->first()->slug."</a>
             </p><p>Linkėjimai<br>Pasakos komanda</p>";
         $users = User::whereIn('id', $commenters)->where('id', '!=', Auth::user()->id)->pluck('email', 'id');
         if (!$users->isEmpty()) {
