@@ -179,24 +179,33 @@
                                         <h3>Informacija</h3>
                                         <div class="desc">{!! $group->information !!}</div>
                                     </div>
-                                    <div class="schedule-block">
-                                        <div class="dashboard--block">
-                                            <h3>Tvarkaraštis</h3>
-                                            <div class="dashboard--timetable">
-                                                @foreach($group->events()->where("date_at", ">" ,\Carbon\Carbon::now('utc')->addHours(3)->format('Y-m-d H:i:s'))->orderBy("date_at","ASC")->get() as $event)
+                                    @php $events = $group->events()->where("date_at", ">" ,\Carbon\Carbon::now('utc')->addHours(3)->format('Y-m-d H:i:s'))->orderBy("date_at","ASC")->get(); @endphp
+                                        <div class="schedule-block">
+                                            <div class="dashboard--block">
+                                                <h3>Tvarkaraštis</h3>
+                                                @if (!$events->isEmpty())
+
+                                                <div class="dashboard--timetable">
+                                                    @foreach($events as $event)
+                                                        <div class="dashboard--time">
+                                                            <?php
+                                                            $eventDate = $event->date_at->timezone(Cookie::get("user_timezone", "GMT"));
+                                                            ?>
+                                                            <div class="dashboard--time--date">{{ mb_strtoupper(mb_substr($eventDate->translatedFormat("F"),0,3)) }}<br><span>{{ $eventDate->format("d") }}</span></div>
+                                                            <div class="dashboard--time--info">
+                                                                <b>{{ $event->name }}</b> ∙ {{ $event->teacher->name }} {{ $event->teacher->surname }}<br>
+                                                                {{\App\TimeZoneUtils::updateTime($eventDate->format("Y-m-d H:i"), $event->updated_at)}}                                                    </div>
+                                                        </div>
+                                                    @endforeach
+                                                @else
                                                     <div class="dashboard--time">
-                                                        <?php
-                                                        $eventDate = $event->date_at->timezone(Cookie::get("user_timezone", "GMT"));
-                                                        ?>
-                                                        <div class="dashboard--time--date">{{ mb_strtoupper(mb_substr($eventDate->translatedFormat("F"),0,3)) }}<br><span>{{ $eventDate->format("d") }}</span></div>
-                                                        <div class="dashboard--time--info">
-                                                            <b>{{ $event->name }}</b> ∙ {{ $event->teacher->name }} {{ $event->teacher->surname }}<br>
-                                                            {{\App\TimeZoneUtils::updateTime($eventDate->format("Y-m-d H:i"), $event->updated_at)}}                                                    </div>
+                                                            Tvarkaraščio nėra.
                                                     </div>
-                                                @endforeach
+                                                @endif
+
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>

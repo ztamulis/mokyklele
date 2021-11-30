@@ -18,18 +18,18 @@
                             @if (!empty($comment->file))
                                 <div class="attachments pl-1" id="homework-comment-edit-file-{{$comment->id}}">
                                     <div class="attachment">
-                                        <a target="_blank" href="{{ url("/uploads/homework-comments/".$comment->file) }}" class="file">Prisegtas dokumentas</a>
+                                        <a target="_blank" href="{{ url("/uploads/homework-comments/".$comment->file) }}" class="file"></a>
                                     </div>
                                 </div>
                             @endif
                         </div>
                         <div class="right-col">
                             <button  data-toggle="collapse"  aria-expanded="false" aria-controls="multiCollapseExample1" data-target="#comment-modal-{{ $comment->id }}"
-                                    class="btn blue edit">Atsakyti
+                                    class="btn blue reply">Atsakyti
                             </button>
                             @can('comments.edit', $comment)
                                 <button data-toggle="collapse" data-target="#comment-edit-{{ $comment->id }}"
-                                        class="btn blue edit">Readaguoti
+                                        class="btn blue reply">Readaguoti
                                 </button>
                             @endcan
 
