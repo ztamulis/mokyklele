@@ -11,6 +11,17 @@ class Group extends Model
 {
     use HasSlug;
 
+    public static $FOR_TRANSLATE = [
+        'adults' => 'Kursai suaugusiems',
+        'children' => 'Kursai vaikams',
+    ];
+    public static $FOR_DATABASE_FIELDS = [
+         'Kursai suaugusiems' => 'adults',
+         'Kursai vaikams' => 'children',
+    ];
+//    public static $FILE_PATH = 'uploads/homework-comments';
+
+
     protected $dates = ['time' , 'time_2'];
 
     public function students(){

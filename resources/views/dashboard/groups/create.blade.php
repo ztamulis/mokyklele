@@ -61,6 +61,13 @@
                                 <option @if(old('paid') == 0) selected @endif value="0">Nemokama</option>
                             </select>
                         </div>
+                        <div class="form-group"><small class="form-text text-muted">Amžiaus kategorija</small>
+                            <select class="form-control" name="age_category" required>
+                                @foreach (App\Models\Group::$FOR_TRANSLATE as $key => $value)
+                                    <option @if(old('age_category') == $key) selected @endif value="{{$key}}">{{$value}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group"><small class="form-text text-muted">Vieta</small>
                             <ul id="sortable">
                                 @php

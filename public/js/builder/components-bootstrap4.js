@@ -68,7 +68,14 @@ function changeNodeName(node, newNodeName)
 	return newNode;
 }
 
-Vvveb.ComponentsGroup['Mokyklele Pasaka'] = ["html/free-lessons", "html/courses", "html/courses-free", "html/question-form"];
+Vvveb.ComponentsGroup['Mokyklele Pasaka'] = [
+    "html/free-lessons",
+    "html/courses",
+    "html/courses-free",
+    "html/question-form",
+    "html/courses-adults",
+    "html/courses-adults-free"
+];
 
 Vvveb.ComponentsGroup['Components'] =
 ["html/container", "html/gridrow", "html/heading", "html/paragraph", "html/image", "html/jumbotron", "html/carousel","html/listgroup","html/listitem", "html/hr", "html/taglabel", "html/table", "html/link", "html/video"];
@@ -1193,6 +1200,20 @@ Vvveb.Components.extend("_base", "html/question-form", {
     nodes: ["question-form"],
     name: "Suaugusiu kursu anketa",
     html: '<div id="question-form"><span>Klausimynas</span></div>',
+    image: "icons/slide-show.svg"
+});
+
+Vvveb.Components.extend("_base", "html/courses-adults-free", {
+    nodes: ["courses-adults-free"],
+    name: "Suaugusiu nemokami kursai",
+    html: '<div id="courses-adults-free"><span>Suaugusiu nemokami kursai</span></div>',
+    image: "icons/slide-show.svg"
+});
+
+Vvveb.Components.extend("_base", "html/courses-adults", {
+    nodes: ["courses-adults"],
+    name: "Suaugusiu kursai",
+    html: '<div id="courses-adults"><span>Suaugusiu kursai</span></div>',
     image: "icons/slide-show.svg"
 });
 
