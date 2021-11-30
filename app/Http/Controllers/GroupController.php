@@ -71,7 +71,7 @@ class GroupController extends Controller
             'type' => 'required|string',
             'course_length' => 'required|integer|max:52|min:1',
             'time' => 'required',
-            'for' => 'required',
+            'age_category' => 'required',
         ]);
         $group = new Group;
         $group->name = $request->input("name");
@@ -83,7 +83,7 @@ class GroupController extends Controller
         $group->type = $request->input("type");
         $group->paid = $request->input("paid");
         $group->course_length = $request->input("course_length");
-        $group->for = $request->input("for");
+        $group->age_category = $request->input("age_category");
         $group->hidden = $request->input("hidden") ? 1 : 0;
 
         $time = \Carbon\Carbon::parse(date("Y-m-d") . " " . $request->input("time"));
@@ -194,7 +194,7 @@ class GroupController extends Controller
             'type' => 'required|string',
             'course_length' => 'required|integer|max:52|min:1',
             'time' => 'required',
-            'for' => 'required',
+            'age_category' => 'required',
         ]);
 
         if($request->input("start_date")){
@@ -213,7 +213,7 @@ class GroupController extends Controller
         $group->type = $request->input("type");
         $group->paid = $request->input("paid");
         $group->course_length = $request->input("course_length");
-        $group->for = $request->input("for");
+        $group->age_category = $request->input("age_category");
         $group->hidden = $request->input("hidden") ? 1 : 0;
 
         $time = \Carbon\Carbon::parse(date("Y-m-d") . " " . $request->input("time"));

@@ -74,7 +74,7 @@
                             <td>{{ $group->end_date ? \Carbon\Carbon::parse($group->end_date)->format("Y-m-d") : "00:00" }}</td>
                             <td>{{ $group->hidden ? "Ne" : "Taip" }}</td>
                             <td>{{ $group->paid ? "Taip" : "Ne" }}</td>
-                            <td>{{ App\Models\Group::$FOR_TRANSLATE[$group->for]}}</td>
+                            <td>{{ App\Models\Group::$FOR_TRANSLATE[$group->age_category]}}</td>
 
                             <td class="text-right">
                                 <a href="/dashboard/groups/{{ $group->slug }}" class="btn btn-primary" type="button" style="margin: 0px 4px 0px;">Įeiti</a>

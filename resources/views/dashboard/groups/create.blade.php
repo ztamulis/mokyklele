@@ -62,9 +62,9 @@
                             </select>
                         </div>
                         <div class="form-group"><small class="form-text text-muted">Amžiaus kategorija</small>
-                            <select class="form-control" name="for" required>
+                            <select class="form-control" name="age_category" required>
                                 @foreach (App\Models\Group::$FOR_TRANSLATE as $key => $value)
-                                    <option @if(old('for') == $key) selected @endif value="{{$key}}">{{$value}}</option>
+                                    <option @if(old('age_category') == $key) selected @endif value="{{$key}}">{{$value}}</option>
                                 @endforeach
                             </select>
                         </div>

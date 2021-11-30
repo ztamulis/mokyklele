@@ -14,7 +14,7 @@ class UpdateGroupsTable extends Migration
     public function up() {
         Schema::table('groups', function($table)
         {
-            $table->string('for')->default('children');
+            $table->string('age_category')->default('children');
         });
     }
 
@@ -26,7 +26,7 @@ class UpdateGroupsTable extends Migration
     public function down()
     {
         Schema::table('groups', function($table) {
-            $table->dropColumn('for');
+            $table->dropColumn('age_category');
         });
     }
 }
