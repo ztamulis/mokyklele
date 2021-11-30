@@ -257,9 +257,12 @@ class CommentsController extends Controller
 
 
 	private function SendNotificationEmail($record) {
-        $commenters = $record->parent()->first()->allChildrenWithCommenter()->get()->pluck('commenter_id')->toArray();
-        $commenters[] =  $record->parent()->first()->commenter_id;
-        $commenters = array_merge($commenters);
+	    $parent = $record->parent()->first();
+	    if(!empty($parent)) {
+            $commenters =$parent->allChildrenWithCommenter()->get()->pluck('commenter_id')->toArray();
+            $commenters[] =  $parent->first()->commenter_id;
+            $commenters = array_merge($commenters);
+        }
         $file = File::where('id', $record->commentable_id)->first();
 
         $commenters[] = $file->user_id;
