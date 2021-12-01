@@ -2,14 +2,13 @@
 
     <div class="row mt-5">
         <div class="col-md-6 col-sm-12">
-            <h1 class="meetings-h">Susitikimai</h1>
+            <h1 class="meetings-h">{{$siteContent['title']}}</h1>
             <p class="meetings-text">
-                Kviečiame Pasakos vaikus į įdomius virtualius susitikimus su kūrybingais žmonėmis iš Lietuvos!
-                Kas gali būti smagiau, nei lavinti lietuvių kalbą tyrinėjant ir pažįstant Lietuvos kultūrą?
+                {!! $siteContent['description'] !!}
             </p>
         </div>
         <div class="col-md-6 col-sm-12">
-            <img class="img-fluid meetings-main-img" src="https://mokyklelepasaka.rfox.cloud/uploads/page-uploads/1-O1C5ub4AT3aklINJ.png">
+            <img class="img-fluid meetings-main-img" src="/uploads/pages/introduction/{{ $siteContent['img'] }}">
         </div>
     </div>
     <div class="row">
