@@ -823,6 +823,10 @@ button {
     background: #f74395;
 }
 
+.background--no_type {
+    background: #f74395;
+}
+
 .text--center {
     text-align: center;
 }

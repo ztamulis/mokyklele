@@ -56,6 +56,8 @@
                                 <option @if($group->type == "blue") selected @endif value="blue">Mėlyna (7-9m.)</option>
                                 <option @if($group->type == "red") selected @endif value="red">Raudona (10-13m.)</option>
                                 <option @if($group->type == "individual") selected @endif value="individual">Individualios pamokos</option>
+                                <option @if($group->type == "no_type") selected @endif value="no_type">Be tipo</option>
+
                             </select>
                         </div>
                         <div class="form-group"><small class="form-text text-muted">Mokama</small>
