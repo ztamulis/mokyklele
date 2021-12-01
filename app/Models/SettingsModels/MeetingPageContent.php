@@ -22,7 +22,7 @@ class MeetingPageContent extends Settings {
         return [
             'title' => $this->site_name,
             'description' => $this->description,
-            'img' => $this->site_name,
+            'img' => $this->img,
         ];
     }
 
