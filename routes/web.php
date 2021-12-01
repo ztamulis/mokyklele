@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\CouponController;
-use App\Http\Controllers\IntroductionController;
+use App\Http\Controllers\Pages\MeetingsPageController;
+use App\Http\Controllers\Pages\IntroductionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\QuestionFormController;
 use App\Http\Controllers\RegisterFreeController;
 use App\Http\Controllers\WebhookController;
+use App\Models\SettingsModels\MeetingPageContent;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\InfoChangeController;
 use App\Http\Controllers\UserController;
@@ -58,9 +60,12 @@ Route::get('/kaina', function () {
 //});
 
 Route::get('/susitikimai', function () {
-    return view('landing_new.susitikimai_naujas')->with("meetings", \App\Models\Introduction::orderBy('date_at', 'desc')->get())
+
+    return view('landing_new.susitikimai_naujas')
+        ->with("meetings", \App\Models\Introduction::orderBy('date_at', 'desc')->get())
         ->with("before", \App\Models\Introduction::orderBy('date_at', 'desc')->where('date_at', '<', \Carbon\Carbon::now('utc'))->get())
-            ->with("coming", \App\Models\Introduction::orderBy('date_at', 'desc')->where('date_at', '>', \Carbon\Carbon::now('utc'))->get());
+        ->with("coming", \App\Models\Introduction::orderBy('date_at', 'desc')->where('date_at', '>', \Carbon\Carbon::now('utc'))->get())
+        ->with('siteContent',  app(MeetingPageContent::class)->getPageContent());
 });
 Route::get('/nemokama-pamoka', function () {
     return view('landing.nemokama_pamoka');
@@ -104,6 +109,9 @@ Route::get('/courses_adults', function () {
 });
 
 Route::post('/', [UserController::class, 'setRegion']);
+
+
+//edit page contents
 
 
 Route::get("/cronjob/main", [CronjobController::class, 'main']);
@@ -221,6 +229,12 @@ Route::middleware(['auth'])->group(function () {
             });
         });
     }
+    Route::group(['prefix' => 'dashboard/pages'], static function () {
+        Route::group(['prefix' => 'introduction', 'as' => 'introductions-config.'], static function () {
+            Route::get('/', [MeetingsPageController::class, 'edit'])->name('edit');
+            Route::put('/update', [MeetingsPageController::class, 'update'])->name('update');
+        });
+    });
 });
 
 

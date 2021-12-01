@@ -21,6 +21,7 @@
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "^3.1",
         "spatie/image": "1.9",
+        "spatie/laravel-settings": "^2.2",
         "spatie/laravel-sluggable": "^2.6",
         "stevebauman/location": "^6.0",
         "tizis/lara-comments": "^3.0"

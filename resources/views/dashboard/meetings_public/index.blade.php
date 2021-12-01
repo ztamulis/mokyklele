@@ -26,7 +26,11 @@
             </div>
         </div>
     @endif
-    <h3 class="text-dark mb-4">Susitikimai</h3>
+        <h3 class="text-dark mb-4">Puslapio informacija</h3>
+        <div class="col-xl-3 mb-4"><a href="{{route('introductions-config.edit')}}" class="btn btn-dark text-white" type="button">Keisti susitikimų puslapio duomenis</a></div>
+
+
+        <h3 class="text-dark mb-4">Vieši susitikimai</h3>
     <div class="card">
         <div class="card-body">
             <form method="GET">
