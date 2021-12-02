@@ -49,7 +49,7 @@ class MeetingsPageController extends Controller {
             $file->storeAs("uploads/pages/introduction", $newfilename);
             $meetingsPageContent->img = $newfilename;
             Image::load("uploads/pages/introduction/".$newfilename)
-                ->height(560)
+                ->height(560, 840)
                 ->save();
         }
         $meetingsPageContent->save();
