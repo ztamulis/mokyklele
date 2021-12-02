@@ -404,6 +404,9 @@ h1, h2, h3, h4 {
 .background--individual {
     background: #f74395;
 }
+.background--no_type {
+    background: #f74395;
+}
 
 .color {
     width: 65px;

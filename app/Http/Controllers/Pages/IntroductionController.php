@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pages;
 
+use App\Http\Controllers\Controller;
 use App\Models\Introduction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -9,7 +10,9 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 
 class IntroductionController extends Controller
@@ -80,7 +83,6 @@ class IntroductionController extends Controller
             $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
             $file->storeAs("uploads/introductions", $newfilename);
             $meeting->photo = $newfilename;
-//            var_dump("uploads/introductions", $newfilename.'.'.$file->getClientOriginalExtension());die();
             Image::load("uploads/introductions/".$newfilename)
                 ->height(560)
                 ->save();
@@ -122,6 +124,7 @@ class IntroductionController extends Controller
      * @param Request $request
      * @param Introduction $introduction
      * @return Response
+     * @throws InvalidManipulation
      */
     public function update(Request $request, Introduction $introduction)
     {
@@ -145,6 +148,9 @@ class IntroductionController extends Controller
 
         $file = $request->file('file');
         if($file) {
+            if (!empty($introduction->photo)) {
+                Storage::delete("uploads/pages/introduction/".$introduction->photo);
+            }
             $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
             $file->storeAs("uploads/introductions", $newfilename);
             $introduction->photo = $newfilename;

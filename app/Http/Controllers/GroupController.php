@@ -3,19 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\GroupMessage;
+use App\Models\SettingsModels\MeetingPageContent;
 use App\Models\Student;
 use App\Models\Group;
 use App\Models\File;
 use App\Models\Message;
 use App\TimeZoneUtils;
+use Carbon\Carbon;
+use Config;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Log;
 use Mail;
 use Cookie;
+use Stripe\Exception\ApiErrorException;
+use Stripe\Plan;
+use Stripe\Stripe;
 
 
 class GroupController extends Controller
@@ -23,7 +32,8 @@ class GroupController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -40,7 +50,7 @@ class GroupController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -53,8 +63,9 @@ class GroupController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
+     * @throws ApiErrorException
      */
     public function store(Request $request)
     {
@@ -86,17 +97,17 @@ class GroupController extends Controller
         $group->age_category = $request->input("age_category");
         $group->hidden = $request->input("hidden") ? 1 : 0;
 
-        $time = \Carbon\Carbon::parse(date("Y-m-d") . " " . $request->input("time"));
+        $time = Carbon::parse(date("Y-m-d") . " " . $request->input("time"));
 
         if($request->input("time_2")){
-            $time_2 = \Carbon\Carbon::parse(date("Y-m-d") . " " . $request->input("time_2"));
+            $time_2 = Carbon::parse(date("Y-m-d") . " " . $request->input("time_2"));
         }
 
         if($request->input("start_date")){
-            $group->start_date = \Carbon\Carbon::parse($request->input("start_date"));
+            $group->start_date = Carbon::parse($request->input("start_date"));
         }
         if($request->input("end_date")){
-            $group->end_date = \Carbon\Carbon::parse($request->input("end_date"));
+            $group->end_date = Carbon::parse($request->input("end_date"));
         }
 
         if(TimeZoneUtils::isSummerTime()){
@@ -128,9 +139,9 @@ class GroupController extends Controller
 
         $group->stripe_plan = Str::slug("plan-".$group->id . "-" . $request->input("name"));
 
-        \Stripe\Stripe::setApiKey(\Config::get("app.stripe_secret"));
+        Stripe::setApiKey(Config::get("app.stripe_secret"));
 
-        \Stripe\Plan::create(array(
+        Plan::create(array(
             "amount" => $group->price*100,
             "interval" => "week",
             "interval_count" => $group->course_length,
@@ -150,8 +161,9 @@ class GroupController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Group  $group
-     * @return \Illuminate\Http\Response
+     * @param Group $group
+     * @param Request $request
+     * @return Response
      */
     public function show(Group $group, Request $request)
     {
@@ -161,8 +173,8 @@ class GroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Group  $group
-     * @return \Illuminate\Http\Response
+     * @param Group $group
+     * @return Response
      */
     public function edit(Group $group)
     {
@@ -175,9 +187,9 @@ class GroupController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Group  $group
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Group $group
+     * @return Response
      */
     public function update(Request $request, Group $group)
     {
@@ -198,10 +210,10 @@ class GroupController extends Controller
         ]);
 
         if($request->input("start_date")){
-            $group->start_date = \Carbon\Carbon::parse($request->input("start_date"))->format('Y-m-d H:i');
+            $group->start_date = Carbon::parse($request->input("start_date"))->format('Y-m-d H:i');
         }
         if($request->input("end_date")){
-            $group->end_date = \Carbon\Carbon::parse($request->input("end_date"))->format('Y-m-d H:i');
+            $group->end_date = Carbon::parse($request->input("end_date"))->format('Y-m-d H:i');
         }
 
         $group->name = $request->input("name");
@@ -216,10 +228,10 @@ class GroupController extends Controller
         $group->age_category = $request->input("age_category");
         $group->hidden = $request->input("hidden") ? 1 : 0;
 
-        $time = \Carbon\Carbon::parse(date("Y-m-d") . " " . $request->input("time"));
+        $time = Carbon::parse(date("Y-m-d") . " " . $request->input("time"));
 
         if(!empty($request->input("time_2"))){
-            $time_2 = \Carbon\Carbon::parse(date("Y-m-d") . " " . $request->input("time_2"));
+            $time_2 = Carbon::parse(date("Y-m-d") . " " . $request->input("time_2"));
         }
 
         if(TimeZoneUtils::isSummerTime()){
@@ -255,8 +267,8 @@ class GroupController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Group  $group
-     * @return \Illuminate\Http\Response
+     * @param Group $group
+     * @return Response
      */
     public function destroy(Group $group)
     {
@@ -314,10 +326,10 @@ class GroupController extends Controller
                 $html .= "Žinutė: ".$group_message->message;
             }
             if (!empty($group_message->file)) {
-                $html .=  "<br>Prisegtas dokumentas: <a href='".\Config::get('app.url')."/uploads/group-messages/".$group_message->file."'>".\Config::get('app.url')."/uploads/group-messages/".$group_message->file."</a>";
+                $html .=  "<br>Prisegtas dokumentas: <a href='". Config::get('app.url')."/uploads/group-messages/".$group_message->file."'>". Config::get('app.url')."/uploads/group-messages/".$group_message->file."</a>";
 
             }
-            $html .="<br>Peržiūrėti galite čia: <a href='".\Config::get('app.url')."/dashboard/groups/".$group_message->group()->first()->slug."'>".\Config::get('app.url')."/dashboard/groups/".$group_message->group()->first()->slug."</a>
+            $html .="<br>Peržiūrėti galite čia: <a href='". Config::get('app.url')."/dashboard/groups/".$group_message->group()->first()->slug."'>". Config::get('app.url')."/dashboard/groups/".$group_message->group()->first()->slug."</a>
             </p><p>Linkėjimai<br>Pasakos komanda</p>";
             foreach($teachers as $email) {
                 Mail::send([], [], function ($message) use ($html, $email, $group) {
@@ -337,15 +349,19 @@ class GroupController extends Controller
     }
 
     public static function nextLesson($group){
-        $event = $group->events()->where("date_at", ">" ,\Carbon\Carbon::now('utc')->subMinutes(120))->orderBy("date_at","ASC")->first();
+        $event = $group->events()->where("date_at", ">" , Carbon::now('utc')->subMinutes(120))->orderBy("date_at","ASC")->first();
         if(isset($event)){
             return $event;
         }
         return null;
     }
 
+    /**
+     * @param $group
+     * @return |null
+     */
     public static function nextLessonButton($group){
-        $event = $group->events()->where("date_at", "<" ,\Carbon\Carbon::now('utc')->addMinutes(10))->where("date_at", "<" ,\Carbon\Carbon::now('utc')->endOfDay())->where("date_at", ">" ,\Carbon\Carbon::now('utc')->startOfDay())->first();
+        $event = $group->events()->where("date_at", "<" , Carbon::now('utc')->addMinutes(10))->where("date_at", "<" , Carbon::now('utc')->endOfDay())->where("date_at", ">" , Carbon::now('utc')->startOfDay())->first();
 //        dd(\Carbon\Carbon::now('UTC')->subMinutes(10)->toDateTimeString());
         if(isset($event)) {
             return $event;
@@ -353,13 +369,17 @@ class GroupController extends Controller
         return null;
     }
 
+    /**
+     * @param $group
+     * @return array
+     */
     private function getTeachersWithLessons($group) {
         if (empty($group->events())) {
             return [];
 
         }
 
-        $lessons = $group->events()->where("date_at", ">" ,\Carbon\Carbon::now('utc'))->orderBy("date_at","ASC")->get();
+        $lessons = $group->events()->where("date_at", ">" , Carbon::now('utc'))->orderBy("date_at","ASC")->get();
         $teachers = [];
         foreach ($lessons as $lesson) {
             $teacher = $lesson->teacher()->first()->toArray();
@@ -370,6 +390,11 @@ class GroupController extends Controller
         return $teachers;
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return RedirectResponse
+     */
     public function editGroupHomework(Request $request, $id) {
         $group = Group::where('id', $request->input("group_id"))->first();
         if (empty($request->input("file_name")) && (empty($request->file('file')) && !(bool)$request->input('oldFile'))) {
@@ -421,9 +446,9 @@ class GroupController extends Controller
             $html .= "Žinutė: ".$originalFile->display_name;
         }
         if (!empty($originalFile->name)) {
-            $html .=  "Prisegtas dokumentas: <a href='".\Config::get('app.url')."/uploads/".$originalFile->name."'>".\Config::get('app.url')."/uploads/".$originalFile->name."</a>";
+            $html .=  "Prisegtas dokumentas: <a href='". Config::get('app.url')."/uploads/".$originalFile->name."'>". Config::get('app.url')."/uploads/".$originalFile->name."</a>";
         }
-        $html .= "<br>Peržiūrėti galite čia: <a href='".\Config::get('app.url')."/dashboard/groups/".$originalFile->group()->first()->slug."'>".\Config::get('app.url')."/dashboard/groups/".$originalFile->group()->first()->slug."</a>
+        $html .= "<br>Peržiūrėti galite čia: <a href='". Config::get('app.url')."/dashboard/groups/".$originalFile->group()->first()->slug."'>". Config::get('app.url')."/dashboard/groups/".$originalFile->group()->first()->slug."</a>
         </p><p>Linkėjimai<br>Pasakos komanda</p>";
         foreach($studentBygroup as $student) {
             Mail::send([], [], function ($message) use ($html, $student, $originalFile) {
@@ -438,6 +463,10 @@ class GroupController extends Controller
         return redirect()->to(url()->previous() . '#homework-file-main-' . $originalFile->id);
     }
 
+    /**
+     * @param File $file
+     * @return bool
+     */
     private function deleteHomeworkFile(File $file) {
         Storage::delete("uploads/".$file->name);
         return true;
@@ -457,8 +486,8 @@ class GroupController extends Controller
             return Redirect::back()->with("group", $group)->with("groups", Group::paginate(15));
         }
         $displayText = $request->input("file_name");
-        \Log::info($displayText);
-        \Log::info($groupId);
+        Log::info($displayText);
+        Log::info($groupId);
         if (empty($displayText) && empty($request->file('file'))) {
             Session::flash('message', 'Laukeliai tušti!');
             Session::flash('alert-class', 'alert-danger');
@@ -493,11 +522,11 @@ class GroupController extends Controller
             $html .= "Žinutė: ".$fileObj->display_name;
         }
         if (!empty($fileObj->name)) {
-            $html .=  "<br>Prisegtas dokumentas: <a href='".\Config::get('app.url')."/uploads/".$fileObj->name."'>".\Config::get('app.url')."/uploads/".$fileObj->name."</a>";
+            $html .=  "<br>Prisegtas dokumentas: <a href='". Config::get('app.url')."/uploads/".$fileObj->name."'>". Config::get('app.url')."/uploads/".$fileObj->name."</a>";
 
         }
 
-        $html .= "<br>Peržiūrėti galite čia: <a href='".\Config::get('app.url')."/dashboard/groups/".$fileObj->group()->first()->slug."'>".\Config::get('app.url')."/dashboard/groups/".$fileObj->group()->first()->slug."</a>
+        $html .= "<br>Peržiūrėti galite čia: <a href='". Config::get('app.url')."/dashboard/groups/".$fileObj->group()->first()->slug."'>". Config::get('app.url')."/dashboard/groups/".$fileObj->group()->first()->slug."</a>
         </p><p>Linkėjimai<br>Pasakos komanda</p>";
         foreach($studentBygroup as $student) {
             $studentGroup = $student->group()->where('id', $request->input("group_id"))->first();
@@ -613,11 +642,11 @@ class GroupController extends Controller
             $html .= "Žinutė: ".$originalGroupMessage->message;
         }
         if (!empty($originalGroupMessage->file)) {
-            $html .=  "<br>Prisegtas dokumentas: <a href='".\Config::get('app.url')."/uploads/group-messages/".$originalGroupMessage->file."'>".\Config::get('app.url')."/uploads/group-messages/".$originalGroupMessage->file."</a>";
+            $html .=  "<br>Prisegtas dokumentas: <a href='". Config::get('app.url')."/uploads/group-messages/".$originalGroupMessage->file."'>". Config::get('app.url')."/uploads/group-messages/".$originalGroupMessage->file."</a>";
 
         }
 
-        $html .= "<br>Peržiūrėti galite čia: <a href='".\Config::get('app.url')."/dashboard/groups/".$originalGroupMessage->group()->first()->slug."'>".\Config::get('app.url')."/dashboard/groups/".$originalGroupMessage->group()->first()->slug."</a>
+        $html .= "<br>Peržiūrėti galite čia: <a href='". Config::get('app.url')."/dashboard/groups/".$originalGroupMessage->group()->first()->slug."'>". Config::get('app.url')."/dashboard/groups/".$originalGroupMessage->group()->first()->slug."</a>
         </p><p>Linkėjimai<br>Pasakos komanda</p>";
 
         foreach($teachers as $email) {

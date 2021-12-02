@@ -165,6 +165,7 @@
                                         <a class=" @if(Request::is('dashboard/payments')) active @endif " href="/dashboard/payments"><i class="fas fa-money-bill"></i><span>Apmokėjimai</span>
                                         <a class=" @if(Request::is('dashboard/meetings')) active @endif " href="/dashboard/meetings"><i class="fa fa-calendar-check-o"></i><span>Susitikimai</span></a>
                                             <a class=" @if(Request::is('dashboard/introductions')) active @endif " href="/dashboard/introductions"><i class="fa fa-cc-discover"></i><span>Vieši susitikimai</span></a>
+                                            <a class=" @if(Request::is('dashboard/suggestions')) active @endif " href="/dashboard/suggestions"><i class="fa fa-cc-discover"></i><span>Patarimai tėvams</span></a>
                                             <a class=" @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a>
                                             <a class=" @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a>
                                             <a class=" @if(Request::is('dashboard/coupons')) active @endif " href="/dashboard/coupons"><i class="fa fa-cc-discover"></i><span>Nuolaidų kuponai</span></a>

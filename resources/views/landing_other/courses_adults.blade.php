@@ -20,6 +20,8 @@
                 $type = 'red';
             } elseif(isset($groupsGrouped['individual'])) {
                 $type = 'individual';
+            } elseif(isset($groupsGrouped['no_type'])) {
+                $type = 'no_type';
             }
         @endphp
 
@@ -49,6 +51,12 @@
         @if(isset($groupsGrouped['individual']))
             <div class="learning--group--select--item" data-filter-adults="individual">
                 Individualios pamokos
+            </div>
+        @endif
+
+        @if(isset($groupsGrouped['no_type']))
+            <div class="learning--group--select--item" data-filter-adults="no_type">
+                Kursai suaugusiems
             </div>
         @endif
 
