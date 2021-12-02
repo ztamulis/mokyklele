@@ -49,7 +49,7 @@ class SuggestionsPageController extends Controller {
             $file->storeAs("uploads/pages/suggestions", $newfilename);
             $suggestionPageContent->img = $newfilename;
             Image::load("uploads/pages/suggestions/".$newfilename)
-                ->height(560)
+                ->height(560, 840)
                 ->save();
         }
         $suggestionPageContent->save();

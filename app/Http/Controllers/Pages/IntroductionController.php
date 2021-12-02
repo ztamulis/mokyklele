@@ -84,7 +84,7 @@ class IntroductionController extends Controller
             $file->storeAs("uploads/introductions", $newfilename);
             $meeting->photo = $newfilename;
             Image::load("uploads/introductions/".$newfilename)
-                ->height(560)
+                ->height(560, 840)
                 ->save();
         }
         $meeting->save();
@@ -155,7 +155,7 @@ class IntroductionController extends Controller
             $file->storeAs("uploads/introductions", $newfilename);
             $introduction->photo = $newfilename;
             Image::load("uploads/introductions/".$newfilename)
-                ->height(560)
+                ->height(560, 840)
                 ->save();
         }
 

@@ -71,12 +71,12 @@ Route::get('/susitikimai', function () {
         ->with('siteContent',  app(MeetingPageContent::class)->getPageContent());
 });
 
-//Route::get('/patarimai-tevams', function () {
-//
-//    return view('landing_new.patarimai naujas_naujas')
-//        ->with("suggestions", \App\Models\Suggestion::orderBy('created_at', 'desc')->get())
-//        ->with('siteContent',  app(SuggestionPageContent::class)->getPageContent());
-//});
+Route::get('/patarimai-tevams', function () {
+
+    return view('landing_new.patarimai naujas_naujas')
+        ->with("suggestions", \App\Models\Suggestion::orderBy('created_at', 'desc')->get())
+        ->with('siteContent',  app(SuggestionPageContent::class)->getPageContent());
+});
 Route::get('/nemokama-pamoka', function () {
     return view('landing.nemokama_pamoka');
 });
