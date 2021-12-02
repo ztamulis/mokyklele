@@ -67,7 +67,7 @@
                                         <h3>Namų darbai</h3>
                                         <div class="subtitle">Pamokos refleksija ir paskirtos užduotys</div>
                                         @if(Auth::user()->role != "user")
-                                            <button  class="btn blue new-post" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Naujas įrašas</button>
+                                            <button  class="btn-groups btn blue new-post" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Naujas įrašas</button>
                                             <div class="collapse multi-collapse" id="multiCollapseExample1">
                                                 <div class="author-comment pl-0">
                                                     <form action="{{route('homework-store')}}" new-homework-file method="POST" enctype="multipart/form-data">
@@ -76,11 +76,11 @@
                                                         <input type="hidden" name="group_id" value="{{$group->id}}">
                                                         <div class="edit-buttons" id="home-work-main-store">
                                                             <div class="left-col mt-2">
-                                                                <button id="button" name="file-homework-store" type="button" value="Upload" onclick="addHomeworkFile('home-work-main-store');" class="btn blue attachment align-bottom">Prisegti dokumentą</button>
+                                                                <button id="button" name="file-homework-store" type="button" value="Upload" onclick="addHomeworkFile('home-work-main-store');" class="btn-groups btn blue attachment align-bottom">Prisegti dokumentą</button>
                                                                 <input name="file" type="file" id="file-homework-store" style="display:none;"/>
                                                             </div>
                                                             <div class="right-col mt-2">
-                                                                <button type="submit" class="btn blue post">Skelbti</button>
+                                                                <button type="submit" class="btn-groups btn blue post">Skelbti</button>
                                                             </div>
                                                         </div>
                                                     </form>
@@ -109,14 +109,14 @@
                                             @if(Auth::user()->role == "admin" || (Auth::user()->role == 'teacher' && Auth::user()->id === $file->user_id))
                                                 <div class="edit-buttons">
                                                     <div class="left-col">
-                                                        <button data-toggle="modal" onclick="addCkeditor('text-area-edit-'+{{$file->id}})" type="button" data-target="#edit-modal-{{$file->id}}" class="btn blue edit">Redaguoti</button>
+                                                        <button data-toggle="modal" onclick="addCkeditor('text-area-edit-'+{{$file->id}})" type="button" data-target="#edit-modal-{{$file->id}}" class="btn-groups btn blue edit">Redaguoti</button>
                                                     </div>
                                                     <div class="right-col">
                                                         <form delete-homework action="{{route('delete-homework-file', $file->id)}}" method="POST">
                                                             @method('POST')
                                                             @csrf
                                                             <input type="hidden" name="group_id" value="{{$group->id}}">
-                                                            <button type="submit" class="btn blue remove-post">Ištrinti</button>
+                                                            <button type="submit" class="btn-groups btn blue remove-post">Ištrinti</button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -133,7 +133,7 @@
                                                                 </div>
                                                                 <div class="edit-buttons mt-2" id="homework-add-file-{{$file->id}}">
                                                                     <div class="left-col">
-                                                                        <button type="button" onclick="addHomeworkFile('homework-add-file-'+{{$file->id}})" name="file-homework-edit-input-{{$file->id}}" class="btn blue attachment">Prisegti dokumentą</button>
+                                                                        <button type="button" onclick="addHomeworkFile('homework-add-file-'+{{$file->id}})" name="file-homework-edit-input-{{$file->id}}" class="btn-groups btn blue attachment">Prisegti dokumentą</button>
                                                                         <input name="file" id="file-homework-edit-input-{{$file->id}}" value="{{$file->name}}" type="file" style="display:none;">
                                                                     </div>
                                                                     <div class="right-col">
@@ -145,7 +145,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         @endif
-                                                                        <button type="submit" class="btn blue post active">Skelbti</button>
+                                                                        <button type="submit" class="btn-groups btn blue post active">Skelbti</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -278,14 +278,14 @@
                                                                 @if($msg->author_id == Auth::user()->id || Auth::user()->role == 'admin')
                                                                     <div class="edit-buttons mt-2">
                                                                         <div class="left-col" style="float: left;">
-                                                                            <button data-toggle="modal" onclick="addCkeditor('text-area-group-message-'+{{$msg->id}})" data-target="#edit-group-messages-{{$msg->id}}" class="btn blue edit">Redaguoti</button>
+                                                                            <button data-toggle="modal" onclick="addCkeditor('text-area-group-message-'+{{$msg->id}})" data-target="#edit-group-messages-{{$msg->id}}" class="btn-groups btn blue edit">Redaguoti</button>
                                                                         </div>
                                                                         <div class="right-col">
                                                                             <form delete-group-message action="{{route('delete-group-message', $msg->id)}}" method="POST">
                                                                                 @method('POST')
                                                                                 @csrf
                                                                                 <input type="hidden" name="group_id" value="{{$group->id}}">
-                                                                                <button type="submit" class="btn blue remove-post">Ištrinti</button>
+                                                                                <button type="submit" class="btn-groups btn blue remove-post">Ištrinti</button>
                                                                             </form>
                                                                         </div>
                                                                     </div>
@@ -304,7 +304,7 @@
                                                                             <div class="desc edit" style="word-break: break-word;"><textarea name="message" id="text-area-group-message-{{$msg->id}}" rows="5" style="width: 100%;overflow-y: hidden; border: 0px">{!! nl2br($msg->message) !!}</textarea></div>
                                                                             <div class="edit-buttons mt-2" id="group-message-add-file-{{$msg->id}}">
                                                                                 <div class="left-col">
-                                                                                    <button type="button" onclick="addHomeworkFile('group-message-add-file-'+{{$msg->id}})" name="group-message-edit-input-{{$msg->id}}" class="btn blue attachment">Prisegti dokumentą</button>
+                                                                                    <button type="button" onclick="addHomeworkFile('group-message-add-file-'+{{$msg->id}})" name="group-message-edit-input-{{$msg->id}}" class="btn-groups btn blue attachment">Prisegti dokumentą</button>
                                                                                     <input name="file" id="group-message-edit-input-{{$msg->id}}" value="{{$msg->file}}" type="file" style="display:none;">
                                                                                 </div>
                                                                                 <div class="right-col">
@@ -316,7 +316,7 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     @endif
-                                                                                    <button type="submit" class="btn blue post active">Skelbti</button>
+                                                                                    <button type="submit" class="btn-groups btn blue post active">Skelbti</button>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -353,7 +353,7 @@
                                                             @if($student->birthday){{ $student->age }} ∙ @endif @if($student->user) {{ $student->user->name }} {{ $student->user->surname }} @endif
                                                         </div>
                                                     </div>
-                                                    <button class="btn blue" value="{{$student->id}}" data-toggle="modal" data-target="#sendMessageModal" data-user-name="{{ $student->name }}" data-user-id="{{ $student->id }}">Siųsti žinutę</button>
+                                                    <button class="btn-groups btn blue" value="{{$student->id}}" data-toggle="modal" data-target="#sendMessageModal" data-user-name="{{ $student->name }}" data-user-id="{{ $student->id }}">Siųsti žinutę</button>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -394,8 +394,8 @@
                     ...
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atšaukti</button>
-                    <button type="button" class="btn btn-primary send--message">Išsiųsti</button>
+                    <button type="button" class="btn-groups btn btn-secondary" data-dismiss="modal">Atšaukti</button>
+                    <button type="button" class="btn-groups btn btn-primary send--message">Išsiųsti</button>
                 </div>
             </div>
         </div>

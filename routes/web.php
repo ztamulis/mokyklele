@@ -5,10 +5,13 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\Pages\MeetingsPageController;
 use App\Http\Controllers\Pages\IntroductionController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Pages\SuggestionsPageController;
 use App\Http\Controllers\QuestionFormController;
 use App\Http\Controllers\RegisterFreeController;
+use App\Http\Controllers\SuggestionController;
 use App\Http\Controllers\WebhookController;
 use App\Models\SettingsModels\MeetingPageContent;
+use App\Models\SettingsModels\SuggestionPageContent;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\InfoChangeController;
 use App\Http\Controllers\UserController;
@@ -45,9 +48,9 @@ Route::get('/', function () {
 Route::get('/apie-pamokas', function () {
     return view('landing.apie_pamokas');
 });
-Route::get('/patarimai-tevams', function () {
-    return view('landing.patarimai_tėvams');
-});
+//Route::get('/patarimai-tevams', function () {
+//    return view('landing.patarimai_tėvams');
+//});
 Route::get('/kaina', function () {
     return view('landing.kaina');
 });
@@ -55,9 +58,9 @@ Route::get('/kaina', function () {
 Route::get('/kaina', function () {
     return view('landing.kaina');
 });
-//Route::get('/susitikimai', function () {
-//    return view('landing.susitikimai');
-//});
+Route::get('/susitikimai', function () {
+    return view('landing.susitikimai');
+});
 
 Route::get('/susitikimai', function () {
 
@@ -67,6 +70,13 @@ Route::get('/susitikimai', function () {
         ->with("coming", \App\Models\Introduction::orderBy('date_at', 'desc')->where('date_at', '>', \Carbon\Carbon::now('utc'))->get())
         ->with('siteContent',  app(MeetingPageContent::class)->getPageContent());
 });
+
+//Route::get('/patarimai-tevams', function () {
+//
+//    return view('landing_new.patarimai naujas_naujas')
+//        ->with("suggestions", \App\Models\Suggestion::orderBy('created_at', 'desc')->get())
+//        ->with('siteContent',  app(SuggestionPageContent::class)->getPageContent());
+//});
 Route::get('/nemokama-pamoka', function () {
     return view('landing.nemokama_pamoka');
 });
@@ -199,6 +209,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/dashboard/messages', MessageController::class);
     Route::resource('/dashboard/payments', PaymentController::class);
     Route::resource('/dashboard/rewards', RewardController::class);
+    Route::resource('/dashboard/suggestions', SuggestionController::class);
     Route::post('/dashboard/profile/info-change', [InfoChangeController::class, 'infoChange']);
     Route::post('/dashboard/profile/password-change', [InfoChangeController::class, 'passwordChange']);
     Route::post('/dashboard/profile/photo-change', [InfoChangeController::class, 'photoChange']);
@@ -233,6 +244,10 @@ Route::middleware(['auth'])->group(function () {
         Route::group(['prefix' => 'introduction', 'as' => 'introductions-config.'], static function () {
             Route::get('/', [MeetingsPageController::class, 'edit'])->name('edit');
             Route::put('/update', [MeetingsPageController::class, 'update'])->name('update');
+        });
+        Route::group(['prefix' => 'suggestions', 'as' => 'suggestions-config.'], static function () {
+            Route::get('/', [SuggestionsPageController::class, 'edit'])->name('edit');
+            Route::put('/update', [SuggestionsPageController::class, 'update'])->name('update');
         });
     });
 });

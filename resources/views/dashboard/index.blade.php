@@ -40,11 +40,11 @@
                         </div>
                         <div class="row d-flex justify-content-center">
                             <a href="/dashboard/groups/{{$group->slug}}">
-                                <button class="btn blue mx-1">Grupė</button>
+                                <button class="btn-groups btn blue mx-1">Grupė</button>
                             </a>
                             @if($nextLesson)
                                 <a @if($nextLesson->join_link) href="{{ $nextLesson->join_link }}" target="_blank" @else href="/dashboard/groups/{{$group->id}}#joinmeeting" @endif>
-                                    <button class="btn green mx-1">Prisijungti</button>
+                                    <button class="btn-groups btn green mx-1">Prisijungti</button>
                                 </a>
                             @endif
                         </div>
@@ -69,7 +69,7 @@
                                 ({{Cookie::get("user_timezone", "GMT")}})</div>
                             <div class="desc">{!! strip_tags($meeting->description) !!}</div>
                             <a href="{{ $meeting->join_link }}">
-                                <button class="btn green">Prisijungti</button>
+                                <button class="btn-groups btn green">Prisijungti</button>
                             </a>
                         </div>
                     @endforeach
