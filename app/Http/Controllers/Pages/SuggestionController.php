@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pages;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSuggestionRequest;
 use App\Http\Requests\UpdateSuggestionRequest;
 use App\Models\SettingsModels\SuggestionPageContent;
