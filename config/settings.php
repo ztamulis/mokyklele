@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\SettingsModels\MeetingPageContent;
+use App\Models\SettingsModels\SuggestionPageContent;
 
 return [
 
@@ -9,7 +10,8 @@ return [
      * put them (manually) here.
      */
     'settings' => [
-        MeetingPageContent::class
+        MeetingPageContent::class,
+        SuggestionPageContent::class,
 
     ],
 
