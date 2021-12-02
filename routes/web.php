@@ -73,7 +73,7 @@ Route::get('/susitikimai', function () {
 
 Route::get('/patarimai-tevams', function () {
 
-    return view('landing_new.patarimai naujas_naujas')
+    return view('landing_new.patarimai_naujas')
         ->with("suggestions", \App\Models\Suggestion::orderBy('created_at', 'desc')->get())
         ->with('siteContent',  app(SuggestionPageContent::class)->getPageContent());
 });
