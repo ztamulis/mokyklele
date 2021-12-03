@@ -445,7 +445,8 @@ class OrderController extends Controller {
             $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
         }
 
-        $endDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->end_date)->format('Y-m-d');
+//        $endDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->end_date)->format('Y-m-d');
+        $endDate = '2018-12-15';
         $data = [
             'students' => $studentsName,
             'full_name' => $user->fullName(),
@@ -455,6 +456,7 @@ class OrderController extends Controller {
             'time' => $group->time,
             'price' => $payment->amount / 100,
             'url' => $payment->url,
+            'age_category' => $group->age_category,
 
         ];
         return view("lessons_order.group_confirm_order")->with('paymentInfo', $data);
