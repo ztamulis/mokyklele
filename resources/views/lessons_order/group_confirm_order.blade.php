@@ -29,7 +29,11 @@
                     <td>{{$paymentInfo['group_ends']}}</td>
                 </tr>
                 <tr>
-                    <th scope="row" class="text-align-left">Vaikas(-ai):</th>
+                    @if($paymentInfo['age_category'] === 'adults')
+                        <th scope="row" class="text-align-left">Vartotojas(-a):</th>
+                    @else
+                        <th scope="row" class="text-align-left">Vaikas(-ai):</th>
+                    @endif
                     <td>{{$paymentInfo['students']}}</td>
                 </tr>
                 <tr>

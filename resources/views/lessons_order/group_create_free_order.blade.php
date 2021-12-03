@@ -25,15 +25,18 @@
         </div>
     @endif
 
-
+    <br><br>
         <div class="order--dialog">
             <form method="POST" action="/select-group/order/free/create/{{$group->slug}}">
                 @csrf
                 <input type="hidden" name="action" value="order">
-                Vaikas:
-                <input type="hidden" name="students" value="">
+                @if ($group->age_category === 'adults')
+                    Jūsų vardas
+                @else
+                    Vaikas:
+                @endif                <input type="hidden" name="students" value="">
                 <div class="student--select"></div>
-                @if($group->type !== 'individual')
+                @if($group->type !== 'individual' && $group->age_category != 'adults')
                     <div class="" data-add-student>
                         <span class="button" style="cursor: pointer;">Pridėti dar vieną vaiką </span>
                     </div>
