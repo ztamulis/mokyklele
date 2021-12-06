@@ -2,7 +2,7 @@
 <div class="learning--group--select--wrapper" data-vvveb-disabled>
     <div class="learning--group--select--title">
         <h2>Išsirinkite grupę</h2>
-        <b>Svarbu:</b> Laikas nurodomas jūsų vietiniu laiku <small>({{ Cookie::get("user_timezone", "GMT") }})</small>
+        <b>Svarbu:</b> Laikas nurodomas jūsų vietiniu laiku <small>({{ Cookie::get("user_timezone", "GMT") }})</small> 24 val. formatas
     </div>
     <div class="learning--group--select--selector">
         @php

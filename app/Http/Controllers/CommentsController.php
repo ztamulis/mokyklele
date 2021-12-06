@@ -90,7 +90,6 @@ class CommentsController extends Controller
 
 
         $this->SendNotificationEmail($comment);
-
         return $request->ajax()
 			? [
 				'success' => true,
@@ -256,17 +255,10 @@ class CommentsController extends Controller
 	}
 
 
-	private function SendNotificationEmail($record) {
-	    $parent = $record->parent()->first();
-	    if(!empty($parent)) {
-            $commenters =$parent->allChildrenWithCommenter()->get()->pluck('commenter_id')->toArray();
-            $commenters[] =  $parent->first()->commenter_id;
-            $commenters = array_merge($commenters);
-        }
+    private function SendNotificationEmail($record) {
         $file = File::where('id', $record->commentable_id)->first();
 
         $commenters[] = $file->user_id;
-        $commenters = array_unique($commenters);
         $groupName = $file->group()->first()->name;
         $html = "<p>Sveiki,<br> Po Jūsų įrašu grupėje ".$groupName." yra naujas komentaras:<br>
          Autorius:  ".Auth::user()->name ." ". Auth::user()->surname."<br>";
@@ -279,20 +271,18 @@ class CommentsController extends Controller
 
         }
 
+
         $html .="<br>Peržiūrėti galite čia: <a href='". Config::get('app.url')."/dashboard/groups/".$file->group()->first()->slug. "#comment-". $record->id."'>". Config::get('app.url')."/dashboard/groups/".$file->group()->first()->slug."</a>
             </p><p>Linkėjimai<br>Pasakos komanda</p>";
-        $users = User::whereIn('id', $commenters)->where('id', '!=', Auth::user()->id)->pluck('email', 'id');
-        if (!$users->isEmpty()) {
-            foreach($users->toArray() as $userId => $email) {
-                if (Auth::user()->id != $userId) {
-                    Mail::send([], [], function ($message) use ($html, $email, $groupName) {
-                        $message
-                            ->to($email)
-                            ->subject("Komentaras | grupė: ".  $groupName)
-                            ->setBody($html, 'text/html');
-                    });
-                }
-            }
+        $user = User::where('id', $file->user_id)->where('id', '!=', Auth::user()->id)->first();
+        if (!empty($user->email)) {
+            Mail::send([], [], function ($message) use ($html, $user, $groupName) {
+                $message
+                    ->to($user->email)
+//                    ->to('zygintas.tamulis@gmail.com')
+                    ->subject("Komentaras | grupė: ".  $groupName)
+                    ->setBody($html, 'text/html');
+            });
         }
     }
 
