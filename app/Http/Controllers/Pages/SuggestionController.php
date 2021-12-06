@@ -25,7 +25,7 @@ class SuggestionController extends Controller
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        $suggestions = Suggestion::orderBy("updated_at", "ASC")->get();
+        $suggestions = Suggestion::orderBy("created_at", "desc")->get();
 
         return view("suggestions.index")->with("suggestions", $suggestions)->with("suggestionPageContent", $suggestionPageContent);
     }
