@@ -53,6 +53,7 @@ class SuggestionController extends Controller
         $suggestion = new Suggestion();
         $suggestion->title = $storeSuggestionRequest->validated()['title'];
         $suggestion->description = $storeSuggestionRequest->validated()['description'];
+        $suggestion->save();
 
         Session::flash('message', "Patarimas sėkmingai sukurtas");
         return Redirect::to('dashboard/suggestions');
