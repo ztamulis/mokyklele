@@ -62,6 +62,7 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote-cleaner@1.0.0/summernote-cleaner.js"></script>
 
 
     <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/ba87b46b2fade810dbf4e011d/126d0ec7c020f24a27f2bb97d.js");</script>
@@ -205,10 +206,11 @@
             fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana', 'Roboto'],
             fontNamesIgnoreCheck: ['Roboto'],
             height: 300,
-            fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36', '48' , '64', '82', '150'],
+            fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '24', '36', '48' , '64', '82', '150'],
             fontSize: 'fontsize',
             toolbar: [
                 // [groupName, [list of button]]
+                ['cleaner',['cleaner']], // The Button
                 ['style', ['bold', 'italic', 'underline', 'clear']],
                 ['font', ['strikethrough', 'superscript', 'subscript']],
                 ['fontname', ['fontname']],
@@ -217,7 +219,20 @@
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['height', ['height']]
-            ]
+            ],
+            cleaner:{
+                action: 'both',
+                newline: '<br>',
+                icon: '<i class="note-icon">Clean all tags</i>',
+                keepHtml: false,
+                keepOnlyTags: ['<p>', '<br>', '<ul>', '<li>', '<b>', '<strong>','<i>', '<a>'],
+                keepClasses: false,
+                badTags: ['style', 'script', 'applet', 'embed', 'noframes', 'noscript', 'html'],
+                badAttributes: ['style', 'start'],
+                limitChars: false,
+                limitDisplay: 'both',
+                limitStop: false
+            }
         });
 
     });
