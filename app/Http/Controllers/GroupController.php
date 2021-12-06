@@ -171,6 +171,18 @@ class GroupController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param Group $group
+     * @param Request $request
+     * @return Response
+     */
+    public function showTest(Group $group, Request $request)
+    {
+        return view("dashboard.groups.test")->with("group", $group)->with("groups", Group::paginate(15));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param Group $group
