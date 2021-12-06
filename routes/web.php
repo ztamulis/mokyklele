@@ -48,9 +48,9 @@ Route::get('/', function () {
 Route::get('/apie-pamokas', function () {
     return view('landing.apie_pamokas');
 });
-//Route::get('/patarimai-tevams', function () {
-//    return view('landing.patarimai_tėvams');
-//});
+Route::get('/test-patarimai-tevams', function () {
+    return view('landing.patarimai_tėvams');
+});
 Route::get('/kaina', function () {
     return view('landing.kaina');
 });
@@ -194,6 +194,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/events/{id}/clone', [EventController::class, 'clone']);
     Route::get('/dashboard/events/deleteEvents', [EventController::class, 'deleteEvent']);
     Route::post('/dashboard/groups/upload', [GroupController::class, 'uploadFile'])->name('homework-store')->middleware('auth');
+    Route::get('/dashboard/groups/test/{group}', [GroupController::class, 'showTest'])->middleware('auth');
     Route::post('/dashboard/groups/homework/{id}/edit', [GroupController::class, 'editGroupHomework'])->name('homework-edit');
     Route::post('/dashboard/groups/upload/{id}/delete', [GroupController::class, 'deleteFile'])->name('delete-homework-file');
     Route::post('/dashboard/groups/message', [GroupController::class, 'message']);
