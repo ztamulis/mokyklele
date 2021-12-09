@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\Pages\LithuanianCoursesController;
 use App\Http\Controllers\Pages\MeetingsPageController;
 use App\Http\Controllers\Pages\IntroductionController;
 use App\Http\Controllers\OrderController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Pages\SuggestionsPageController;
 use App\Http\Controllers\QuestionFormController;
 use App\Http\Controllers\RegisterFreeController;
 use App\Http\Controllers\WebhookController;
+use App\Models\SettingsModels\LithuanianLanguagePageContent;
 use App\Models\SettingsModels\MeetingPageContent;
 use App\Models\SettingsModels\SuggestionPageContent;
 use Illuminate\Support\Facades\Route;
@@ -92,7 +94,13 @@ Route::get('/privatumo-politika', function () {
 Route::get('/zoom-naudojimas', function () {
     return view('landing.zoom_naudojimas');
 });
-
+Route::get('/lietuviu-kalbos-pamokos', function () {
+    return view('landing.zoom_naudojimas');
+});
+Route::get('/test/lietuviu-kalbos-pamokos', function () {
+    return view('landing_new.lietuviu_kalbos_pamokos_naujas')
+        ->with('siteContent',  app(LithuanianLanguagePageContent::class)->getPageContent());
+});
 Route::get('/blank', function () {
     return view('landing.blank');
 });
@@ -249,6 +257,12 @@ Route::middleware(['auth'])->group(function () {
         Route::group(['prefix' => 'suggestions', 'as' => 'suggestions-config.'], static function () {
             Route::get('/', [SuggestionsPageController::class, 'edit'])->name('edit');
             Route::put('/update', [SuggestionsPageController::class, 'update'])->name('update');
+        });
+        Route::group(['prefix' => 'lithuanian-courses-children', 'as' => 'lithuanian-courses-config.'], static function () {
+            Route::get('/', [LithuanianCoursesController::class, 'index'])->name('index');
+            Route::get('/edit', [LithuanianCoursesController::class, 'edit'])->name('edit');
+            Route::put('/update', [LithuanianCoursesController::class, 'update'])->name('update');
+//            Route::put('/create', [LithuanianCoursesController::class, 'create'])->name('update');
         });
     });
 });
