@@ -1,5 +1,5 @@
 @extends("layouts.landing")@section("title", "Lietuviu Kalbos Pamokos")@section("content")
-                                                            <div class="container" style="min-height: 150px; padding-bottom: 0px; margin-bottom: -100px;"></div>
+                                                                                                                        <div class="container" style="min-height: 150px; padding-bottom: 0px; margin-bottom: -100px;"></div>
 
     <div class="landing--col--even-1">
         <img src="https://mokyklelepasaka.lt/uploads/page-uploads/23-Wziy8XhKNpxKORJd.jpg" width="500" height="500" style="margin-top: -50px;" id="jssor_0" class="responsive">
@@ -10,119 +10,404 @@
         <p></p>
     </div>
     <div class="clear"></div>
-    <h4 class="font_4" style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; pointer-events: auto; font-size: 18px; line-height: normal;"><span class="color_28" style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; color: rgb(var(--color_28));"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: 400;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-size: 34px; font-weight: 700; color: rgb(15, 101, 239);">Narystės privalumai</span></span></span></span></h4><p></p><div><h4 class="font_4" style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; pointer-events: auto; line-height: normal; letter-spacing: normal;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: 400;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-size: 30px;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: playfairdisplay-bold, &quot;playfair display&quot;, serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; color: rgb(84, 239, 209);">+</span></span></span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: 400;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-size: 34px;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: playfairdisplay-bold, &quot;playfair display&quot;, serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; color: rgb(84, 239, 209);">&nbsp;</span></span></span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: din-next-w01-light, din-next-w02-light, din-next-w10-light, sans-serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;">Prieiga prie elektroninių pratybų ir užduočių (EMA.lt ir kitos).&nbsp; &nbsp; &nbsp;&nbsp;</span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: din-next-w01-light, din-next-w02-light, din-next-w10-light, sans-serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></span></h4><h4 class="font_4" style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; pointer-events: auto; line-height: normal; letter-spacing: normal;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-size: 30px;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: 400;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: playfairdisplay-bold, &quot;playfair display&quot;, serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; color: rgb(84, 239, 209);">+&nbsp;</span></span></span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: din-next-w01-light, din-next-w02-light, din-next-w10-light, sans-serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;">Virtualūs&nbsp;</span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: din-next-w01-light, din-next-w02-light, din-next-w10-light, sans-serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;">susitikimai su Lietuvos kūrėjais, kad pažintis su Lietuva būtų dar įdomesnė!</span></span></span></h4><h4 class="font_4" style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; pointer-events: auto; line-height: normal; letter-spacing: normal;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: 400;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-size: 30px;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: playfairdisplay-bold, &quot;playfair display&quot;, serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; color: rgb(84, 239, 209);">+</span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-size: 34px;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: playfairdisplay-bold, &quot;playfair display&quot;, serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; color: rgb(84, 239, 209);">&nbsp;</span></span></span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: din-next-w01-light, din-next-w02-light, din-next-w10-light, sans-serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;">Individualūs susitikimai su&nbsp;</span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: &quot;playfair display&quot;, serif;">Pasakos</span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: din-next-w01-light, din-next-w02-light, din-next-w10-light, sans-serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;">&nbsp;</span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: din-next-w01-light, din-next-w02-light, din-next-w10-light, sans-serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;">ugdymo vadove, kurių metu aptarsite vaiko progresą ir mokymosi planą.</span></span></h4><h4 class="font_4" style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; pointer-events: auto; line-height: normal; letter-spacing: normal;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: 400;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-size: 30px;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: playfairdisplay-bold, &quot;playfair display&quot;, serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; color: rgb(84, 239, 209);">+</span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-size: 34px;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: playfairdisplay-bold, &quot;playfair display&quot;, serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; color: rgb(84, 239, 209);">&nbsp;</span></span></span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: &quot;playfair display&quot;, serif;">Pasakos</span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: din-next-w01-light, din-next-w02-light, din-next-w10-light, sans-serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;">&nbsp;paskyra, kurioje rasite mokytojų refleksijas po pamokos bei namų darbus, bendrausite su kitais nariais!&nbsp;</span></span></h4><div id="courses-list"><span>Kursų sąrašas</span></div><h4 class="font_4" style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; pointer-events: auto; line-height: normal; letter-spacing: normal;"></h4></div><p></p>
-                                                            <div class="learning--group--select--wrapper" data-vvveb-disabled>
-                                                                <div class="learning--group--select--title">
-                                                                    <h2>Išsirinkite grupę</h2>
-                                                                    <b>Svarbu:</b> Laikas nurodomas jūsų vietiniu laiku <small>({{ Cookie::get("user_timezone", "GMT") }})</small>
-                                                                </div>
-                                                                <div class="learning--group--select--selector">
-                                                                    @php
-                                                                        $groupsGrouped  = \App\Models\Group::where("paid", 1)->where("hidden", 0)->get()->groupBy("type");
-                                                                        $type = '';
-                                                                        if (isset($groupsGrouped['yellow'])) {
-                                                                        $type = 'yellow';
-                                                                        } elseif(isset($groupsGrouped['green'])) {
-                                                                            $type = 'green';
-
-                                                                        } elseif(isset($groupsGrouped['blue'])) {
-                                                                            $type = 'blue';
-
-                                                                        } elseif(isset($groupsGrouped['red'])) {
-                                                                            $type = 'red';
-                                                                        } elseif(isset($groupsGrouped['individual'])) {
-                                                                            $type = 'individual';
-                                                                        }
-                                                                    @endphp
-
-                                                                    @if(isset($groupsGrouped['yellow']))
-                                                                        <div class="learning--group--select--item active" data-filter="yellow">
-                                                                            Geltona (2-4m.)
-                                                                        </div>
-                                                                    @endif
-
-                                                                    @if(isset($groupsGrouped['green']))
-                                                                        <div class="learning--group--select--item" data-filter="green">
-                                                                            Žalia (5-6m.)
-                                                                        </div>
-                                                                    @endif
-                                                                    @if(isset($groupsGrouped['blue']))
-                                                                        <div class="learning--group--select--item" data-filter="blue">
-                                                                            Mėlyna (7-9m.)
-                                                                        </div>
-                                                                    @endif
-
-                                                                    @if(isset($groupsGrouped['red']))
-                                                                        <div class="learning--group--select--item" data-filter="red">
-                                                                            Raudona (10-13m.)
-                                                                        </div>
-                                                                    @endif
-
-                                                                    @if(isset($groupsGrouped['individual']))
-                                                                        <div class="learning--group--select--item" data-filter="individual">
-                                                                            Individualios pamokos
-                                                                        </div>
-                                                                    @endif
-
-                                                                </div>
-                                                                @foreach(\App\Models\Group::where("paid", 1)->where("hidden",0)->orderBy("weight","ASC")->get() as $group)
-                                                                    <div class="learning--group--select--row" data-group="{{ $group->type }}">
-                                                                        <div class="color background--{{ $group->type }}"></div>
-                                                                        <div class="text">
-                                                                            <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else href="/select-group/order/{{ $group->slug }}" @endif >{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a>
-                                                                            @if($group->time_2)
-                                                                                / <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else href="/select-group/order/{{ $group->slug }}" @endif ><b>{{ $group->time_2->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a>
-                                                                            @endif
-                                                                            <br>
-                                                                            <span>{{ $group->display_name }}</span>
-                                                                        </div>
-                                                                        <div class="date">
-                                                                            @php $descriptionData = $group->getGroupStartDateAndCount() @endphp
-                                                                            @if (!empty($descriptionData) && isset($descriptionData['eventsCount']))
-                                                                                {{\Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d")}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}} ({{$descriptionData['eventsCount']}}
-                                                                                @if($descriptionData['eventsCount'] == 1)
-                                                                                    pamoka)
-                                                                                @elseif($descriptionData['eventsCount'] > 1 && $descriptionData['eventsCount'] < 10)
-                                                                                    pamokos)
-                                                                                @elseif($descriptionData['eventsCount'] > 9 && $descriptionData['eventsCount'] < 21)
-                                                                                    pamokų)
-                                                                                @elseif($descriptionData['eventsCount'] > 21)
-                                                                                    pamokos)
-                                                                                @elseif($descriptionData['eventsCount'])
-                                                                                    pamoka)
-                                                                                @endif
-
-                                                                            @endif
-                                                                        </div>
-                                                                        @if ($group->price > 0)
-                                                                            <div class="price">
-                                                                                £{{ $group->adjustedPrice() }}
-                                                                            </div>
-                                                                        @else
-                                                                            <div class="free--lesson">
-                                                                                Nemokama
-                                                                            </div>
-                                                                        @endif
-                                                                        <div class="actions">
-                                                                            @if($group->students()->count() >= $group->slots)
-                                                                                <a class="button button-disabled course--select--button">
-                                                                                    Vietų nebėra
-                                                                                </a>
-                                                                            @else
-                                                                                @if ($group->adjustedPrice() > 0)
-                                                                                    <a href="/select-group/order/{{ $group->slug }}" class="button course--select--button">
-                                                                                        Pasirinkti
-                                                                                    </a>
-                                                                                @else
-                                                                                    <a href="/select-group/order/free/{{ $group->slug }}" class="button course--select--button">
-                                                                                        Pasirinkti
-                                                                                    </a>
-                                                                                @endif
-                                                                            @endif
-                                                                        </div>
-                                                                    </div>
-                                                                @endforeach
-                                                            </div>
+    <h4 class="font_4" style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; pointer-events: auto; font-size: 18px; line-height: normal;"><span class="color_28" style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; color: rgb(var(--color_28));"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: 400;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-size: 34px; font-weight: 700; color: rgb(15, 101, 239);">Narystės privalumai</span></span></span></span></h4><p></p><div><h4 class="font_4" style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; pointer-events: auto; line-height: normal; letter-spacing: normal;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: 400;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-size: 30px;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: playfairdisplay-bold, &quot;playfair display&quot;, serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; color: rgb(84, 239, 209);">+</span></span></span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: 400;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-size: 34px;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: playfairdisplay-bold, &quot;playfair display&quot;, serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; color: rgb(84, 239, 209);">&nbsp;</span></span></span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: din-next-w01-light, din-next-w02-light, din-next-w10-light, sans-serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;">Prieiga prie elektroninių pratybų ir užduočių (EMA.lt ir kitos).&nbsp; &nbsp; &nbsp;&nbsp;</span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: din-next-w01-light, din-next-w02-light, din-next-w10-light, sans-serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span></span></h4><h4 class="font_4" style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; pointer-events: auto; line-height: normal; letter-spacing: normal;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-size: 30px;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: 400;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: playfairdisplay-bold, &quot;playfair display&quot;, serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; color: rgb(84, 239, 209);">+&nbsp;</span></span></span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: din-next-w01-light, din-next-w02-light, din-next-w10-light, sans-serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;">Virtualūs&nbsp;</span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: din-next-w01-light, din-next-w02-light, din-next-w10-light, sans-serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;">susitikimai su Lietuvos kūrėjais, kad pažintis su Lietuva būtų dar įdomesnė!</span></span></span></h4><h4 class="font_4" style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; pointer-events: auto; line-height: normal; letter-spacing: normal;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: 400;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-size: 30px;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: playfairdisplay-bold, &quot;playfair display&quot;, serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; color: rgb(84, 239, 209);">+</span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-size: 34px;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: playfairdisplay-bold, &quot;playfair display&quot;, serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; color: rgb(84, 239, 209);">&nbsp;</span></span></span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: din-next-w01-light, din-next-w02-light, din-next-w10-light, sans-serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;">Individualūs susitikimai su&nbsp;</span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: &quot;playfair display&quot;, serif;">Pasakos</span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: din-next-w01-light, din-next-w02-light, din-next-w10-light, sans-serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;">&nbsp;</span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: din-next-w01-light, din-next-w02-light, din-next-w10-light, sans-serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;">ugdymo vadove, kurių metu aptarsite vaiko progresą ir mokymosi planą.</span></span></h4><h4 class="font_4" style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; pointer-events: auto; line-height: normal; letter-spacing: normal;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: 400;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-size: 30px;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: playfairdisplay-bold, &quot;playfair display&quot;, serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; color: rgb(84, 239, 209);">+</span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-size: 34px;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: playfairdisplay-bold, &quot;playfair display&quot;, serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; color: rgb(84, 239, 209);">&nbsp;</span></span></span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: &quot;playfair display&quot;, serif;">Pasakos</span></span></span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-family: din-next-w01-light, din-next-w02-light, din-next-w10-light, sans-serif;"><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; font-weight: normal;">&nbsp;paskyra, kurioje rasite mokytojų refleksijas po pamokos bei namų darbus, bendrausite su kitais nariais!&nbsp;</span></span></h4><div id="courses-list"><div class="learning--group--select--wrapper" data-vvveb-disabled="">
+    <div class="learning--group--select--title">
+        <h2>Išsirinkite grupę</h2>
+        <b>Svarbu:</b> Laikas nurodomas jūsų vietiniu laiku <small>(Europe/Vilnius)</small>
+    </div>
+    <div class="learning--group--select--selector">
+        
+                    <div class="learning--group--select--item active" data-filter="yellow">
+                Geltona (2-4m.)
+            </div>
+        
+                    <div class="learning--group--select--item" data-filter="green">
+                Žalia (5-6m.)
+            </div>
+                            <div class="learning--group--select--item" data-filter="blue">
+                Mėlyna (7-9m.)
+            </div>
+        
+                    <div class="learning--group--select--item" data-filter="red">
+                Raudona (10-13m.)
+            </div>
+        
+                    <div class="learning--group--select--item" data-filter="individual">
+                Individualios pamokos
+            </div>
+        
+    </div>
+            <div class="learning--group--select--row" data-group="red" style="display: none;">
+            <div class="color background--red"></div>
+            <div class="text">
+                <a href="/select-group/order/sekmadieniais-1-lygis-7">Sekmadieniais (1 lygis) <b>14:00</b></a>
+                                <br>
+                <span>Pamokos 10-13 metų vaikams</span>
+            </div>
+            <div class="date">
+                                                    12.05 - 12.19 (3
+                                            pamokos)
+                    
+                            </div>
+                                <div class="price">
+                    £31
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/sekmadieniais-1-lygis-7" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+            <div class="learning--group--select--row" data-group="blue" style="display: none;">
+            <div class="color background--blue"></div>
+            <div class="text">
+                <a href="/select-group/order/treciadieniais-2-lygis">Trečiadieniais (2 lygis) <b>18:00</b></a>
+                                <br>
+                <span>Pamokos 7-9 metų vaikams</span>
+            </div>
+            <div class="date">
+                                                    12.08 - 12.15 (2
+                                            pamokos)
+                    
+                            </div>
+                                <div class="price">
+                    £23
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/treciadieniais-2-lygis" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+            <div class="learning--group--select--row" data-group="yellow" style="">
+            <div class="color background--yellow"></div>
+            <div class="text">
+                <a href="/select-group/order/sestadieniais-7">Šeštadieniais <b>15:00</b></a>
+                                <br>
+                <span>Pamokos 2-4 m. vaikams</span>
+            </div>
+            <div class="date">
+                                                    12.04 - 12.18 (3
+                                            pamokos)
+                    
+                            </div>
+                                <div class="price">
+                    £39
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/sestadieniais-7" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+            <div class="learning--group--select--row" data-group="red" style="display: none;">
+            <div class="color background--red"></div>
+            <div class="text">
+                <a href="/select-group/order/sekmadieniais-5">Sekmadieniais (2 lygis) <b>18:00</b></a>
+                                <br>
+                <span>Pamokos 10-13 metų vaikams</span>
+            </div>
+            <div class="date">
+                                                    12.05 - 12.19 (3
+                                            pamokos)
+                    
+                            </div>
+                                <div class="price">
+                    £31
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/sekmadieniais-5" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+            <div class="learning--group--select--row" data-group="blue" style="display: none;">
+            <div class="color background--blue"></div>
+            <div class="text">
+                <a href="/select-group/order/treciadieniais-1-lygis-1">Trečiadieniais (1 lygis) <b>20:00</b></a>
+                                <br>
+                <span>Pamokos 7-9 metų vaikams</span>
+            </div>
+            <div class="date">
+                                                    12.08 - 12.15 (2
+                                            pamokos)
+                    
+                            </div>
+                                <div class="price">
+                    £31
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/treciadieniais-1-lygis-1" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+            <div class="learning--group--select--row" data-group="yellow" style="">
+            <div class="color background--yellow"></div>
+            <div class="text">
+                <a href="/select-group/order/treciadieniais">Trečiadieniais <b>15:30</b></a>
+                                <br>
+                <span>Pamokos 2-4m. vaikams</span>
+            </div>
+            <div class="date">
+                                                    12.08 - 12.15 (2
+                                            pamokos)
+                    
+                            </div>
+                                <div class="price">
+                    £31
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/treciadieniais" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+            <div class="learning--group--select--row" data-group="green" style="display: none;">
+            <div class="color background--green"></div>
+            <div class="text">
+                <a href="/select-group/order/penktadieniais-2-lygis-1">Penktadieniais (2 lygis) <b>20:30</b></a>
+                                <br>
+                <span>Pamokos 5-6 metų vaikams</span>
+            </div>
+            <div class="date">
+                                                    12.03 - 12.17 (3
+                                            pamokos)
+                    
+                            </div>
+                                <div class="price">
+                    £39
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/penktadieniais-2-lygis-1" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+            <div class="learning--group--select--row" data-group="green" style="display: none;">
+            <div class="color background--green"></div>
+            <div class="text">
+                <a href="/select-group/order/sestadieniais-angliskai-1">Šeštadieniais (angliškai) <b>12:30</b></a>
+                                <br>
+                <span>Pamokos 5-6 metų vaikams</span>
+            </div>
+            <div class="date">
+                                                    12.04 - 12.18 (3
+                                            pamokos)
+                    
+                            </div>
+                                <div class="price">
+                    £39
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/sestadieniais-angliskai-1" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+            <div class="learning--group--select--row" data-group="green" style="display: none;">
+            <div class="color background--green"></div>
+            <div class="text">
+                <a href="/select-group/order/sekmadieniais-1-lygis-2">Sekmadieniais (1 lygis) <b>10:45</b></a>
+                                <br>
+                <span>Pamokos 5-6 metų vaikams</span>
+            </div>
+            <div class="date">
+                                                    12.05 - 12.19 (3
+                                            pamokos)
+                    
+                            </div>
+                                <div class="price">
+                    £39
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/sekmadieniais-1-lygis-2" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+            <div class="learning--group--select--row" data-group="blue" style="display: none;">
+            <div class="color background--blue"></div>
+            <div class="text">
+                <a href="/select-group/order/treciadieniais-ir-penktadieniais-angliskai">Trečiadieniais ir penktadieniais (angliškai) <b>18:00</b></a>
+                                    / <a href="/select-group/order/treciadieniais-ir-penktadieniais-angliskai"><b>18:00</b></a>
+                                <br>
+                <span>Pamokos 7-9 metų vaikams</span>
+            </div>
+            <div class="date">
+                                                    12.08 - 12.17 (5
+                                            pamokos)
+                    
+                            </div>
+                                <div class="price">
+                    £70
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/treciadieniais-ir-penktadieniais-angliskai" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+            <div class="learning--group--select--row" data-group="blue" style="display: none;">
+            <div class="color background--blue"></div>
+            <div class="text">
+                <a href="/select-group/order/treciadieniais-1-lygis">Trečiadieniais (1 lygis) <b>19:00</b></a>
+                                <br>
+                <span>Pamokos 7-9 metų vaikams</span>
+            </div>
+            <div class="date">
+                                                    12.08 - 12.15 (2
+                                            pamokos)
+                    
+                            </div>
+                                <div class="price">
+                    £31
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/treciadieniais-1-lygis" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+            <div class="learning--group--select--row" data-group="blue" style="display: none;">
+            <div class="color background--blue"></div>
+            <div class="text">
+                <a href="/select-group/order/penktadieniais-ir-sekmadieniais">Penktadieniais ir sekmadieniais <b>17:30</b></a>
+                                    / <a href="/select-group/order/penktadieniais-ir-sekmadieniais"><b>10:00</b></a>
+                                <br>
+                <span>Intensyvi grupė 7-9 metų vaikams</span>
+            </div>
+            <div class="date">
+                                                    12.03 - 12.19 (6
+                                            pamokos)
+                    
+                            </div>
+                                <div class="price">
+                    £78
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/penktadieniais-ir-sekmadieniais" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+            <div class="learning--group--select--row" data-group="red" style="display: none;">
+            <div class="color background--red"></div>
+            <div class="text">
+                <a href="/select-group/order/ketvirtadieniais-3-lygis">Ketvirtadieniais (3 lygis) <b>19:20</b></a>
+                                <br>
+                <span>Pamokos 10-13 metų vaikams</span>
+            </div>
+            <div class="date">
+                                                    12.09 - 12.16 (2
+                                            pamokos)
+                    
+                            </div>
+                                <div class="price">
+                    £31
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/ketvirtadieniais-3-lygis" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+            <div class="learning--group--select--row" data-group="red" style="display: none;">
+            <div class="color background--red"></div>
+            <div class="text">
+                <a href="/select-group/order/ketvirtadieniais-2-lygis-2">Ketvirtadieniais (2 lygis) <b>20:20</b></a>
+                                <br>
+                <span>Pamokos 10-13 metų vaikams</span>
+            </div>
+            <div class="date">
+                                                    12.09 - 12.16 (2
+                                            pamokos)
+                    
+                            </div>
+                                <div class="price">
+                    £31
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/ketvirtadieniais-2-lygis-2" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+            <div class="learning--group--select--row" data-group="red" style="display: none;">
+            <div class="color background--red"></div>
+            <div class="text">
+                <a href="/select-group/order/penktadieniais-angliskai-1">Penktadieniais (angliškai) <b>19:00</b></a>
+                                <br>
+                <span>Pamokos 10-13 metų vaikams</span>
+            </div>
+            <div class="date">
+                                                    12.03 - 12.17 (3
+                                            pamokos)
+                    
+                            </div>
+                                <div class="price">
+                    £39
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/penktadieniais-angliskai-1" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+            <div class="learning--group--select--row" data-group="red" style="display: none;">
+            <div class="color background--red"></div>
+            <div class="text">
+                <a href="/select-group/order/penktadieniais-4-lygis">Penktadieniais (4 lygis) <b>19:30</b></a>
+                                <br>
+                <span>Pamokos vaikams nuo 13 metų</span>
+            </div>
+            <div class="date">
+                                                    12.03 - 12.17 (3
+                                            pamokos)
+                    
+                            </div>
+                                <div class="price">
+                    £39
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/penktadieniais-4-lygis" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+            <div class="learning--group--select--row" data-group="individual" style="display: none;">
+            <div class="color background--individual"></div>
+            <div class="text">
+                <a href="/select-group/order/individualios-pamokos">Individualios pamokos <b>11:00</b></a>
+                                <br>
+                <span>Pamokų laiką suderinsime el.paštu</span>
+            </div>
+            <div class="date">
+                                            </div>
+                                <div class="price">
+                    £490
+                </div>
+                            <div class="actions">
+                                                            <a href="/select-group/order/individualios-pamokos" class="button course--select--button">
+                            Pasirinkti
+                        </a>
+                                                </div>
+        </div>
+    </div>
+<script>
+    function filterBy(group) {
+        $("[data-group]").hide();
+        $("[data-group='"+group+"']").show();
+        $("[data-filter]").removeClass("active");
+        $("[data-filter='"+group+"']").addClass("active");
+    }
+    $("[data-filter]").click(function () {
+        filterBy($(this).attr("data-filter"));
+    });
+    filterBy('yellow');
+</script>
+</div><h4 class="font_4" style="margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: baseline; background-image: initial; background-position: initial; background-size: initial; background-repeat: initial; background-attachment: initial; background-origin: initial; background-clip: initial; pointer-events: auto; line-height: normal; letter-spacing: normal;"></h4></div><p></p>
+                                                            
                                                             <script>
                                                                 function filterBy(group) {
                                                                     $("[data-group]").hide();
@@ -133,7 +418,7 @@
                                                                 $("[data-filter]").click(function () {
                                                                     filterBy($(this).attr("data-filter"));
                                                                 });
-                                                                filterBy('{{$type}}');
+                                                                filterBy('yellow');
                                                             </script>
 
     <div class="landing--col--even-1" style="padding-bottom: 0px; margin-bottom: 0px;">
@@ -148,7 +433,7 @@
     <div style="margin-top: 20px;"><div class="container" style="min-height: 150px;"><h2 style="margin-top: 10px; padding-top: 0px;" class="responsive">Turiu daugiau nei vieną vaiką. Ar reikia mokėti už kiekvieno vaiko pamokas?<div><div style="letter-spacing: 1px; height: 78px;"><p style="line-height: 21px;"><span style="font-family: DIN, sans-serif; font-size: 18px; font-weight: 100; letter-spacing: -1px;">Jeigu broliai/sesės yra toje pačioje&nbsp;</span><br style="font-family: DIN, sans-serif; font-size: 18px; font-weight: 100; letter-spacing: -1px;"><span style="font-family: DIN, sans-serif; font-size: 18px; font-weight: 100; letter-spacing: -1px;">grupėje (grupės skirstomos pagal amžių), antram vaikui taikysime 50 % nuolaidą.</span></p><b style="font-family: Vollkorn, serif; letter-spacing: 0px; font-size: 20px;"></b><br style="font-family: DIN, sans-serif; font-size: 18px; font-weight: 100; letter-spacing: -1px;"><br></div></div></h2><div class="m-5"></div></div>
         <h2>Kiek kainuoja pamokos?</h2>
         <p style="letter-spacing: 0px; line-height: 21px;">
-            Kurso (14 pamokų) kaina – £119.</p>
+            Kurso (12 pamokų) kaina – £119.</p>
         <p style="margin-top: -17px; letter-spacing: 0px; line-height: 21px;">
             Praleidus pamoką, ji nėra nukeliama, sustabdyti kurso jo eigoje galimybės nėra.
         </p>
@@ -171,4 +456,4 @@
 
 
 
-@endsection
+                                        @endsection
