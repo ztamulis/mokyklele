@@ -95,7 +95,7 @@ Route::get('/zoom-naudojimas', function () {
     return view('landing.zoom_naudojimas');
 });
 
-Route::get('/test/lietuviu-kalbos-pamokos', function () {
+Route::get('lietuviu-kalbos-pamokos', function () {
     return view('landing_new.lietuviu_kalbos_pamokos_naujas')
         ->with('siteContent',  app(LithuanianLanguagePageContent::class)->getPageContent());
 });
