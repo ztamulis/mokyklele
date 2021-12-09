@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\SettingsModels\LithuanianLanguagePageContent;
 use App\Models\SettingsModels\MeetingPageContent;
 use App\Models\SettingsModels\SuggestionPageContent;
 
@@ -12,6 +13,7 @@ return [
     'settings' => [
         MeetingPageContent::class,
         SuggestionPageContent::class,
+        LithuanianLanguagePageContent::class,
 
     ],
 
