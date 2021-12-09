@@ -167,6 +167,7 @@
                                         <a class=" @if(Request::is('dashboard/meetings')) active @endif " href="/dashboard/meetings"><i class="fa fa-calendar-check-o"></i><span>Susitikimai</span></a>
                                             <a class=" @if(Request::is('dashboard/introductions')) active @endif " href="/dashboard/introductions"><i class="fa fa-cc-discover"></i><span>Vieši susitikimai</span></a>
                                             <a class=" @if(Request::is('dashboard/suggestions')) active @endif " href="/dashboard/suggestions"><i class="fa fa-cc-discover"></i><span>Patarimai tėvams</span></a>
+                                            <a class=" @if(Request::is('dashboard/pages/lithuanian-courses-children')) active @endif " href="/dashboard/pages/lithuanian-courses-children"><i class="fa fa-cc-discover"></i><span>Lietuvių kalbos kursų puslapis</span></a>
                                             <a class=" @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a>
                                             <a class=" @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a>
                                             <a class=" @if(Request::is('dashboard/coupons')) active @endif " href="/dashboard/coupons"><i class="fa fa-cc-discover"></i><span>Nuolaidų kuponai</span></a>
@@ -214,7 +215,7 @@
                 ['style', ['bold', 'italic', 'underline', 'clear']],
                 ['font', ['strikethrough', 'superscript', 'subscript']],
                 ['fontname', ['fontname']],
-
+                ['insert', ['link', 'picture', 'video']],
                 ['fontsize', ['fontsize']],
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
