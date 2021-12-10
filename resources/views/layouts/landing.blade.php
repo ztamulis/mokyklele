@@ -204,7 +204,7 @@
             $country = $ipinfo->country;
             $timezone = $ipinfo->timezone;
 //            $country = 'Lithuania';
-            $country = LocZation::get(Request::ip())->countryName;
+            $country = Location::get(Request::ip())->countryName;
         ?>
         <div class="landing--modal">
             <div class="landing--modal--inner">
