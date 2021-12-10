@@ -57,7 +57,7 @@
         <div class="learning--group--select--row" data-group="{{ $group->type }}">
             <div class="color background--{{ $group->type }}"></div>
             <div class="text">
-                <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else href="/select-group/order/{{ $group->slug }}" @endif >{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a>
+                <a style="color: #000000;!important;" @if($group->students()->count() >= $group->slots) href="javascript:;" @else href="/select-group/order/{{ $group->slug }}" @endif >{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a>
                 @if($group->time_2)
                     / <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else href="/select-group/order/{{ $group->slug }}" @endif ><b>{{ $group->time_2->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a>
                 @endif

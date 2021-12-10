@@ -51,45 +51,27 @@
                     <span></span>
                 </div>
                 <ul>
-                    @foreach(\App\Models\Navbar::navBar() as $nav)
-                        @if(property_exists($nav,'children'))
-                            <li>
-                                <a href="{{$nav->href}}">
-                                    {{$nav->text}}
-                                </a>
-                                <div class="mobile--arrow--down"></div>
-                                <div class="mv--dropdown">
-                                    <ul>
-                                        @foreach($nav->children as $child)
-                                            <li>
-                                                <a href="{{$child->href}}">{{$child->text}}</a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </li>
-                        @else
-                            <li>
-                                <a href="{{$nav->href}}">
-                                    {{$nav->text}}
-                                </a>
-                            </li>
-                        @endif
-                    @endforeach
-                    <!--<li>
+                    <li>
                         <a href="/apie-pamokas">
                             Apie pamokas
-                            <div class="mv--dropdown">
-                                <ul>
-                                    <li>
-                                        <a href="/pavasario-kursas">Pavasario kursas</a>
-                                    </li>
-                                    <li>
-                                        <a href="/kaina">Kaina</a>
-                                    </li>
-                                </ul>
-                            </div>
                         </a>
+                        <div class="arrow-down"></div>
+                        <div class="mv--dropdown">
+                            <ul>
+                                <li>
+                                    <a href="/lietuviu-kalbos-pamokos">Lietuvių kalbos pamokos</a>
+                                </li>
+                                <li>
+                                    <a href="/suaugusiuju-kursai">Kursai suaugusiems</a>
+                                </li>
+                                <li>
+                                    <a href="/patarimai-tevams">Patarimai tėvams</a>
+                                </li>
+                                <li>
+                                    <a href="/kaina">Kaina</a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     <li>
                         <a href="/susitikimai">
@@ -110,7 +92,7 @@
                         <a href="/kontaktai">
                             Kontaktai
                         </a>
-                    </li>-->
+                    </li>
                     <li>
                         @if(Auth::check())
                             <a class="only--mobile" href="/dashboard">
@@ -219,7 +201,7 @@
             $ipinfo = json_decode(file_get_contents("http://ip-api.com/json/".Request::ip()));
             $country = $ipinfo->country;
             $timezone = $ipinfo->timezone;
-            $country = 'Lithuania';
+//            $country = 'Lithuania';
             $country = Location::get(Request::ip())->countryName;
         ?>
         <div class="landing--modal">
