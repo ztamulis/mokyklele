@@ -56,6 +56,8 @@
                             Apie pamokas
                         </a>
                         <div class="arrow-down"></div>
+                        <div class="mobile--arrow--down"></div>
+
                         <div class="mv--dropdown">
                             <ul>
                                 <li>
@@ -202,7 +204,7 @@
             $country = $ipinfo->country;
             $timezone = $ipinfo->timezone;
 //            $country = 'Lithuania';
-            $country = Location::get(Request::ip())->countryName;
+            $country = LocZation::get(Request::ip())->countryName;
         ?>
         <div class="landing--modal">
             <div class="landing--modal--inner">
