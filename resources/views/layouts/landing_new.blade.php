@@ -10,13 +10,25 @@
     <!-- End Google Tag Manager -->
     <title>@yield("title") Mokyklėlė pasaka</title>
 
-{{--    <link rel="stylesheet" type="text/css" href="/css/landing.css">--}}
-    <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
-    <link rel="stylesheet" href="/assets/fonts/font-awesome.min.css">
-    <link rel="stylesheet" href="/assets/fonts/fontawesome5-overrides.min.css">
-{{--    <link rel="stylesheet" type="text/css" href="/css/landing.css">--}}
+<link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {{--    <script src="./assets/js/jquery-3.4.1.min.js"></script>--}}
+    {{--    <script src="./assets/js/bootstrap.min.js"></script>--}}
+
+
+
+
+    <link rel="stylesheet" href="{{asset('css/dashboard_custom.css')}}">
+    <link rel="stylesheet" href="{{asset('css/main.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <link href="https://pagination.js.org/dist/2.1.5/pagination.css" rel="stylesheet">
+
+    <link href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css">
 
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
@@ -30,21 +42,35 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="msapplication-config" content="/favicon/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data.js"></script>
-    <script src="{{asset('assets/js/meetings-custom.js')}}"></script>
 
-    <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/fabfe9adf90a89d713bc481e6/7f56a19bd8725469b6f8342d6.js");</script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>    <script src="{{asset('assets/js/jquery.min.js')}}"></script>
+
+    <script src="{{asset('assets/js/meetings-custom.js')}}"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+
+    <script src="{{asset('assets/bootstrap/js/bootstrap.min.js')}}"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="{{asset('assets/js/theme.js')}}"></script>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/summernote-cleaner@1.0.0/summernote-cleaner.js"></script>
+
+
+    <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/ba87b46b2fade810dbf4e011d/126d0ec7c020f24a27f2bb97d.js");</script>
 </head>
+
 <body>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P7XK43G"
                   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-<div class="wrapper">
 
+<div class="wrapper">
     <header>
         <div class="logo">
             <a href="/">
@@ -58,121 +84,137 @@
                 <span></span>
             </div>
             <ul class="left-menu">
-                @foreach(\App\Models\Navbar::navBar() as $nav)
-                    @if(property_exists($nav,'children'))
-                        <li>
-                            <a href="{{$nav->href}}">
-                                {{$nav->text}}
-                            </a>
-                            <div class="mobile--arrow--down"></div>
-                            <div class="mv--dropdown">
-                                <ul>
-                                    @foreach($nav->children as $child)
-                                        <li>
-                                            <a href="{{$child->href}}">{{$child->text}}</a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </li>
-                    @else
-                        <li>
-                            <a href="{{$nav->href}}">
-                                {{$nav->text}}
-                            </a>
-                        </li>
-                    @endif
-                @endforeach
-                    @if(!Auth::check())
-                        <li>
+                <li>
+                    <a href="/apie-pamokas">
+                        Apie pamokas
+                    </a>
+                    <div class="arrow-down"></div>
+                    <div class="mv--dropdown">
+                        <ul>
+                            <li>
+                                <a href="/lietuviu-kalbos-pamokos">Lietuvių kalbos pamokos</a>
+                            </li>
+                            <li>
+                                <a href="/suaugusiuju-kursai">Kursai suaugusiems</a>
+                            </li>
+                            <li>
+                                <a href="/patarimai-tevams">Patarimai tėvams</a>
+                            </li>
+                            <li>
+                                <a href="/kaina">Kaina</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a href="/susitikimai">
+                        Susitikimai
+                    </a>
+                </li>
+                <li>
+                    <a href="/nemokama-pamoka">
+                        Nemokama pamoka
+                    </a>
+                </li>
+                <li>
+                    <a href="/komanda">
+                        Komanda
+                    </a>
+                </li>
+                <li>
+                    <a href="/kontaktai">
+                        Kontaktai
+                    </a>
+                </li>
+                @if(!Auth::check())
+                    <li>
                         <a href="/login">
                             Prisijungti
                         </a>
-                        </li>
+                    </li>
                     @endif
             </ul>
-            @if(Auth::check())
             <ul class="right-menu">
                 <li>
-                    <a class="only--mobile" href="/dashboard">
-                        {{Auth::user()->name}} {{Auth::user()->surname}} profilis
-                    </a>
-                    <ul class="nav navbar-nav flex-nowrap" >
-                        <li class="nav-item dropdown no-arrow">
-                            <div class="nav-item dropdown no-arrow">
-                                <a class="dropdown-toggle nav-link messages" data-toggle="dropdown" aria-expanded="false" href="#">
-                                    <span class="icon-message-circle-lines"></span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in">
-                                    <h6 class="dropdown-header">Žinutės</h6>
-                                    @foreach(\App\Http\Controllers\MessageController::messages() as $message)
+                    @if(Auth::check())
+                        <a class="only--mobile" href="/dashboard">
+                            {{ Auth::user()->name }} {{ Auth::user()->surname }} profilis
+                        </a>
+                        <ul class="nav navbar-nav flex-nowrap" >
+                            <li class="nav-item dropdown no-arrow">
+                                <div class="nav-item dropdown no-arrow">
+                                    <a class="dropdown-toggle nav-link messages" data-toggle="dropdown" aria-expanded="false" href="#">
+                                        <span class="icon-message-circle-lines"></span>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in">
+                                        <h6 class="dropdown-header">Žinutės</h6>
+                                        @foreach(\App\Http\Controllers\MessageController::messages() as $message)
 
-                                        <a class="d-flex align-items-center dropdown-item" href="/dashboard/messages/{{$message->id}}">
-                                            <div class="font-weight-bold">
-                                                <div class="text-truncate">
-                                                    <span> {{substr(strip_tags($message->message),0,80)."..."}}</span>
+                                            <a class="d-flex align-items-center dropdown-item" href="/dashboard/messages/{{$message->id}}">
+                                                <div class="font-weight-bold">
+                                                    <div class="text-truncate">
+                                                        <span> {{substr(strip_tags($message->message),0,80)."..."}}</span>
+                                                    </div>
+                                                    <p class="small text-gray-500 mb-0">{{ $message->author->name }} {{ $message->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</p>
                                                 </div>
-                                                <p class="small text-gray-500 mb-0">{{ $message->author->name }} {{ $message->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</p>
-                                            </div>
-                                        </a>
-                                    @endforeach
-                                    <a class="text-center dropdown-item small text-gray-500" href="/dashboard/messages/create">Rašyti naują pranešimą</a>
-                                    <a class="text-center dropdown-item small text-gray-500" href="/dashboard/messages">Rodyti visus pranešimus</a>
-                                    <div class="mobile-close"></div>
+                                            </a>
+                                        @endforeach
+                                        <a class="text-center dropdown-item small text-gray-500" href="/dashboard/messages/create">Rašyti naują pranešimą</a>
+                                        <a class="text-center dropdown-item small text-gray-500" href="/dashboard/messages">Rodyti visus pranešimus</a>
+                                        <div class="mobile-close"></div>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                        <div class="d-none d-sm-block topbar-divider"></div>
-                        <li class="nav-item dropdown">
-                            <div class="nav-item dropdown">
-                                <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
-                                    <span class="icon-user"></span>
-                                    <span class="d-none d-lg-inline ml-1">{{Auth::user()->name}} {{Auth::user()->surname}}</span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right animated--grow-in">
-                                    <a class="@if(Request::is('dashboard')) active @endif " href="/dashboard"><i class="fas fa-tachometer-alt"></i><span>Paskyra</span></a>
-                                    <a class=" @if(Request::is('dashboard/attendance')) active @endif " href="/dashboard/attendance"><i class="fa fa-bell"></i><span>Lankomumas</span></a>
-                                    <a class=" @if(Request::is('dashboard/events*')) active @endif " href="/dashboard/events"><i class="fa fa-calendar"></i><span>Užsiėmimai</span></a>
+                            </li>
+                            <div class="d-none d-sm-block topbar-divider"></div>
+                            <li class="nav-item dropdown">
+                                <div class="nav-item dropdown">
+                                    <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
+                                        <span class="icon-user"></span>
+                                        <span class="d-none d-lg-inline ml-1">{{Auth::user()->name}} {{Auth::user()->surname}}</span>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right animated--grow-in">
+                                        <a class="@if(Request::is('dashboard')) active @endif " href="/dashboard"><i class="fas fa-tachometer-alt"></i><span>Paskyra</span></a>
+                                        <a class=" @if(Request::is('dashboard/attendance')) active @endif " href="/dashboard/attendance"><i class="fa fa-bell"></i><span>Lankomumas</span></a>
+                                        <a class=" @if(Request::is('dashboard/events*')) active @endif " href="/dashboard/events"><i class="fa fa-calendar"></i><span>Užsiėmimai</span></a>
 
-                                    @if (Auth::user()->role === 'admin' || Auth::user()->role === 'teacher')
-                                        <a class="@if(Request::is('dashboard/rewards')) active @endif " href="/dashboard/rewards"><i class="fa fa-trophy"></i><span>Apdovanojimai</span></a>
-                                    @endif
-                                    @if(Auth::user()->role == "admin")
-                                        <a class="@if(Request::is('dashboard/groups*')) active @endif " href="/dashboard/groups"><i class="fa fa-users"></i><span>Grupių valdymas</span></a>
-                                        <a class=" @if(Request::is('dashboard/users*')) active @endif " href="/dashboard/users"><i class="fa fa-user-md"></i><span>Naudotojų valdymas</span></a>
-                                        <a class=" @if(Request::is('dashboard/tableData')) active @endif " href="/dashboard/tableData"><i class="fa fa-files-o"></i><span>Duomenų lentelė</span></a>
-                                        <a class=" @if(Request::is('dashboard/payments')) active @endif " href="/dashboard/payments"><i class="fas fa-money-bill"></i><span>Apmokėjimai</span>
-                                            <a class=" @if(Request::is('dashboard/meetings')) active @endif " href="/dashboard/meetings"><i class="fa fa-calendar-check-o"></i><span>Susitikimai</span></a>
-                                            <a class=" @if(Request::is('dashboard/introductions')) active @endif " href="/dashboard/introductions"><i class="fa fa-cc-discover"></i><span>Vieši susitikimai</span></a>
-                                            <a class=" @if(Request::is('dashboard/suggestions')) active @endif " href="/dashboard/suggestions"><i class="fa fa-cc-discover"></i><span>Patarimai tėvams</span></a>
-                                            <a class=" @if(Request::is('dashboard/pages/lithuanian-courses-children')) active @endif " href="/dashboard/pages/lithuanian-courses-children"><i class="fa fa-cc-discover"></i><span>Lietuvių kalbos kursų puslapis</span></a>
-                                            <a class=" @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a>
-                                            <a class=" @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a>
-                                            <a class=" @if(Request::is('dashboard/coupons')) active @endif " href="/dashboard/coupons"><i class="fa fa-cc-discover"></i><span>Nuolaidų kuponai</span></a>
-                                            <a class=" @if(Request::is('questions-form')) active @endif " href="/questions-form"><i class="fa fa-question"></i><span>Suaugusiųjų kursų forma</span></a>
-                                            <a class=" @if(Request::is('register-free/admin')) active @endif " href="/register-free/admin"><i class="fa fa-registered"></i><span>Nemokamos pamokos forma</span></a>
-                                            @endif
-                                            <a href="/dashboard/profile">Nustatymai</a>
-                                            <div class="dropdown-divider"></div>
-                                            <form method="POST" action="/logout">
-                                                <input type="hidden" name="_token" value="4o1WRFafmb97y4CGzftAVDmzqw2MLsAl2HaSB3IW">
-                                                <a href="#" onclick="event.preventDefault();this.closest('form').submit();" class="dropdown-item">
-                                                    Atsijungti
-                                                </a>
-                                            </form>
-                                            <div class="mobile-close"></div>
+                                        @if (Auth::user()->role === 'admin' || Auth::user()->role === 'teacher')
+                                            <a class="@if(Request::is('dashboard/rewards')) active @endif " href="/dashboard/rewards"><i class="fa fa-trophy"></i><span>Apdovanojimai</span></a>
+                                        @endif
+                                        @if(Auth::user()->role == "admin")
+                                            <a class="@if(Request::is('dashboard/groups*')) active @endif " href="/dashboard/groups"><i class="fa fa-users"></i><span>Grupių valdymas</span></a>
+                                            <a class=" @if(Request::is('dashboard/users*')) active @endif " href="/dashboard/users"><i class="fa fa-user-md"></i><span>Naudotojų valdymas</span></a>
+                                            <a class=" @if(Request::is('dashboard/tableData')) active @endif " href="/dashboard/tableData"><i class="fa fa-files-o"></i><span>Duomenų lentelė</span></a>
+                                            <a class=" @if(Request::is('dashboard/payments')) active @endif " href="/dashboard/payments"><i class="fas fa-money-bill"></i><span>Apmokėjimai</span>
+                                                <a class=" @if(Request::is('dashboard/meetings')) active @endif " href="/dashboard/meetings"><i class="fa fa-calendar-check-o"></i><span>Susitikimai</span></a>
+                                                <a class=" @if(Request::is('dashboard/introductions')) active @endif " href="/dashboard/introductions"><i class="fa fa-cc-discover"></i><span>Vieši susitikimai</span></a>
+                                                <a class=" @if(Request::is('dashboard/suggestions')) active @endif " href="/dashboard/suggestions"><i class="fa fa-cc-discover"></i><span>Patarimai tėvams</span></a>
+                                                <a class=" @if(Request::is('dashboard/pages/lithuanian-courses-children')) active @endif " href="/dashboard/pages/lithuanian-courses-children"><i class="fa fa-cc-discover"></i><span>Lietuvių kalbos kursų puslapis</span></a>
+                                                <a class=" @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a>
+                                                <a class=" @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a>
+                                                <a class=" @if(Request::is('dashboard/coupons')) active @endif " href="/dashboard/coupons"><i class="fa fa-cc-discover"></i><span>Nuolaidų kuponai</span></a>
+                                                <a class=" @if(Request::is('questions-form')) active @endif " href="/questions-form"><i class="fa fa-question"></i><span>Suaugusiųjų kursų forma</span></a>
+                                                <a class=" @if(Request::is('register-free/admin')) active @endif " href="/register-free/admin"><i class="fa fa-registered"></i><span>Nemokamos pamokos forma</span></a>
+                                                @endif
+                                                <a href="/dashboard/profile">Nustatymai</a>
+                                                <div class="dropdown-divider"></div>
+                                                <form method="POST" action="/logout">
+                                                    <input type="hidden" name="_token" value="4o1WRFafmb97y4CGzftAVDmzqw2MLsAl2HaSB3IW">
+                                                    <a href="#" onclick="event.preventDefault();this.closest('form').submit();" class="dropdown-item">
+                                                        Atsijungti
+                                                    </a>
+                                                </form>
+                                                <div class="mobile-close"></div>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
-                    </ul>
-
+                            </li>
+                        </ul>
+                    @endif
                 </li>
-
             </ul>
-            @endif
         </nav>
         <div class="clear"></div>
     </header>
+
 
     <div class="container" id="content">
         @yield("content")

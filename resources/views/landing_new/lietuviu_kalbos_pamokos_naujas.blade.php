@@ -51,7 +51,7 @@
                <div class="second-block-description">{!! $siteContent['second_box_description'] !!}</div>
            </div>
            <div class="col-md-4 col-sm-12 mt-3 language-level-group">
-               <div class="color background--yellow pr-1"></div>
+               <div class="color background--green pr-1"></div>
                <div class="" style="">
                    <h1 class="second-block-group-title mt-2 mb-3">{{$siteContent['second_box_name'][0]}}</h1>
                </div>
