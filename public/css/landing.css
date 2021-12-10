@@ -1035,13 +1035,13 @@ footer li {
         pointer-events: auto;
     }
     header nav > ul > li {
-        display: block;
+        display: flex;
         font-size: 16px;
     }
     header nav li .mv--dropdown {
         width: 70%;
         margin-left: 0;
-        margin-top: 10px;
+        margin-top: 25px;
         box-shadow: 0px 0px 8px rgba(0,0,0,.08);
     }
     header nav li:hover .mv--dropdown:not(.active) {
