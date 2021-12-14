@@ -166,7 +166,10 @@ class OrderController extends Controller {
             $student->save();
             $student_names[] = $student->name;
             $student_ids[] = $student->id;
-            $student_birthDays[] = $student->birthday->format('Y-m-d');
+            if(!empty($student->birthday)) {
+
+                $student_birthDays[] = $student->birthday->format('Y-m-d');
+            }
         }
 
 
@@ -399,6 +402,10 @@ class OrderController extends Controller {
         }
 
         $time = $group->time->timezone('Europe/London')->format("H:i");
+        $student_birthDays_text = '-';
+        if (!empty($student_birthDays)) {
+            $student_birthDays_text = join(" ", $student_birthDays);
+        }
 
         $email_content_admin = "<h1>Kurso užsakymas</h1><p> Klientas ".  $user->name. " " .$user->surname .
             "<br> El. paštas: ".$user->email.
@@ -411,7 +418,7 @@ class OrderController extends Controller {
             "<br>Pradžia: ".$startDate .
             "<br>Mokytoja(-os): ".join(" ", $teachers).
             " <br>Vaikas(-ai): ".join(" ", $student_names).
-            " <br>Amžius: ".join(" ", $student_birthDays).
+            " <br>Amžius: ".$student_birthDays_text.
             ".</p>";
 //        env("ADMIN_EMAIL")
         \Mail::send([], [], function ($message) use ($email_title_admin, $email_content_admin, $user) {

@@ -64,7 +64,7 @@
             });
 
             var available_students = [
-                    @foreach(Auth()->user()->students()->get() as $student)
+                    @foreach(Auth()->user()->students()->where('birthday', '!=', '')->whereNotNull('birthday')->get() as $student)
                 {
                     id: {{ $student->id }},
                     name: "{{ $student->name }}",
