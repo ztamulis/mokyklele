@@ -685,9 +685,8 @@ class GroupController extends Controller
 
         $student = Student::find($request->input("user_id"));
         if(!$student || empty($student->user)){
-            Session::flash('message', 'Mokinys nerastas.');
-            Session::flash('alert-class', 'alert-danger');
-            return redirect(url()->previous());
+            return json_encode(["status" => "error", "message" => "Mokinys nerastas."]);
+
         }
 
         $message = new Message;
@@ -713,10 +712,7 @@ class GroupController extends Controller
 
         $message->save();
 
-
-        Session::flash('message', 'Žinutė sėkmingai išsiųsta.');
-        Session::flash('alert-class', 'alert-success');
-        return redirect(url()->previous());
+        return json_encode(["status"=>"success","message"=>"Žinutė sėkmingai išsiųsta."]);
     }
 
     public function generateZoomSignature(Request $request) {
