@@ -19,9 +19,13 @@ class OrderController extends Controller {
 
 
     public function selectFreeOrder($slug) {
+
         $group = Group::where('slug', $slug)->first();
         if(!$group) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
+        }
+        if ($group->students()->count() >=  $group->slots) {
+            return view("landing_other.error")->with("error", "Grupė pilna.");
         }
 
         return view("lessons_order.group_create_free_order")->with("group", $group);
@@ -103,7 +107,8 @@ class OrderController extends Controller {
         $dublicatedUsers = [];
 
         $groupCount = $group->students()->count();
-        if (($groupCount + count($json_students)) > $group->slots) {
+        $groupNewCount = $groupCount + count($json_students);
+        if ($groupNewCount > $group->slots) {
             return view("lessons_order.group_create_free_order")
                 ->with("group", $group)
                 ->with("error",  $this->getFullGroupErrorText($groupCount, $group->slots));
@@ -259,7 +264,8 @@ class OrderController extends Controller {
 
         $groupCount = $group->students()->count();
 
-        if (($groupCount + count($json_students)) > $group->slots) {
+        $groupNewCount = $groupCount + count($json_students);
+        if ($groupNewCount > $group->slots) {
             return view("lessons_order.group_create_order")
                 ->with("group", $group)
                 ->with("error",  $this->getFullGroupErrorText($groupCount, $group->slots));
