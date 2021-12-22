@@ -457,9 +457,11 @@ class OrderController extends Controller {
         } else {
             $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
         }
-
-//        $endDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->end_date)->format('Y-m-d');
-        $endDate = '2018-12-15';
+        if (isset($group->end_date)) {
+            $endDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->end_date)->format('Y-m-d');
+        } else {
+            $endDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+        }
         $data = [
             'students' => $studentsName,
             'full_name' => $user->fullName(),
