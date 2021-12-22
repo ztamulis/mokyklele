@@ -61,7 +61,7 @@
                 <!-- Tab content -->
                     <div class="wrapper_tabcontent">
                         <div id="tab-1" class="tabcontent active">
-                            <div class="row no-gutters">
+                            <div class="row no-gutters w-100">
                                 <div class="main-tab-area col-lg-7 col-sm-12 col-12">
                                     <div class="main-info">
                                         <h3>Namų darbai</h3>
@@ -179,7 +179,7 @@
                                         <h3>Informacija</h3>
                                         <div class="desc">{!! $group->information !!}</div>
                                     </div>
-                                    @php $events = $group->events()->where("date_at", ">" ,\Carbon\Carbon::now('utc')->addHours(3)->format('Y-m-d H:i:s'))->orderBy("date_at","ASC")->get(); @endphp
+                                    @php $events = $group->events()->where("date_at", ">" ,\Carbon\Carbon::now('utc')->subMinutes(30)->format('Y-m-d H:i:s'))->orderBy("date_at","ASC")->get(); @endphp
                                         <div class="schedule-block">
                                             <div class="dashboard--block">
                                                 <h3>Tvarkaraštis</h3>
