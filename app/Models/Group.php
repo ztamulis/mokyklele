@@ -80,6 +80,20 @@ class Group extends Model
             return $weekMap[$key];
     }
 
+    public static function getWeekDayGramCase($key) {
+        $weekMap = [
+            1 => 'pirmadienį',
+            2 => 'antradienį',
+            3 => 'trečiadienį',
+            4 => 'ketvirtadienį',
+            5 => 'penktadienį',
+            6 => 'šeštadienį',
+            0 => 'sekmadienį',
+        ];
+
+        return $weekMap[$key];
+    }
+
     /**
      * Get the route key for the model.
      *
