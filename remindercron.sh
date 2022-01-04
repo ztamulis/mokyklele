@@ -1,1 +1,1 @@
-/usr/bin/php /home/u794216831/public_html/artisan command:send_group_notification
+/usr/bin/php /home/u794216831/public_html/artisan command:send_user_notifications
