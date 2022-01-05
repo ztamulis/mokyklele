@@ -48,18 +48,26 @@ class sendUserNotification extends Command
         foreach ($notificationsToSend as $notification) {
             $group = $notification->group()->first();
             $email = $notification->email;
+//            $html = UserNotificationHelper::emailFreeLessonAdults($group, $notification->user()->first());
 
-            if ($group->paid) {
+            if ($group->paid && $group->age_category === 'children') {
                 $html = UserNotificationHelper::emailPaidLesson($group, $notification->user()->first());
-
-            } else {
-                $html = UserNotificationHelper::emailFreeLesson($group, $notification->user()->first());
+                $subject = 'Priminimas apie Pasakos pamoką';
 
             }
-            Mail::send([], [], function ($message) use ($html, $email, $group) {
+            if (!$group->paid && $group->age_category === 'children') {
+                $html = UserNotificationHelper::emailFreeLesson($group, $notification->user()->first());
+                $subject = 'Priminimas apie Pasakos pamoką';
+            }
+            if (!$group->paid && $group->age_category === 'adults') {
+                $html = UserNotificationHelper::emailFreeLessonAdults($group, $notification->user()->first());
+                $subject = 'Reminder: your lithuanian with Pasaka';
+            }
+
+            Mail::send([], [], function ($message) use ($html, $email, $group, $subject) {
                     $message
                         ->to($email)
-                        ->subject("Pokalbiai | grupė: ".  $group->name)
+                        ->subject($subject)
                         ->setBody($html, 'text/html');
                 });
             $notification->is_sent = 1;
