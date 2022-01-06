@@ -2,7 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Helpers\UserNotificationHelper;
+use App\Http\Helpers\UserNotificationEmailHelper;
+use App\Models\Group;
 use App\Models\UserNotifications;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -48,23 +49,12 @@ class sendUserNotification extends Command
         foreach ($notificationsToSend as $notification) {
             $group = $notification->group()->first();
             $email = $notification->email;
-//            $html = UserNotificationHelper::emailFreeLessonAdults($group, $notification->user()->first());
 
-            if ($group->paid && $group->age_category === 'children') {
-                $html = UserNotificationHelper::emailPaidLesson($group, $notification->user()->first());
-                $subject = 'Priminimas apie Pasakos pamoką';
+            $emailFunctionName = $this->getEmailFunctionName($group);
+            $html = UserNotificationEmailHelper::$emailFunctionName($group, $notification->user()->first());
+            $subject = $this->getEmailSubject($group);
 
-            }
-            if (!$group->paid && $group->age_category === 'children') {
-                $html = UserNotificationHelper::emailFreeLesson($group, $notification->user()->first());
-                $subject = 'Priminimas apie Pasakos pamoką';
-            }
-            if (!$group->paid && $group->age_category === 'adults') {
-                $html = UserNotificationHelper::emailFreeLessonAdults($group, $notification->user()->first());
-                $subject = 'Reminder: your lithuanian with Pasaka';
-            }
-
-            Mail::send([], [], function ($message) use ($html, $email, $group, $subject) {
+            Mail::send([], [], function ($message) use ($html, $email, $subject) {
                     $message
                         ->to($email)
                         ->subject($subject)
@@ -75,8 +65,41 @@ class sendUserNotification extends Command
         }
     }
 
+    private function getEmailSubject(Group $group) {
+        if ($group->age_category === 'children') {
+            return 'Priminimas apie Pasakos pamoką';
+        } else {
+            return 'Reminder: Your lithuanian class with Pasaka';
+        }
+    }
+
+    private function getEmailFunctionName(Group $group) {
+        if (!$group->paid
+            && $group->age_category === 'children'
+            && ($group->type === 'yellow' || $group->type === 'green')
+        ) {
+            return 'getEmailFreeLessonGreenAndYellow';
+        }
+        if (!$group->paid
+            && $group->age_category === 'children'
+            && ($group->type === 'red' || $group->type === 'blue')
+        ) {
+            return 'getEmailFreeLessonBlueAndRed';
+        }
+        if (!$group->paid
+            && $group->age_category === 'children'
+            && ($group->type === 'red' || $group->type === 'blue')
+        ) {
+            return 'getEmailPaidLesson';
+        }
+        if (!$group->paid && $group->age_category === 'adults') {
+            return 'getEmailFreeLessonAdults';
+        }
+    }
+
+
     private function getNotificationsToSend() {
-        return UserNotifications::where('is_sent', 0)->where('send_from_time', '>', Carbon::now()->timezone('Europe/London'))
+        return UserNotifications::where('is_sent', 0)->where('send_from_time', '<', Carbon::now()->timezone('Europe/London'))
             ->get();
     }
 }
