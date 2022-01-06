@@ -99,7 +99,8 @@ class sendUserNotification extends Command
 
 
     private function getNotificationsToSend() {
-        return UserNotifications::where('is_sent', 0)->where('send_from_time', '<', Carbon::now()->timezone('Europe/London'))
+        return UserNotifications::where('is_sent', 0)
+            ->where('send_from_time', '<', Carbon::now()->timezone('Europe/London')->timestamp)
             ->get();
     }
 }

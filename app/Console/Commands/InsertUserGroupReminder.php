@@ -75,6 +75,8 @@ class insertUserGroupReminder extends Command {
     private function getSendFromTime(Group $group) {
         $time = $group->events()->orderBy('date_at', 'asc')->first();
         $timeDate = $time->date_at->subDays(1)->format('Y-m-d');
-        return Carbon::parse($timeDate)->setTimezone('Europe/London')->setTime(8,0,0);
+        return Carbon::parse($timeDate)->setTimezone('Europe/London')
+            ->setTime(8,0,0)
+            ->timestamp;
     }
 }
