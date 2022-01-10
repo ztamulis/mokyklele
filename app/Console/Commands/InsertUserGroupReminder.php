@@ -75,7 +75,7 @@ class insertUserGroupReminder extends Command {
     }
 
     private function insertUserNotification(User $user, Group $group) {
-        UserNotifications::updateOrCreate([
+        UserNotifications::insert([
             'user_id' => $user->id,
             'email' => $user->email,
             'group_id' => $group->id,
