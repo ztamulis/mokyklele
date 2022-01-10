@@ -3,10 +3,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\NotificationsTrait;
 use App\Models\Coupon;
 use App\Models\Group;
 use App\Models\Payment;
 use App\Models\Student;
+use App\Models\User;
+use App\Models\UserNotifications;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +19,7 @@ use Illuminate\Support\Str;
 use Laravel\Cashier\Exceptions\IncompletePayment;
 
 class OrderController extends Controller {
-
+    use NotificationsTrait;
 
     public function selectFreeOrder($slug) {
 
@@ -191,6 +194,15 @@ class OrderController extends Controller {
 
         $user->time_zone = Cookie::get("user_timezone", "GMT");
         $user->save();
+        $date = Carbon::parse($group->start_date)->setTimezone(Cookie::get("user_timezone", "GMT"));
+        $now = Carbon::now()->setTimezone(Cookie::get("user_timezone", "GMT"));
+
+        $diff = $date->diffInDays($now);
+        //find a better solution;
+        if ($diff > 0) {
+            $this->insertUserNotification($user, $group);
+        }
+
 
         $messageArray = $this->getRegisterFreeUserMessage($group, $user);
 
@@ -213,6 +225,10 @@ class OrderController extends Controller {
         }
         if ($freeSlots > 1) {
             $text = 'Grupėje laisvos tik '.$freeSlots. ' vietos';
+
+        }
+        if ($freeSlots == 0) {
+            $text = 'Grupė pilna';
 
         }
         return $text;
