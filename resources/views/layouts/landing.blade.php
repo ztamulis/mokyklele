@@ -204,8 +204,8 @@
 //            $ipinfo = json_decode(file_get_contents("https://ip-api.com/json/".Request::ip()));
 //            $country = $ipinfo->country;
 //            $timezone = $ipinfo->timezone;
-//            $country = 'Lithuania';
-//            $country = Location::get(Request::ip())->countryName;
+            $country = 'Lithuania';
+            $country = Location::get(Request::ip())->countryName;
         ?>
         <div class="landing--modal">
             <div class="landing--modal--inner">
