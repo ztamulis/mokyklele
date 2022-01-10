@@ -158,7 +158,7 @@
                                                     <div class="text-truncate">
                                                         <span> {{substr(strip_tags($message->message),0,80)."..."}}</span>
                                                     </div>
-                                                    <p class="small text-gray-500 mb-0">{{ $message->author->name }} {{ $message->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</p>
+                                                    <p class="small text-gray-500 mb-0">{{$message->author ? $message->author->name : ""}} {{ $message->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</p>
                                                 </div>
                                             </a>
                                         @endforeach

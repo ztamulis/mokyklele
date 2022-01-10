@@ -19,7 +19,11 @@
             </div>
         </div>
     @endif
-    <h3 class="text-dark mb-4">Mokiniai @if(request()->input("user_id")) (tėvas {{\App\Models\User::find(request()->input("user_id"))->fullName()}}) @endif</h3>
+        @php
+            $user = \App\Models\User::find(request()->input("user_id"));
+        @endphp
+
+    <h3 class="text-dark mb-4">Mokiniai @if($user) (tėvas {{$user->fullName()}}) @endif</h3>
     <div class="card">
         <div class="card-body">
             <form method="GET">

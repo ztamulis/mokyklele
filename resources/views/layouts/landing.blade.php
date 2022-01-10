@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="/assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="/assets/fonts/fontawesome5-overrides.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="facebook-domain-verification" content="ct5xdyjqjrpglzwmqhwmaygw5osvuo" />
 
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
@@ -200,10 +201,10 @@
 
     @if(!Cookie::get("user_timezone"))
         <?php
-//            $ipinfo = json_decode(file_get_contents("http://ip-api.com/json/".Request::ip()));
+//            $ipinfo = json_decode(file_get_contents("https://ip-api.com/json/".Request::ip()));
 //            $country = $ipinfo->country;
 //            $timezone = $ipinfo->timezone;
-            $country = 'Lithuania';
+//            $country = 'Lithuania';
 //            $country = Location::get(Request::ip())->countryName;
         ?>
         <div class="landing--modal">

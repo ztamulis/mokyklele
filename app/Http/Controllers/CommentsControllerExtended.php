@@ -21,7 +21,7 @@ use tizis\laraComments\Http\Resources\CommentResource;
 use tizis\laraComments\UseCases\CommentService;
 use Illuminate\Contracts\Encryption\DecryptException;
 
-class TestControllerExtended extends CommentsController
+class CommentsControllerExtended extends CommentsController
 {
     /**
      * Creates a new comment for given model.

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\GroupMessage;
-use App\Models\SettingsModels\MeetingPageContent;
 use App\Models\Student;
 use App\Models\Group;
 use App\Models\File;
@@ -498,8 +497,6 @@ class GroupController extends Controller
             return Redirect::back()->with("group", $group)->with("groups", Group::paginate(15));
         }
         $displayText = $request->input("file_name");
-        Log::info($displayText);
-        Log::info($groupId);
         if (empty($displayText) && empty($request->file('file'))) {
             Session::flash('message', 'Laukeliai tušti!');
             Session::flash('alert-class', 'alert-danger');

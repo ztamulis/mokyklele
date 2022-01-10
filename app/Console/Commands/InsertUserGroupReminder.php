@@ -2,13 +2,14 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Traits\NotificationsTrait;
 use App\Models\Group;
 use App\Models\User;
-use App\Models\UserNotifications;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class insertUserGroupReminder extends Command {
+    use NotificationsTrait;
     /**
      * The name and signature of the console command.
      *
@@ -59,11 +60,6 @@ class insertUserGroupReminder extends Command {
             $this->addGroupReminder($group);
         }
     }
-
-    private function getAllGroupsThatNotStartedYet() {
-        return  Group::where('start_date', '>', Carbon::now())->where('paid', 0)->get();
-    }
-
     private function addGroupReminder(Group $group) {
         $users = $group->students()->get()->pluck('user_id')->toArray();
         $usersIdsUnique = array_unique($users);
@@ -74,22 +70,9 @@ class insertUserGroupReminder extends Command {
         }
     }
 
-    private function insertUserNotification(User $user, Group $group) {
-        UserNotifications::insert([
-            'user_id' => $user->id,
-            'email' => $user->email,
-            'group_id' => $group->id,
-            'type' => $group->type,
-            'age_category' => $group->age_category,
-            'send_from_time' => $this->getSendFromTime($group),
-        ]);
+    private function getAllGroupsThatNotStartedYet() {
+        return  Group::where('start_date', '>', Carbon::now())->where('paid', 0)->get();
     }
 
-    private function getSendFromTime(Group $group) {
-        $time = $group->events()->orderBy('date_at', 'asc')->first();
-        $timeDate = $time->date_at->subDays(1)->format('Y-m-d');
-        return Carbon::parse($timeDate)->setTimezone('Europe/London')
-            ->setTime(8,0,0)
-            ->timestamp;
-    }
+
 }
