@@ -39,7 +39,9 @@ class insertUserGroupReminder extends Command {
      * @return int
      */
     public function handle() {
-        if (count($this->argument('id')) === 1) {
+        if ($this->argument('id')[0] == 0) {
+            $this->insertAllAvailableGroups();
+        } elseif (count($this->argument('id')) === 1) {
             $group = Group::where('id', $this->argument('id'))->first();
             $this->addGroupReminder($group);
         } elseif(count($this->argument('id')) > 1) {
@@ -49,6 +51,17 @@ class insertUserGroupReminder extends Command {
             }
         }
         echo 'finished';
+    }
+
+    private function insertAllAvailableGroups() {
+        $groups = $this->getAllGroupsThatNotStartedYet();
+        foreach ($groups as $group) {
+            $this->addGroupReminder($group);
+        }
+    }
+
+    private function getAllGroupsThatNotStartedYet() {
+        return  Group::where('start_date', '>', Carbon::now())->where('paid', 0)->get();
     }
 
     private function addGroupReminder(Group $group) {
