@@ -117,7 +117,8 @@ class Group extends Model
             'yellow' => 'geltonų',
             'blue' => 'mėlynų',
             'green' => 'žalių',
-            'red' => 'raudonų'
+            'red' => 'raudonų',
+            'no_type' => 'suaugusiųjų',
         ];
         return $genetiveCases[$this->type];
     }
