@@ -6,6 +6,7 @@ use App\Http\Controllers\Pages\LithuanianCoursesController;
 use App\Http\Controllers\Pages\MeetingsPageController;
 use App\Http\Controllers\Pages\IntroductionController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Pages\NotificationsController;
 use App\Http\Controllers\Pages\SuggestionController;
 use App\Http\Controllers\Pages\SuggestionsPageController;
 use App\Http\Controllers\QuestionFormController;
@@ -262,6 +263,12 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/update', [LithuanianCoursesController::class, 'update'])->name('update');
 //            Route::put('/create', [LithuanianCoursesController::class, 'create'])->name('update');
         });
+    });
+    Route::group(['prefix' => 'dashboard/reminders', 'as' => 'reminders.'], static function () {
+        Route::get('/', [NotificationsController::class, 'index'])->name('index');
+        Route::get('/edit', [NotificationsController::class, 'edit'])->name('edit');
+        Route::put('/update', [NotificationsController::class, 'update'])->name('update');
+        Route::put('/destroy', [NotificationsController::class, 'destroy'])->name('destroy');
     });
 });
 

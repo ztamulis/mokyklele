@@ -4,10 +4,42 @@
 namespace App\Http\Helpers;
 
 
+use App\Models\Group;
+use App\Models\Meeting;
+use App\Models\User;
 use Carbon\Carbon;
 
 class UserNotificationEmailHelper {
+    public static function getFinishedEmail(
+        Group $group,
+        User $user,
+        string $emailType,
+        ?Meeting $meeting,
+        string $emailContent
+    ) {
+        \Carbon\Carbon::setLocale('lt');
+        $firstEvent = $group->events()->orderBy('date_at', 'asc')->first();
+        $firstEventDate = $firstEvent->date_at->setTimezone($user->time_zone);
+        $dayOfWeekKey = $firstEventDate->dayOfWeek;
+        $emailContent = str_replace('{grupe}', $group->color(), $emailContent);
+        $emailContent = str_replace('{grupes-savaites-diena}', $group->getWeekDayGramCase($dayOfWeekKey), $emailContent);
+        $emailContent = str_replace('{pamokos-laikas}', $firstEventDate->format('H:i'), $emailContent);
+        $emailContent = str_replace('{vartotojo-laiko-juosta}', $user->time_zone, $emailContent);
+        $emailContent = str_replace('{grupe-kilmininko-linksnis}', $group->getGroupTypeGenitiveCase(), $emailContent);
+        $emailContent = str_replace('{pamokos-diena-angliskai}', $firstEventDate->formatLocalized('%A'), $emailContent);
 
+        if (!empty($meeting)) {
+            $meetingDate = Carbon::parse($meeting->date_at)->timezone('Europe/London')
+                ->setTimezone($user->time_zone);
+
+            $emailContent = str_replace('{susitikimo-menesis-kilmininkas}', $group->getMonthGenitiveCase($firstEventDate->month), $emailContent);
+            $emailContent = str_replace('{susitikimo-diena-skaicius}', $meetingDate->format('d'), $emailContent);
+            $emailContent = str_replace('{susitikimo-valanda}', $meetingDate->format('H:i'), $emailContent);
+        }
+
+        return $emailContent;
+
+    }
 
     public static function getEmailFreeLessonGreenAndYellow($group, $user) {
         \Carbon\Carbon::setLocale('lt');

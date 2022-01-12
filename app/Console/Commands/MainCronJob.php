@@ -87,7 +87,7 @@ class MainCronJob extends Command {
         echo "Automatic reward set ended<br>";
 
         echo "Automatic notification email sending started<br>";
-        foreach (Message::where("email_sent", 0)->where("seen",0)->get() as $message) {
+        foreach (Message::where("email_sent", 0)->where("seen",0)->limit(20)->get() as $message) {
 
             if(!$message->author) {
                 continue;
