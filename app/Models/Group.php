@@ -93,6 +93,35 @@ class Group extends Model
 
         return $weekMap[$key];
     }
+    public static function getMonthGenitiveCase($key) {
+        $weekMap = [
+            1 => 'sausio',
+            2 => 'vasario',
+            3 => 'kovo',
+            4 => 'balandžio',
+            5 => 'gegužės',
+            6 => 'birželio',
+            7 => 'liepos',
+            8 => 'rugpjūčio',
+            9 => 'rugsėjo',
+            10 => 'spalio',
+            11 => 'lapkričio',
+            12 => 'gruodžio',
+        ];
+
+        return $weekMap[$key];
+    }
+
+    public function getGroupTypeGenitiveCase() {
+        $genetiveCases = [
+            'yellow' => 'geltonų',
+            'blue' => 'mėlynų',
+            'green' => 'žalių',
+            'red' => 'raudonų'
+        ];
+        return $genetiveCases[$this->type];
+    }
+
 
     /**
      * Get the route key for the model.

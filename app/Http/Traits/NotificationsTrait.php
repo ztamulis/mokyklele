@@ -5,7 +5,6 @@ namespace App\Http\Traits;
 
 
 use App\Models\Group;
-use App\Models\User;
 use App\Models\UserNotifications;
 use Carbon\Carbon;
 

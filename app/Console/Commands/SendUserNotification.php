@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Http\Helpers\UserNotificationEmailHelper;
 use App\Models\Group;
+use App\Models\Meeting;
+use App\Models\SettingsModels\NotificationEmailContent;
 use App\Models\UserNotifications;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -45,55 +47,81 @@ class sendUserNotification extends Command
     }
 
     private function sendNotifications() {
+        $notificationEmailContent = app(NotificationEmailContent::class)->getPageContent();
         $notificationsToSend = $this->getNotificationsToSend();
         foreach ($notificationsToSend as $notification) {
             $group = $notification->group()->first();
             $email = $notification->email;
+//            $email = 'zygintas.tamulis@gmail.com';
 
-            $emailFunctionName = $this->getEmailFunctionName($group);
-            $html = UserNotificationEmailHelper::$emailFunctionName($group, $notification->user()->first());
-            $subject = $this->getEmailSubject($group);
+            $emailType = $this->getEmailType($group);
+            if (empty($emailType)) {
+                continue;
+            }
 
+            $user = $notification->user()->first();
+            if (!isset($user->time_zone)) {
+                $notification->delete();
+                continue;
+            }
+
+            $meeting = $this->getMeeting($notificationEmailContent, $emailType);
+            $emailContent = $notificationEmailContent[$emailType];
+            $html = UserNotificationEmailHelper::getFinishedEmail($group, $user, $emailType, $meeting, $emailContent);
+
+            $subject = $this->getEmailSubject($notificationEmailContent, $emailType);
             Mail::send([], [], function ($message) use ($html, $email, $subject) {
                     $message
                         ->to($email)
                         ->subject($subject)
                         ->setBody($html, 'text/html');
                 });
+//            die();
             $notification->is_sent = 1;
             $notification->save();
         }
     }
 
-    private function getEmailSubject(Group $group) {
-        if ($group->age_category === 'children') {
-            return 'Priminimas apie Pasakos pamoką';
-        } else {
-            return 'Reminder: Your lithuanian class with Pasaka';
-        }
+    private function getEmailSubject(array $notificationEmailContent, string $emailType):string {
+        return $notificationEmailContent[$emailType.'_subject'];
     }
 
-    private function getEmailFunctionName(Group $group) {
+    private function getMeeting(array $notificationEmailContent, string $emailType): ?Meeting {
+        $meetingId = $notificationEmailContent[$emailType.'_meeting_id'];
+        if (empty($meetingId)) {
+            return null;
+        }
+        return Meeting::where('id', $meetingId)->where('date_at', '>', Carbon::now())->first();
+    }
+
+    private function getEmailType(Group $group) {
+
         if (!$group->paid
             && $group->age_category === 'children'
             && ($group->type === 'yellow' || $group->type === 'green')
         ) {
-            return 'getEmailFreeLessonGreenAndYellow';
+            return 'free_lesson_yellow_and_green';
         }
         if (!$group->paid
             && $group->age_category === 'children'
             && ($group->type === 'red' || $group->type === 'blue')
         ) {
-            return 'getEmailFreeLessonBlueAndRed';
+            return 'free_lesson_red_and_blue';
         }
-        if (!$group->paid
+        if ($group->paid
+            && $group->age_category === 'children'
+            && ($group->type === 'yellow' || $group->type === 'green')
+        ) {
+            return 'paid_lesson_yellow_and_green';
+        }
+        if ($group->paid
             && $group->age_category === 'children'
             && ($group->type === 'red' || $group->type === 'blue')
         ) {
-            return 'getEmailPaidLesson';
+            return 'paid_lesson_red_and_blue';
         }
         if (!$group->paid && $group->age_category === 'adults') {
-            return 'getEmailFreeLessonAdults';
+            return 'free_lesson_adults';
         }
     }
 
@@ -101,6 +129,7 @@ class sendUserNotification extends Command
     private function getNotificationsToSend() {
         return UserNotifications::where('is_sent', 0)
             ->where('send_from_time', '<', Carbon::now()->timezone('Europe/London')->timestamp)
+            ->limit(50)
             ->get();
     }
 }
