@@ -244,7 +244,7 @@ color background--yellow@extends("layouts.landing")
 
                 if(dublicates){
                     event.preventDefault();
-                    alert("Vaikai kartojasi! Prašome patikrinkti.");
+                    alert("Mokiniai kartojasi! Prašome patikrinkti.");
                 }
 
                 if($(".add_payment_method").css("opacity") != 0){
