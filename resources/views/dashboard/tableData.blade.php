@@ -37,7 +37,7 @@
                                                                     <th>El. Paštas</th>
                                                                     <th>ID</th>
                                                                     <th>Grupė(-s)</th>
-                                                                    <th>Vaikai</th>
+                                                                    <th>Mokiniai</th>
                                                                     <th>Sutikimas su naujienlaiškiu</th>
                                                                     <th>Rolė</th>
                                                                     <th>Šalis</th>

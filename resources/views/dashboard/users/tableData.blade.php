@@ -65,7 +65,7 @@
                                                                     <th>Šalis</th>
                                                                     <th>Registracijos data</th>
                                                                     <th>Grupė(-s)</th>
-                                                                    <th>Vaikai</th>
+                                                                    <th>Mokiniai</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="userTable">

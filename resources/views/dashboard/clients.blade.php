@@ -6,7 +6,7 @@
                                 <div class="form-row">
                                     <div class="col-md-6 col-xl-4 text-nowrap"><input class="form-control" type="text" name="search" placeholder="Ieškoti"><select class="form-control">
                                             <option value="parents" selected="">Tėvai</option>
-                                            <option value="kids">Vaikai</option>
+                                            <option value="kids">Mokiniai</option>
                                         </select></div>
                                     <div class="col-xl-3"><select class="form-control">
                                             <option value="yellow" selected="">Geltona grupė</option>

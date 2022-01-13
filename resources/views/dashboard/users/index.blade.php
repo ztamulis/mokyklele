@@ -49,7 +49,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Naudotojas</th>
-                            <th>Vaikai</th>
+                            <th>Mokiniai</th>
                             <th>Apdovanojimai</th>
                             <th class="text-center">Veiksmai</th>
                         </tr>
@@ -76,7 +76,7 @@
                                 </td>
                                 <td class="{{Auth::user()->role === 'teacher' ? 'text-center' : 'text-right'}}">
                                     @if(Auth::user()->role === "admin")
-                                    <a href="/dashboard/students/?user_id={{ $user->id }}" class="btn btn-success" style="margin: 0px 4px 0px;">Vaikai</a>
+                                    <a href="/dashboard/students/?user_id={{ $user->id }}" class="btn btn-success" style="margin: 0px 4px 0px;">Mokiniai</a>
                                     @endif
                                     <a href="/dashboard/user-rewards/{{ $user->id }}" class="btn btn-warning" style="margin: 0px 4px 0px;">Apdovanojimai</a>
                                         @if(Auth::user()->role === "admin")
@@ -98,7 +98,7 @@
             <div class="row">
                 <div class="col-md-9">
                     <a href="/dashboard/users/export" class="btn btn-success">Eksportuoti EXCEL formatu</a>
-                    <a href="/dashboard/students" class="btn btn-secondary">Visi vaikai</a>
+                    <a href="/dashboard/students" class="btn btn-secondary">Visi mokiniai</a>
                     <a href="/dashboard/users/create" class="btn btn-primary">Sukurti naują</a>
                 </div>
                 <div class="col-md-3">
