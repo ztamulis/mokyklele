@@ -2,77 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\NotificationsTrait;
 use App\Models\Coupon;
 use App\Models\Group;
 use App\Models\Payment;
 use App\Models\Student;
 use App\Models\UserCoupon;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Log;
 use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
 
 class WebhookController extends CashierController
 {
-    /**
-     * Handle invoice payment succeeded.
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-//    public function handlePaymentIntentSucceeded($payload)
-//    {
-//        // Handle the incoming event...
-//
-//        Log::info('handlePaymentIntentSucceeded');
-//        $data = $payload['data'];
-//
-//        Log::info($data->id);
-//        Log::info($data->object);
-//        Log::info($data->amount_captured);
-//        Log::info($data->paid);
-//        Log::info($data->payment_intent);
-//
-//        $payment = Payment::where('payment_id', $payload->id)->first();
-//        if ($payload->status === 'succeeded' && $payment->status !== 'paid') {
-//            Log::info($payment->students);
-//            $payment->status = 'paid';
-//            $payment->save();
-////            Student::whereIn('id', $payment->students)->update(['group_id', $payment->group_id]);
-//
-//            Log::info($payment);
-//
-//        }
-//
-//        Log::info($payload);
-//
-//        echo $payload;
-//    }
-
-    /**
-     * @param $payload
-     */
-//    public function handleInvoicePaymentSucceeded($payload)
-//    {
-//        // Handle the incoming event...
-//
-//        Log::info('handleInvoicePaymentSucceeded');
-//        Log::info($payload->status);
-//        Log::info($payload->id);
-//        $payment = Payment::where('payment_id', $payload->id)->first();
-//        if ($payload->status === 'succeeded' && $payment->status !== 'paid') {
-//            Log::info($payment->students);
-//            $payment->status = 'paid';
-//            $payment->save();
-////            Student::whereIn('id', $payment->students)->update(['group_id', $payment->group_id]);
-//
-//            Log::info($payment);
-//
-//        }
-//        Log::info($payload);
-//
-//
-//        echo $payload;
-//    }
+    use NotificationsTrait;
 
 
     public function handleCheckoutSessionCompleted($payload) {
@@ -127,6 +68,15 @@ class WebhookController extends CashierController
             $startDate = \Carbon\Carbon::parse($groupData['startDate'])->format('Y-m-d');
         } else {
             $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+        }
+
+        $date = Carbon::parse($group->start_date)->setTimezone($user->time_zone);
+        $now = Carbon::now()->setTimezone($user->time_zone);
+
+        $diff = $date->diffInDays($now);
+        //find a better solution;
+        if ($diff > 0) {
+            $this->insertUserNotification($user, $group);
         }
 
         $email_content_admin = "<h1>Kurso užsakymas</h1><p> Klientas ".  $user->name. " " .$user->surname .
@@ -219,6 +169,15 @@ class WebhookController extends CashierController
             $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
         }
 
+        $date = Carbon::parse($group->start_date)->setTimezone($user->time_zone);
+        $now = Carbon::now()->setTimezone($user->time_zone);
+
+        $diff = $date->diffInDays($now);
+        //find a better solution;
+        if ($diff > 0) {
+            $this->insertUserNotification($user, $group);
+        }
+
         $email_content_admin = "<h1>Kurso užsakymas</h1><p> Klientas ".  $user->name. " " .$user->surname .
             "<br> El. paštas: ".$user->email.
             "<br>Grupė: ".$group->name .
@@ -287,26 +246,6 @@ class WebhookController extends CashierController
             }
         }
         return $teachers;
-    }
-
-    /**
-     * @param array $payload
-     * @return \Symfony\Component\HttpFoundation\Response|void
-     */
-    public function handleCustomerSubscriptionCreated($payload)
-    {
-        // Handle the incoming event...
-        $payment = Payment::where('payment_id', $payload->id)->first();
-        if ($payload->status === 'succeeded' && $payment->status !== 'paid') {
-            $payment->status = 'paid';
-            $payment->save();
-//            Student::whereIn('id', $payment->students)->update(['group_id', $payment->group_id]);
-
-
-        }
-
-
-        echo $payload;
     }
 
 }

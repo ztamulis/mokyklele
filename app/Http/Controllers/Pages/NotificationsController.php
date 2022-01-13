@@ -167,16 +167,16 @@ class NotificationsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param UserNotifications $userNotifications
+     * @param int $id
      * @return Response
      */
-    public function destroy(UserNotifications $userNotifications)
-    {
+    public function destroy(int $id) {
+        $userNotifications = UserNotifications::findOrFail($id);
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $userNotifications->delete();
-        Session::flash('message', "Susitikimas sėkmingai ištrintas");
+        Session::flash('message', "Automatinis laiškas sėkmingai ištrintas");
         return Redirect::to('dashboard/reminders');
     }
 }
