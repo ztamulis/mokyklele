@@ -7,7 +7,7 @@
     <div class="learning--group--select--selector">
         @php
             $groupsGrouped  = \App\Models\Group::where("paid", 1)->where("hidden", 0)->where("age_category", '=', 'adults')->get()->groupBy("type");
-            $type = '  ';
+            $type = ' ';
             if (isset($groupsGrouped['yellow'])) {
             $type = 'yellow';
             } elseif(isset($groupsGrouped['green'])) {
@@ -18,10 +18,10 @@
 
             } elseif(isset($groupsGrouped['red'])) {
                 $type = 'red';
+            }elseif(isset($groupsGrouped['no_type'])) {
+                $type = 'no_type';
             } elseif(isset($groupsGrouped['individual'])) {
                 $type = 'individual';
-            } elseif(isset($groupsGrouped['no_type'])) {
-                $type = 'no_type';
             }
         @endphp
 
@@ -52,7 +52,7 @@
                 Kursai suaugusiems
             </div>
         @endif
-        
+
         @if(isset($groupsGrouped['individual']))
             <div class="learning--group--select--item" data-filter-adults="individual">
                 Individualios pamokos

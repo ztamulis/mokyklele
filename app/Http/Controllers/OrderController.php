@@ -542,7 +542,7 @@ class OrderController extends Controller {
             $group->name."<br>".
             $group->display_name." ".$group->time->timezone($timezone)->format("H:i")." (".$timezone.")<br>".
             "Į pamoką prisijungsite iš savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyros</a>.</p>".
-            "<p>Grupes tolimesniam mokymuisi skirstome ne tik pagal amžių, bet ir pagal kalbos mokėjimo lygį - taip galime užtikrinti, kad vaikai pasieks geriausių rezultatų ir drąsiau jausis pamokoje.<br>".
+            "<p>Grupes tolimesniam mokymuisi skirstome ne tik pagal amžių, bet ir pagal kalbos mokėjimo lygį - taip galime užtikrinti, kad mokiniai pasieks geriausių rezultatų ir drąsiau jausis pamokoje.<br>".
             "Nemokamos pamokos metu mokytoja įvertins vaiko kalbos mokėjimo lygį ir vėliau mes pasiūlysime tinkamiausią grupę jūsų vaikui.<br>".
             "<small>Jei negalėsite dalyvauti pamokoje, labai prašome iš anksto pranešti - vietų skaičius ribotas, o norinčiųjų daug!</small></p>".
             "<p>Iki pasimatymo,<br> Pasakos komanda </p>";
