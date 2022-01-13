@@ -71,7 +71,7 @@ class insertUserGroupReminder extends Command {
     }
 
     private function getAllGroupsThatNotStartedYet() {
-        return  Group::where('start_date', '>', Carbon::now())->where('paid', 0)->get();
+        return  Group::where('start_date', '>', Carbon::now())->where('paid', 1)->get();
     }
 
 

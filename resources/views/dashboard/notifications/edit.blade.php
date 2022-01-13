@@ -33,7 +33,7 @@
                         <div class="form-group">
                             <p class="lh-1"><b>Kintamieji</b>: {grupe}; {grupes-savaites-diena}; {pamokos-laikas}; {vartotojo-laiko-juosta}; {susitikimo-diena-skaicius}; {susitikimo-valanda}; {susitikimo-menesis-kilmininkas} </p>
                             <p class="lh-1"><b>Kintamuosius būtina atskirti laužtiniais skliaustais {} ir negali būti rašomi lietuviškomis raidėmis. Tiksliai kaip nurodyta pasirinkimuose.</b></p>
-                            <small class="form-text text-muted bold">Nemokama vaikų pamoka (geltona ir žalia)</small>
+                            <span class="form-text text-danger bold">Nemokama vaikų pamoka (geltona ir žalia)</span>
                             <textarea class="form-control summernote" name="free_lesson_yellow_and_green">{!! $notificationEmailContent->free_lesson_yellow_and_green !!}</textarea>
                         </div>
                         <small class="form-text text-muted">Susitikimas</small>
@@ -53,7 +53,7 @@
                         <div class="form-group mt-5">
                             <p class="lh-1"><b>Kintamieji</b>: {grupe}; {grupes-savaites-diena}; {pamokos-laikas}; {vartotojo-laiko-juosta}; {susitikimo-diena-skaicius}; {susitikimo-valanda}; {susitikimo-menesis-kilmininkas} </p>
                             <p class="lh-1"><b>Kintamuosius būtina atskirti laužtiniais skliaustais {} ir negali būti rašomi lietuviškomis raidėmis. Tiksliai kaip nurodyta pasirinkimuose.</b></p>
-                            <small class="form-text text-muted">Nemokama vaikų pamoka (mėlyna ir raudona)</small>
+                            <span class="form-text text-danger bold">Nemokama vaikų pamoka (mėlyna ir raudona)</span>
                             <textarea class="form-control summernote" name="free_lesson_red_and_blue">{!! $notificationEmailContent->free_lesson_red_and_blue !!}</textarea>
                         </div>
                         <small class="form-text text-muted">Susitikimas</small>
@@ -73,7 +73,7 @@
                         <div class="form-group mt-5">
                             <p class="lh-1"><b>Kintamieji</b>: {pamokos-diena-angliskai}; {grupe}; {grupes-savaites-diena}; {pamokos-laikas}; {vartotojo-laiko-juosta}; </p>
                             <p class="lh-1"><b>Kintamuosius būtina atskirti laužtiniais skliaustais {} ir negali būti rašomi lietuviškomis raidėmis. Tiksliai kaip nurodyta pasirinkimuose.</b></p>
-                            <small class="form-text text-muted">Nemokama suaugusiųjų pamoka</small>
+                            <span class="form-text text-danger bold">Nemokama suaugusiųjų pamoka</span>
                             <textarea class="form-control summernote" name="free_lesson_adults">{!! $notificationEmailContent->free_lesson_adults !!}</textarea>
                         </div>
                         <small class="form-text text-muted">Susitikimas</small>
@@ -94,7 +94,7 @@
                         <div class="form-group mt-5">
                             <p class="lh-1"><b>Kintamieji</b>: {grupe}; {grupes-savaites-diena}; {pamokos-laikas}; {vartotojo-laiko-juosta}; {susitikimo-diena-skaicius}; {susitikimo-valanda}; {susitikimo-menesis-kilmininkas}</p>
                             <p class="lh-1"><b>Kintamuosius būtina atskirti laužtiniais skliaustais {} ir negali būti rašomi lietuviškomis raidėmis. Tiksliai kaip nurodyta pasirinkimuose.</b></p>
-                            <small class="form-text text-muted">Mokama pamoka (geltona ir žalia)</small>
+                            <span class="form-text text-danger bold">Mokama pamoka (geltona ir žalia)</span>
                             <textarea class="form-control summernote" name="paid_lesson_yellow_and_green">{!! $notificationEmailContent->paid_lesson_yellow_and_green !!}</textarea>
                         </div>
                         <small class="form-text text-muted">Susitikimas</small>
@@ -115,7 +115,7 @@
                         <div class="form-group mt-5">
                             <p class="lh-1"><b>Kintamieji</b>: {grupe}; {grupes-savaites-diena}; {pamokos-laikas}; {vartotojo-laiko-juosta}; {susitikimo-diena-skaicius}; {susitikimo-valanda}; {susitikimo-menesis-kilmininkas}; {grupe-kilmininko-linksnis} </p>
                             <p class="lh-1"><b>Kintamuosius būtina atskirti laužtiniais skliaustais {} ir negali būti rašomi lietuviškomis raidėmis. Tiksliai kaip nurodyta pasirinkimuose.</b></p>
-                            <small class="form-text text-muted">Mokama pamoka (mėlyna ir raudona)</small>
+                            <span class="form-text text-danger bold">Mokama pamoka (mėlyna ir raudona)</span>
                             <textarea class="form-control summernote" name="paid_lesson_red_and_blue">{!! $notificationEmailContent->paid_lesson_red_and_blue !!}</textarea>
                         </div>
                         <small class="form-text text-muted">Susitikimas</small>
