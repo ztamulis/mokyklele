@@ -45,7 +45,7 @@
                         {{ __('Užmiršote slaptažodį?') }}
                     </a>
                 @endif<br>
-                <a class="underline text-sm " style="color: #0f65ef;" href="/register">
+                <a class="underline blue text-sm " style="color: #0f65ef!important;" href="/register">
                     {{ __('Registracija naujiems nariams') }}
                 </a>
 

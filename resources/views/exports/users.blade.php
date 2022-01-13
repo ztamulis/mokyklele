@@ -28,7 +28,7 @@
         @if($user->students()->count())
             <tr>
                 <td></td>
-                <td><b>{{ $user->name }} {{ $user->surname }} vaikai:</b></td>
+                <td><b>{{ $user->name }} {{ $user->surname }} mokiniai:</b></td>
             </tr>
             @foreach($user->students as $student)
                 <tr>

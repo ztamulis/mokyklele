@@ -67,7 +67,7 @@
                                     <td>{{ $notification->email }}</td>
                                     <td>{{ $group->color() }}</td>
                                     <td>#{{ $group->id }}</td>
-                                    <td>{{ $notification->age_category === 'children' ? 'Vaikai' : 'Suaugusieji' }}</td>
+                                    <td>{{ $notification->age_category === 'children' ? 'Mokiniai' : 'Suaugusieji' }}</td>
                                     <td>{{ $group->paid == 1 ? 'Taip' : 'Ne' }}</td>
                                     <td class="w-50">{{ \Carbon\Carbon::parse($notification->send_from_time)->timezone('Europe/London') }}</td>
                                     <td>{{ $notification->is_sent == 1 ? 'Taip' : 'Ne' }}</td>

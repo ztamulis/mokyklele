@@ -47,18 +47,19 @@
                 Raudona (10-13m.)
             </div>
         @endif
-
+        @if(isset($groupsGrouped['no_type']))
+            <div class="learning--group--select--item" data-filter-adults="no_type">
+                Kursai suaugusiems
+            </div>
+        @endif
+        
         @if(isset($groupsGrouped['individual']))
             <div class="learning--group--select--item" data-filter-adults="individual">
                 Individualios pamokos
             </div>
         @endif
 
-        @if(isset($groupsGrouped['no_type']))
-            <div class="learning--group--select--item" data-filter-adults="no_type">
-                Kursai suaugusiems
-            </div>
-        @endif
+
 
     </div>
     @foreach(\App\Models\Group::where("paid", 1)->where("hidden",0)->where("age_category", '=', 'adults')->orderBy("weight","ASC")->get() as $group)

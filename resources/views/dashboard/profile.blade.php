@@ -66,7 +66,7 @@
                         <div class="col">
                             @if(Auth::user()->students->count() > 0)
                                 <div class="dashboard--block">
-                                    <h3>Jūsų vaikai</h3>
+                                    <h3>Jūsų mokiniai</h3>
                                     <form method="POST" action="/dashboard/profile/photo-change" enctype="multipart/form-data">
                                         @csrf
                                         <div class="table-responsive">

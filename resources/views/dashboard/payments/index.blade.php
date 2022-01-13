@@ -70,7 +70,7 @@
                             <th>ID</th>
                             <th>Stripe ID</th>
                             <th>Naudotojas</th>
-                            <th>Vaikai</th>
+                            <th>Mokiniai</th>
                             <th>Laikas</th>
                             <th>Planas</th>
                             <th>Statusas</th>
