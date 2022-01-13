@@ -268,7 +268,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [NotificationsController::class, 'index'])->name('index');
         Route::get('/edit', [NotificationsController::class, 'edit'])->name('edit');
         Route::put('/update', [NotificationsController::class, 'update'])->name('update');
-        Route::put('/destroy', [NotificationsController::class, 'destroy'])->name('destroy');
+        Route::delete('/destroy/{id}', [NotificationsController::class, 'destroy'])->name('destroy');
     });
 });
 

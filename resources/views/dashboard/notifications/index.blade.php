@@ -74,7 +74,7 @@
                                     <td class="text-right">
                                         @if(Auth::user()->role == "admin")
 {{--                                            <a href="/dashboard/introductions/{{ $notification->id }}/edit" class="btn btn-warning" type="button" style="margin: 0px 4px 0px;">Redaguoti</a>--}}
-                                            <form action="/dashboard/reminders/{{ $notification->id }}" method="POST" onsubmit="return confirm('Ar tikrai norite ištrinti susitikimą?')" style="display: inline-block;">
+                                            <form action="/dashboard/reminders/destroy/{{ $notification->id }}" method="POST" onsubmit="return confirm('Ar tikrai norite ištrinti automatinį laišką?')" style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button class="btn btn-danger" type="submit">Ištrinti</button>
@@ -90,7 +90,7 @@
                 @endif
             </div>
             <div class="row">
-                <div class="col-xl-3"><a href="/dashboard/introductions/create" class="btn btn-success" type="button">Sukurti naują susitikimą</a></div>
+{{--                <div class="col-xl-3"><a href="/dashboard/introductions/create" class="btn btn-success" type="button">Sukurti naują susitikimą</a></div>--}}
                 <div class="col-md-6 offset-xl-3">
                     <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
                         {{ $notifications->links('components.pagination') }}
