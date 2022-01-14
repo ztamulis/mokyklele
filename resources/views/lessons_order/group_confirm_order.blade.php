@@ -52,6 +52,9 @@
     <div class="row">
         <div class="col-md-12 text-center  mt-order-5">
             <form action="{{$paymentInfo['url']}}">
+                @if(!empty($paymentInfo['session_id']))
+                    <input type="hidden" name="session_id" value="{{$paymentInfo['session_id']}}">
+                @endif
                 <button type="submit">Patvirtinti (£{{$paymentInfo['price']}})</button>
             </form>
         </div>
