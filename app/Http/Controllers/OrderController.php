@@ -3,13 +3,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\CheckoutEmailsTrait;
 use App\Http\Traits\NotificationsTrait;
 use App\Models\Coupon;
 use App\Models\Group;
 use App\Models\Payment;
 use App\Models\Student;
-use App\Models\User;
-use App\Models\UserNotifications;
+use App\Models\UserCoupon;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +20,7 @@ use Laravel\Cashier\Exceptions\IncompletePayment;
 
 class OrderController extends Controller {
     use NotificationsTrait;
+    use CheckoutEmailsTrait;
 
     public function selectFreeOrder($slug) {
 
@@ -73,6 +74,16 @@ class OrderController extends Controller {
                     ->with('coupon', $coupon)
                     ->with("couponError", 1)
                     ->with("error", "Kupono limitas vartotojui išnaudotas!");
+            }
+
+            if ($coupon->use_limit <= $coupon->used) {
+                $coupon = [];
+
+                return view("lessons_order.group_create_order")
+                    ->with("group", $group)
+                    ->with('coupon', $coupon)
+                    ->with("couponError", 1)
+                    ->with("error", "Kupono limitas išnaudotas!");
             }
             if (!empty($coupon->groups) && !isset(array_flip($coupon->groups)[$group->id])) {
                 $coupon = [];
@@ -133,7 +144,7 @@ class OrderController extends Controller {
                 $student->birthday = \Carbon\Carbon::parse($student_info[1]);
                 $student->save();
                 $students[] = $student;
-            }else{
+            } else{
                 $student = Student::find($student_id);
                 if(!$student) {
                     return view("lessons_order.group_create_free_order")
@@ -237,36 +248,6 @@ class OrderController extends Controller {
 
 
 
-    public function checkoutResponse(Request $request) {
-        $user = Auth::user();
-
-        $payment = Payment::where('session_id', $request->input('session_id'))
-            ->where('user_id', $user->id)
-            ->first();
-
-        if (empty($payment)) {
-            return view("lessons_order.group_order_succeeded")->with("error", 1)->with("message", "Užsakymas nerastas.");
-        }
-
-        $group = $payment->group()->first();
-
-        if (!empty($request->input('payment'))) {
-            $payment->payment_status = 'canceled';
-            $payment->save();
-            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message", "Užsakymas nutrauktas.");
-
-        }
-
-        if ($payment->payment_status !== 'paid') {
-            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message", "Ačiū, lauksime pamokose!");
-        } else {
-            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message", "Užsakymas jau įvykdytas!");
-        }
-
-    }
-
-
-
     public function createOrderCheckout(Request $request, $slug) {
         $group = Group::where('slug', $slug)->first();
         if(!$group) {
@@ -286,6 +267,9 @@ class OrderController extends Controller {
                 ->with("group", $group)
                 ->with("error",  $this->getFullGroupErrorText($groupCount, $group->slots));
         }
+
+
+
         foreach ($json_students as $student_id) {
             if(Str::startsWith($student_id, "new_")){
                 $student_info = explode("_", str_replace("new_", "", $student_id));
@@ -338,6 +322,7 @@ class OrderController extends Controller {
             }
         }
 
+
         if (!empty($dublicatedUsers)) {
             return view("lessons_order.group_create_order")
                 ->with("group", $group)
@@ -348,17 +333,20 @@ class OrderController extends Controller {
 
         $originalPrice = $this->countPriceByStudentsAmount($students, $group->adjustedPrice());
         $price = $this->applyCoupon($originalPrice, $coupon);
-        try {
-            $session['success_url'] = route('index').'/payments/checkout/response?session_id={CHECKOUT_SESSION_ID}';
-            $session['cancel_url'] = route('index').'/payments/checkout/response?payment=cnl&session_id={CHECKOUT_SESSION_ID}';
-            $transaction = $user->checkoutCharge($price * 100, $user->fullName(), 1, $session);
+        if (!empty($price)) {
+            try {
+                $session['success_url'] = route('index').'/payments/checkout/response?session_id={CHECKOUT_SESSION_ID}';
+                $session['cancel_url'] = route('index').'/payments/checkout/response?payment=cnl&session_id={CHECKOUT_SESSION_ID}';
+                $transaction = $user->checkoutCharge($price * 100, $user->fullName(), 1, $session);
 
-        } catch (IncompletePayment $exception) {
-            $transaction = $exception->payment;
-            if ($exception->payment->status !== 'succeeded') {
-                return view("landing_other.group_order")->with("group", $group)->with("error", "Užsakymo įvykdyti NEPAVYKO!");
+            } catch (IncompletePayment $exception) {
+                $transaction = $exception->payment;
+                if ($exception->payment->status !== 'succeeded') {
+                    return view("landing_other.group_order")->with("group", $group)->with("error", "Užsakymo įvykdyti NEPAVYKO!");
+                }
             }
         }
+
         $student_ids = [];
 
         foreach ($students as $student){
@@ -367,8 +355,6 @@ class OrderController extends Controller {
 
         $payment = new Payment;
         $payment->user_id = $user->id;
-        $payment->amount = $transaction->amount_total;
-        $payment->payment_id = $transaction->payment_intent;
         $payment->payment_status = 'checkoutStarted';
         if (!empty($coupon)) {
             $payment->discount_code = $coupon->code;
@@ -376,15 +362,37 @@ class OrderController extends Controller {
         }
         $payment->group_id = $group->id;
         $payment->students = json_encode($student_ids);
-        $payment->url = $transaction->url;
-        $payment->session_id = $transaction->id;
+        if (!empty($price)) {
+            $payment->amount = $transaction->amount_total;
+            $payment->url = $transaction->url;
+            $payment->session_id = $transaction->id;
+            $payment->payment_id = $transaction->payment_intent;
+        } else {
+            $payment->amount = $price * 100;
+            $code = $this->getFreeTransactionCode();
+            $payment->url = route('index').'/payments/checkout/response?session_id='.$code;
+            $payment->session_id = $code;
+            $payment->payment_id = 0;
+
+        }
         $payment->save();
 
         $user->time_zone = Cookie::get("user_timezone", "GMT");
         $user->save();
 
-        return Redirect::to('/select-group/order/'.$group->slug.'/confirm')->with('paymentInfo', $payment)->with('checkoutUrl', $transaction->url);
+        return Redirect::to('/select-group/order/'.$group->slug.'/confirm')->with('paymentInfo', $payment)->with('checkoutUrl', $payment->url);
     }
+
+    private function getFreeTransactionCode() {
+        $code = md5(substr(md5(uniqid(mt_rand(), true)) , 0, 8));
+        $code = 'free_'.$code;
+        if (empty(Payment::where('session_id', $code)->first())) {
+            return $code;
+        } else {
+            $this->getFreeTransactionCode();
+        }
+    }
+
 
     private function applyCoupon($price, $coupon) {
         if (empty($coupon)) {
@@ -394,6 +402,7 @@ class OrderController extends Controller {
         if (
             empty($coupon)
             ||  ((!empty($coupon->expires_at) && Carbon::createFromDate($coupon->expires_at)->timestamp < Carbon::now()->timestamp))
+            || $coupon->use_limit <= $coupon->used
             || $coupon->userCoupons->where('user_id', Auth::user()->id)->count() >= 2
             || (!empty($coupon->groups) && !isset(array_flip($coupon->groups)[$group->id]))
             || !$coupon->active
@@ -410,45 +419,82 @@ class OrderController extends Controller {
         }
     }
 
-    private function sendOrderConfirmAdminEmail($group, $student_names, $student_birthDays, $user) {
-        $teachers = $this->getTeachersWithLessons($group);
-        $email_title_admin = "Kurso užsakymas";
-        $paid = $group->paid ? 'Taip' : 'Ne';
+    public function checkoutResponse(Request $request) {
+        $user = Auth::user();
+//        if ($request->input('session_id'))
+        $payment = Payment::where('session_id', $request->input('session_id'))
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (empty($payment) || $payment->user_id !== Auth::user()->id) {
+            return view("lessons_order.group_order_succeeded")->with("error", 1)->with("message", "Užsakymas nerastas.");
+        }
+        $group = $payment->group()->first();
+        if ($payment->payment_status === 'paid' || $payment->payment_status === 'free_lesson') {
+            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message", "Ačiū, lauksime pamokose!");
+
+        }
+        if (empty($payment->payment_id)) {
+            $this->checkoutResponseZeroValue($payment, $group, $user);
+        }
 
 
-        $groupData = $group->getGroupStartDateAndCount();
-        if (isset($groupData['startDate'])) {
-            $startDate = \Carbon\Carbon::parse($groupData['startDate'])->format('Y-m-d');
+        if (!empty($request->input('payment'))) {
+            $payment->payment_status = 'canceled';
+            $payment->save();
+            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message", "Užsakymas nutrauktas.");
+
+        }
+        if ($payment->payment_status == 'paid' || $payment->payment_status == 'free_lesson') {
+            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message", "Ačiū, lauksime pamokose!");
         } else {
-            $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message", "Užsakymas jau įvykdytas!");
         }
 
-        $time = $group->time->timezone('Europe/London')->format("H:i");
-        $student_birthDays_text = '-';
-        if (!empty($student_birthDays)) {
-            $student_birthDays_text = join(" ", $student_birthDays);
+    }
+
+
+    private function checkoutResponseZeroValue($payment, $group, $user) {
+        $students = Student::whereIn('id', json_decode($payment->students))->get();
+        foreach ($students as $student){
+            $student->group_id = $group->id;
+            $student->save();
+            $student_names[] = $student->name;
+            $student_ids[] = $student->id;
+            if(!empty($student->birthday)) {
+                $student_birthDays[] = $student->birthday->format('Y-m-d');
+            }
+        }
+        $date = Carbon::parse($group->start_date)->setTimezone($user->time_zone);
+        $now = Carbon::now()->setTimezone($user->time_zone);
+
+        $diff = $date->diffInDays($now);
+        //find a better solution;
+        if ($diff > 0) {
+            $this->insertUserNotification($user, $group);
         }
 
-        $email_content_admin = "<h1>Kurso užsakymas</h1><p> Klientas ".  $user->name. " " .$user->surname .
-            "<br> El. paštas: ".$user->email.
-            "<br>Grupė: ".$group->name .
-            "<br>Grupės ID: ".$group->id .
-            "<br>Grupės tipas: ".$group->type .
-            "<br>Mokama: ".$paid .
-            "<br>Skirta: ".Group::$FOR_TRANSLATE[$group->age_category] .
-            "<br>Laikas: ".$time .
-            "<br>Pradžia: ".$startDate .
-            "<br>Mokytoja(-os): ".join(" ", $teachers).
-            " <br>Vaikas(-ai): ".join(" ", $student_names).
-            " <br>Amžius: ".$student_birthDays_text.
-            ".</p>";
-//        env("ADMIN_EMAIL")
-        \Mail::send([], [], function ($message) use ($email_title_admin, $email_content_admin, $user) {
-            $message
-                ->to(\Config::get('app.email'))
-                ->subject($email_title_admin)
-                ->setBody($email_content_admin, 'text/html');
-        });
+        if (!empty($payment->discount_code)) {
+            $this->registerUserCoupon($payment);
+        }
+
+        $this->sendOrderConfirmAdminEmail($group, $student_names, $student_birthDays, $user);
+        $this->sendCheckoutSessionSucceededUserMessage($group, $user);
+        $payment->payment_status = 'free_lesson';
+        $payment->save();
+    }
+
+    private function registerUserCoupon($payment) {
+        $coupon = Coupon::where('code', $payment->discount_code)->first();
+
+        if (!empty($coupon)) {
+            $userCoupon = new UserCoupon();
+            $userCoupon->user_id = $payment->user_id;
+            $userCoupon->coupon_id = $coupon->id;
+            $userCoupon->save();
+            $coupon->used = $coupon->used + 1;
+            $coupon->save();
+        }
     }
 
 
@@ -478,6 +524,7 @@ class OrderController extends Controller {
         } else {
             $endDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
         }
+
         $data = [
             'students' => $studentsName,
             'full_name' => $user->fullName(),
@@ -487,6 +534,7 @@ class OrderController extends Controller {
             'time' => $group->time,
             'price' => $payment->amount / 100,
             'url' => $payment->url,
+            'session_id' => $payment->session_id,
             'age_category' => $group->age_category,
 
         ];
@@ -510,48 +558,8 @@ class OrderController extends Controller {
         }
     }
 
-    private function getTeachersWithLessons($group) {
-        if (empty($group->events())) {
-            return [];
-
-        }
-        $lessons = $group->events()->where("date_at", ">" ,\Carbon\Carbon::now('utc'))->orderBy("date_at","ASC")->get();
-        $teachers = [];
-        foreach ($lessons as $lesson) {
-            $teacher = $lesson->teacher()->first()->toArray();
-            if (!isset($teachers[$teacher['id']])) {
-                $teachers[$teacher['id']] = $teacher['name'] . ' ' . $teacher['surname'];
-            }
-        }
-        return $teachers;
-    }
 
 
-
-    private function getRegisterFreeUserMessage($group, $user) {
-
-        $timezone = \Cookie::get("user_timezone", "GMT");
-        if (!empty($user->time_zone)) {
-            $timezone = $user->time_zone;
-        }
-
-
-        $email_title = "Registracijos į nemokamą pamoką patvirtinimas";
-        $email_content = "<p>Sveiki,<br>".
-            "ačiū, kad registravotės į nemokamą Pasakos pamoką! Jūsų nemokamos pamokos detalės čia:<br>".
-            $group->name."<br>".
-            $group->display_name." ".$group->time->timezone($timezone)->format("H:i")." (".$timezone.")<br>".
-            "Į pamoką prisijungsite iš savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyros</a>.</p>".
-            "<p>Grupes tolimesniam mokymuisi skirstome ne tik pagal amžių, bet ir pagal kalbos mokėjimo lygį - taip galime užtikrinti, kad mokiniai pasieks geriausių rezultatų ir drąsiau jausis pamokoje.<br>".
-            "Nemokamos pamokos metu mokytoja įvertins vaiko kalbos mokėjimo lygį ir vėliau mes pasiūlysime tinkamiausią grupę jūsų vaikui.<br>".
-            "<small>Jei negalėsite dalyvauti pamokoje, labai prašome iš anksto pranešti - vietų skaičius ribotas, o norinčiųjų daug!</small></p>".
-            "<p>Iki pasimatymo,<br> Pasakos komanda </p>";
-
-        return [
-            'email_title' => $email_title,
-            'email_content' => $email_content,
-        ];
-    }
 
     public function sendPaymentEmail($paymentId) {
         $payment = Payment::where('payment_id', $paymentId)->first();
