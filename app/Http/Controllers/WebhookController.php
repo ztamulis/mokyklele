@@ -51,7 +51,7 @@ class WebhookController extends CashierController
 
         $diff = $date->diffInDays($now);
         //find a better solution;
-        if ($diff > 0) {
+        if ($diff > 0 && $group->type !=='individual') {
             $this->insertUserNotification($user, $group);
         }
 
@@ -113,7 +113,7 @@ class WebhookController extends CashierController
 
         $diff = $date->diffInDays($now);
         //find a better solution;
-        if ($diff > 0) {
+        if ($diff > 0 && $group->type !=='individual') {
             $this->insertUserNotification($user, $group);
         }
 

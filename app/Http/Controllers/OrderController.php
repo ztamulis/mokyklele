@@ -210,7 +210,7 @@ class OrderController extends Controller {
 
         $diff = $date->diffInDays($now);
         //find a better solution;
-        if ($diff > 0) {
+        if ($diff > 0 && $group->type !=='individual') {
             $this->insertUserNotification($user, $group);
         }
 
@@ -470,7 +470,7 @@ class OrderController extends Controller {
 
         $diff = $date->diffInDays($now);
         //find a better solution;
-        if ($diff > 0) {
+        if ($diff > 0 && $group->type !=='individual') {
             $this->insertUserNotification($user, $group);
         }
 
