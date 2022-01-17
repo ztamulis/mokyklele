@@ -50,7 +50,7 @@
                                         </div>
                                         <div class="form-group">
                                             <small class="form-text text-muted">Gimimo data</small>
-                                            <input class="form-control" type="date" name="birthday" placeholder="{{ date("Y-m-d") }}" value="{{ old("birthday") }}">
+                                            <input class="form-control" type="date" name="birthday" placeholder="{{ date("Y-m-d") }}" value="{{ old("birthday") }}" required>
                                         </div>
                                         <div class="form-group"><button class="btn btn-primary" type="submit">Pridėti naują mokinį</button></div>
                                     </form>

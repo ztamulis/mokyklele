@@ -46,12 +46,8 @@ class WebhookController extends CashierController
 
         $this->sendCheckoutSessionSucceededUserMessage($group, $user);
 
-        $date = Carbon::parse($group->start_date)->setTimezone($user->time_zone);
-        $now = Carbon::now()->setTimezone($user->time_zone);
-
-        $diff = $date->diffInDays($now);
         //find a better solution;
-        if ($diff > 0 && $group->type !=='individual') {
+        if ($group->type !=='individual') {
             $this->insertUserNotification($user, $group);
         }
 
@@ -108,12 +104,7 @@ class WebhookController extends CashierController
 
         $this->sendCheckoutSessionSucceededUserMessage($group, $user);
 
-        $date = Carbon::parse($group->start_date)->setTimezone($user->time_zone);
-        $now = Carbon::now()->setTimezone($user->time_zone);
-
-        $diff = $date->diffInDays($now);
-        //find a better solution;
-        if ($diff > 0 && $group->type !=='individual') {
+        if ($group->type !=='individual') {
             $this->insertUserNotification($user, $group);
         }
 

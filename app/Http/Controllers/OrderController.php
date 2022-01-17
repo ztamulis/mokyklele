@@ -205,12 +205,9 @@ class OrderController extends Controller {
 
         $user->time_zone = Cookie::get("user_timezone", "GMT");
         $user->save();
-        $date = Carbon::parse($group->start_date)->setTimezone(Cookie::get("user_timezone", "GMT"));
-        $now = Carbon::now()->setTimezone(Cookie::get("user_timezone", "GMT"));
 
-        $diff = $date->diffInDays($now);
-        //find a better solution;
-        if ($diff > 0 && $group->type !=='individual') {
+
+        if ($group->type !=='individual') {
             $this->insertUserNotification($user, $group);
         }
 
@@ -443,7 +440,6 @@ class OrderController extends Controller {
             $payment->payment_status = 'canceled';
             $payment->save();
             return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message", "Užsakymas nutrauktas.");
-
         }
         if ($payment->payment_status == 'paid' || $payment->payment_status == 'free_lesson') {
             return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message", "Ačiū, lauksime pamokose!");
@@ -465,12 +461,8 @@ class OrderController extends Controller {
                 $student_birthDays[] = $student->birthday->format('Y-m-d');
             }
         }
-        $date = Carbon::parse($group->start_date)->setTimezone($user->time_zone);
-        $now = Carbon::now()->setTimezone($user->time_zone);
 
-        $diff = $date->diffInDays($now);
-        //find a better solution;
-        if ($diff > 0 && $group->type !=='individual') {
+        if ($group->type !=='individual') {
             $this->insertUserNotification($user, $group);
         }
 
