@@ -34,14 +34,14 @@
         <h3 class="text-dark mb-4">Automatinių laiškų sąrašas</h3>
     <div class="card">
         <div class="card-body">
-{{--            <form method="GET">--}}
-{{--                <div class="form-row">--}}
-{{--                    <div class="col-md-6 col-xl-4 text-nowrap"><input class="form-control" type="text" name="search" placeholder="Ieškoti" value="{{ request()->input("search") }}"></div>--}}
-{{--                    <div class="col-xl-3">--}}
-{{--                        <button class="btn btn-success" type="submit">Paieška</button>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </form>--}}
+            <form method="GET" action="/dashboard/reminders">
+                <div class="form-row">
+                    <div class="col-md-6 col-xl-4 text-nowrap"><input class="form-control" type="text" name="search" placeholder="Ieškoti" value="{{ request()->input("search") }}"></div>
+                    <div class="col-xl-3">
+                        <button class="btn btn-success" type="submit">Paieška</button>
+                    </div>
+                </div>
+            </form>
             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                 @if(count($notifications))
                     <table class="table my-0" id="dataTable">

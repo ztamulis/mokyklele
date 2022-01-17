@@ -178,9 +178,9 @@
                                     <div class="dropdown-menu dropdown-menu-right animated--grow-in">
                                         <a class="@if(Request::is('dashboard')) active @endif " href="/dashboard"><i class="fas fa-tachometer-alt"></i><span>Paskyra</span></a>
                                         <a class=" @if(Request::is('dashboard/attendance')) active @endif " href="/dashboard/attendance"><i class="fa fa-bell"></i><span>Lankomumas</span></a>
-                                        <a class=" @if(Request::is('dashboard/events*')) active @endif " href="/dashboard/events"><i class="fa fa-calendar"></i><span>Užsiėmimai</span></a>
 
                                         @if (Auth::user()->role === 'admin' || Auth::user()->role === 'teacher')
+                                            <a class=" @if(Request::is('dashboard/events*')) active @endif " href="/dashboard/events"><i class="fa fa-calendar"></i><span>Užsiėmimai</span></a>
                                             <a class="@if(Request::is('dashboard/rewards')) active @endif " href="/dashboard/rewards"><i class="fa fa-trophy"></i><span>Apdovanojimai</span></a>
                                         @endif
                                         @if(Auth::user()->role == "admin")
@@ -192,6 +192,7 @@
                                                 <a class=" @if(Request::is('dashboard/introductions')) active @endif " href="/dashboard/introductions"><i class="fa fa-cc-discover"></i><span>Vieši susitikimai</span></a>
                                                 <a class=" @if(Request::is('dashboard/suggestions')) active @endif " href="/dashboard/suggestions"><i class="fa fa-cc-discover"></i><span>Patarimai tėvams</span></a>
                                                 <a class=" @if(Request::is('dashboard/pages/lithuanian-courses-children')) active @endif " href="/dashboard/pages/lithuanian-courses-children"><i class="fa fa-cc-discover"></i><span>Lietuvių kalbos kursų puslapis</span></a>
+                                                <a class=" @if(Request::is('dashboard/reminders')) active @endif " href="/dashboard/reminders"><i class="fa fa-cc-discover"></i><span>Automatiniai laiškai</span></a>
                                                 <a class=" @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a>
                                                 <a class=" @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a>
                                                 <a class=" @if(Request::is('dashboard/coupons')) active @endif " href="/dashboard/coupons"><i class="fa fa-cc-discover"></i><span>Nuolaidų kuponai</span></a>

@@ -33,7 +33,7 @@ class NotificationsController extends Controller
         }
         $notifications = UserNotifications::where("id", ">", 0);
         if($request->input("search")){
-            $notifications = $notifications->where("name", "LIKE", "%" . $request->input("search") . "%");
+            $notifications = $notifications->where("email", "LIKE", "%" . $request->input("search") . "%");
         }
 
         $notifications = $notifications->orderBy("send_from_time", "ASC");

@@ -47,7 +47,7 @@
                         </div>
                         <div class="form-group">
                             <small class="form-text text-muted">Gimimo data</small>
-                            <input class="form-control" type="date" name="birthday" placeholder="{{ date("Y-m-d") }}" value="{{ $student->birthday ? $student->birthday->format("Y-m-d") : "" }}">
+                            <input class="form-control" type="date" name="birthday" placeholder="{{ date("Y-m-d") }}" value="{{ $student->birthday ? $student->birthday->format("Y-m-d") : "" }}" required>
                         </div>
                         <div class="form-group"><button class="btn btn-primary" type="submit">Atnaujinti mokinį</button></div>
                     </form>

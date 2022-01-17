@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\NotificationsTrait;
 use App\Models\Student;
 use App\Models\Group;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Session;
 
 class StudentController extends Controller
 {
+    use NotificationsTrait;
     /**
      * Display a listing of the resource.
      *
@@ -55,14 +54,14 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $request->validate([
             'name' => 'required|string|max:255',
             'group_id' => 'required',
+            'user_id' => 'required',
             'user_id' => 'required'
         ]);
 
@@ -76,7 +75,11 @@ class StudentController extends Controller
         }
 
         $student->save();
-
+        $group = $student->group()->first();
+        $user = $student->user()->first();
+        if ($group->type !== 'individual') {
+            $this->insertUserNotification($user, $group);
+        }
         $students = Student::where("id", ">", 0);
         if($request->input("user_id")){
             $students = $students->where("user_id", $request->input("user_id"));
@@ -129,6 +132,7 @@ class StudentController extends Controller
             'group_id' => 'required',
             'user_id' => 'required'
         ]);
+        $oldStudentGroupId = $student->group_id;
 
         $student->name = $request->input("name");
         $student->user_id = $request->input("user_id");
@@ -139,6 +143,9 @@ class StudentController extends Controller
         }
 
         $student->save();
+        if ($oldStudentGroupId !== (int)$request->input("group_id")) {
+            $this->changeOrInsertStudentNotification($student, $oldStudentGroupId);
+        }
 
         $students = Student::where("id", ">", 0);
         if($request->input("user_id")){
@@ -159,6 +166,7 @@ class StudentController extends Controller
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
+        $this->deleteUserNotification($student);
         $student->delete();
         $students = Student::where("id", ">", 0);
         if($request->input("user_id")){
