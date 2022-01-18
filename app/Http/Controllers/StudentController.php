@@ -143,7 +143,10 @@ class StudentController extends Controller
         }
 
         $student->save();
-        if ($oldStudentGroupId !== (int)$request->input("group_id")) {
+        $group = $student->group()->first();
+        if ($oldStudentGroupId !== (int)$request->input("group_id")
+            && !empty($group)
+            && $group->type !== 'individual') {
             $this->changeOrInsertStudentNotification($student, $oldStudentGroupId);
         }
 
