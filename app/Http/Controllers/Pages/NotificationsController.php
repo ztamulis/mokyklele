@@ -112,18 +112,28 @@ class NotificationsController extends Controller
 //        ]);
         $notificationEmailContent->free_lesson_yellow_and_green = (string)$request->input("free_lesson_yellow_and_green");
         $notificationEmailContent->free_lesson_yellow_and_green_meeting_id = $request->input("free_lesson_yellow_and_green_meeting_id");
+        $notificationEmailContent->free_lesson_yellow_and_green_subject = $request->input("free_lesson_yellow_and_green_subject");
+
+
+
         $notificationEmailContent->free_lesson_red_and_blue = (string)$request->input("free_lesson_red_and_blue");
         $notificationEmailContent->free_lesson_red_and_blue_meeting_id = $request->input("free_lesson_red_and_blue_meeting_id");
+        $notificationEmailContent->paid_lesson_red_and_blue_subject = $request->input("paid_lesson_red_and_blue_subject");
+
+
         $notificationEmailContent->free_lesson_adults = (string)$request->input("free_lesson_adults");
         $notificationEmailContent->free_lesson_adults_meeting_id = $request->input("free_lesson_adults_meeting_id");
+        $notificationEmailContent->free_lesson_adults_subject = $request->input("free_lesson_adults_subject");
+
         $notificationEmailContent->paid_lesson_yellow_and_green = (string)$request->input("paid_lesson_yellow_and_green");
         $notificationEmailContent->paid_lesson_yellow_and_green_meeting_id = (string)$request->input("paid_lesson_yellow_and_green_meeting_id");
-        $notificationEmailContent->paid_lesson_red_and_blue = $request->input("paid_lesson_red_and_blue");
-        $notificationEmailContent->free_lesson_yellow_and_green_subject = $request->input("free_lesson_yellow_and_green_subject");
-        $notificationEmailContent->free_lesson_red_and_blue_subject = $request->input("free_lesson_red_and_blue_subject");
-        $notificationEmailContent->free_lesson_adults_subject = $request->input("free_lesson_adults_subject");
         $notificationEmailContent->paid_lesson_yellow_and_green_subject = $request->input("paid_lesson_yellow_and_green_subject");
+
+        $notificationEmailContent->paid_lesson_red_and_blue = $request->input("paid_lesson_red_and_blue");
         $notificationEmailContent->paid_lesson_red_and_blue_subject = $request->input("paid_lesson_red_and_blue_subject");
+        $notificationEmailContent->paid_lesson_red_and_blue_meeting_id = $request->input("paid_lesson_red_and_blue_meeting_id");
+
+
         $notificationEmailContent->paid_lesson_adults = $request->input("paid_lesson_adults");
         $notificationEmailContent->paid_lesson_adults_meeting_id = $request->input("paid_lesson_adults_meeting_id");
         $notificationEmailContent->paid_lesson_adults_subject = $request->input("paid_lesson_adults_subject");
