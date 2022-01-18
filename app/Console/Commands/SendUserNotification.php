@@ -76,7 +76,6 @@ class sendUserNotification extends Command
                         ->subject($subject)
                         ->setBody($html, 'text/html');
                 });
-//            die();
             $notification->is_sent = 1;
             $notification->save();
         }
@@ -122,6 +121,9 @@ class sendUserNotification extends Command
         }
         if (!$group->paid && $group->age_category === 'adults') {
             return 'free_lesson_adults';
+        }
+        if ($group->paid && $group->age_category === 'adults') {
+            return 'paid_lesson_adults';
         }
     }
 

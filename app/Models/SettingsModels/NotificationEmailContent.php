@@ -20,6 +20,9 @@ class NotificationEmailContent extends Settings {
     public string $free_lesson_adults_subject;
     public string $paid_lesson_yellow_and_green_subject;
     public string $paid_lesson_red_and_blue_subject;
+    public string $paid_lesson_adults;
+    public int $paid_lesson_adults_meeting_id;
+    public string $paid_lesson_adults_subject;
 
 
     public static function group(): string
@@ -48,6 +51,10 @@ class NotificationEmailContent extends Settings {
             'free_lesson_adults_subject' => $this->free_lesson_adults_subject,
             'paid_lesson_yellow_and_green_subject' => $this->paid_lesson_yellow_and_green_subject,
             'paid_lesson_red_and_blue_subject' => $this->paid_lesson_red_and_blue_subject,
+            'paid_lesson_adults' => $this->paid_lesson_adults,
+            'paid_lesson_adults_meeting_id' => $this->paid_lesson_adults_meeting_id,
+            'paid_lesson_adults_subject' => $this->paid_lesson_adults_subject,
+
         ];
     }
 

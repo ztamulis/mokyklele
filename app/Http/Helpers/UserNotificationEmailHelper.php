@@ -44,6 +44,7 @@ class UserNotificationEmailHelper {
             ->isSameDay(Carbon::now())
         ) {
             $emailContent = str_replace('rytoj', 'šiandien', $emailContent);
+            $emailContent = str_replace('tomorrow', 'today', $emailContent);
         }
 
         return $emailContent;
