@@ -36,6 +36,9 @@ trait NotificationsTrait
         $allStudents = $student->user()->first()->students()->where('id', '!=', $student->id)->get();
         $user = $student->user()->first();
         $group = $student->group()->first();
+        if (empty($group) || empty($user)) {
+            return;
+        }
         if (!empty($allStudents) && !$this->checkIfSameUserRegisteredToOldGroup($oldStudentGroupId, $allStudents)) {
             UserNotifications::where('user_id', $user->id)->where('group_id', $oldStudentGroupId)
                 ->where('is_sent', 0)
@@ -49,6 +52,9 @@ trait NotificationsTrait
     private function deleteUserNotification(Student $student) {
         $user = $student->user()->first();
         $group = $student->group()->first();
+        if (empty($group) || empty($user)) {
+            return;
+        }
         $allStudents = $student->user()->first()->students()->where('id', '!=', $student->id)->get();
         if (!$this->checkIfSameUserRegisteredToOldGroup($group->id, $allStudents))
             UserNotifications::where('user_id', $user->id)->where('group_id', $group->id)
@@ -57,6 +63,9 @@ trait NotificationsTrait
     }
 
     private function checkIfSameUserRegisteredToOldGroup(int $oldStudentGroupId, $allStudents) {
+        if (empty($allStudents)) {
+            return false;
+        }
         foreach ($allStudents as $student) {
             if ($student->group_id == $oldStudentGroupId) {
                 return true;
