@@ -62,39 +62,7 @@ class NotificationsController extends Controller
      */
     public function store(Request $request)
     {
-        if(Auth::user()->role != "admin"){
-            return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
-        }
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'join_link' => 'required|string',
-            'date_at' => 'required|string'
-        ]);
 
-        $meeting = new Introduction;
-        $meeting->name = $request->input("name");
-        $meeting->description = $request->input("description");
-        $meeting->join_link = $request->input("join_link");
-
-        $date = Carbon::parse($request->input("date_at"), 'Europe/London');
-        $date->setTimezone('GMT');
-
-        $meeting->date_at = $date;
-
-        $file = $request->file('file');
-        if($file) {
-            $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
-            $file->storeAs("uploads/introductions", $newfilename);
-            $meeting->photo = $newfilename;
-            Image::load("uploads/introductions/".$newfilename)
-                ->height(560, 840)
-                ->save();
-        }
-        $meeting->save();
-
-        Session::flash('message', "Susitikimas sėkmingai sukurtas");
-        return Redirect::to('dashboard/introductions');
     }
 
     /**
@@ -156,6 +124,9 @@ class NotificationsController extends Controller
         $notificationEmailContent->free_lesson_adults_subject = $request->input("free_lesson_adults_subject");
         $notificationEmailContent->paid_lesson_yellow_and_green_subject = $request->input("paid_lesson_yellow_and_green_subject");
         $notificationEmailContent->paid_lesson_red_and_blue_subject = $request->input("paid_lesson_red_and_blue_subject");
+        $notificationEmailContent->paid_lesson_adults = $request->input("paid_lesson_adults");
+        $notificationEmailContent->paid_lesson_adults_meeting_id = $request->input("paid_lesson_adults_meeting_id");
+        $notificationEmailContent->paid_lesson_adults_subject = $request->input("paid_lesson_adults_subject");
 
 
         $notificationEmailContent->save();
