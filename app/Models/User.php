@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Controllers\Auth\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -68,6 +69,12 @@ class User extends Authenticatable
     }
     public function getSentMessagesAttribute() {
         return $this->sentMessages()->get();
+    }
+
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 
     public function roleText() {
