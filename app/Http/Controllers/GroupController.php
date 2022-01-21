@@ -520,9 +520,6 @@ class GroupController extends Controller
         $fileObj->group_id = $groupId;
         $fileObj->user_id = Auth::user()->id;
         $fileObj->save();
-        $createdAt = $fileObj->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i");
-
-        $fileObj->display_name = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $fileObj->display_name);
 
 
         $studentBygroup = Student::where('group_id', '=', $request->input("group_id"))->get();
@@ -545,11 +542,12 @@ class GroupController extends Controller
                 continue;
             }
             $email =  $student->email;
+            $html = stripslashes($html);
             Mail::send([], [], function ($message) use ($html, $groupName, $email) {
                 $message
                     ->to($email)
                     ->subject("Namų darbai | grupė: ".  $groupName)
-                    ->setBody($html, 'text/html');
+                    ->setBody($html, 'text/html; charset=UTF-8');
             });
         }
         Session::flash('message', 'Namų darbai patalpinti!');
