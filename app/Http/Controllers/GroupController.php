@@ -51,8 +51,7 @@ class GroupController extends Controller
      *
      * @return Response
      */
-    public function create()
-    {
+    public function create() {
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
@@ -623,7 +622,7 @@ class GroupController extends Controller
             $originalGroupMessage->file = $filename;
         }
 
-        if (empty($request->file) && !empty($originalGroupMessage->file) && $request->input('chat-file') !== '1') {
+        if (empty($request->file) && !empty($originalGroupMessage->file) && !$request->input('chat-file')) {
             $this->deleteChatFile($originalGroupMessage);
             $originalGroupMessage->file = '';
         }
