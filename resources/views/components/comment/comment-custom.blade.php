@@ -73,6 +73,7 @@
                                     <div class="attachment">
                                         <a target="_blank" href="{{ url("/uploads/".$comment->file) }}" class="file">Prisegtas dokumentas</a>
                                         <a onclick="deleteEditHomeworkFile('homework-comment-edit-'+{{$comment->id}})" class="remove-attachment"></a>
+                                        <input type="hidden" name="oldFile" value="1">
                                     </div>
                                 </div>
                             @endif

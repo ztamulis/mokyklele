@@ -160,14 +160,15 @@ class CommentsController extends Controller
 			$comment,
 			CommentService::htmlFilter($request->message)
 		);
+        $file = request()->file('file');
 
-        if($comment->file){
+        if($comment->file && !empty($request->file())
+            || $comment->file && empty(request()->file()) && !request()->input('oldFile')) {
             Storage::delete(\App\Models\Comment::$FILE_PATH.$comment->file);
             $comment->file = '';
             $comment->save();
         }
 
-        $file = request()->file('file');
         if (!empty($file)) {
             $filename =  preg_replace('/\s+/', '_', $file->getClientOriginalName());
 

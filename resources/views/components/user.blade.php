@@ -151,7 +151,7 @@
                                             <div class="text-truncate">
                                                 <span> {{substr(strip_tags($message->message),0,80)."..."}}</span>
                                             </div>
-                                            <p class="small text-gray-500 mb-0">{{ $message->author->name }} {{ $message->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</p>
+                                            <p class="small text-gray-500 mb-0">{{$message->author ? $message->author->name : ""}} {{ $message->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</p>
                                         </div>
                                     </a>
                                     @endforeach
@@ -172,7 +172,6 @@
                                     <a class="@if(Request::is('dashboard')) active @endif " href="/dashboard"><i class="fas fa-tachometer-alt"></i><span>Paskyra</span></a>
                                     <a class=" @if(Request::is('dashboard/attendance')) active @endif " href="/dashboard/attendance"><i class="fa fa-bell"></i><span>Lankomumas</span></a>
                                     <a class=" @if(Request::is('dashboard/events*')) active @endif " href="/dashboard/events"><i class="fa fa-calendar"></i><span>Užsiėmimai</span></a>
-
                                     @if (Auth::user()->role === 'admin' || Auth::user()->role === 'teacher')
                                         <a class="@if(Request::is('dashboard/rewards')) active @endif " href="/dashboard/rewards"><i class="fa fa-trophy"></i><span>Apdovanojimai</span></a>
                                     @endif
