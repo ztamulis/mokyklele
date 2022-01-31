@@ -319,7 +319,7 @@ class GroupController extends Controller
                 ]);
 
                 $file = $request->file("file");
-                $filename =  preg_replace('/\s+/', '_', $file->getClientOriginalName());
+                $filename = $file->hashName();
 
                 $newfilename = pathinfo($filename, PATHINFO_FILENAME) . "-" . Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
                 $file->storeAs("uploads/group-messages", $newfilename);
@@ -423,7 +423,7 @@ class GroupController extends Controller
         if (!empty($originalFile->name) && !empty($request->file())) {
             $this->deleteHomeworkFile($originalFile);
             $file = $request->file('file');
-            $filename =  preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $filename = $file->hashName();
 
             $file->storeAs("uploads", $filename);
             $originalFile->name = $filename;
@@ -436,7 +436,7 @@ class GroupController extends Controller
 
         if (!empty($request->file()) && empty($originalFile->name)) {
             $file = $request->file('file');
-            $filename =  preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $filename = $file->hashName();
 
             $file->storeAs("uploads", $filename);
             $originalFile->name = $filename;
@@ -506,10 +506,10 @@ class GroupController extends Controller
 
         $fileObj = new File;
         if (!empty($file)) {
-            $request->validate([
-                'file' => ['max:20000', 'mimes:doc,docx,xls,xlsx,pdf,ppt,pptx,jpg,jpeg,png,gif,mp4,txt']
-            ]);
-            $filename =  preg_replace('/\s+/', '_', $file->getClientOriginalName());
+//            $request->validate([
+//                'file' => ['max:20000', 'mimes:doc,docx,xls,xlsx,pdf,ppt,pptx,jpg,jpeg,png,gif,mp4,txt']
+//            ]);
+            $filename = $file->hashName();
             $file->storeAs("uploads", $filename);
             $fileObj->name = $filename;
         }
@@ -616,7 +616,7 @@ class GroupController extends Controller
         if (!empty($originalGroupMessage->file) && !empty($request->file())) {
             $this->deleteChatFile($originalGroupMessage);
             $file = $request->file('file');
-            $filename =  preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $filename = $file->hashName();
 
             $file->storeAs("uploads/group-messages", $filename);
             $originalGroupMessage->file = $filename;
@@ -629,7 +629,7 @@ class GroupController extends Controller
 
         if (!empty($request->file) && empty($originalGroupMessage->file)) {
             $file = $request->file('file');
-            $filename =  preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $filename = $file->hashName();
 
             $file->storeAs("uploads/group-messages", $filename);
             $originalGroupMessage->file = $filename;
@@ -692,7 +692,7 @@ class GroupController extends Controller
             ]);
 
             $file = $request->file("file");
-            $filename =  preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $filename = $file->hashName();
 
             $newfilename = pathinfo($filename, PATHINFO_FILENAME) . "-" . Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
 

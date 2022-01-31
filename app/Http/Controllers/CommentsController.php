@@ -79,7 +79,7 @@ class CommentsController extends Controller
 		);
         $file = request()->file('file');
         if (!empty($file)) {
-            $filename =  preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $filename = $file->hashName();
 
             $newfilename = pathinfo($filename, PATHINFO_FILENAME) . "-" . \Illuminate\Support\Facades\Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
 
@@ -170,7 +170,7 @@ class CommentsController extends Controller
         }
 
         if (!empty($file)) {
-            $filename =  preg_replace('/\s+/', '_', $file->getClientOriginalName());
+            $filename = $file->hashName();
 
             $newfilename = pathinfo($filename, PATHINFO_FILENAME) . "-" . \Illuminate\Support\Facades\Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
             $file->storeAs(\App\Models\Comment::$FILE_PATH, $newfilename);
