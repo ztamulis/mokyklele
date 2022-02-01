@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-user>
     <div class="client--dashboard">
         <div class="dashboard--misc--buttons">
             <a href="/dashboard/messages/sent" class="dashboard--button">
@@ -25,17 +25,25 @@
         @endif
 
         <div class="group--list">
-            @foreach(Auth::user()->messages()->has('author')->orderBy("id", "DESC")->get() as $message)
+            @foreach($messages as $message)
+
             <div class="group--item" data-href="/dashboard/messages/{{ $message->id }}">
                 <div class="group--icon">
                     <div class="color background--blue" style="background-image: url('{{ $message->author && count($message->author->students) && $message->author->students[0] && $message->author->students[0]->photo ? "/uploads/students/".$message->author->students[0]->photo : "/images/icons/avatar.png" }}')"></div>
                 </div>
                 <div class="group--info">
-                    @if($message->author)
+                    @if($message->author && $message->author->id != Auth::user()->id)
                         @if($message->author->role == "admin")
                             <h3>Pasaka</h3>
                         @else
                             <h3> {{ $message->author->name }} {{ $message->author->surname }}</h3>
+                        @endif
+
+                    @else
+                        @if($message->user->role == "admin")
+                            <h3>Pasaka</h3>
+                        @else
+                            <h3> {{ $message->user->name }} {{ $message->user->surname }}</h3>
                         @endif
                     @endif
                     <p>
@@ -85,7 +93,6 @@
             </div>
             @endforeach
         </div>
-
     </div>
 
     <script>
@@ -102,44 +109,4 @@
             e.stopPropagation();
         });
     </script>
-{{--    --}}
-{{--    @if(isset($message))--}}
-{{--        <div class="row">--}}
-{{--            <div class="col-xl-8 offset-xl-2">--}}
-{{--                <div class="alert alert-primary text-center" role="alert"><span>{{ $message }}</span></div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    @endif--}}
-{{--    <h3 class="text-dark mb-1">Visos žinutės</h3>--}}
-{{--    <div class="row">--}}
-{{--        <div class="col">--}}
-{{--            <div class="table-responsive">--}}
-{{--                <table class="table table-striped">--}}
-{{--                    <tbody>--}}
-{{--                        @foreach(\App\Http\Controllers\MessageController::messages(16) as $message)--}}
-{{--                            <tr>--}}
-{{--                                <td>{{$message->id}}</td>--}}
-{{--                                <td><span class="text-monospace">{{$message->author->roleText()}}</span>  <span class="text-dark">{{$message->author->name}}</span></td>--}}
-{{--                                <td>--}}
-{{--                                    <a href="/dashboard/messages/{{ $message->id }}" class="btn btn-success btn-sm" type="button" style="margin: 0px 4px 0px;">Peržiūrėti</a>--}}
-{{--                                    <form action="/dashboard/messages/{{ $message->id }}" method="POST" onsubmit="return confirm('Ar tikrai norite ištrinti žinutė?')" style="display: inline-block;">--}}
-{{--                                        @csrf--}}
-{{--                                        @method('DELETE')--}}
-{{--                                        <button class="btn btn-danger btn-sm" type="submit">Ištrinti</button>--}}
-{{--                                    </form>--}}
-{{--                                </td>--}}
-{{--                            </tr>--}}
-{{--                        @endforeach--}}
-{{--                    </tbody>--}}
-{{--                </table>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--    <div class="row">--}}
-{{--        <div class="col-xl-3 offset-xl-9">--}}
-{{--            <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">--}}
-{{--                {{ $messages->links('components.pagination') }}--}}
-{{--            </nav>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-</x-app-layout>
+</x-user>

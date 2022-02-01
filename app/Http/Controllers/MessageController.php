@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Mail;
@@ -17,8 +16,11 @@ class MessageController extends Controller
 
     public function index()
     {
-        $message = Message::where("user_id", Auth::user()->id);
-        return view("dashboard.messages.index")->with("messages", $message->get());
+        $messages = Message::where('user_id', Auth::user()->id)->orWhere('author_id', Auth::user()->id)->orderByDesc('created_at')
+            ->has('author')
+            ->groupBy('author_id')
+            ->get();
+        return view("dashboard.messages.index")->with("messages", $messages);
     }
 
     public function sentMessages()
@@ -27,12 +29,18 @@ class MessageController extends Controller
         return view("dashboard.messages.sent")->with("messages", $message->get());
     }
 
-    public function show(Message $message)
-    {
+    public function show(Message $message) {
         if($message->user_id != Auth::user()->id && $message->author_id != Auth::user()->id && Auth::user()->role != "admin")
             return view("dashboard.error")->with("error", "No permission");
+
+
         $this->seen($message);
-        return view("dashboard.messages.show")->with("message", $message);
+        $messages = Message::whereRaw('(author_id = '.$message->author_id.' AND user_id = '.$message->user_id.') OR (author_id = '.$message->user_id.' AND user_id = '.$message->author_id.')')
+            ->has('author')
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view("dashboard.messages.show")->with("messages", $messages);
     }
 
     public function create(Request $request)
@@ -58,7 +66,15 @@ class MessageController extends Controller
      */
     public function seen(Message $message)
     {
-        $message->seen = 1;
+        $messages = Message::where('user_id', $message->user_id)->where('author_id', $message->author_id)
+            ->where('seen', 0)
+            ->get();
+        if (!empty($messages)) {
+            foreach ($messages as $message) {
+                $message->seen = 1;
+                $message->save();
+            }
+        }
         $message->save();
     }
 
@@ -153,7 +169,12 @@ class MessageController extends Controller
      * @return mixed
      */
     public static function messages($l=6){
-        return Message::where("user_id", Auth::user()->id)->orderBy("id", "DESC")->limit($l)->get();
+        $messages = Message::where('user_id', Auth::user()->id)->orWhere('author_id', Auth::user()->id)->orderByDesc('created_at')
+            ->has('author')
+            ->groupBy('author_id')
+            ->limit($l)
+            ->get();
+        return $messages;
     }
 
     /**

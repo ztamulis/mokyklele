@@ -442,6 +442,7 @@ header nav li:hover .mv--dropdown, .mv--dropdown.active {
 }
 
 .nav-item .nav-link .img-profile {
+    max-height: 20px;
     height: 2rem;
     width: 2rem;
 }
