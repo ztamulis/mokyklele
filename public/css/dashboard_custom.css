@@ -150,6 +150,7 @@
 }
 
 
+
 body {
     color: #000;
     font-family: 'DIN', sans-serif;
@@ -238,6 +239,18 @@ h1, h2, h3, h4 {
     opacity: 1;
     pointer-events: auto;
 }
+.nav-item .nav-link .img-profile {
+    /*max-height: 20px;*/
+    height: 1.3rem;
+    width: 1.3rem;
+}
+
+.img-profile {
+    /*max-height: 20px;*/
+    height: 1.3rem;
+    width: 1.3rem;
+}
+
 
 .dropdown .dropdown-list .dropdown-header {
     background-color: #0f65ef;
@@ -413,8 +426,8 @@ h1, h2, h3, h4 {
     height: 65px;
     border-radius: 85px;
     float: left;
-    background-size: cover;
-    background-position: center;
+    background-size: cover!important;
+    background-position: center!important;
 }
 
 .color--small {
@@ -1044,7 +1057,7 @@ h1, h2, h3, h4 {
 
 .message--author {
     float: right;
-    display: flex;
+    display: contents;
     align-items: center;
 }
 

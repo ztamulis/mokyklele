@@ -145,15 +145,14 @@
                                 <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in">
                                     <h6 class="dropdown-header">Žinutės</h6>
                                     @foreach(\App\Http\Controllers\MessageController::messages() as $message)
-
-                                    <a class="d-flex align-items-center dropdown-item" href="/dashboard/messages/{{$message->id}}">
-                                        <div class="font-weight-bold">
-                                            <div class="text-truncate">
-                                                <span> {{substr(strip_tags($message->message),0,80)."..."}}</span>
+                                        <a class="d-flex align-items-center dropdown-item" href="/dashboard/messages/{{$message->id}}">
+                                            <div class="font-weight-bold">
+                                                <div class="text-truncate">
+                                                    <span> {{substr(strip_tags($message->message),0,80)."..."}}</span>
+                                                </div>
+                                                <p class="small text-gray-500 mb-0">{{$message->author ? $message->author->name : ""}} {{ $message->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</p>
                                             </div>
-                                            <p class="small text-gray-500 mb-0">{{$message->author ? $message->author->name : ""}} {{ $message->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</p>
-                                        </div>
-                                    </a>
+                                        </a>
                                     @endforeach
                                     <a class="text-center dropdown-item small text-gray-500" href="/dashboard/messages/create">Rašyti naują pranešimą</a>
                                     <a class="text-center dropdown-item small text-gray-500" href="/dashboard/messages">Rodyti visus pranešimus</a>
@@ -165,7 +164,9 @@
                         <li class="nav-item dropdown">
                             <div class="nav-item dropdown">
                                 <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
-                                    <span class="icon-user"></span>
+                                    <img class="border rounded-circle img-profile img-fluid" src="{{ $message->author && count($message->author->students) && $message->author->students[0]->photo ? "/uploads/students/".$message->author->students[0]->photo : (($message->author && $message->author->photo) ? "/uploads/users/".$message->author->photo : "/images/icons/avatar.png") }}" />
+
+{{--                                    <span class="icon-user" style="background-image: url('{{ $message->author && count($message->author->students) && $message->author->students[0]->photo ? "/uploads/students/".$message->author->students[0]->photo : (($message->author && $message->author->photo) ? "/uploads/users/".$message->author->photo : "/images/icons/avatar.png") }}')"></span>--}}
                                     <span class="d-none d-lg-inline ml-1">{{Auth::user()->name}} {{Auth::user()->surname}}</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right animated--grow-in">
