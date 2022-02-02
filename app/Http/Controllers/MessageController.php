@@ -172,7 +172,6 @@ class MessageController extends Controller
             ->orderByDesc('created_at')
             ->get()
             ->groupBy('author_id');
-        if ($messages->count() > 5) {
             $firstMessages = [];
             $key = 0;
             foreach($messages as $message) {
@@ -183,7 +182,6 @@ class MessageController extends Controller
                 $firstMessages[] = $message[0];
             }
             $messages = $firstMessages;
-        }
         return $messages;
     }
 
