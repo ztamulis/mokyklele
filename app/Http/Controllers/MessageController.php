@@ -169,11 +169,23 @@ class MessageController extends Controller
      * @return mixed
      */
     public static function messages($l=6){
-        $messages = Message::where('user_id', Auth::user()->id)->orWhere('author_id', Auth::user()->id)->orderByDesc('created_at')
+        $messages = Message::where('user_id', Auth::user()->id)->orWhere('author_id', Auth::user()->id)
             ->has('author')
-            ->groupBy('author_id')
-            ->limit($l)
-            ->get();
+            ->orderByDesc('created_at')
+            ->get()
+            ->groupBy('author_id');
+        if ($messages->count() > 5) {
+            $firstMessages = [];
+            $key = 0;
+            foreach($messages as $message) {
+                $key++;
+                if ($key > 5) {
+                    break;
+                }
+                $firstMessages[] = $message[0];
+            }
+            $messages = $firstMessages;
+        }
         return $messages;
     }
 
