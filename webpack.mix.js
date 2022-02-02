@@ -11,7 +11,7 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js').postCss('resources/css/app.css', 'public/css', [
+mix.js('resources/js/app.js', 'public/js').postCss('public/css/dashboard_custom.css', 'public/css/dashboard_custom.'+ Date.now() +'.css', [
     require('postcss-import'),
     require('tailwindcss'),
     require('autoprefixer'),
