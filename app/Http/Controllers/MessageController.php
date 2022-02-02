@@ -65,7 +65,7 @@ class MessageController extends Controller
      * @param Message $message
      */
     public function seen(Message $message) {
-        $messages = Message::where('user_id', $message->user_id)->where('author_id', $message->author_id)
+        $messages = Message::where('user_id', Auth::user()->id)->where('author_id', $message->author_id)
             ->where('seen', 0)
             ->get();
         if (!empty($messages)) {
