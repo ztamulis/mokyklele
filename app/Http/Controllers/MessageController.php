@@ -16,15 +16,15 @@ class MessageController extends Controller
 
     public function index()
     {
-        $messages = Message::where('user_id', Auth::user()->id)->orWhere('author_id', Auth::user()->id)->orderByDesc('created_at')
+        $messages = Message::where('user_id', Auth::user()->id)->orWhere('author_id', Auth::user()->id)
             ->has('author')
-            ->groupBy('author_id')
-            ->get();
-        return view("dashboard.messages.index")->with("messages", $messages);
+            ->orderByDesc('created_at')
+            ->get()
+            ->groupBy('author_id');
+            return view("dashboard.messages.index")->with("messages", $messages);
     }
 
-    public function sentMessages()
-    {
+    public function sentMessages() {
         $message = Message::where("author_id", Auth::user()->id);
         return view("dashboard.messages.sent")->with("messages", $message->get());
     }

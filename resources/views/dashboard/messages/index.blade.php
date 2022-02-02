@@ -26,7 +26,9 @@
 
         <div class="group--list">
             @foreach($messages as $message)
-
+                @php
+                    $message = $message[0];
+                @endphp
             <div class="group--item" data-href="/dashboard/messages/{{ $message->id }}">
                 <div class="group--icon">
                     <div class="color background--blue" style="background-image: url('{{ $message->author && count($message->author->students) && $message->author->students[0] && $message->author->students[0]->photo ? "/uploads/students/".$message->author->students[0]->photo : "/images/icons/avatar.png" }}')"></div>
