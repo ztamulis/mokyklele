@@ -64,8 +64,7 @@ class MessageController extends Controller
      * Set message as seen
      * @param Message $message
      */
-    public function seen(Message $message)
-    {
+    public function seen(Message $message) {
         $messages = Message::where('user_id', $message->user_id)->where('author_id', $message->author_id)
             ->where('seen', 0)
             ->get();
@@ -75,7 +74,6 @@ class MessageController extends Controller
                 $message->save();
             }
         }
-        $message->save();
     }
 
     /**
