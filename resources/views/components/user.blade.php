@@ -158,7 +158,7 @@
                         <li class="nav-item dropdown">
                             <div class="nav-item dropdown">
                                 <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
-                                    <img class="border rounded-circle img-profile img-fluid" src="{{ $message->author && count($message->author->students) && $message->author->students[0]->photo ? "/uploads/students/".$message->author->students[0]->photo : (($message->author && $message->author->photo) ? "/uploads/users/".$message->author->photo : "/images/icons/avatar.png") }}" />
+                                    <img class="border rounded-circle img-profile img-fluid" src="{{ Auth::user()->photo ? "/uploads/users/".Auth::user()->photo : "/images/icons/avatar.png" }}" />
 
 {{--                                    <span class="icon-user" style="background-image: url('{{ $message->author && count($message->author->students) && $message->author->students[0]->photo ? "/uploads/students/".$message->author->students[0]->photo : (($message->author && $message->author->photo) ? "/uploads/users/".$message->author->photo : "/images/icons/avatar.png") }}')"></span>--}}
                                     <span class="d-none d-lg-inline ml-1">{{Auth::user()->name}} {{Auth::user()->surname}}</span>
@@ -250,7 +250,6 @@
 
     });
 </script>
-
     <footer>
         <div class="container">
             <div class="bottom-menu">
