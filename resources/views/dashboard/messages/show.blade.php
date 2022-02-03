@@ -1,20 +1,19 @@
 <x-user>
     <div class="client--dashboard">
-    @foreach($messages as $message)
-        @if($message->author && $message->author->id != Auth::user()->id && $message->canBeAnswered && $loop->first)
-        <div class="dashboard--misc--buttons">
-            <a href="/dashboard/messages/create?to={{ $message->author->id }}" class="dashboard--button dashboard--button--main">
-                Atsakyti
-            </a>
-        </div>
-        @elseif($message->user && $message->user->id != Auth::user()->id && $message->canBeAnswered && $loop->first)
+        @if(isset($messages[0]) && $messages[0]->author && $messages[0]->author->id != Auth::user()->id && $messages[0]->canBeAnswered)
             <div class="dashboard--misc--buttons">
-                <a href="/dashboard/messages/create?to={{ $message->user->id }}" class="dashboard--button dashboard--button--main">
+                <a href="/dashboard/messages/create?to={{ $messages[0]->author->id }}" class="dashboard--button dashboard--button--main">
+                    Atsakyti
+                </a>
+            </div>
+        @elseif(isset($messages[0]) $messages[0]->user && $messages[0]->user->id != Auth::user()->id && $messages[0]->canBeAnswered)
+            <div class="dashboard--misc--buttons">
+                <a href="/dashboard/messages/create?to={{ $messages[0]->user->id }}" class="dashboard--button dashboard--button--main">
                     Atsakyti
                 </a>
             </div>
         @endif
-
+    @foreach($messages as $message)
         @if($loop->first)
             <div class="message--preview dashboard--block mt-5">
         @endif

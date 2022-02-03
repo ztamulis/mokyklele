@@ -21,7 +21,8 @@ class MessageController extends Controller
             ->orderByDesc('created_at')
             ->get()
             ->groupBy('author_id');
-            return view("dashboard.messages.index")->with("messages", $messages);
+
+        return view("dashboard.messages.index")->with("messages", $messages);
     }
 
     public function sentMessages() {
