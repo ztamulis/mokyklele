@@ -8,7 +8,6 @@ use App\Models\Coupon;
 use App\Models\Payment;
 use App\Models\Student;
 use App\Models\UserCoupon;
-use Carbon\Carbon;
 use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
 
 class WebhookController extends CashierController
@@ -38,8 +37,6 @@ class WebhookController extends CashierController
             }
             $payment->payment_status = 'paid';
             $payment->save();
-//            Student::whereIn('id', $studentsIds)->update(['group_id' => $payment->group_id]);
-
         } else {
             return;
         }
@@ -96,8 +93,6 @@ class WebhookController extends CashierController
             }
 
             $payment->save();
-//            Student::whereIn('id', $studentsIds)->update(['group_id' => $payment->group_id]);
-
         } else {
             return;
         }
@@ -109,25 +104,6 @@ class WebhookController extends CashierController
         }
 
         $this->sendOrderConfirmAdminEmail($group, $student_names, $student_birthDays, $user);
-    }
-
-
-
-
-    private function getTeachersWithLessons($group) {
-        if (empty($group->events())) {
-            return [];
-
-        }
-        $lessons = $group->events()->where("date_at", ">" ,\Carbon\Carbon::now('utc'))->orderBy("date_at","ASC")->get();
-        $teachers = [];
-        foreach ($lessons as $lesson) {
-            $teacher = $lesson->teacher()->first()->toArray();
-            if (!isset($teachers[$teacher['id']])) {
-                $teachers[$teacher['id']] = $teacher['name'] . ' ' . $teacher['surname'];
-            }
-        }
-        return $teachers;
     }
 
 }

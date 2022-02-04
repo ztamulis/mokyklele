@@ -6,16 +6,20 @@ use App\Http\Traits\NotificationsTrait;
 use App\Models\Student;
 use App\Models\Group;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
     use NotificationsTrait;
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function index(Request $request)
     {
@@ -38,7 +42,7 @@ class StudentController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -51,8 +55,8 @@ class StudentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request) {
         if(Auth::user()->role != "admin"){
@@ -62,7 +66,6 @@ class StudentController extends Controller
             'name' => 'required|string|max:255',
             'group_id' => 'required',
             'user_id' => 'required',
-            'user_id' => 'required'
         ]);
 
         $student = new Student;
@@ -71,7 +74,7 @@ class StudentController extends Controller
         $student->group_id = $request->input("group_id");
 
         if($request->input("birthday")) {
-            $student->birthday = \Carbon\Carbon::parse($request->input("birthday"));
+            $student->birthday = Carbon::parse($request->input("birthday"));
         }
 
         $student->save();
@@ -90,11 +93,10 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Student  $student
-     * @return \Illuminate\Http\Response
+     * @param Student $student
+     * @return Response
      */
-    public function show(Student $student)
-    {
+    public function show(Student $student) {
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
@@ -104,11 +106,10 @@ class StudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Student  $student
-     * @return \Illuminate\Http\Response
+     * @param Student $student
+     * @return Response
      */
-    public function edit(Student $student)
-    {
+    public function edit(Student $student) {
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
@@ -118,12 +119,11 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Student  $student
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Student $student
+     * @return Response
      */
-    public function update(Request $request, Student $student)
-    {
+    public function update(Request $request, Student $student) {
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
@@ -139,7 +139,7 @@ class StudentController extends Controller
         $student->group_id = $request->input("group_id");
 
         if($request->input("birthday")) {
-            $student->birthday = \Carbon\Carbon::parse($request->input("birthday"));
+            $student->birthday = Carbon::parse($request->input("birthday"));
         }
 
         $student->save();
@@ -149,7 +149,6 @@ class StudentController extends Controller
             && $group->type !== 'individual') {
             $this->changeOrInsertStudentNotification($student, $oldStudentGroupId);
         }
-
         $students = Student::where("id", ">", 0);
         if($request->input("user_id")){
             $students = $students->where("user_id", $request->input("user_id"));
@@ -160,9 +159,9 @@ class StudentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Request  $request
-     * @param  \App\Models\Student  $student
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Student $student
+     * @return Response
      */
     public function destroy(Request $request, Student $student)
     {
