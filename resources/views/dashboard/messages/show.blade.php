@@ -6,7 +6,7 @@
                     Atsakyti
                 </a>
             </div>
-        @elseif(isset($messages[0]) $messages[0]->user && $messages[0]->user->id != Auth::user()->id && $messages[0]->canBeAnswered)
+        @elseif(isset($messages[0]) && $messages[0]->user && $messages[0]->user->id != Auth::user()->id && $messages[0]->canBeAnswered)
             <div class="dashboard--misc--buttons">
                 <a href="/dashboard/messages/create?to={{ $messages[0]->user->id }}" class="dashboard--button dashboard--button--main">
                     Atsakyti
@@ -25,8 +25,7 @@
             </p>
         </div>
 
-            <div class="message--text" style="  word-wrap: break-word;
-">
+            <div class="message--text" style="word-wrap: break-word;">
                 <?php $messageText = strip_tags($message->message) ?>
                 <?php $messageText = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $messageText); ?>
                     <?php echo  $messageText ?>
