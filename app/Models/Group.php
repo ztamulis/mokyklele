@@ -21,7 +21,6 @@ class Group extends Model
     ];
 //    public static $FILE_PATH = 'uploads/homework-comments';
 
-
     protected $dates = ['time' , 'time_2'];
 
     public function students(){
@@ -146,6 +145,10 @@ class Group extends Model
         }
         if($this->type == "red") {
             return "Raudona";
+        }
+
+        if($this->type == "no_type") {
+            return "Suaugusiųjų";
         }
     }
 

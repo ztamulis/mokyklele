@@ -11,27 +11,45 @@ use Carbon\Carbon;
 
 trait NotificationsTrait
 {
+    /**
+     * @param $user
+     * @param Group $group
+     */
     private function insertUserNotification($user, Group $group) {
         $sendFromTime = $this->getSendFromTime($group);
         if (!$sendFromTime) {
             return;
         }
-        UserNotifications::updateOrCreate(
-            [
-                'user_id' => $user->id,
-                'group_id' => $group->id,
-            ],
-            [
-                'user_id' => $user->id,
-                'email' => $user->email,
-                'group_id' => $group->id,
-                'type' => $group->type,
-                'age_category' => $group->age_category,
-                'send_from_time' => $sendFromTime,
-            ]
-        );
+
+        \DB::transaction(function() use($user, $group, $sendFromTime) {
+            $notification = UserNotifications::lockForUpdate()->where('user_id', $user->id)->where('group_id', $group->id)->first();
+            if (!empty($notification)) {
+                $notification->user_id = $user->id;
+                $notification->group_id = $group->id;
+                $notification->email = $user->email;
+                $notification->type = $group->type;
+                $notification->age_category = $group->age_category;
+                $notification->send_from_time = $sendFromTime;
+                $notification->save();
+            } else {
+                UserNotifications::insert([
+                    'user_id' => $user->id,
+                    'email' => $user->email,
+                    'group_id' => $group->id,
+                    'type' => $group->type,
+                    'age_category' => $group->age_category,
+                    'send_from_time' => $sendFromTime,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+            }
+        });
     }
 
+    /**
+     * @param Student $student
+     * @param int $oldStudentGroupId
+     */
     private function changeOrInsertStudentNotification(Student $student, int $oldStudentGroupId):void {
         $allStudents = $student->user()->first()->students()->where('id', '!=', $student->id)->get();
         $user = $student->user()->first();
@@ -49,6 +67,9 @@ trait NotificationsTrait
         }
     }
 
+    /**
+     * @param Student $student
+     */
     private function deleteUserNotification(Student $student) {
         $user = $student->user()->first();
         $group = $student->group()->first();
@@ -62,6 +83,11 @@ trait NotificationsTrait
                 ->delete();
     }
 
+    /**
+     * @param int $oldStudentGroupId
+     * @param $allStudents
+     * @return bool
+     */
     private function checkIfSameUserRegisteredToOldGroup(int $oldStudentGroupId, $allStudents) {
         if (empty($allStudents)) {
             return false;
@@ -74,6 +100,10 @@ trait NotificationsTrait
         return false;
     }
 
+    /**
+     * @param Group $group
+     * @return bool|float|int|string
+     */
     private function getSendFromTime(Group $group) {
         $time = $group->events()->where('date_at' ,'>=', Carbon::now())
             ->orderBy('date_at', 'asc')

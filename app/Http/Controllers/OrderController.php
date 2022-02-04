@@ -418,7 +418,6 @@ class OrderController extends Controller {
 
     public function checkoutResponse(Request $request) {
         $user = Auth::user();
-//        if ($request->input('session_id'))
         $payment = Payment::where('session_id', $request->input('session_id'))
             ->where('user_id', $user->id)
             ->first();
@@ -570,14 +569,6 @@ class OrderController extends Controller {
         } else {
             return;
         }
-
-//        $messageArray = $this->getCheckoutSessionSucceededUserMessage($group, $user);
-//        \Mail::send([], [], function ($message) use ($messageArray, $user) {
-//            $message
-//                ->to($user->email)
-//                ->subject($messageArray['email_title'])
-//                ->setBody($messageArray['email_content'], 'text/html');
-//        });
 
         $teachers = $this->getTeachersWithLessons($group);
         $email_title_admin = "Kurso užsakymas";
