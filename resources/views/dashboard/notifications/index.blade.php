@@ -61,8 +61,12 @@
                             @foreach($notifications as $notification)
 
                                 @php
+                                        Log::info($notification->id);
                                         $group = $notification->group()->first();
                                         @endphp
+                                @if(empty($group))
+                                    @continue
+                                @endif
                                 <tr>
                                     <td>{{ $notification->email }}</td>
                                     <td>{{ $group->color() }}</td>
@@ -73,7 +77,6 @@
                                     <td>{{ $notification->is_sent == 1 ? 'Taip' : 'Ne' }}</td>
                                     <td class="text-right">
                                         @if(Auth::user()->role == "admin")
-{{--                                            <a href="/dashboard/introductions/{{ $notification->id }}/edit" class="btn btn-warning" type="button" style="margin: 0px 4px 0px;">Redaguoti</a>--}}
                                             <form action="/dashboard/reminders/destroy/{{ $notification->id }}" method="POST" onsubmit="return confirm('Ar tikrai norite ištrinti automatinį laišką?')" style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
