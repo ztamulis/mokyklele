@@ -21,7 +21,17 @@
         <div class="client--dashboard--title font-weight-bold text-dark mt-5">
             <p>
             <img class="border rounded-circle img-profile img-fluid" src="{{ $message->author && count($message->author->students) && $message->author->students[0] && $message->author->students[0]->photo ? "/uploads/students/".$message->author->students[0]->photo : "/images/icons/avatar.png" }}" />
-                nuo @if($message->author) {{ $message->author->name }} {{ $message->author->surname }} ∙ @endif @if($message->user) gavėjas {{ $message->user->name }} {{ $message->user->surname }} ∙ @endif {{$message->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i")}}
+                nuo
+                @if($message->author) {{ $message->author->name }} {{ $message->author->surname }}
+                        @if(Auth::user()->role === 'admin' && Auth::user()->id !== $message->author->id )
+                        {{ $message->author->email }}
+                        @endif ∙
+                @endif
+                @if($message->user) gavėjas {{ $message->user->name }} {{ $message->user->surname }}
+                    @if(Auth::user()->role === 'admin' && Auth::user()->id !== $message->user->id )
+                        {{ $message->user->email }}
+                    @endif
+                ∙ @endif {{$message->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i")}}
             </p>
         </div>
 
@@ -53,7 +63,6 @@
 
         @endif
             @if($loop->last)
-
         </div>
 @endif
         @endforeach
