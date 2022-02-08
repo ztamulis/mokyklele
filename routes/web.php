@@ -66,11 +66,10 @@ Route::get('/susitikimai', function () {
 });
 
 Route::get('/susitikimai', function () {
-
     return view('landing_new.susitikimai_naujas')
         ->with("meetings", \App\Models\Introduction::orderBy('date_at', 'desc')->get())
         ->with("before", \App\Models\Introduction::orderBy('date_at', 'desc')->where('date_at', '<', \Carbon\Carbon::now('utc'))->get())
-        ->with("coming", \App\Models\Introduction::orderBy('date_at', 'desc')->where('date_at', '>', \Carbon\Carbon::now('utc'))->get())
+        ->with("coming", \App\Models\Introduction::where('date_at', '>', \Carbon\Carbon::now('utc'))->orderBy('date_at', 'asc')->get())
         ->with('siteContent',  app(MeetingPageContent::class)->getPageContent());
 });
 
