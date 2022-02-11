@@ -54,6 +54,6 @@ class SuggestionsPageController extends Controller {
         }
         $suggestionPageContent->save();
         Session::flash('message', "Patarimų puslapis sėkmingai atnaujintas");
-        return Redirect::to('dashboard/suggestions');
+        return Redirect::route('pages.suggestions-config.list.index');
     }
 }

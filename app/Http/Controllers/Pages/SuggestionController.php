@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSuggestionRequest;
 use App\Http\Requests\UpdateSuggestionRequest;
 use App\Models\SettingsModels\SuggestionPageContent;
 use App\Models\Suggestion;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -47,7 +48,7 @@ class SuggestionController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreSuggestionRequest $storeSuggestionRequest
-     * @return void
+     * @return RedirectResponse
      */
     public function store(StoreSuggestionRequest $storeSuggestionRequest) {
         $suggestion = new Suggestion();
@@ -56,7 +57,7 @@ class SuggestionController extends Controller
         $suggestion->save();
 
         Session::flash('message', "Patarimas sėkmingai sukurtas");
-        return Redirect::to('dashboard/suggestions');
+        return Redirect::route('pages.suggestions-config.list.index');
     }
 
     /**
@@ -76,11 +77,12 @@ class SuggestionController extends Controller
      * @param Suggestion $suggestion
      * @return Response
      */
-    public function edit(Suggestion $suggestion)
+    public function edit($id)
     {
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
+        $suggestion = Suggestion::findOrFail($id);
         return view('suggestions.edit')->with("suggestion", $suggestion);
     }
 
@@ -89,25 +91,26 @@ class SuggestionController extends Controller
      *
      * @param UpdateSuggestionRequest $updateSuggestionRequest
      * @param Suggestion $suggestion
-     * @return void
+     * @return RedirectResponse
      */
-    public function update(UpdateSuggestionRequest $updateSuggestionRequest, Suggestion $suggestion)
+    public function update(UpdateSuggestionRequest $updateSuggestionRequest, $id)
     {
+        $suggestion = Suggestion::findOrFail($id);
         $suggestion->update($updateSuggestionRequest->validated());
         Session::flash('message', "Patarimas sėkmingai readaguotas");
-        return Redirect::to('dashboard/suggestions');
+        return Redirect::route('pages.suggestions-config.list.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param Suggestion $suggestion
-     * @return Response
+     * @return RedirectResponse
      */
-    public function destroy(Suggestion $suggestion) {
-        $suggestion->delete();
+    public function destroy($id) {
+        Suggestion::findOrFail($id)->delete();
 
         Session::flash('message', "Patarimas sėkmingai ištrintas");
-        return Redirect::to('dashboard/suggestions');
+        return Redirect::route('pages.suggestions-config.list.index');
     }
 }

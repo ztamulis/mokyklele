@@ -11,21 +11,13 @@ use App\Models\Payment;
 use App\Models\Reward;
 use App\Models\Student;
 use App\Models\Group;
-use App\Models\User;
 use App\Models\UserCoupon;
 use App\TimeZoneUtils;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 
-class CronjobController extends Controller
-{
+class CronjobController extends Controller {
 
     public function main(Request $request) {
         echo "Automatic attendance set started<br>";

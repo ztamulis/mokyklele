@@ -506,9 +506,6 @@
         $( document ).ready(function() {
             CKEDITOR.replace( 'ckeditor', {
             } );
-            setTimeout(function(){
-                $("#flash-message").remove();
-            }, 3000 );
 
             var groupMessage = @json($groupMessage);
                 if(groupMessage == true) {

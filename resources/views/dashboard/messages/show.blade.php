@@ -1,21 +1,22 @@
 <x-user>
     <div class="client--dashboard">
-        @if(isset($messages[0]) && $messages[0]->author && $messages[0]->author->id != Auth::user()->id && $messages[0]->canBeAnswered)
-            <div class="dashboard--misc--buttons">
-                <a href="/dashboard/messages/create?to={{ $messages[0]->author->id }}" class="dashboard--button dashboard--button--main">
-                    Atsakyti
-                </a>
-            </div>
-        @elseif(isset($messages[0]) && $messages[0]->user && $messages[0]->user->id != Auth::user()->id && $messages[0]->canBeAnswered)
-            <div class="dashboard--misc--buttons">
-                <a href="/dashboard/messages/create?to={{ $messages[0]->user->id }}" class="dashboard--button dashboard--button--main">
-                    Atsakyti
-                </a>
-            </div>
-        @endif
+
     @foreach($messages as $message)
         @if($loop->first)
             <div class="message--preview dashboard--block mt-5">
+                @if(isset($messages[0]) && $messages[0]->author && $messages[0]->author->id != Auth::user()->id && $messages[0]->canBeAnswered)
+                    <div class="dashboard--misc--buttons" style="cursor: pointer">
+                        <a href="/dashboard/messages/create?to={{ $messages[0]->author->id }}" class="dashboard--button dashboard--button--main">
+                            Atsakyti
+                        </a>
+                    </div>
+                @elseif(isset($messages[0]) && $messages[0]->user && $messages[0]->user->id != Auth::user()->id && $messages[0]->canBeAnswered)
+                    <div class="dashboard--misc--buttons">
+                        <a href="/dashboard/messages/create?to={{ $messages[0]->user->id }}" class="dashboard--button dashboard--button--main">
+                            Atsakyti
+                        </a>
+                    </div>
+                @endif
         @endif
 
         <div class="client--dashboard--title font-weight-bold text-dark mt-5">

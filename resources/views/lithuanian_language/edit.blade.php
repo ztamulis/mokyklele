@@ -26,7 +26,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-xl-8">
-                        <form action="{{route('lithuanian-courses-config.update')}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('pages.lithuanian-courses-children.update')}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method("PUT")
                             <div class="form-group">

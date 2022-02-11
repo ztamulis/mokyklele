@@ -26,7 +26,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-xl-8">
-                        <form action="/dashboard/suggestions/{{$suggestion->id}}" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('pages.suggestions-config.list.update', $suggestion->id)}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method("PUT")
                             <div class="form-group">
@@ -37,7 +37,7 @@
                                 <small class="form-text text-muted">Aprašymas</small>
                                 <textarea class="form-control summernote" name="description">{{$suggestion->description}}</textarea>
                             </div>
-                            <div class="form-group"><button class="btn btn-primary" type="submit">Sukurti patarimą</button></div>
+                            <div class="form-group"><button class="btn btn-primary" type="submit">Redaguoti patarimą</button></div>
                         </form>
                     </div>
                 </div>

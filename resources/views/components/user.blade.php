@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
 
 
-    <link rel="stylesheet" href="{{asset('css/dashboard_custom.1643795575103.css')}}">
+    <link rel="stylesheet" href="{{asset('css/dashboard_custom.1644580473815.css')}}">
     <link rel="stylesheet" href="{{asset('css/main.css')}}">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <link href="https://pagination.js.org/dist/2.1.5/pagination.css" rel="stylesheet">
@@ -177,9 +177,7 @@
                                         <a class=" @if(Request::is('dashboard/tableData')) active @endif " href="/dashboard/tableData"><i class="fa fa-files-o"></i><span>Duomenų lentelė</span></a>
                                         <a class=" @if(Request::is('dashboard/payments')) active @endif " href="/dashboard/payments"><i class="fas fa-money-bill"></i><span>Apmokėjimai</span>
                                         <a class=" @if(Request::is('dashboard/meetings')) active @endif " href="/dashboard/meetings"><i class="fa fa-calendar-check-o"></i><span>Susitikimai</span></a>
-                                            <a class=" @if(Request::is('dashboard/introductions')) active @endif " href="/dashboard/introductions"><i class="fa fa-cc-discover"></i><span>Vieši susitikimai</span></a>
-                                            <a class=" @if(Request::is('dashboard/suggestions')) active @endif " href="/dashboard/suggestions"><i class="fa fa-cc-discover"></i><span>Patarimai tėvams</span></a>
-                                            <a class=" @if(Request::is('dashboard/pages/lithuanian-courses-children')) active @endif " href="/dashboard/pages/lithuanian-courses-children"><i class="fa fa-asl-interpreting"></i><span>Lietuvių kalbos kursų puslapis</span></a>
+                                            <a class=" @if(Request::is(route('pages.index'))) active @endif " href="{{route('pages.index')}}"><span>Redaguoti puslapių informacija</span></a>
                                             <a class=" @if(Request::is('dashboard/reminders')) active @endif " href="/dashboard/reminders"><i class="fa fa-circle-notch"></i><span>Automatiniai laiškai</span></a>
                                             <a class=" @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a>
                                             <a class=" @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a>
@@ -248,6 +246,10 @@
                 limitStop: false
             }
         });
+
+        setTimeout(function(){
+            $("#flash-message").remove();
+        }, 3000 );
 
     });
 </script>

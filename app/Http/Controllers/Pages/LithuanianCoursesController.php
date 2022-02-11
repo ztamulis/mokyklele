@@ -49,7 +49,7 @@ class LithuanianCoursesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreSuggestionRequest $storeSuggestionRequest
-     * @return void
+     * @return RedirectResponse
      */
     public function store(StoreSuggestionRequest $storeSuggestionRequest) {
         $suggestion = new Suggestion();
@@ -58,7 +58,7 @@ class LithuanianCoursesController extends Controller
         $suggestion->save();
 
         Session::flash('message', "Patarimas sėkmingai sukurtas");
-        return Redirect::to('dashboard/lithuanian-courses-children');
+        return Redirect::route('pages.index');
     }
 
     /**
@@ -123,7 +123,7 @@ class LithuanianCoursesController extends Controller
         $lithuanianLanguagePageContent->third_box_content = $request->all()['third_box_content'];
         $lithuanianLanguagePageContent->save();
         Session::flash('message', "Patarimas sėkmingai readaguotas");
-        return Redirect::to('dashboard/pages/lithuanian-courses-children');
+        return Redirect::route('pages.index');
     }
 
 //    /**

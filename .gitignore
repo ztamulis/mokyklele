@@ -14,3 +14,9 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+.idea/*
+config/debugbar.php
+public/js/app.js
+u794216831_laravel.sql
+.idea/runConfigurations/Unnamed.xml
+composer.lock

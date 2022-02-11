@@ -12,15 +12,15 @@ class CreateIntroductionsPublic extends Migration {
      */
     public function up()
     {
-        Schema::create('introductions', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->text('description');
-            $table->text('join_link');
-            $table->string('photo')->nullable();
-            $table->dateTime('date_at')->useCurrent();
-            $table->timestamps();
-        });
+//        Schema::create('introductions', function (Blueprint $table) {
+//            $table->id();
+//            $table->string('name');
+//            $table->text('description');
+//            $table->text('join_link');
+//            $table->string('photo')->nullable();
+//            $table->dateTime('date_at')->useCurrent();
+//            $table->timestamps();
+//        });
     }
 
     /**

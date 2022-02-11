@@ -12,11 +12,11 @@
         <div class="row">
             <div class="col-xl-8 offset-xl-2">
                 <div class="alert alert-primary text-center" role="alert">
-                            <span>Klaida!<br>
-                                @foreach ($errors->all() as $error)
-                                    {{ $error }}<br>
-                                @endforeach
-                            </span>
+                        <span>Klaida!<br>
+                            @foreach ($errors->all() as $error)
+                                {{ $error }}<br>
+                            @endforeach
+                        </span>
                 </div>
             </div>
         </div>
@@ -27,7 +27,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-xl-12">
-                    <form action="/dashboard/reminders/update" method="POST" enctype="multipart/form-data">
+                    <form action="{{route('reminders.update')}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method("PUT")
                         <div class="form-group">
