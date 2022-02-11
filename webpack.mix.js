@@ -15,4 +15,4 @@ mix.js('resources/js/app.js', 'public/js').postCss('public/css/dashboard_custom.
     require('postcss-import'),
     require('tailwindcss'),
     require('autoprefixer'),
-]).sass('pasaka_html/src/scss/main.scss', 'public/css');
+]).sass('pasaka_html/src/scss/main.scss', 'public/css/main.'+ Date.now()).version();
