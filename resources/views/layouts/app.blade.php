@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Mokyklėlė Pasaka</title>
     <link rel="stylesheet" href="/assets/bootstrapold/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/dashboard_custom.1644580473815.css">
+    <link rel="stylesheet" href="/css/dashboard_custom.1644584665663.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="/assets/fonts/font-awesome.min.css">
