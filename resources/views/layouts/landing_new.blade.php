@@ -21,7 +21,7 @@
 
 </style>
 
-    <link rel="stylesheet" href="{{asset('css/dashboard_custom.1644580473815.css')}}">
+    <link rel="stylesheet" href="{{asset('css/dashboard_custom.1644584665663.css')}}">
     <link rel="stylesheet" href="{{asset('css/main.css')}}">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <link href="https://pagination.js.org/dist/2.1.5/pagination.css" rel="stylesheet">
