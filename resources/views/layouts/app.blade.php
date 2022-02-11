@@ -13,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Mokyklėlė Pasaka</title>
     <link rel="stylesheet" href="/assets/bootstrapold/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/dashboard_custom.css">
+    <link rel="stylesheet" href="/css/dashboard_custom.1644580473815.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
     <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
     <link rel="stylesheet" href="/assets/fonts/font-awesome.min.css">
@@ -84,11 +84,9 @@
                 <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/payments')) active @endif " href="/dashboard/payments"><i class="fas fa-money-bill"></i><span>Apmokėjimai</span></a></li>
                 <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/reminders')) active @endif " href="/dashboard/reminders"><i class="fas fa-money-bill"></i><span>Automatiniai laiškai</span></a></li>
 
-                    <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/introductions')) active @endif " href="/dashboard/introductions"><i class="fa fa-calendar-check-o"></i><span>Vieši susitikimai</span></a></li>
-                <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/suggestions')) active @endif " href="/dashboard/suggestions"><i class="fa fa-calendar-check-o"></i><span>Patarimai tėvams</span></a></li>
-                    {{--                        <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/navbar')) active @endif " href="/dashboard/navbar"><i class="fa fa-navicon"></i><span>Meniu juosta</span></a></li>--}}
-                <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a></li>
-                <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a></li>
+                <li class="nav-item"><a class="nav-link @if(Request::is(route('pages.index'))) active @endif " href="{{route('pages.index')}}"><i class="fa fa-database"></i><span>Redaguoti puslapių informacija</span></a></li>
+
+                    <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a></li>
                 <li class="nav-item"><a class="nav-link @if(Request::is('dashboard/coupons')) active @endif " href="/dashboard/coupons"><i class="fa fa-cc-discover"></i><span>Nuolaidų kuponai</span></a></li>
                 <li class="nav-item"><a class="nav-link @if(Request::is('questions-form')) active @endif " href="/questions-form"><i class="fa fa-question"></i><span>Suaugusiųjų kursų forma</span></a></li>
                 <li class="nav-item"><a class="nav-link @if(Request::is('register-free/admin')) active @endif " href="/register-free/admin"><i class="fa fa-registered"></i><span>Nemokamos pamokos forma</span></a></li>
@@ -297,7 +295,6 @@
                 limitStop: false
             }
         });
-
     });
 </script>
 </body>

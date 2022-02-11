@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-user>
     @if(isset($message))
         <div class="row">
             <div class="col-xl-8 offset-xl-2">
@@ -55,4 +55,4 @@
         </div>
     </div>
 
-</x-app-layout>
+</x-user>

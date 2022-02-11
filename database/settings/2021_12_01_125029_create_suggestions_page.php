@@ -6,7 +6,7 @@ class CreateSuggestionsPage extends SettingsMigration
 {
     public function up(): void
     {
-        $this->migrator->add('suggestions.site_name', 'Patarimai dvikalbių vaikų tėvams');
-        $this->migrator->add('suggestions.img', '');
+//        $this->migrator->add('suggestions.site_name', 'Patarimai dvikalbių vaikų tėvams');
+//        $this->migrator->add('suggestions.img', '');
     }
 }

@@ -23,6 +23,7 @@ class UserController extends Controller {
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
@@ -110,7 +111,11 @@ class UserController extends Controller {
      */
     public function show(User $user)
     {
+
         if(Auth::user()->role != "admin"){
+            return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
+        }
+        if(empty($user)){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         return view("dashboard.users.show")->with("user", $user);
@@ -122,8 +127,7 @@ class UserController extends Controller {
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
-    {
+    public function edit(User $user) {
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }

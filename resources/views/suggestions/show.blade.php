@@ -1,2 +1,0 @@
-<x-user>
-</x-user>

@@ -29,12 +29,10 @@
     @endif
         <h3 class="text-dark mb-4">Automatiniai laiškai</h3>
         <div class="col-xl-3 mb-4"><a href="{{route('reminders.edit')}}" class="btn btn-dark text-white" type="button">Keisti automatinių laiškų turinį</a></div>
-
-
         <h3 class="text-dark mb-4">Automatinių laiškų sąrašas</h3>
     <div class="card">
         <div class="card-body">
-            <form method="GET" action="/dashboard/reminders">
+            <form method="GET" action="{{route('reminders.index')}}">
                 <div class="form-row">
                     <div class="col-md-6 col-xl-4 text-nowrap"><input class="form-control" type="text" name="search" placeholder="Ieškoti" value="{{ request()->input("search") }}"></div>
                     <div class="col-xl-3">
@@ -61,7 +59,6 @@
                             @foreach($notifications as $notification)
 
                                 @php
-                                        Log::info($notification->id);
                                         $group = $notification->group()->first();
                                         @endphp
                                 @if(empty($group))
@@ -93,7 +90,6 @@
                 @endif
             </div>
             <div class="row">
-{{--                <div class="col-xl-3"><a href="/dashboard/introductions/create" class="btn btn-success" type="button">Sukurti naują susitikimą</a></div>--}}
                 <div class="col-md-6 offset-xl-3">
                     <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
                         {{ $notifications->links('components.pagination') }}

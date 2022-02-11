@@ -17,7 +17,9 @@
     {{--    <script src="./assets/js/bootstrap.min.js"></script>--}}
 
 
+<style>
 
+</style>
 
     <link rel="stylesheet" href="{{asset('css/dashboard_custom.1643795575103.css')}}">
     <link rel="stylesheet" href="{{asset('css/main.css')}}">
@@ -59,7 +61,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="{{asset('assets/js/theme.js')}}"></script>
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.13/moment-timezone-with-data.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote-cleaner@1.0.0/summernote-cleaner.js"></script>
@@ -153,7 +156,6 @@
                                     <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in">
                                         <h6 class="dropdown-header">Žinutės</h6>
                                         @foreach(\App\Http\Controllers\MessageController::messages() as $message)
-
                                             <a class="d-flex align-items-center dropdown-item" href="/dashboard/messages/{{$message->id}}">
                                                 <div class="font-weight-bold">
                                                     <div class="text-truncate">
@@ -173,7 +175,7 @@
                             <li class="nav-item dropdown">
                                 <div class="nav-item dropdown">
                                     <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false" href="#">
-                                        <span class="icon-user"></span>
+                                        <img class="border rounded-circle img-profile img-fluid" src="{{ Auth::user()->photo ? "/uploads/users/".Auth::user()->photo : "/images/icons/avatar.png" }}" />
                                         <span class="d-none d-lg-inline ml-1">{{Auth::user()->name}} {{Auth::user()->surname}}</span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right animated--grow-in">
@@ -190,11 +192,8 @@
                                             <a class=" @if(Request::is('dashboard/tableData')) active @endif " href="/dashboard/tableData"><i class="fa fa-files-o"></i><span>Duomenų lentelė</span></a>
                                             <a class=" @if(Request::is('dashboard/payments')) active @endif " href="/dashboard/payments"><i class="fas fa-money-bill"></i><span>Apmokėjimai</span>
                                                 <a class=" @if(Request::is('dashboard/meetings')) active @endif " href="/dashboard/meetings"><i class="fa fa-calendar-check-o"></i><span>Susitikimai</span></a>
-                                                <a class=" @if(Request::is('dashboard/introductions')) active @endif " href="/dashboard/introductions"><i class="fa fa-cc-discover"></i><span>Vieši susitikimai</span></a>
-                                                <a class=" @if(Request::is('dashboard/suggestions')) active @endif " href="/dashboard/suggestions"><i class="fa fa-cc-discover"></i><span>Patarimai tėvams</span></a>
-                                                <a class=" @if(Request::is('dashboard/pages/lithuanian-courses-children')) active @endif " href="/dashboard/pages/lithuanian-courses-children"><i class="fa fa-cc-discover"></i><span>Lietuvių kalbos kursų puslapis</span></a>
-                                                <a class=" @if(Request::is('dashboard/reminders')) active @endif " href="/dashboard/reminders"><i class="fa fa-cc-discover"></i><span>Automatiniai laiškai</span></a>
                                                 <a class=" @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a>
+                                                <a class=" @if(Request::is(route('pages.index'))) active @endif " href="{{route('pages.index')}}"><span>Redaguoti puslapių informacija</span></a>
                                                 <a class=" @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a>
                                                 <a class=" @if(Request::is('dashboard/coupons')) active @endif " href="/dashboard/coupons"><i class="fa fa-cc-discover"></i><span>Nuolaidų kuponai</span></a>
                                                 <a class=" @if(Request::is('questions-form')) active @endif " href="/questions-form"><i class="fa fa-question"></i><span>Suaugusiųjų kursų forma</span></a>
@@ -266,13 +265,6 @@
 @endif
 
 @if(!Cookie::get("user_timezone"))
-    <?php
-                $ipinfo = json_decode(file_get_contents("http://ip-api.com/json/".Request::ip()));
-                $country = $ipinfo->country;
-                $timezone = $ipinfo->timezone;
-                $country = 'Lithuania';
-                $country = Location::get(Request::ip())->countryName;
-    ?>
     <div class="landing--modal">
         <div class="landing--modal--inner">
             <img src="/images/landing/planet.webp">
@@ -284,7 +276,7 @@
                     <select class="form-control" name="timezone" required>
 
                     </select>
-                    <button type="submit" class="landing--modal--button">Patvirtinti</button>
+                    <button type="submit" class="button btn-lg w-100">Patvirtinti</button>
 
                     <script>
                         var user_timezone = moment.tz.guess();

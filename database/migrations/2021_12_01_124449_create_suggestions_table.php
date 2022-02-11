@@ -13,12 +13,12 @@ class CreateSuggestionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('suggestions', function (Blueprint $table) {
-            $table->id();
-            $table->text('title');
-            $table->text('description');
-            $table->timestamps();
-        });
+//        Schema::create('suggestions', function (Blueprint $table) {
+//            $table->id();
+//            $table->text('title');
+//            $table->text('description');
+//            $table->timestamps();
+//        });
     }
 
     /**
