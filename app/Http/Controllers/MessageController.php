@@ -112,7 +112,7 @@ class MessageController extends Controller
      */
     public function sendMessage(Request $request){
         $request->validate([
-            'text' => 'required|string|max:2024',
+            'text' => 'required|string|max:65535',
             'check' => 'required'
         ]);
 

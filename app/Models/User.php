@@ -113,7 +113,7 @@ class User extends Authenticatable
         }
         if($this->role == "teacher"){
             $group_ids = [];
-            foreach(Event::where("teacher_id",$this->id)->get() as $event) {
+            foreach(Event::where("teacher_id",$this->id)->with('groups')->get() as $event) {
                 foreach ($event->groups as $group){
                     if(!in_array($group->id, $group_ids)){
                         $group_ids[] = $group->id;
@@ -122,7 +122,7 @@ class User extends Authenticatable
             }
             return Group::find($group_ids);
         }
-        return Group::find($this->students()->groupBy("group_id")->pluck("group_id"));
+        return Group::find($this->students()->pluck("group_id"));
     }
 
 
