@@ -27,7 +27,8 @@ class EventController extends Controller
         if(Auth::user()->role == "user"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        $events = Event::where("id", ">", 0);
+        $events = Event::where("id", ">", 0)->with('teacher')
+            ->with('groups');
         if($request->input("search")){
              $events = $events->where("name", "LIKE", "%" . $request->input("search") . "%");
         }
