@@ -1,4 +1,5 @@
-<x-app-layout>
+<x-user>
+    <div class="container--other">
     @if(isset($message))
         <div class="row">
             <div class="col-xl-8 offset-xl-2">
@@ -29,15 +30,28 @@
     <h3 class="text-dark mb-4">Užsiėmimai</h3>
     <div class="card">
         <div class="card-body">
-            {{--<form method="GET">
-                <div class="form-row">
-                    <div class="col-md-6 col-xl-4 text-nowrap"><input class="form-control" type="text" name="search" placeholder="Ieškoti" value="{{ request()->input("search") }}"></div>
-                    <div class="col-xl-3">
-                        <button class="btn btn-success" type="submit">Paieška</button>
+                <div class="row">
+                    <div class="col-lg-2 col-sm-12">
+                        <label>Pavadinimas :</label>
+                        <input type='text' value='' class='form-control filter' data-column-index='1'>
+                    </div>
+                    <div class="col-lg-2 col-sm-12">
+                        <label>Laikas :</label>
+                        <input type='text' value='' class='form-control filter' data-column-index='2'>
+                    </div>
+                    <div class="col-lg-2 col-sm-12">
+                        <label>Grupė :</label>
+                        <input type='text' value='' class='form-control filter' data-column-index='3'>
+                    </div>
+                    <div class="col-lg-2 col-sm-12">
+                        <label>Mokytojas :</label>
+                        <input type='text' value='' class='form-control filter' data-column-index='4'>
+                    </div>
+                    <div class="col-lg-2 col-sm-12">
+                        <label>Tipas :</label>
+                        <input type='text' value='' class='form-control filter' data-column-index='5'>
                     </div>
                 </div>
-            </form>--}}
-            {{--<div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">--}}
             <div class="table-responsive table mt-2" id="tableDiv" role="grid" aria-describedby="tableDiv_info">
                 @if(count($events))
                     <table class="table my-0" id="dataTable">
@@ -130,23 +144,11 @@
         });
     </script>
     <script>
-        $('#dataTable thead tr').clone(true).appendTo( '#dataTable thead' );
-        $('#dataTable thead tr:eq(1) th').each( function (i) {
-            if ($(this).index() === 0 || $(this).index() === 6) {
-                $(this).html("");
-                return;
-            }
-            var title = $(this).text();
-            $(this).html('<input type="text" placeholder="Ieškoti ' + title + '" />');
-            $( 'input', this ).on( 'keyup change', function () {
-                if ( table.column(i).search() !== this.value ) {
-                    table
-                        .column(i)
-                        .search( this.value )
-                        .draw();
-                }
-            } );
-        } );
+        $('.filter').on('keyup change', function() {
+            //clear global search values
+            table.search('');
+            table.column($(this).data('columnIndex')).search(this.value).draw();
+        });
 
         var table = $('#dataTable').DataTable( {
             orderCellsTop: true,
@@ -154,7 +156,10 @@
             columnDefs : [
                 { targets: [0,6], sortable: false},
             ],
-            order: [[2, "desc"]]
+            order: [[2, "desc"]],
+            responsive: true,
+            searching: false,
         } );
     </script>
-</x-app-layout>
+    </div>
+</x-user>
