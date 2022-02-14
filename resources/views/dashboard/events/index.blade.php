@@ -144,6 +144,7 @@
         });
     </script>
     <script>
+
         $('.filter').on('keyup change', function() {
             //clear global search values
             table.search('');
@@ -153,12 +154,18 @@
         var table = $('#dataTable').DataTable( {
             orderCellsTop: true,
             fixedHeader: true,
+            aoColumnDefs: [
+                {
+                    bSearchable: true,
+                    bVisible: false,
+                },
+            ],
             columnDefs : [
                 { targets: [0,6], sortable: false},
             ],
             order: [[2, "desc"]],
             responsive: true,
-            searching: false,
+            sDom: "rtipl",
         } );
     </script>
     </div>
