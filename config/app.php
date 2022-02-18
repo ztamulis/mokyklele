@@ -236,6 +236,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 		'Location' => Stevebauman\Location\Facades\Location::class,
+        'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
+
 
     ],
 
