@@ -20,11 +20,11 @@
             <div class="row">
                 <div class="col-xl-8 offset-xl-2">
                     <div class="alert alert-primary text-center" role="alert">
-                            <span>Klaida!<br>
-                                @foreach ($errors->all() as $error)
-                                    {{ $error }}<br>
-                                @endforeach
-                            </span>
+                        <span>Klaida!<br>
+                            @foreach ($errors->all() as $error)
+                                {{ $error }}<br>
+                            @endforeach
+                        </span>
                     </div>
                 </div>
             </div>
@@ -59,8 +59,15 @@
                 </button>
                 </a>
             </div>
-
-
         </div>
+            <div class="row mt-5 text-center">
+                <div class="col-lg-3 col-md-12 mb-3">
+                    <a href="{{route('pages.team.edit')}}">
+                        <button class="button btn-primary">
+                            <i class="fa fa-cc-discover"></i><span>Komanda</span>
+                        </button>
+                    </a>
+                </div>
+            </div>
     </div>
 </x-user>

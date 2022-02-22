@@ -363,6 +363,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="tab-4" class="tabcontent">
+                            @php $rewards = $group->getGroupRewards(); @endphp
+                            @if(!empty($rewards))
+                                <div class="row mt-5 no-gutters">
+                                    @foreach ($group->getGroupRewards() as $reward)
+                                        <div class="col-md-12">
+                                            <label class="form-check-label"><img src="/uploads/rewards/{{ $reward->file }}" style="height: 25px">{{$reward->user_name}}- {{ $reward->name }}</label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
                     </div>
                         <div id="tab-3" class="tabcontent d-lg-none">
                             <div class="row mt-5 no-gutters">
@@ -373,17 +385,14 @@
                                     </div>
                             </div>
                         </div>
-                        <div id="tab-4" class="tabcontent">
-                            <div class="row mt-5">
-                            </div>
-                        </div>
+
             </div>
             </section>
         </div>
 
 
     <!-- Modal -->
-    <div class="modal fade" id="sendMessageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="sendMessageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCensubscription_itemsterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">

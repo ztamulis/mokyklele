@@ -10,6 +10,8 @@ use App\Models\Message;
 use App\TimeZoneUtils;
 use Carbon\Carbon;
 use Config;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -62,7 +64,7 @@ class GroupController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return Response
+     * @return Factory|View|RedirectResponse
      * @throws ApiErrorException
      */
     public function store(Request $request)
@@ -163,9 +165,9 @@ class GroupController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function show(Group $group, Request $request)
+    public function show(Group $group)
     {
-        return view("dashboard.groups.show")->with("group", $group)->with("groups", Group::paginate(15));
+        return view("dashboard.groups.show")->with("group", $group);
     }
 
     /**
