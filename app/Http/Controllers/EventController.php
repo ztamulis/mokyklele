@@ -295,7 +295,7 @@ class EventController extends Controller
             $endDate = \Carbon\Carbon::parse($request->input("date"))->endOfMonth();
         }
 
-        if(Auth::user()->role == "teacher") {
+        if(Auth::user()->role == "teacher" || Auth::user()->role == "user") {
             $allStudents = [];
             foreach(Auth::user()->getGroups() as $group){
                 foreach($group->students()->pluck("id") as $studentId) {

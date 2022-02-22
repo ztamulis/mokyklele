@@ -53,13 +53,14 @@ class Group extends Model
 
     public function getGroupRewards() {
         $rewards = [];
-        $users = User::whereIn('id', array_keys($this->students()->where('group_id', $this->id)->get()->keyBy('user_id')->toArray()))->get();
-        foreach ($users as $user) {
-            foreach($user->rewards as $reward) {
-                $rewards[] = $reward;
-            }
-            var_dump($user->rewards);
+        $students = $this->students()->get();
 
+        foreach ($students as $student) {
+            $user = $student->user()->first();
+            foreach($user->rewards()->get() as $key => $reward) {
+                $reward->user_name = $user->name.' '.$user->surname;
+                $rewards[$key] = $reward;
+            }
         }
 
         return $rewards;
