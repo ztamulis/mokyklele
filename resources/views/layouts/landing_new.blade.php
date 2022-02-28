@@ -41,7 +41,7 @@
     <link rel="shortcut icon" href="/favicon/favicon.ico">
     <link rel="stylesheet" href="{{asset('assets/bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/main.1644586810856.css')}}">
-    <link href="{{'css/smart-wizard.css'}}" rel="stylesheet" type="text/css" />
+    <link href="{{'css/smart-wizard2.css'}}" rel="stylesheet" type="text/css" />
 
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="msapplication-config" content="/favicon/browserconfig.xml">
