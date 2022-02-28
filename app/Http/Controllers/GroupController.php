@@ -333,7 +333,7 @@ class GroupController extends Controller
 
             $teachers = $this->getTeachersWithLessons($group);
 
-            $html = "<p>Sveiki,<br>". Auth::user()->name. " ". Auth::user()->surname. "įkėlė naują pranešimą į pokalbius <br>";
+            $html = "<p>Sveiki,<br>". Auth::user()->name. " ". Auth::user()->surname. "įkėlė naują pranešimą į pokalbius. <br>";
             if (!empty($group_message->message)) {
                 $html .= "Žinutė: ".$group_message->message;
             }
@@ -460,7 +460,7 @@ class GroupController extends Controller
         if (!empty($originalFile->name)) {
             $html .=  "Prisegtas dokumentas: <a href='". Config::get('app.url')."/uploads/".$originalFile->name."'>". Config::get('app.url')."/uploads/".$originalFile->name."</a>";
         }
-        $html .= "<br>Peržiūrėti galite čia: <a href='". Config::get('app.url')."/dashboard/groups/".$originalFile->group()->first()->slug."'>". Config::get('app.url')."/dashboard/groups/".$originalFile->group()->first()->slug."</a>
+        $html .= "<br>Peržiūrėti ir atsakyti mokytojai galite čia: <a href='". Config::get('app.url')."/dashboard/groups/".$originalFile->group()->first()->slug."'>". Config::get('app.url')."/dashboard/groups/".$originalFile->group()->first()->slug."</a>
         </p><p>Linkėjimai<br>Pasakos komanda</p>";
         foreach($studentBygroup as $student) {
             Mail::send([], [], function ($message) use ($html, $student, $originalFile) {
@@ -524,7 +524,7 @@ class GroupController extends Controller
 
 
         $studentBygroup = Student::where('group_id', '=', $request->input("group_id"))->get();
-        $html = "<p>Sveiki,<br>". Auth::user()->name. " ". Auth::user()->surname. " įkėlė namų darbus <br>";
+        $html = "<p>Sveiki,<br>". Auth::user()->name. " ". Auth::user()->surname. " įkėlė namų darbus. <br>";
         if (!empty($fileObj->display_name)) {
             $html .= "Žinutė: ".$fileObj->display_name;
         }
@@ -533,7 +533,7 @@ class GroupController extends Controller
 
         }
 
-        $html .= "<br>Peržiūrėti galite čia: <a href='". Config::get('app.url')."/dashboard/groups/".$fileObj->group()->first()->slug."'>". Config::get('app.url')."/dashboard/groups/".$fileObj->group()->first()->slug."</a>
+        $html .= "<br>Peržiūrėti ir atsakyti mokytojai galite čia: <a href='". Config::get('app.url')."/dashboard/groups/".$fileObj->group()->first()->slug."'>". Config::get('app.url')."/dashboard/groups/".$fileObj->group()->first()->slug."</a>
         </p><p>Linkėjimai<br>Pasakos komanda</p>";
         foreach($studentBygroup as $student) {
             $studentGroup = $student->group()->where('id', $request->input("group_id"))->first();

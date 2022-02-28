@@ -113,29 +113,17 @@ class LithuanianCoursesController extends Controller
                 ->save();
         }
         $lithuanianLanguagePageContent->first_box_title = !empty($request->all()['first_box_title']) ? $request->all()['first_box_title'] : '';
-        $lithuanianLanguagePageContent->third_box_title = !empty($request->all()['third_box_title']) ? $request->all()['third_box_title'] : '';
         $lithuanianLanguagePageContent->first_box_array = $request->all()['first_box_array'];
         $lithuanianLanguagePageContent->second_box_title = !empty($request->all()['second_box_title']) ? $request->all()['second_box_title'] : '';
         $lithuanianLanguagePageContent->second_box_description = !empty($request->all()['second_box_description']) ? $request->all()['second_box_description'] : '';
         $lithuanianLanguagePageContent->second_box_name = !empty($request->all()['second_box_name']) ? $request->all()['second_box_name'] : '';
         $lithuanianLanguagePageContent->second_box_content = $request->all()['second_box_content'];
         $lithuanianLanguagePageContent->third_box_name = !empty($request->all()['third_box_name']) ? $request->all()['third_box_name'] : '';
+        $lithuanianLanguagePageContent->third_box_title = !empty($request->all()['third_box_title']) ? $request->all()['third_box_title'] : '';
         $lithuanianLanguagePageContent->third_box_content = $request->all()['third_box_content'];
+        $lithuanianLanguagePageContent->main_component_questions = $request->all()['main_component_questions'];
         $lithuanianLanguagePageContent->save();
-        Session::flash('message', "Patarimas sėkmingai readaguotas");
+        Session::flash('message', "Lietuvių kalbos puslapis sėkmingai readaguotas");
         return Redirect::route('pages.index');
     }
-
-//    /**
-//     * Remove the specified resource from storage.
-//     *
-//     * @param Suggestion $suggestion
-//     * @return Response
-//     */
-//    public function destroy(Suggestion $suggestion) {
-//        $suggestion->delete();
-//
-//        Session::flash('message', "Patarimas sėkmingai ištrintas");
-//        return Redirect::to('dashboard/lithuanian-courses-children');
-//    }
 }

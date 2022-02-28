@@ -1,4 +1,5 @@
 @extends("layouts.landing_new")@section("title", "")@section("content")
+
     <div class="row mt-5 mb-5 justify-content-center align-self-center">
         <div class="col-md-6 col-sm-12  justify-content-center align-self-center">
             <h1 class="home-main-title">{{$siteContent['main_title']}}</h1>
@@ -61,6 +62,7 @@
             </div>
         </div>
     </div>
+
     <div class="row" style="margin-top: -100px;">
         <div class="landing--col-1">
             <img src="https://mokyklelepasaka.rfox.cloud/uploads/page-uploads/1-NLJ4fiw05cg77KZR.png" class="img-fluid" style="margin-bottom: -10px;max-height: 361px;">

@@ -18,6 +18,7 @@ class LithuanianLanguagePageContent extends Settings {
     public array $third_box_content;
     public array $third_box_name;
     public string $third_box_title;
+    public string $main_component_questions;
 
 
     public static function group(): string {
@@ -43,6 +44,7 @@ class LithuanianLanguagePageContent extends Settings {
             'third_box_content' => $this->third_box_content,
             'third_box_name' => $this->third_box_name,
             'third_box_title' => $this->third_box_title,
+            'main_component_questions' => $this->main_component_questions,
         ];
     }
 

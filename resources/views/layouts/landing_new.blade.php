@@ -12,11 +12,6 @@
 
 <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
 
-
-    {{--    <script src="./assets/js/jquery-3.4.1.min.js"></script>--}}
-    {{--    <script src="./assets/js/bootstrap.min.js"></script>--}}
-
-
 <style>
 
 </style>
@@ -46,6 +41,7 @@
     <link rel="shortcut icon" href="/favicon/favicon.ico">
     <link rel="stylesheet" href="{{asset('assets/bootstrap/css/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/main.1644586810856.css')}}">
+    <link href="{{'css/smart-wizard.css'}}" rel="stylesheet" type="text/css" />
 
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="msapplication-config" content="/favicon/browserconfig.xml">
@@ -68,6 +64,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote-cleaner@1.0.0/summernote-cleaner.js"></script>
+    <script type="text/javascript" src="{{'assets/js/jquery.smartWizard.js'}}"></script>
 
 
     <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/ba87b46b2fade810dbf4e011d/126d0ec7c020f24a27f2bb97d.js");</script>
@@ -309,7 +306,7 @@
             if(Illuminate\Support\Str::contains($error,'terms.')) {
                 $errorsStr .= "Prašome sutikti su Pasakos privatumo politika. ";
             } elseif(Illuminate\Support\Str::contains($error,'student age')) {
-                $errorsStr .= "Prašome nurodyti vaiko amžiaus grupę. ";
+                $errorsStr .= "Prašome nurodyti vaiko am žiaus grupę. ";
             } else {
                 $errorsStr .= $error;
             }
@@ -319,6 +316,31 @@
 @endif
 <script>
     $(document).ready(function() {
+        var btnFinish = $('<button type="submit"></button>').text('Finish')
+            .addClass('btn btn-primary btn-sm');
+        $('#smartwizard').smartWizard({
+            selected: 0,
+            theme: 'dots',
+            autoAdjustHeight:true,
+            transitionEffect:'fade',
+            showStepURLhash: false,
+            labelFinish:'Finish',  // label for Finish button
+            labelCancel:'Cancel',
+            toolbarSettings: {
+                toolbarPosition: 'bottom', // none, top, bottom, both
+                toolbarButtonPosition: 'center', // left, right, center
+                toolbarExtraButtons: [btnFinish],
+                showNextButton: true, // show/hide a Next button
+                showPreviousButton: true, // show/hide a Previous button
+                enableFinishButton: true,
+            },
+            lang: { // Language variables for button
+                next: 'Pirmyn >',
+                previous: '< Atgal',
+                finish: 'Pateikti'
+            }
+
+        });
 
         $(".readmore-link").click(function(e) {
             // record if our text is expanded

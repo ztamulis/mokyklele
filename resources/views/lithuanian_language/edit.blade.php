@@ -105,6 +105,14 @@
                                 <input class="form-control" type="text" name="third_box_title"  value="{{$lithuanianLanguagePageContent->third_box_title}}">
                             </div>
                             <div class="form-group">
+                                <legend>Klausimų forma</legend>
+                                <select class="custom-select" name="main_component_questions">
+                                    @foreach(\App\Http\Helpers\PageContentHelper::getComponentsNames() as $value  => $name)
+                                        <option {{ $lithuanianLanguagePageContent->main_component_questions == $value ? 'selected' : ''}} value="{{$value}}" >{{$name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <small class="form-text text-muted">Pirmas pavadinimas</small>
                                 <input class="form-control" type="text" name="third_box_name[]"  value="{{isset($lithuanianLanguagePageContent->third_box_name[0]) ? $lithuanianLanguagePageContent->third_box_name[0] : ''}}">
                             </div>
@@ -136,7 +144,14 @@
                                 <small class="form-text text-muted">Ketvirtas aprašymas</small>
                                 <textarea class="form-control summernote" name="third_box_content[]">{{isset($lithuanianLanguagePageContent->third_box_content[3]) ? $lithuanianLanguagePageContent->third_box_content[3] : ''}}</textarea>
                             </div>
-
+                            <div class="form-group">
+                                <small class="form-text text-muted">Penktas pavadinimas</small>
+                                <input class="form-control" type="text" name="third_box_name[]"  value="{{isset($lithuanianLanguagePageContent->third_box_name[4]) ? $lithuanianLanguagePageContent->third_box_name[4] : ''}}">
+                            </div>
+                            <div class="form-group">
+                                <small class="form-text text-muted">Penktas aprašymas</small>
+                                <textarea class="form-control summernote" name="third_box_content[]">{{isset($lithuanianLanguagePageContent->third_box_content[4]) ? $lithuanianLanguagePageContent->third_box_content[4] : ''}}</textarea>
+                            </div>
                             <div class="form-group"><button class="btn btn-primary" type="submit">Pakeisti lietuvių kalbos puslapio duomenis</button></div>
                         </form>
                     </div>
