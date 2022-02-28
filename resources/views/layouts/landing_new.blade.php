@@ -316,9 +316,9 @@
 @endif
 <script>
     $(document).ready(function() {
-        var btnFinish = $('<button type="submit"></button>').text('Finish')
-            .addClass('btn btn-primary btn-sm');
-        $('#smartwizard').smartWizard({
+        var btnFinish = $('<button type="submit"></button>').text('Pateikti').attr('id','finish-button')
+            .addClass('btn btn-primary btn-sm ml-sm-1 mt-xs-3 mt-1 d-none');
+        var wizard = $('#smartwizard').smartWizard({
             selected: 0,
             theme: 'dots',
             autoAdjustHeight:true,
@@ -341,6 +341,15 @@
             }
 
         });
+        $(wizard).on("leaveStep", function(e, anchorObject, stepIndex, nextStepIndex, stepDirection) {
+            if(nextStepIndex == 'forward' && (anchorObject.prevObject.length - 2) === stepIndex){
+                $('#finish-button').removeClass('d-none');
+                console.log('yesss');
+            }else{
+                $('#finish-button').addClass('d-none');
+            }
+        });
+
 
         $(".readmore-link").click(function(e) {
             // record if our text is expanded
