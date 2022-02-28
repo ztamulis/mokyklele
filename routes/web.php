@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\GroupQuestFormController;
+use App\Http\Controllers\Pages\CoursesAdultsPageController;
 use App\Http\Controllers\Pages\HomePageController;
 use App\Http\Controllers\Pages\LithuanianCoursesController;
 use App\Http\Controllers\Pages\MeetingsPageController;
@@ -13,6 +15,7 @@ use App\Http\Controllers\Pages\SuggestionsPageController;
 use App\Http\Controllers\QuestionFormController;
 use App\Http\Controllers\RegisterFreeController;
 use App\Http\Controllers\WebhookController;
+use App\Models\SettingsModels\CoursesAdultsPageContent;
 use App\Models\SettingsModels\HomePageContent;
 use App\Models\SettingsModels\LithuanianLanguagePageContent;
 use App\Models\SettingsModels\MeetingPageContent;
@@ -53,19 +56,25 @@ Route::get('/', function () {
 Route::get('/apie-pamokas', function () {
     return view('landing.apie_pamokas');
 });
-Route::get('/test-patarimai-tevams', function () {
-    return view('landing.patarimai_tėvams');
-});
+//Route::get('/test-patarimai-tevams', function () {
+//    return view('landing.patarimai_tėvams');
+//});
 Route::get('/kaina', function () {
     return view('landing.kaina');
 });
 
-Route::get('/kaina', function () {
-    return view('landing.kaina');
-});
+//Route::get('/kaina', function () {
+//    return view('landing.kaina');
+//});
 Route::get('/susitikimai', function () {
     return view('landing.susitikimai');
 });
+Route::get('/suaugusiuju-kursai', function () {
+    return view('landing_new.suagusiuju_kursai_naujas')->with('siteContent',  app(CoursesAdultsPageContent::class)->getPageContent());
+
+});
+
+
 
 Route::get('/susitikimai', function () {
     return view('landing_new.susitikimai_naujas')
@@ -162,6 +171,9 @@ Route::post('/select-group/order/free/create/{slug}', [OrderController::class, '
 Route::get('/select-group/order/free/success/{slug}', [OrderController::class, 'showSuccessPage'])->middleware(['auth'])->name('orderFreeSuccess');
 
 
+
+Route::post('/lietuviu-kalbos-pamokos/anketa', [GroupQuestFormController::class, 'submitResults'])->name('lithuanian-language-form-submit');
+Route::post('/lietuviu-kalbos-pamokos/perkrauti', [GroupQuestFormController::class, 'reset'])->name('lithuanian-language-form-reset');
 
 
 Route::middleware(['auth'])->group(function () {
@@ -264,7 +276,10 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/', [HomePageController::class, 'edit'])->name('edit');
                 Route::put('/update', [HomePageController::class, 'update'])->name('update');
             });
-
+            Route::group(['prefix' => 'courses-adults', 'as' => 'courses-adults.'], static function () {
+                Route::get('/', [CoursesAdultsPageController::class, 'edit'])->name('edit');
+                Route::put('/update', [CoursesAdultsPageController::class, 'update'])->name('update');
+            });
             Route::group(['prefix' => 'suggestions', 'as' => 'suggestions-config.'], static function () {
                 Route::get('/', [SuggestionsPageController::class, 'edit'])->name('edit');
                 Route::put('/update', [SuggestionsPageController::class, 'update'])->name('update');

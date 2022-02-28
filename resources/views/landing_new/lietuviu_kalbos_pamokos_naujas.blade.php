@@ -81,40 +81,49 @@
            <div class="col-md-12">
                <h1 class="third-block-title mb-5 pr-2">{{$siteContent['third_box_title']}}</h1>
            </div>
+
            <div class="col-md-12 pr-5">
                <div class="display-first-block-array">
                    <img class="img-fluid mt-2 mr-2 suggestion-img" src="{{asset('assets/img/other/Group 21.png')}}">
                    <h2 class="second-block-title">{!! $siteContent['third_box_name'][0] !!}</h2>
                </div>
                <h4 class="third-block-description">{!! $siteContent['third_box_content'][0] !!}</h4>
+               @if(!empty($siteContent['main_component_questions']))
+                   <div class="row">
+                       @include(\App\Http\Helpers\PageContentHelper::getComponent($siteContent['main_component_questions']))
+                   </div>
+               @endif
            </div>
-           <div class="col-md-12 mt-3">
+           <div class="col-md-12 pr-5">
                <div class="display-first-block-array">
                    <img class="img-fluid mt-2 mr-2 suggestion-img" src="{{asset('assets/img/other/Group 21.png')}}">
                    <h2 class="second-block-title">{!! $siteContent['third_box_name'][1] !!}</h2>
                </div>
                <h4 class="third-block-description">{!! $siteContent['third_box_content'][1] !!}</h4>
            </div>
-           <div class="col-md-12 pr-5 mt-3">
+           <div class="col-md-12 mt-3">
                <div class="display-first-block-array">
                    <img class="img-fluid mt-2 mr-2 suggestion-img" src="{{asset('assets/img/other/Group 21.png')}}">
                    <h2 class="second-block-title">{!! $siteContent['third_box_name'][2] !!}</h2>
                </div>
                <h4 class="third-block-description">{!! $siteContent['third_box_content'][2] !!}</h4>
            </div>
-           <div class="col-md-12 mt-3">
+           <div class="col-md-12 pr-5 mt-3">
                <div class="display-first-block-array">
                    <img class="img-fluid mt-2 mr-2 suggestion-img" src="{{asset('assets/img/other/Group 21.png')}}">
                    <h2 class="second-block-title">{!! $siteContent['third_box_name'][3] !!}</h2>
                </div>
                <h4 class="third-block-description">{!! $siteContent['third_box_content'][3] !!}</h4>
            </div>
+           <div class="col-md-12 mt-3">
+               <div class="display-first-block-array">
+                   <img class="img-fluid mt-2 mr-2 suggestion-img" src="{{asset('assets/img/other/Group 21.png')}}">
+                   <h2 class="second-block-title">{!! $siteContent['third_box_name'][4] !!}</h2>
+               </div>
+               <h4 class="third-block-description">{!! $siteContent['third_box_content'][4] !!}</h4>
+           </div>
        </div>
    </div>
-
-
-
-
 @endsection
 
 

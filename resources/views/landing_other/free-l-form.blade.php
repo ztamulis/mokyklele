@@ -22,7 +22,7 @@
             <input type="email" name="email" placeholder="El. pašto adresas" required  value="{{ old("email") }}">
             <br>
             <?php
-            $country = Location::get(Request::ip())->countryName;
+            $country = 'Lithuania';
             ?>
             Gyvenamoji šalis<br>
             <select name="country" required>
