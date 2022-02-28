@@ -8,7 +8,7 @@
                         <span style="font-family: Playfair Display;font-style: normal;font-weight: bold;font-size: 29px;line-height: 30px;color: #F74395;">Kalbos mokėjimo lygio nustatymas</span>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row question-form-mobile-display-none">
                     <div class="col-lg-12">
                         <img class="img-fluid" width="380" height="380" style="height: 100%;-o-object-fit: cover;object-fit: cover;" src="{{asset('assets/img/other/castle 1.svg')}}">
                     </div>

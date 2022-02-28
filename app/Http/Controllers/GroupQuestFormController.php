@@ -12,12 +12,12 @@ class GroupQuestFormController extends Controller
         $result = $this->getResults($request->input());
         session()->put('lithuania-language-form-results', $result);
         $this->sendEmailToAdmin($request->input('email'), $result);
-        return redirect('/lietuviu-kalbos-pamokos');
+        return redirect('/lietuviu-kalbos-pamokos#smartwizard');
     }
 
     public function reset() {
         session()->put('lithuania-language-form-results', null);
-        return redirect('/lietuviu-kalbos-pamokos');
+        return redirect('/lietuviu-kalbos-pamokos#smartwizard');
 
     }
 
