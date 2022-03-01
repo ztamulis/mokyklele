@@ -73,6 +73,13 @@
                         </button>
                     </a>
                 </div>
+                <div class="col-lg-3 col-md-12 mb-3">
+                    <a href="{{route('pages.free-lessons.edit')}}">
+                        <button class="button btn-primary">
+                            <i class="fa fa-cc-discover"></i><span>Nemokama pamoka</span>
+                        </button>
+                    </a>
+                </div>
             </div>
     </div>
 </x-user>

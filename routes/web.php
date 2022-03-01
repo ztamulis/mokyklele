@@ -4,6 +4,7 @@ use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\GroupQuestFormController;
 use App\Http\Controllers\Pages\CoursesAdultsPageController;
+use App\Http\Controllers\Pages\FreeLessonPageController;
 use App\Http\Controllers\Pages\HomePageController;
 use App\Http\Controllers\Pages\LithuanianCoursesController;
 use App\Http\Controllers\Pages\MeetingsPageController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\RegisterFreeController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\WebhookController;
 use App\Models\SettingsModels\CoursesAdultsPageContent;
+use App\Models\SettingsModels\FreeLessonPageContent;
 use App\Models\SettingsModels\HomePageContent;
 use App\Models\SettingsModels\LithuanianLanguagePageContent;
 use App\Models\SettingsModels\MeetingPageContent;
@@ -92,9 +94,14 @@ Route::get('/patarimai-tevams', function () {
         ->with("suggestions", \App\Models\Suggestion::orderBy('created_at', 'desc')->get())
         ->with('siteContent',  app(SuggestionPageContent::class)->getPageContent());
 });
+//Route::get('/nemokama-pamoka', function () {
+//    return view('landing.nemokama_pamoka');
+//});
+
 Route::get('/nemokama-pamoka', function () {
-    return view('landing.nemokama_pamoka');
+    return view('landing_new.nemokama_pamoka_naujas')->with('siteContent',  app(FreeLessonPageContent::class)->getPageContent());
 });
+
 //Route::get('/komanda', function () {
 //    return view('landing.komanda');
 //});
@@ -287,6 +294,10 @@ Route::middleware(['auth'])->group(function () {
             Route::group(['prefix' => 'courses-adults', 'as' => 'courses-adults.'], static function () {
                 Route::get('/', [CoursesAdultsPageController::class, 'edit'])->name('edit');
                 Route::put('/update', [CoursesAdultsPageController::class, 'update'])->name('update');
+            });
+            Route::group(['prefix' => 'free-lessons', 'as' => 'free-lessons.'], static function () {
+                Route::get('/', [FreeLessonPageController::class, 'edit'])->name('edit');
+                Route::put('/update', [FreeLessonPageController::class, 'update'])->name('update');
             });
             Route::group(['prefix' => 'suggestions', 'as' => 'suggestions-config.'], static function () {
                 Route::get('/', [SuggestionsPageController::class, 'edit'])->name('edit');

@@ -13,7 +13,7 @@
                                                                </style>
     <div class="row mt-5">
         <div class="col-md-12 col-sm-12 justify-content-center align-self-center">
-            <h3 class="text-center"><b>Mūsų komanda</b></h3>
+            <h3 class="text-center" style="rgb(78, 219, 191)"><b>Mūsų komanda</b></h3>
         </div>
 
     </div>
