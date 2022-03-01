@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Spatie\Image\Image;
 
 class TeamMemberController extends Controller {
     public function index() {
@@ -119,6 +120,10 @@ class TeamMemberController extends Controller {
             $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
             $file->storeAs("uploads/team_member/", $newfilename);
             $teamMember->img = $newfilename;
+            Image::load("uploads/team_member/".$newfilename)
+                ->height(400)
+                ->width(400)
+                ->save();
         }
         $teamMember->save();
 

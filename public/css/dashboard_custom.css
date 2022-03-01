@@ -1371,7 +1371,43 @@ h1, h2, h3, h4 {
   padding: 7px;
 }
 
+.landing--col--even-1 {
+  width: 50%;
+  float: left;
+  padding-right: 15px;
+}
+.landing--col--even-2 {
+  width: 50%;
+  float: left;
+  padding-left: 15px;
+}
 
+.free--lesson input[type=text], .free--lesson input[type=email], .free--lesson select, .free--lesson textarea {
+  width: 100%;
+  background-color: transparent;
+  border-bottom: 3px solid #000;
+  outline: none;
+  resize: none;
+}
+.free--lesson button {
+  background-color: #fff;
+  border: 3px solid #000;
+  width: 100%;
+  height: 70px;
+  color: #000;
+}
+input[type=email], input[type=password], input[type=text], input[type=date], select, textarea, .StripeElement {
+    display: block;
+    background: #fff;
+    border: none;
+    border-bottom: 1px solid #c4c4c4;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    width: 100%;
+    padding: 7px 10px 10px 10px;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+}
 
 
 

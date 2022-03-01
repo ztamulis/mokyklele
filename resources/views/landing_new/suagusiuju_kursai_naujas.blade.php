@@ -13,12 +13,12 @@
                 <div class="meeting-description mt-3">{!! $siteContent['main_description'] !!}</div>
             </div>
         </div>
+    </div>
         @if(!empty($siteContent['main_component']))
             <div class="row">
-            @include(\App\Http\Helpers\PageContentHelper::getComponent($siteContent['main_component']))
-             </div>
+                @include(\App\Http\Helpers\PageContentHelper::getComponent($siteContent['main_component']))
+            </div>
         @endif
-    </div>
     </div>
 @endsection
 

@@ -16,7 +16,7 @@
 
 </style>
 
-    <link rel="stylesheet" href="{{asset('css/dashboard_custom.1644584665663.css')}}">
+    <link rel="stylesheet" href="{{asset('css/dashboard_custom.1646138749630.css')}}">
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <link href="https://pagination.js.org/dist/2.1.5/pagination.css" rel="stylesheet">
     <link rel="stylesheet" href="/assets/fonts/fontawesome-all.min.css">
@@ -40,7 +40,7 @@
     <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#5bbad5">
     <link rel="shortcut icon" href="/favicon/favicon.ico">
     <link rel="stylesheet" href="{{asset('assets/bootstrap/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{asset('css/main.1644586810856.css')}}">
+    <link rel="stylesheet" href="{{asset('css/main.1646138753136.css')}}">
     <link href="{{'css/smart-wizard-cached.css'}}" rel="stylesheet" type="text/css" />
 
     <meta name="msapplication-TileColor" content="#da532c">

@@ -37,7 +37,7 @@
         <div class="form-group">
             <label for="exampleFormControlTextarea1">Papildomi komentarai/klausimai</label>
             <textarea class="form-control" name="comment" id="exampleFormControlTextarea1" rows="3"></textarea>
-            <button type="submit" class="btn btn-primary">Siųsti</button>
+            <button type="submit" class="btn btn-primary mt-3">Siųsti</button>
         </div>
     </form>
 </div>
