@@ -14,12 +14,14 @@ use App\Http\Controllers\Pages\SuggestionController;
 use App\Http\Controllers\Pages\SuggestionsPageController;
 use App\Http\Controllers\QuestionFormController;
 use App\Http\Controllers\RegisterFreeController;
+use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\WebhookController;
 use App\Models\SettingsModels\CoursesAdultsPageContent;
 use App\Models\SettingsModels\HomePageContent;
 use App\Models\SettingsModels\LithuanianLanguagePageContent;
 use App\Models\SettingsModels\MeetingPageContent;
 use App\Models\SettingsModels\SuggestionPageContent;
+use App\Models\TeamMember;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\InfoChangeController;
 use App\Http\Controllers\UserController;
@@ -93,8 +95,11 @@ Route::get('/patarimai-tevams', function () {
 Route::get('/nemokama-pamoka', function () {
     return view('landing.nemokama_pamoka');
 });
+//Route::get('/komanda', function () {
+//    return view('landing.komanda');
+//});
 Route::get('/komanda', function () {
-    return view('landing.komanda');
+    return view('landing_new.komanda_naujas')->with('teamMembers', TeamMember::all());
 });
 Route::get('/kontaktai', function () {
     return view('landing.kontaktai');
@@ -272,6 +277,9 @@ Route::middleware(['auth'])->group(function () {
                 Route::resource('introductions', IntroductionController::class);
 
             });
+
+            Route::resource('team-member', TeamMemberController::class);
+
             Route::group(['prefix' => 'home-page', 'as' => 'home-page.'], static function () {
                 Route::get('/', [HomePageController::class, 'edit'])->name('edit');
                 Route::put('/update', [HomePageController::class, 'update'])->name('update');
@@ -284,13 +292,16 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/', [SuggestionsPageController::class, 'edit'])->name('edit');
                 Route::put('/update', [SuggestionsPageController::class, 'update'])->name('update');
                 Route::resource('list', SuggestionController::class);
-
+            });
+            Route::group(['prefix' => 'suggestions', 'as' => 'suggestions-config.'], static function () {
+                Route::get('/', [SuggestionsPageController::class, 'edit'])->name('edit');
+                Route::put('/update', [SuggestionsPageController::class, 'update'])->name('update');
+                Route::resource('list', SuggestionController::class);
             });
             Route::group(['prefix' => 'lithuanian-courses-children', 'as' => 'lithuanian-courses-children.'], static function () {
                 Route::get('/', [LithuanianCoursesController::class, 'index'])->name('index');
                 Route::get('/edit', [LithuanianCoursesController::class, 'edit'])->name('edit');
                 Route::put('/update', [LithuanianCoursesController::class, 'update'])->name('update');
-//            Route::put('/create', [LithuanianCoursesController::class, 'create'])->name('update');
             });
         });
     });

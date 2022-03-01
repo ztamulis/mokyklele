@@ -1,4 +1,4 @@
-@extends("layouts.landing_new")@section("title", "Suagusiuju kursai")@section("content")
+@extends("layouts.landing_new")@section("title", "Suagusiųjų kursai")@section("content")
     <div class="container--other">
     <div class="row mt-5 mb-5">
         <div class="col-md-6 col-sm-12  justify-content-center align-self-center">
