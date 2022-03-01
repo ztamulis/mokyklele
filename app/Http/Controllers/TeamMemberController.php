@@ -100,6 +100,7 @@ class TeamMemberController extends Controller {
      * @param Request $request
      * @param TeamMember $teamMember
      * @return RedirectResponse
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function update(Request $request, TeamMember $teamMember) {
 

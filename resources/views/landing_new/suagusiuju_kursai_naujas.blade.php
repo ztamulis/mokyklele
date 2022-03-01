@@ -15,9 +15,7 @@
         </div>
     </div>
         @if(!empty($siteContent['main_component']))
-            <div class="row">
                 @include(\App\Http\Helpers\PageContentHelper::getComponent($siteContent['main_component']))
-            </div>
         @endif
     </div>
 @endsection
