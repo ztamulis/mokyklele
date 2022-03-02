@@ -6,7 +6,6 @@ use App\Models\TeamMember;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -18,8 +17,7 @@ class TeamMemberController extends Controller {
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-
-        $teamMember = TeamMember::latest('created_at')->paginate(15)->withQueryString();
+        $teamMember = TeamMember::ordered()->paginate(15)->withQueryString();
         return view("dashboard.team_member.index")->with("teamMember", $teamMember);
     }
 
@@ -146,6 +144,15 @@ class TeamMemberController extends Controller {
         Storage::delete('/uploads/team_member/'.$teamMember->img);
         $teamMember->delete();
         Session::flash('message', "Komandos narys ištrinti sėkmingai");
+        return Redirect::to(route('pages.team-member.index'));
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function sortTeamMember(Request $request) {
+        TeamMember::setNewOrder($request->input()['ids']);
         return Redirect::to(route('pages.team-member.index'));
     }
 }

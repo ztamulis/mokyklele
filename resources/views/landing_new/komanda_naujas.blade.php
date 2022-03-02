@@ -20,18 +20,24 @@
 
    <div class="row">
        @foreach ($teamMembers as $member)
-           @if($loop->index < 8)
+           @if($loop->index < $loop->count - 2)
            <div class="col-md-3 text-center col-sm-12 w-100 mt-5">
                     <img class="profile--image" src="{{asset('uploads/team_member/'.$member->img)}}">
-               <h4 class="suggestion-title"><b>{{$member->full_name}}</b></h4>
-                <div class="text mt-4 mb-5 suggestion-description" >{!! $member->description !!}</div>
+               <h6 class="suggestion-title mt-3"><b>{{$member->full_name}}</b></h6>
+                <div class="text mt-2 mb-5 suggestion-description" >{!! $member->description !!}</div>
            </div>
            @else
+               @if($loop->index == $loop->count - 2)
+                   <div class="row">
+                @endif
                <div class="col-md-6 col-sm-12 w-100 mt-5 text-center">
                    <img class="profile--image" src="{{asset('uploads/team_member/'.$member->img)}}">
-                   <h4 class="suggestion-title"><b>{{$member->full_name}}</b></h4>
-                   <div class="text mt-4 mb-5 suggestion-description" >{!! $member->description !!}</div>
+                   <h6 class="suggestion-title mt-3"><b>{{$member->full_name}}</b></h6>
+                   <div class="text mt-2 mb-5 suggestion-description" >{!! $member->description !!}</div>
                </div>
+               @if($loop->last)
+                   </div>
+               @endif
            @endif
        @endforeach
    </div>
