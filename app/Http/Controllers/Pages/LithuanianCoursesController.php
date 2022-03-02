@@ -121,7 +121,7 @@ class LithuanianCoursesController extends Controller
         $lithuanianLanguagePageContent->third_box_name = !empty($request->all()['third_box_name']) ? $request->all()['third_box_name'] : '';
         $lithuanianLanguagePageContent->third_box_title = !empty($request->all()['third_box_title']) ? $request->all()['third_box_title'] : '';
         $lithuanianLanguagePageContent->third_box_content = $request->all()['third_box_content'];
-        $lithuanianLanguagePageContent->main_component_questions = $request->all()['main_component_questions'];
+        $lithuanianLanguagePageContent->main_component_questions = !empty($request->all()['main_component_questions']) ? $request->all()['main_component_questions'] : '';
         $lithuanianLanguagePageContent->save();
         Session::flash('message', "Lietuvių kalbos puslapis sėkmingai readaguotas");
         return Redirect::route('pages.index');

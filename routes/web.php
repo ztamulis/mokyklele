@@ -101,12 +101,12 @@ Route::get('/patarimai-tevams', function () {
 Route::get('/nemokama-pamoka', function () {
     return view('landing_new.nemokama_pamoka_naujas')->with('siteContent',  app(FreeLessonPageContent::class)->getPageContent());
 });
-
+//
 //Route::get('/komanda', function () {
 //    return view('landing.komanda');
 //});
 Route::get('/komanda', function () {
-    return view('landing_new.komanda_naujas')->with('teamMembers', TeamMember::all());
+    return view('landing_new.komanda_naujas')->with('teamMembers', TeamMember::ordered()->get());
 });
 Route::get('/kontaktai', function () {
     return view('landing.kontaktai');
@@ -286,6 +286,8 @@ Route::middleware(['auth'])->group(function () {
             });
 
             Route::resource('team-member', TeamMemberController::class);
+            Route::post('team/sort',  [TeamMemberController::class, 'sortTeamMember'])->name('team-member.sort');
+
 
             Route::group(['prefix' => 'home-page', 'as' => 'home-page.'], static function () {
                 Route::get('/', [HomePageController::class, 'edit'])->name('edit');

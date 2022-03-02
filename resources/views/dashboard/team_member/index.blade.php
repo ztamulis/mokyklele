@@ -1,5 +1,5 @@
 <x-user>
-    <div class="container--other">
+    <div id="container--other" class="container--other">
         @if(isset($message))
             <div class="row">
                 <div class="col-xl-8 offset-xl-2">
@@ -43,7 +43,7 @@
                 </form>
                 <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                     @if(count($teamMember))
-                        <table class="table my-0" id="dataTable">
+                        <table  class="table my-0" id="dataTable">
                             <thead>
                             <tr>
                                 <th></th>
@@ -51,12 +51,13 @@
                                 <th></th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="sortable">
                             @foreach($teamMember as $member)
-                                <tr>
+                                <tr >
                                     <td><div class="color--small background--blue" @if($member->img) style="background-image: url('/uploads/team_member/{{ $member->img }}')" @endif ></div></td>
                                     <td>{{ $member->full_name }}</td>
                                     <td>{{ \Carbon\Carbon::parse($member->date_at)->timezone('Europe/London') }}</td>
+                                    <td><input type="hidden" name="id[]" value="{{$member->id}}"></td>
                                     <td class="text-right">
                                         @if(Auth::user()->role == "admin")
                                             <a href="{{route('pages.team-member.edit', $member->id)}}" class="btn btn-warning" type="button" style="margin: 0px 4px 0px;">Redaguoti</a>
@@ -71,9 +72,11 @@
                             @endforeach
                             </tbody>
                         </table>
+                            <div class="col-xl-3"><button class="btn btn-success" onclick="getMessage()" type="button">Pakeisti tvarką</button></div>
                     @else
                         Nėra sukurtų susitikimų.
                     @endif
+
                 </div>
                 <div class="row">
                     <div class="col-xl-3"><a href="{{route('pages.team-member.create')}}" class="btn btn-success" type="button">Sukurti naują narį</a></div>
@@ -86,4 +89,24 @@
             </div>
         </div>
     </div>
+    <script>$("#sortable").sortable();
+        function getMessage() {
+            var values = $("input[name='id[]']")
+                .map(function(){return $(this).val();}).get();
+            $.ajax({
+                type:'POST',
+                url: '{{route('pages.team-member.sort')}}',
+                processData: true,
+                data: {_token : '<?php echo csrf_token() ?>',  ids: values},
+                success:function() {
+                    var main = $('.container--other');
+                    main.prepend('<div id="ajax-message" class="row"> <div class="col-xl-8 offset-xl-2"><div class="alert alert-primary text-center" role="alert"><span>Sąrašas atnaujintas</span></div> </div> </div>');
+                    window.scrollTo(0, 0);
+                setTimeout(function(){
+                        $('#ajax-message').remove();
+                    }, 3000);
+                }
+            });
+        }
+    </script>
 </x-user>
