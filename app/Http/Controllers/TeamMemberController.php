@@ -17,7 +17,7 @@ class TeamMemberController extends Controller {
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        $teamMember = TeamMember::ordered()->paginate(15)->withQueryString();
+        $teamMember = TeamMember::ordered()->paginate(35)->withQueryString();
         return view("dashboard.team_member.index")->with("teamMember", $teamMember);
     }
 
