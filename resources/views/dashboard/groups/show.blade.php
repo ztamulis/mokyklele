@@ -128,6 +128,7 @@
                                                             <div class="author-comment">
                                                                 <div class="author">{{$file->user->name}} {{$file->user->surname}}</div>
                                                                 <div class="date mb-2">{{ $file->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</div>
+                                                                <input type="hidden" name="group_id" value="{{$group->id}}">
                                                                 <div class="desc edit">
                                                                     <textarea name="file_name" id="text-area-edit-{{$file->id}}" class="editor" rows="5" style="width: 100%;overflow-y: hidden; border: 0px" >{{$file->display_name}}</textarea>
                                                                 </div>

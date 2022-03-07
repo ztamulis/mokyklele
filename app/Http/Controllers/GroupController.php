@@ -15,12 +15,12 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use Log;
 use Mail;
 use Cookie;
 use Stripe\Exception\ApiErrorException;
@@ -415,6 +415,7 @@ class GroupController extends Controller
             return Redirect::back()->with("group", $group);
 
         }
+        Log::info($request->file('file'), ['fileId' => $id]);
         $originalFile = File::find($id);
 
         if(empty($originalFile)) {
@@ -422,7 +423,7 @@ class GroupController extends Controller
             Session::flash('alert-class', 'alert-danger');
             return Redirect::back()->with("group", $group)->with("groupMessage", false);
         }
-        if (!empty($originalFile->name) && !empty($request->file())) {
+        if (!empty($originalFile->name) && !empty($request->file('file'))) {
             $this->deleteHomeworkFile($originalFile);
             $file = $request->file('file');
             $filename = $file->hashName();
@@ -431,12 +432,12 @@ class GroupController extends Controller
             $originalFile->name = $filename;
         }
 
-        if (empty($request->file()) && !empty($originalFile->name) && !$request->input('oldFile')) {
+        if (empty($request->file('file')) && !empty($originalFile->name) && !$request->input('oldFile')) {
             $this->deleteHomeworkFile($originalFile);
             $originalFile->name = '';
         }
 
-        if (!empty($request->file()) && empty($originalFile->name)) {
+        if (!empty($request->file('file')) && empty($originalFile->name)) {
             $file = $request->file('file');
             $filename = $file->hashName();
 
@@ -444,7 +445,10 @@ class GroupController extends Controller
             $originalFile->name = $filename;
 
         }
-
+        Log::info('grupesEdit');
+        Log::info('failas', ['file' => $request->file('file')]);
+        Log::info('grupes_id', ['file' => $request->input("group_id")]);
+        Log::info('textas', ['text' => $request->input('file_name')]);
         $originalFile->display_name = $request->input('file_name');
 
         if (empty($request->input('file_name'))) {
@@ -504,14 +508,22 @@ class GroupController extends Controller
             return Redirect::back()->with("group", $group)->with("groups", Group::paginate(15));
         }
 
+        Log::info('grupes upload');
+        Log::info('failas', ['file' => $request->file('file')]);
+        Log::info('grupes_id', ['file' => $request->input("group_id")]);
+        Log::info('textas', ['text' => $displayText]);
+
+
         $file = $request->file('file');
 
         $fileObj = new File;
         if (!empty($file)) {
-//            $request->validate([
-//                'file' => ['max:20000', 'mimes:doc,docx,xls,xlsx,pdf,ppt,pptx,jpg,jpeg,png,gif,mp4,txt']
-//            ]);
+            $request->validate([
+                'file' => ['max:20000', 'mimes:doc,docx,xls,xlsx,pdf,ppt,pptx,jpg,jpeg,png,gif,mp4,txt']
+            ]);
             $filename = $file->hashName();
+            Log::info('failas', ['filename' => $filename]);
+
             $file->storeAs("uploads", $filename);
             $fileObj->name = $filename;
         }
