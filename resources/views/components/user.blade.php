@@ -173,9 +173,9 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right animated--grow-in">
                                     <a class="@if(Request::is('dashboard')) active @endif " href="/dashboard"><i class="fas fa-tachometer-alt"></i><span>Paskyra</span></a>
-                                    <a class=" @if(Request::is('dashboard/attendance')) active @endif " href="/dashboard/attendance"><i class="fa fa-bell"></i><span>Lankomumas</span></a>
-                                    <a class=" @if(Request::is('dashboard/events*')) active @endif " href="/dashboard/events"><i class="fa fa-calendar"></i><span>Užsiėmimai</span></a>
-                                    @if (Auth::user()->role === 'admin' || Auth::user()->role === 'teacher')
+                                @if (Auth::user()->role === 'admin' || Auth::user()->role === 'teacher')
+                                        <a class=" @if(Request::is('dashboard/events*')) active @endif " href="/dashboard/events"><i class="fa fa-calendar"></i><span>Užsiėmimai</span></a>
+                                        <a class=" @if(Request::is('dashboard/attendance')) active @endif " href="/dashboard/attendance"><i class="fa fa-bell"></i><span>Lankomumas</span></a>
                                         <a class="@if(Request::is('dashboard/rewards')) active @endif " href="/dashboard/rewards"><i class="fa fa-trophy"></i><span>Apdovanojimai</span></a>
                                     @endif
                                     @if(Auth::user()->role == "admin")
