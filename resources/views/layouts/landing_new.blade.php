@@ -315,40 +315,8 @@
     <script>alert("Klaida! {{ $errorsStr }}");</script>
 @endif
 <script>
-    $(document).ready(function() {
-        var btnFinish = $('<button type="submit"></button>').text('Pateikti').attr('id','finish-button')
-            .addClass('btn btn-primary btn-sm ml-sm-1 mt-xs-3 mt-1 d-none');
-        var wizard = $('#smartwizard').smartWizard({
-            selected: 0,
-            theme: 'dots',
-            autoAdjustHeight:true,
-            transitionEffect:'fade',
-            showStepURLhash: false,
-            labelFinish:'Finish',  // label for Finish button
-            labelCancel:'Cancel',
-            toolbarSettings: {
-                toolbarPosition: 'bottom', // none, top, bottom, both
-                toolbarButtonPosition: 'center', // left, right, center
-                toolbarExtraButtons: [btnFinish],
-                showNextButton: true, // show/hide a Next button
-                showPreviousButton: true, // show/hide a Previous button
-                enableFinishButton: true,
-            },
-            lang: { // Language variables for button
-                next: 'Pirmyn >',
-                previous: '< Atgal',
-                finish: 'Pateikti'
-            }
 
-        });
-        $(wizard).on("leaveStep", function(e, anchorObject, stepIndex, nextStepIndex, stepDirection) {
-            if(nextStepIndex == 'forward' && (anchorObject.prevObject.length - 2) === stepIndex){
-                $('#finish-button').removeClass('d-none');
-                console.log('yesss');
-            }else{
-                $('#finish-button').addClass('d-none');
-            }
-        });
+    $(document).ready(function() {
 
 
         $(".readmore-link").click(function(e) {

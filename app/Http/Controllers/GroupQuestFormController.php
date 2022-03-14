@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class GroupQuestFormController extends Controller
 {
 
     public function submitResults(Request $request) {
+
         $result = $this->getResults($request->input());
         session()->put('lithuania-language-form-results', $result);
+        Log::info($request->input());
         $this->sendEmailToAdmin($request->input('email'), $result);
         return redirect('/lietuviu-kalbos-pamokos#smartwizard');
     }
