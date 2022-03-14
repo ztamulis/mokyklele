@@ -43,8 +43,9 @@
                </div>
            </div>
        </div>
-       @include('landing_other.courses')
-
+       <div id="courses-buy" class="w-100">
+        @include('landing_other.courses')
+       </div>
        <div class="row mt-5">
            <div class="col-md-12 col-sm-12 justify-content-center align-self-center">
                <h1 class="second-block-title mb-3">{{$siteContent['second_box_title']}}</h1>
@@ -78,10 +79,6 @@
 
 
        <div class="row mt-5 w-100">
-           <div class="col-md-12">
-               <h1 class="third-block-title mb-5 pr-2">{{$siteContent['third_box_title']}}</h1>
-           </div>
-
            <div class="col-md-12 pr-5">
                <div class="display-first-block-array">
                    <img class="img-fluid mt-2 mr-2 suggestion-img" src="{{asset('assets/img/other/Group 21.png')}}">
@@ -94,6 +91,10 @@
                    </div>
                @endif
            </div>
+           <div class="col-md-12">
+               <h1 class="third-block-title mb-5 pr-2">{{$siteContent['third_box_title']}}</h1>
+           </div>
+
            <div class="col-md-12 pr-5">
                <div class="display-first-block-array">
                    <img class="img-fluid mt-2 mr-2 suggestion-img" src="{{asset('assets/img/other/Group 21.png')}}">

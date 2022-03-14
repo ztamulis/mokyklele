@@ -188,8 +188,7 @@ class GroupController extends Controller
      * @param Group $group
      * @return Response
      */
-    public function edit(Group $group)
-    {
+    public function edit(Group $group) {
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
@@ -415,19 +414,22 @@ class GroupController extends Controller
             return Redirect::back()->with("group", $group);
 
         }
-        Log::info($request->file('file'), ['fileId' => $id]);
+        Log::info('file id', ['fileId' => $id]);
         $originalFile = File::find($id);
+        Log::info('grupesEdit');
 
         if(empty($originalFile)) {
             Session::flash('message', 'Byla nerasta.');
             Session::flash('alert-class', 'alert-danger');
             return Redirect::back()->with("group", $group)->with("groupMessage", false);
         }
+
+        Log::info('senas failas', ['text' => $originalFile->name]);
+
         if (!empty($originalFile->name) && !empty($request->file('file'))) {
             $this->deleteHomeworkFile($originalFile);
             $file = $request->file('file');
             $filename = $file->hashName();
-
             $file->storeAs("uploads", $filename);
             $originalFile->name = $filename;
         }
@@ -445,15 +447,16 @@ class GroupController extends Controller
             $originalFile->name = $filename;
 
         }
-        Log::info('grupesEdit');
+        Log::info(Carbon::now()->format('Y-m-d H:i:s'));
         Log::info('failas', ['file' => $request->file('file')]);
+        Log::info('naujas failas', ['file' => $request->file('file')]);
         Log::info('grupes_id', ['file' => $request->input("group_id")]);
-        Log::info('textas', ['text' => $request->input('file_name')]);
         $originalFile->display_name = $request->input('file_name');
 
         if (empty($request->input('file_name'))) {
             $originalFile->display_name = ' ';
         }
+
         $originalFile->save();
 
         $studentBygroup = Student::where('group_id', '=', $request->input("group_id"))->get();
@@ -484,6 +487,10 @@ class GroupController extends Controller
      * @return bool
      */
     private function deleteHomeworkFile(File $file) {
+        Log::info('delete file');
+        Log::info('Delete file id', ['id' => $file->id]);
+        Log::info('Delete file name', ['id' => $file->name]);
+        Log::info('Delete file group id', ['id' => $file->group_id]);
         Storage::delete("uploads/".$file->name);
         return true;
     }
@@ -509,6 +516,7 @@ class GroupController extends Controller
         }
 
         Log::info('grupes upload');
+        Log::info(Carbon::now()->format('Y-m-d H:i:s'));
         Log::info('failas', ['file' => $request->file('file')]);
         Log::info('grupes_id', ['file' => $request->input("group_id")]);
         Log::info('textas', ['text' => $displayText]);

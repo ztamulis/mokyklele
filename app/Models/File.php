@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 class File extends Model implements ICommentable {
     use Commentable;
 
-
     public function group(){
         return $this->belongsTo(Group::class);
     }
