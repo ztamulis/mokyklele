@@ -86,7 +86,7 @@
                </div>
                <h4 class="third-block-description">{!! $siteContent['third_box_content'][0] !!}</h4>
                @if(!empty($siteContent['main_component_questions']))
-                   <div class="row">
+                   <div class="row" id="question-form-group">
                        @include(\App\Http\Helpers\PageContentHelper::getComponent($siteContent['main_component_questions']))
                    </div>
                @endif

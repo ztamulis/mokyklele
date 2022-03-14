@@ -15,12 +15,12 @@ class GroupQuestFormController extends Controller
         session()->put('lithuania-language-form-results', $result);
         Log::info($request->input());
         $this->sendEmailToAdmin($request->input('email'), $result);
-        return redirect('/lietuviu-kalbos-pamokos#smartwizard');
+        return redirect('/lietuviu-kalbos-pamokos#question-form-group');
     }
 
     public function reset() {
         session()->put('lithuania-language-form-results', null);
-        return redirect('/lietuviu-kalbos-pamokos#smartwizard');
+        return redirect('/lietuviu-kalbos-pamokos#question-form-group');
 
     }
 
