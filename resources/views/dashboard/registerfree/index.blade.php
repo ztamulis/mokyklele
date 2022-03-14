@@ -1,8 +1,8 @@
 
 <x-app-layout>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
-
     <h1 class="text-center mt-5 mb-5">Atsakymai į klausimus</h1>
+    <a href="{{asset('nemokama-pamoka.xlsx')}}">Excel download</a>
 
     <div class="d-lg-block d-none">
         <div class="row mb-1" >

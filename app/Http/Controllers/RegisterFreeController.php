@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\FreeRegistration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class RegisterFreeController extends Controller
 {
@@ -20,6 +22,8 @@ class RegisterFreeController extends Controller
         }
 
         $registrations = FreeRegistration::latest('created_at')->get();
+
+        (new FastExcel($registrations->toArray()))->export('nemokama-pamoka.xlsx');
         return view("dashboard.registerfree.index")->with("registrations", $registrations);
     }
 
@@ -88,4 +92,5 @@ class RegisterFreeController extends Controller
     {
         //
     }
+
 }
