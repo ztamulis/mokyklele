@@ -1,16 +1,25 @@
 @if(isset($reply) && $reply === true)
-    <div id="comment-{{ $comment->id }}" class="media">
+
+    <div id="comment-{{ $comment->id }}" class="media" style="    margin-bottom: 2rem;
+    border: 0;
+    border-top: 2px solid rgba(0,0,0,.1);">
+
         @else
-            <li id="comment-{{ $comment->id }}" class="media mt-3" style=" display:none;">
+            <li id="comment-{{ $comment->id }}" class="media mt-3" style="margin-bottom: 2rem;
+    border: 0;
+    border-top: 2px solid rgba(0,0,0,.1); display:none;">
                 @endif
-                <div class="author-icon"><span class="icon-user"></span></div>
+
+                <div class="author-icon">
+                    <span class="icon-user"></span>
+                </div>
 
                 <div class="media-body">
                     <h8 class="mt-0 mb-1">
                         {{ $comment->commenter->name }}
                         <small class="text-muted">- {{ $comment->created_at->diffForHumans() }}</small>
                     </h8>
-                    <div class="desc" >
+                    <div class="desc">
                         {!! $comment->comment!!}
                     </div>
                     <div class="edit-buttons">

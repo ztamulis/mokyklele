@@ -44,7 +44,7 @@
            </div>
        </div>
        <div id="courses-buy" class="w-100">
-        @include('landing_other.courses')
+            @include('landing_other.courses')
        </div>
        <div class="row mt-5">
            <div class="col-md-12 col-sm-12 justify-content-center align-self-center">

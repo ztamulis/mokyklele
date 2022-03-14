@@ -168,6 +168,9 @@
                                                 </div>
                                             </form>
                                             <x-comment-custom :model="$file"/>
+                                            @if(!$loop->last)
+                                                <hr style="border-top: 2px solid rgb(12 52 232 / 68%)!important;">
+                                            @endif
                                         </div>
                                     </li>
                                     @endforeach
@@ -293,8 +296,11 @@
                                                                     </div>
                                                                 @endif
                                                             </div>
-                                                        </div>
 
+                                                        </div>
+                                                        @if(!$loop->last)
+                                                            <hr style="border-top: 2px solid rgb(12 52 232 / 68%)!important;">
+                                                        @endif
                                                         <div class="modal fade" id="edit-group-messages-{{ $msg->id }}" tabindex="-1" role="dialog">
                                                             <div class="modal-dialog" role="document">
                                                                 <div class="modal-content">
@@ -331,10 +337,9 @@
                                             @else
                                                 <div class="desc text-center">Nėra įrašų.</div>
                                             @endif
-
                                         </div>
 
-                                        </div>
+                                    </div>
                                     </div>
                                 <div class="sidebar-area col-lg-5 col-sm-12 col-12">
                                     <div class="members-block">
@@ -386,7 +391,6 @@
                                     </div>
                             </div>
                         </div>
-
             </div>
             </section>
         </div>
