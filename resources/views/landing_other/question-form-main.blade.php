@@ -406,7 +406,7 @@
                 // third question
                 // third question
                 if (selectedAnswers[3] === 'a' ) {
-                    availableAnswers[13] = '';
+                    availableAnswers[12] = '';
                     availableAnswers[30] = '';
                 }
 
@@ -447,7 +447,7 @@
 
                 // third question
                 if (selectedAnswers[3] === 'a' ) {
-                    availableAnswers[13] = '';
+                    availableAnswers[12] = '';
                     availableAnswers[30] = '';
                 }
 
@@ -524,7 +524,7 @@
 
                 // third question
                 if (selectedAnswers[3] === 'a' ) {
-                    availableAnswers[13] = '';
+                    availableAnswers[12] = '';
                     availableAnswers[30] = '';
                 }
 
@@ -560,7 +560,6 @@
 
             if (selectedAnswers[1] === 'c' || selectedAnswers[1] === 'd') {
                 if (selectedAnswers[4] === 'b') {
-
                     availableAnswers[16] = '';
                     availableAnswers[17] = '';
                 }
@@ -569,7 +568,6 @@
                     availableAnswers[18] = '';
                 }
                 if (selectedAnswers[4] === 'd') {
-
                     availableAnswers[18] = '';
                     availableAnswers[19] = '';
                 }
