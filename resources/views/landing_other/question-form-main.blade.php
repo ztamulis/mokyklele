@@ -288,8 +288,11 @@
 
             if (nextStepIndex == 'forward' && (anchorObject.prevObject.length - minuStep) === stepIndex) {
                 $('#finish-button').removeClass('d-none');
+                $('.sw-btn-next').addClass('d-none');
+
             } else {
                 $('#finish-button').addClass('d-none');
+                $('.sw-btn-next').removeClass('d-none');
             }
         });
     });
