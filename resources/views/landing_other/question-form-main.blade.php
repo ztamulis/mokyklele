@@ -326,7 +326,28 @@
         var availableAnswers = getAvailableAnswers(selectedAnswers);
         setNewAnswers(availableAnswers, stepIndex);
         setFourthAnswer(stepIndex);
+        setFifthAnswer(stepIndex);
     }
+
+    function setFifthAnswer(stepIndex) {
+        var i = 16;
+        var rangeTo = 19;
+        if (stepIndex !== 4) {
+            return;
+        }
+        while (i <= rangeTo) {
+            if ($('#answer-'+i).css('display') !== 'none') {
+                $('#gridRadios'+i).prop('checked', true);
+                break;
+            }
+            i++;
+        }
+        // if (availableAnswers[30] !== undefined) {
+        //     $('#step-5').hide();
+        //     $('#question-5').hide();
+        // }
+    }
+
     function setFourthAnswer(stepIndex) {
         var i = 12;
         var rangeTo = 15;
