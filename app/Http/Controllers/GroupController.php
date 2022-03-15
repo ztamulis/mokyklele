@@ -373,7 +373,6 @@ class GroupController extends Controller
      */
     public static function nextLessonButton($group){
         $event = $group->events()->where("date_at", "<" , Carbon::now('utc')->addMinutes(10))->where("date_at", "<" , Carbon::now('utc')->endOfDay())->where("date_at", ">" , Carbon::now('utc')->startOfDay())->first();
-//        dd(\Carbon\Carbon::now('UTC')->subMinutes(10)->toDateTimeString());
         if(isset($event)) {
             return $event;
         }
