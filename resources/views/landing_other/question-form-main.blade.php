@@ -262,6 +262,8 @@
             $('#smartwizard').smartWizard("stepState", [4], "show");
             if ($('.nav.nav-tabs.step-anchor.question-form-tablet-display-none').children().length === 5) {
                 $('#finish-button').addClass('d-none');
+                $('.sw-btn-next').removeClass('d-none');
+
             }
 
         });
@@ -270,6 +272,8 @@
             $('#smartwizard').smartWizard("stepState", [4], "hide");
             if ($('.nav.nav-tabs.step-anchor.question-form-tablet-display-none').children().length === 5) {
                 $('#finish-button').removeClass('d-none');
+                $('.sw-btn-next').addClass('d-none');
+
             }
 
         });
