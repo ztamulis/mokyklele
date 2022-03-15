@@ -34,7 +34,7 @@ class GroupQuestFormController extends Controller
             el.paštas:'.' '.$email.'<br>
             rezultatas:'.' '.$result;
         }
-        $subject = 'Testo rezultai';
+        $subject = 'Testo rezultatai';
         \Mail::send([], [], function ($message) use ($subject, $emailContent) {
             $message
                 ->to(\Config::get('app.email'))
@@ -63,7 +63,7 @@ class GroupQuestFormController extends Controller
         } else if ($this->checkIfBlueGroupThirdLevel($answers)) {
             return 'Mėlyna 3 lygis';
         } else if ($this->checkIfRedEnglishLevel($answers)) {
-            return 'Raudona angišlas lygis';
+            return 'Raudona angliškas lygis';
         } else if ($this->checkIfRedGroupFirstLevel($answers)) {
             return 'Raudona 1 lygis';
         } else if ($this->checkIfRedGroupSecondLevel($answers)) {
