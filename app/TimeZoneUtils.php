@@ -32,11 +32,19 @@ class TimeZoneUtils
      * @return string
      */
     public static function updateTime($date, $updatedAt) {
-        if ((self::summerTimeStart()." 5:00" < $updatedAt
-            && $updatedAt < self::summerTimeEnd()." 5:00")
-            && !Carbon::now()->timezone('Europe/London')->isDST()) {
+        $summerStarts = Carbon::parse(self::summerTimeStart()." 5:00");
+        $summerEnds = Carbon::parse(self::summerTimeEnd()." 5:00");
+        if (($summerStarts < $updatedAt
+            && $updatedAt < $summerEnds)
+            && !Carbon::parse($date)->timezone('Europe/London')->isDST()) {
 
             return Carbon::createFromDate($date)->addHour()->format('Y-m-d H:i');
+        }
+        if (($summerStarts > $updatedAt
+                && $updatedAt < $summerEnds)
+        && Carbon::parse($date)->timezone('Europe/London')->isDST()) {
+
+            return Carbon::createFromDate($date)->subhour()->format('Y-m-d H:i');
         }
         return $date;
     }
@@ -45,11 +53,19 @@ class TimeZoneUtils
      * @return string
      */
     public static function updateHours($date, $updatedAt) {
-        if ((self::summerTimeStart()." 5:00" < $updatedAt
-                && $updatedAt < self::summerTimeEnd()." 5:00")
-            && !Carbon::now()->timezone('Europe/London')->isDST()) {
+        $summerStarts = Carbon::parse(self::summerTimeStart()." 5:00");
+        $summerEnds = Carbon::parse(self::summerTimeEnd()." 5:00");
+        if (($summerStarts < $updatedAt
+                && $updatedAt < $summerEnds)
+            && !Carbon::parse($date)->timezone('Europe/London')->isDST()) {
 
             return Carbon::createFromDate($date)->addHour()->format('H:i');
+        }
+        if (($summerStarts > $updatedAt
+                && $updatedAt < $summerEnds)
+            && Carbon::parse($date)->timezone('Europe/London')->isDST()) {
+
+            return Carbon::createFromDate($date)->subhour()->format('H:i');
         }
         return $date;
     }
