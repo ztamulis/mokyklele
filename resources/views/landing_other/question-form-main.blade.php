@@ -2,7 +2,6 @@
     .link-button {
         background: none;
         border: none;
-        text-decoration: underline;
         cursor: pointer;
     }
 </style>
@@ -22,7 +21,7 @@
                 </div>
             </div>
             <div class="col-md-8">
-                @if(empty(Session::get('lithuania-language-form-results')))
+                @if(empty(Session::get('lithuania-language-form-group-data')['name']))
                 <form action="{{route('lithuanian-language-form-submit')}}" method="POST">
                     @csrf
                     @method("POST")
@@ -63,7 +62,7 @@
                                         <div class="form-check" id="answer-4">
                                             <input class="form-check-input" type="radio" name="age" id="gridRadios4" value="d">
                                             <label class="form-check-label" for="gridRadios4">
-                                               10-13 m.
+                                               10-14 m.
                                             </label>
                                         </div>
                                     </div>
@@ -208,22 +207,30 @@
                             @csrf
                             @method("POST")
                             <div class="row">
-                                <div class="col-md-12">
-                                    <span class="text-center">
-                                        Jums rekomenduojama grupė: <b>{{Session::get('lithuania-language-form-results')}}</b>
-                                    </span>
-                                </div>
-
-                                <div class="col-md-12 mt-2">
-                                    <a href="#courses-buy" style="color:#0f65ef!important;">Registracija į kursą</a>
-                                </div>
-                                <form action="{{route('lithuanian-language-form-reset')}}" method="POST">
-                                    <div class="col-md-12 mt-2">
-                                        <input type="submit" id="reset-button" style="display: none;" />
-                                        <label class="link-button " for="reset-button"><b>Bandyt iš naujo</b></label>
+                                <div class="col-md-12 text-center mt-1">
+                                    <div>
+                                        <h5><b>Jūsų vaikui rekomenduojama grupė: </b></h5>
                                     </div>
-                                </form>
-
+                                    <div class="mt-3" style="display:inline-flex">
+                                        <div class="background--{{Session::get('lithuania-language-form-group-data')['type']}}" style="border-radius: 85px;
+    height: 25px;
+    width: 25px;
+    margin-top: 3px;
+    margin-right: 8px;"></div><h4><b>{{Session::get('lithuania-language-form-group-data')['name']}}</b></h4>
+                                    </div>
+                                    <div class="mt-2">
+                                        <span>{{Session::get('lithuania-language-form-group-data')['text']}}</span>
+                                    </div>
+                                    <div class="mt-2">
+                                        <a href="#{{Session::get('lithuania-language-form-group-data')['type']}}" ><button onclick="$('[data-filter={{Session::get('lithuania-language-form-group-data')['type']}}]').click()" type="button" class="btn btn-sm btn-primary">Registracija į kursą</button></a>
+                                    </div>
+                                    <form action="{{route('lithuanian-language-form-reset')}}" method="POST">
+                                        <div class="col-md-12 mt-2">
+                                            <input type="submit" id="reset-button" style="display: none;" />
+                                            <label class="link-button " for="reset-button"><b>Bandyt iš naujo</b></label>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                     @endif
             </div>
@@ -478,13 +485,13 @@
                     availableAnswers[12] = '';
                     availableAnswers[30] = '';
                 }
-
-                if (selectedAnswers[3] === 'b' ) {
+                if (selectedAnswers[3] === 'b' && selectedAnswers[2] === 'c') {
+                    availableAnswers[12] = '';
+                } else if(selectedAnswers[3] === 'b' ) {
                     availableAnswers[12] = '';
                     availableAnswers[13] = '';
                     availableAnswers[30] = '';
                 }
-
 
                 if (selectedAnswers[3] === 'c' ) {
                     availableAnswers[14] = '';
@@ -515,7 +522,9 @@
                     availableAnswers[30] = '';
                 }
 
-                if (selectedAnswers[3] === 'b') {
+                if (selectedAnswers[3] === 'b' && selectedAnswers[2] === 'c') {
+                    availableAnswers[12] = '';
+                } else if(selectedAnswers[3] === 'b' ) {
                     availableAnswers[12] = '';
                     availableAnswers[13] = '';
                     availableAnswers[30] = '';
@@ -556,7 +565,9 @@
                     availableAnswers[30] = '';
                 }
 
-                if (selectedAnswers[3] === 'b' ) {
+                if (selectedAnswers[3] === 'b' && selectedAnswers[2] === 'c') {
+                    availableAnswers[12] = '';
+                } else if(selectedAnswers[3] === 'b' ) {
                     availableAnswers[12] = '';
                     availableAnswers[13] = '';
                     availableAnswers[30] = '';
