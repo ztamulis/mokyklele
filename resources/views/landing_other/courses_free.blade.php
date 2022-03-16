@@ -43,7 +43,7 @@
 
         @if(isset($groupsGrouped['red']))
             <div class="learning--group--select--item" data-filter-free="red">
-                Raudona (10-13m.)
+                Raudona (10-14m.)
             </div>
         @endif
 

@@ -42,7 +42,7 @@
 
         @if(isset($groupsGrouped['red']))
             <a href="#red" id="red" class="learning--group--select--item" data-filter="red">
-                Raudona (10-13m.)
+                Raudona (10-14m.)
             </a>
         @endif
 
