@@ -3,6 +3,7 @@
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\GroupQuestFormController;
+use App\Http\Controllers\Pages\ContactsPageController;
 use App\Http\Controllers\Pages\CoursesAdultsPageController;
 use App\Http\Controllers\Pages\FreeLessonPageController;
 use App\Http\Controllers\Pages\HomePageController;
@@ -11,17 +12,20 @@ use App\Http\Controllers\Pages\MeetingsPageController;
 use App\Http\Controllers\Pages\IntroductionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Pages\NotificationsController;
+use App\Http\Controllers\Pages\PricePageController;
 use App\Http\Controllers\Pages\SuggestionController;
 use App\Http\Controllers\Pages\SuggestionsPageController;
 use App\Http\Controllers\QuestionFormController;
 use App\Http\Controllers\RegisterFreeController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\WebhookController;
+use App\Models\SettingsModels\ContactsPageContent;
 use App\Models\SettingsModels\CoursesAdultsPageContent;
 use App\Models\SettingsModels\FreeLessonPageContent;
 use App\Models\SettingsModels\HomePageContent;
 use App\Models\SettingsModels\LithuanianLanguagePageContent;
 use App\Models\SettingsModels\MeetingPageContent;
+use App\Models\SettingsModels\PricePageContent;
 use App\Models\SettingsModels\SuggestionPageContent;
 use App\Models\TeamMember;
 use Illuminate\Support\Facades\Route;
@@ -64,7 +68,8 @@ Route::get('/apie-pamokas', function () {
 //    return view('landing.patarimai_tėvams');
 //});
 Route::get('/kaina', function () {
-    return view('landing.kaina');
+    return view('landing_new.kaina_naujas')->with('siteContent',  app(PricePageContent::class)->getPageContent());
+
 });
 
 //Route::get('/kaina', function () {
@@ -109,8 +114,9 @@ Route::get('/komanda', function () {
     return view('landing_new.komanda_naujas')->with('teamMembers', TeamMember::ordered()->get());
 });
 Route::get('/kontaktai', function () {
-    return view('landing.kontaktai');
+    return view('landing_new.kontaktai_naujas')->with('siteContent',  app(ContactsPageContent::class)->getPageContent());
 });
+
 Route::get('/privatumo-politika', function () {
     return view('landing.privatumo_politika');
 });
@@ -300,6 +306,14 @@ Route::middleware(['auth'])->group(function () {
             Route::group(['prefix' => 'free-lessons', 'as' => 'free-lessons.'], static function () {
                 Route::get('/', [FreeLessonPageController::class, 'edit'])->name('edit');
                 Route::put('/update', [FreeLessonPageController::class, 'update'])->name('update');
+            });
+            Route::group(['prefix' => 'prices', 'as' => 'prices.'], static function () {
+                Route::get('/', [PricePageController::class, 'edit'])->name('edit');
+                Route::put('/update', [PricePageController::class, 'update'])->name('update');
+            });
+            Route::group(['prefix' => 'contacts', 'as' => 'contacts.'], static function () {
+                Route::get('/', [ContactsPageController::class, 'edit'])->name('edit');
+                Route::put('/update', [ContactsPageController::class, 'update'])->name('update');
             });
             Route::group(['prefix' => 'suggestions', 'as' => 'suggestions-config.'], static function () {
                 Route::get('/', [SuggestionsPageController::class, 'edit'])->name('edit');
