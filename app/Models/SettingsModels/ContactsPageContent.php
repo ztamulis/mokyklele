@@ -7,7 +7,6 @@ use Spatie\LaravelSettings\Settings;
 class ContactsPageContent extends Settings {
     public string $first_block_first_content;
     public string $first_block_second_content;
-    public string $first_block_third_content;
     public string $second_block_first_content;
     public string $second_block_second_content;
     public string $second_block_third_content;
