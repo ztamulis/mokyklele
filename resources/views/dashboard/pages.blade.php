@@ -81,5 +81,22 @@
                     </a>
                 </div>
             </div>
+
+            <div class="row mt-5 text-center">
+                <div class="col-lg-3 col-md-12 mb-3">
+                    <a href="{{route('pages.prices.edit')}}">
+                        <button class="button btn-primary">
+                            <i class="fa fa-cc-discover"></i><span>Kaina</span>
+                        </button>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-12 mb-3">
+                    <a href="{{route('pages.contacts.edit')}}">
+                        <button class="button btn-primary">
+                            <i class="fa fa-cc-discover"></i><span>Kontaktai</span>
+                        </button>
+                    </a>
+                </div>
+            </div>
     </div>
 </x-user>
