@@ -24,32 +24,32 @@
         @endphp
 
         @if(isset($groupsGrouped['yellow']))
-            <div class="learning--group--select--item active" data-filter="yellow">
+            <a href="#yellow" id="yellow" class="learning--group--select--item active" data-filter="yellow">
                 Geltona (2-4m.)
-            </div>
+            </a>
         @endif
 
         @if(isset($groupsGrouped['green']))
-            <div class="learning--group--select--item" data-filter="green">
+            <a href="#green" id="green" class="learning--group--select--item" data-filter="green">
                 Žalia (5-6m.)
-            </div>
+            </a>
         @endif
         @if(isset($groupsGrouped['blue']))
-            <div class="learning--group--select--item" data-filter="blue">
+            <a href="#blue" id="blue" class="learning--group--select--item" data-filter="blue">
                 Mėlyna (7-9m.)
-            </div>
+            </a>
         @endif
 
         @if(isset($groupsGrouped['red']))
-            <div class="learning--group--select--item" data-filter="red">
+            <a href="#red" id="red" class="learning--group--select--item" data-filter="red">
                 Raudona (10-13m.)
-            </div>
+            </a>
         @endif
 
         @if(isset($groupsGrouped['individual']))
-            <div class="learning--group--select--item" data-filter="individual">
+            <a href="#individual" id="individual" class="learning--group--select--item" data-filter="individual">
                 Individualios pamokos
-            </div>
+            </a>
         @endif
 
     </div>
@@ -118,8 +118,19 @@
         $("[data-filter]").removeClass("active");
         $("[data-filter='"+group+"']").addClass("active");
     }
-    $("[data-filter]").click(function () {
-        filterBy($(this).attr("data-filter"));
+    $(document).ready(function() {
+        $("[data-filter]").click(function () {
+            filterBy($(this).attr("data-filter"));
+        });
+        var hash = document.URL.substr(document.URL.indexOf('#') + 1);
+        var indexOfUrl = hash.indexOf('-');
+        if (parseInt(indexOfUrl) < 0) {
+            filterBy(hash);
+
+        } else {
+            filterBy('{{$type}}');
+        }
     });
-    filterBy('{{$type}}');
+
+
 </script>

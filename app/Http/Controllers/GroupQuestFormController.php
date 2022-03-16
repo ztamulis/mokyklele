@@ -11,19 +11,29 @@ class GroupQuestFormController extends Controller
 
     public function submitResults(Request $request) {
 
-        $result = $this->getResults($request->input());
-        session()->put('lithuania-language-form-results', $result);
+        $groupName = $this->getGroupName($request->input());
+        $data = $this->getTypeAndTextByGroupName($groupName);
+        $data = array_merge($data, ['name' => $groupName]);
+        session()->put('lithuania-language-form-group-data', $data);
+
+
         Log::info($request->input());
-        $this->sendEmailToAdmin($request->input('email'), $result);
+        Log::info($groupName);
+        $this->sendEmailToAdmin($request->input('email'), $groupName);
         return redirect('/lietuviu-kalbos-pamokos#question-form-group');
     }
 
     public function reset() {
-        session()->put('lithuania-language-form-results', null);
+        session()->put('lithuania-language-form-group-data', []);
         return redirect('/lietuviu-kalbos-pamokos#question-form-group');
 
     }
 
+
+    /**
+     * @param $email
+     * @param $result
+     */
     private function sendEmailToAdmin($email, $result) {
         if (Auth::check()) {
             $emailContent = Auth::user()->name.' '.Auth::user()->surname.' užpildė lietuvių kalbos testą:<br>
@@ -44,10 +54,62 @@ class GroupQuestFormController extends Controller
     }
 
     /**
+     * @param string $groupName
+     * @return array
+     */
+    private function getTypeAndTextByGroupName(string $groupName):array {
+        if ($groupName === 'Žalia angliškas lygis'
+            || $groupName === 'Žalia grupė 1 lygis'
+            || $groupName === 'Žalia grupė 2 lygis'
+        ) {
+           return [
+               'type' => 'green',
+               'text' => 'Grupė skirta 5–6 m. mokinukams. Vaikai, jau pradėję eiti į mokyklą, mokosi skaityti ir kalbėti per judesio, interaktyvius žaidimus, linksmus pokalbius.
+                Pamokos trukmė – 40 min.',
+           ];
+        }
+
+        if ($groupName === 'Geltona') {
+            return [
+                'type' => 'yellow',
+                'text' => 'Grupė 2–4 m. mokinukams. Vaikai lavina kalbą per patyriminį ugdymą – mokosi judėdami, liesdami, žaisdami, šokdami ir dainuodami.
+                Pamokos trukmė – 30 min.',
+            ];
+        }
+
+        if ($groupName === 'Mėlyna angliškas lygis'
+            || $groupName === 'Mėlyna 1 lygis'
+            || $groupName === 'Mėlyna 2 lygis'
+            || $groupName === 'Mėlyna 3 lygis'
+        ) {
+            return [
+                'type' => 'blue',
+                'text' => 'Grupė 7–9 m. mokiniams. Pasitelkdami interaktyvius žaidmus, literatūrą, virtualias mokymosi platfomas ir gyvus judesio žaidimus vaikai lavina, kalbėjimo, skaitymo įgūdžius, susipažįsta su gramatikos pagrindais.
+Pamokos trukmė – 40 min.',
+            ];
+        }
+        if ($groupName === 'Raudona angliškas lygis'
+            || $groupName === 'Raudona 1 lygis'
+            || $groupName === 'Raudona 2 lygis'
+            || $groupName === 'Raudona 3 lygis'
+        ) {
+            return [
+                'type' => 'red',
+                'text' => 'Grupė 10–14 m. mokiniams. Pasitelkdami interaktyvius žaidmus, literatūrą, virtualias mokymosi platfomas vaikai lavina kalbėjimo, skaitymo įgūdžius, susipažįsta su gramatikos pagrindais.
+Pamokos trukmė – 45 min.',
+            ];
+        }
+
+        return ['type' => null, 'text' => null];
+    }
+
+
+
+    /**
      * @param $answers
      * @return string
      */
-    private function getResults($answers) :string {
+    private function getGroupName($answers) :string {
         if ($this->checkIfGreenEnglishLevel($answers)) {
             return 'Žalia angliškas lygis';
         } else if ($this->checkIfGreenGroupFirstLevel($answers)) {
