@@ -10,8 +10,12 @@
         <div class=" row smart-wizard-box p-5">
             <div class="col-md-4">
                 <div class="row">
-                    <div class="col-lg-12 mb-2">
+                    <div class="col-lg-12 mb-2 text-center">
+                        @if(empty(Session::get('lithuania-language-form-group-data')['name']))
                         <span style="font-family: Playfair Display;font-style: normal;font-weight: bold;font-size: 29px;line-height: 30px;color: #F74395;">Kalbos mokėjimo lygio nustatymas</span>
+                        @else
+                            <span style="font-family: Playfair Display;font-style: normal;font-weight: bold;font-size: 29px;line-height: 30px;color: #F74395;">Valio!</span>
+                        @endif
                     </div>
                 </div>
                 <div class="row question-form-mobile-display-none">

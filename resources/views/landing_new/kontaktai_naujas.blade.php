@@ -42,7 +42,6 @@
            <div class="text mb-5 suggestion-description" >{!! $siteContent['end_text'] !!}</div>
        </div>
    </div>
- <hr>
 @endsection
 
 
