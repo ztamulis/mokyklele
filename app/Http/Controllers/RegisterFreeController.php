@@ -12,13 +12,14 @@ class RegisterFreeController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      * @throws \Box\Spout\Common\Exception\IOException
      * @throws \Box\Spout\Common\Exception\InvalidArgumentException
      * @throws \Box\Spout\Common\Exception\UnsupportedTypeException
      * @throws \Box\Spout\Writer\Exception\WriterNotOpenedException
      */
-    public function index()
+    public function index(Request $request)
     {
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
@@ -26,7 +27,21 @@ class RegisterFreeController extends Controller
 
         $registrations = FreeRegistration::latest('created_at')->get();
 
+
         (new FastExcel($registrations->toArray()))->export('nemokama-pamoka.xlsx');
+        if (!empty($request->input("email")) || !empty($request->input("name"))) {
+            $registrations = FreeRegistration::where("id", ">", 0);
+            if(!empty($request->input("email"))){
+                $registrations = $registrations->where("email", "LIKE", "%" . $request->input("email") . "%");
+            }
+            if(!empty($request->input("name"))){
+                $registrations = $registrations->where("email", "LIKE", "%" . $request->input("name") . "%");
+            }
+
+
+            $registrations = $registrations->orderBy('created_at')->get();
+        }
+
         return view("dashboard.registerfree.index")->with("registrations", $registrations);
     }
 
