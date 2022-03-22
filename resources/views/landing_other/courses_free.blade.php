@@ -25,32 +25,32 @@
         @endphp
 
         @if(isset($groupsGrouped['yellow']))
-            <div class="learning--group--select--item active" data-filter-free="yellow">
+            <a href="#yellow" class="learning--group--select--item active" id="yellow" data-filter-free="yellow">
                 Geltona (2-4m.)
-            </div>
+            </a>
         @endif
 
         @if(isset($groupsGrouped['green']))
-            <div class="learning--group--select--item" data-filter-free="green">
+            <a href="#green" class="learning--group--select--item" id="green" data-filter-free="green">
                 Žalia (5-6m.)
-            </div>
+            </a>
         @endif
         @if(isset($groupsGrouped['blue']))
-            <div class="learning--group--select--item" data-filter-free="blue">
+            <a href="#blue" class="learning--group--select--item" id="blue" data-filter-free="blue">
                 Mėlyna (7-9m.)
-            </div>
+            </a>
         @endif
 
         @if(isset($groupsGrouped['red']))
-            <div class="learning--group--select--item" data-filter-free="red">
+            <a href="#red" class="learning--group--select--item" id="red" data-filter-free="red">
                 Raudona (10-14m.)
-            </div>
+            </a>
         @endif
 
         @if(isset($groupsGrouped['individual']))
-            <div class="learning--group--select--item" data-filter-free="individual">
+            <a href="#individual" class="learning--group--select--item" id="individual" data-filter-free="individual">
                 Individualios pamokos
-            </div>
+            </a>
         @endif
 
     </div>
@@ -81,18 +81,23 @@
     @endforeach
 </div>
 <script>
-    $( document ).ready(function() {
-
-        function filterByFree(group) {
+    $(document).ready(function() {
+        $("[data-filter-free]").click(function () {
+            filterByFree($(this).attr("data-filter-free"));
+        });
+        var hash = document.URL.substr(document.URL.indexOf('#') + 1);
+        var indexOfUrl = hash.indexOf('-');
+        if (parseInt(indexOfUrl) < 0) {
+            filterByFree(hash);
+        } else {
+            filterByFree('{{$type}}');
+        }
+    });
+    function filterByFree(group) {
         $("[data-group-free]").hide();
-        $("[data-group-free='"+group+"']").show();
+        $("[data-group-free='" + group + "']").show();
         $("[data-filter-free]").removeClass("active");
-        $("[data-filter-free='"+group+"']").addClass("active");
+        $("[data-filter-free='" + group + "']").addClass("active");
     }
-    $("[data-filter-free]").click(function () {
-        filterByFree($(this).attr("data-filter-free"));
-    });
-        filterByFree('{{$type}}');
-    });
 
 </script>

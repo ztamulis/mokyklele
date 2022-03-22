@@ -70,7 +70,7 @@ class TimeZoneUtils
 
             return Carbon::createFromDate($date)->subhour()->format('H:i');
         }
-        return $date;
+        return Carbon::createFromDate($date)->format('H:i');
     }
 
 
