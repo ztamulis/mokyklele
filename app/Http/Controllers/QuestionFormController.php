@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 
 class QuestionFormController extends Controller
@@ -44,6 +45,11 @@ class QuestionFormController extends Controller
     public function store(Request $request)
     {
         QuestionForm::create($request->all());
+        $modal_title = "Jūs sėkmingai užsiregistravote!";
+        $modal_content = "Netrukus susisieksime. Ačiū, kad domitės Pasaka!";
+
+        Session::flash('modal_title', $modal_title);
+        Session::flash('modal_content', $modal_content);
         return Redirect::back();
     }
 
