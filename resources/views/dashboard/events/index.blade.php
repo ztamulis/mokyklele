@@ -71,7 +71,7 @@
                                 <tr>
                                     <td><input type="checkbox" data-select value="{{ $event->id }}"></td>
                                     <td>{{ $event->name }}</td>
-                                    <td>{{\App\TimeZoneUtils::updateHours($event->date_at, $event->updated_at) }}</td>
+                                    <td>{{\App\TimeZoneUtils::updateTime($event->date_at->timezone('GMT'), $event->updated_at) }}</td>
                                     <td>
                                         @foreach($event->groups as $group)
                                             <div class="color--small background--{{ $group->type }}"></div> <small>#g{{ $group->id }}</small> {{ $group->name }} <small>{{ \App\TimeZoneUtils::updateHours($event->date_at, $event->updated_at) }}</small>
