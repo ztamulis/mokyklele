@@ -27,6 +27,13 @@ class TimeZoneUtils
         return "GMT+0";
     }
 
+    public static function dateGmtModifierText($date) {
+        if(Carbon::parse($date)->timezone(\Cookie::get("user_timezone", "GMT"))->isDST()){
+            return "GMT+1";
+        }
+        return "GMT+0";
+    }
+
     /**
      * @param $date
      * @param $updatedAt
