@@ -29,7 +29,7 @@
                         @csrf
                         @method("PUT")
                         <div class="form-group"><small class="form-text text-muted">Pavadinimas</small><input class="form-control" type="text" name="name" placeholder="Pamoka" value="{{ $event->name }}"></div>
-                        <div class="form-group"><small class="form-text text-muted">Data ({{ date("Y-m-d H:i") }} formatu, {{ \App\TimeZoneUtils::currentGmtModifierText() }})</small>
+                        <div class="form-group"><small class="form-text text-muted">Data ({{ date("Y-m-d H:i") }} formatu, {{ \App\TimeZoneUtils::dateGmtModifierText($event->date_at) }})</small>
                             <input class="form-control" type="datetime-local" name="date_at" placeholder="{{ date("Y-m-d\TH:i") }}" value="{{ $event->adminTime->format("Y-m-d\TH:i") }}">
                         </div>
                         <div class="form-group">
@@ -67,7 +67,7 @@
                                                 <td class="text-right"><input class="form-check-input" type="checkbox" id="formCheck-{{ $group->id }}" name="groups[]" value="{{ $group->id }}" @if($event->groups->contains($group->id)) checked @endif ></td>
                                                 <td><div class="color--small background--{{ $group->type }}"></div> {{ $group->color() }}</td>
                                                 <td>#g{{ $group->id }} {{ $group->name }}</td>
-                                                <td>{{ $group->time ? $group->adminTime->format("H:i") : "00:00" }} <small>({{ $group->adminTimeModifier }})</small></td>
+                                                <td>{{ $group->time ? \App\TimeZoneUtils::updateHours($group->time, $group->created_at) : "00:00" }} <small>{{ \App\TimeZoneUtils::dateGmtModifierText($group->date_at) }}</small></td>
                                                 <td>{{ $group->display_name }}</td>
                                             </tr>
                                         @endforeach
