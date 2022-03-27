@@ -413,9 +413,10 @@ class GroupController extends Controller
             return Redirect::back()->with("group", $group);
 
         }
-        Log::info('file id', ['fileId' => $id]);
         $originalFile = File::find($id);
         Log::info('grupesEdit');
+        Log::info('file id', ['fileId' => $id]);
+        Log::info('user id', ['user' => Auth::user()->id]);
 
         if(empty($originalFile)) {
             Session::flash('message', 'Byla nerasta.');
@@ -515,6 +516,7 @@ class GroupController extends Controller
         }
 
         Log::info('grupes upload');
+        Log::info('user id', ['user' => Auth::user()->id]);
         Log::info(Carbon::now()->format('Y-m-d H:i:s'));
         Log::info('failas', ['file' => $request->file('file')]);
         Log::info('grupes_id', ['file' => $request->input("group_id")]);
