@@ -199,7 +199,7 @@
                                                             <div class="dashboard--time--date">{{ mb_strtoupper(mb_substr($eventDate->translatedFormat("F"),0,3)) }}<br><span>{{ $eventDate->format("d") }}</span></div>
                                                             <div class="dashboard--time--info">
                                                                 <b>{{ $event->name }}</b> ∙ {{ $event->teacher->name }} {{ $event->teacher->surname }}<br>
-                                                                {{\App\TimeZoneUtils::updateTime($eventDate->format("Y-m-d H:i"), $event->updated_at)}}                                                    </div>
+                                                                {{\App\TimeZoneUtils::updateTime($eventDate, $event->updated_at)}}                                                    </div>
                                                         </div>
                                                     @endforeach
                                                 @else
