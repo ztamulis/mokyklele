@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Session;
 
 class QuestionFormController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->only('index');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -56,8 +61,8 @@ class QuestionFormController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\QuestionForm  $questionForm
-     * @return Response
+     * @param QuestionForm $questionForm
+     * @return void
      */
     public function show(QuestionForm $questionForm)
     {
@@ -67,7 +72,7 @@ class QuestionFormController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\QuestionForm  $questionForm
+     * @param QuestionForm $questionForm
      * @return Response
      */
     public function edit(QuestionForm $questionForm)
@@ -79,7 +84,7 @@ class QuestionFormController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\QuestionForm  $questionForm
+     * @param QuestionForm $questionForm
      * @return Response
      */
     public function update(Request $request, QuestionForm $questionForm)
@@ -90,7 +95,7 @@ class QuestionFormController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\QuestionForm  $questionForm
+     * @param QuestionForm $questionForm
      * @return Response
      */
     public function destroy(QuestionForm $questionForm)

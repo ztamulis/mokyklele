@@ -169,7 +169,7 @@ Route::get("/payment/sendfailedpayment/{paymentId}", [OrderController::class, 's
 
 Route::resource('/questions-form', QuestionFormController::class);
 
-Route::resource('/register-free/admin', RegisterFreeController::class);
+Route::resource('/register-free/admin', RegisterFreeController::class)->middleware(['auth']);
 
 
 
@@ -194,33 +194,32 @@ Route::post('/lietuviu-kalbos-pamokos/anketa', [GroupQuestFormController::class,
 Route::post('/lietuviu-kalbos-pamokos/perkrauti', [GroupQuestFormController::class, 'reset'])->name('lithuanian-language-form-reset');
 
 
-Route::middleware(['auth'])->group(function () {
-    Route::group(['prefix' => 'dashboard'], static function () {
+    Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], static function () {
         Route::get('', function () {
             return view('dashboard.index')->with("meetings", \App\Models\Meeting::orderBy('date_at', 'asc')->where("date_at", ">" ,\Carbon\Carbon::now('utc')->subMinutes(120))->orderBy("date_at","ASC")->get());
-        })->middleware(['auth'])->name('home');
+        })->name('home');
         Route::get('', function () {
             return view('dashboard.index')->with("meetings", \App\Models\Meeting::orderBy('date_at', 'asc')->where("date_at", ">" ,\Carbon\Carbon::now('utc')->subMinutes(120))->orderBy("date_at","ASC")->get());
-        })->middleware(['auth'])->name('home');
+        })->name('home');
         Route::get('/navbar', function () {
             return view('dashboard.navbar');
-        })->middleware(['auth', 'admin'])->name('navbar');
+        })->name('navbar');
         Route::get('/wbuilder', function () {
             return view('dashboard.wbuilder');
-        })->middleware(['auth', 'admin'])->name('wbuilder');
+        })->name('wbuilder');
         Route::get('/editor', function () {
             return view('dashboard.editor');
-        })->middleware(['auth', 'admin'])->name('editor');
+        })->name('editor');
         Route::get('/tableData', function () {
             return view('dashboard.tableData')->with("users", \App\Models\User::all());
-        })->middleware(['auth', 'admin'])->name('tableData');
+        })->name('tableData');
         Route::get('/free-registrations', function () {
             return view('dashboard.freeRegistrations')->with("freeRegistrations", \App\Models\FreeRegistration::all());
-        })->middleware(['auth', 'admin'])->name('freeRegistrations');
+        })->name('freeRegistrations');
 
         Route::get('/error', function () {
             return view('dashboard.error')->with("error", "Generic error");
-        })->middleware(['auth'])->name('dashboard.error');
+        })->name('dashboard.error');
         Route::get('/profile', [UserController::class, 'profile']);
         Route::get('/profile/zoom', [UserController::class, 'zoom']);
         Route::post('/profile/update-card', [UserController::class, 'updateCard']);
@@ -346,7 +345,6 @@ Route::middleware(['auth'])->group(function () {
         });
     }
 
-});
 
 
 
