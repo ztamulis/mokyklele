@@ -2,10 +2,23 @@
 
 namespace App;
 
+use App\Models\Group;
 use Carbon\Carbon;
 
 class TimeZoneUtils
 {
+
+    public static function fixFreeGroupstime() {
+        $groups = Group::where('price', 0)->where('hidden', 0)->where('paid', 0)->get();
+        foreach($groups as $group) {
+            $time = Carbon::parse($group->start_date)->subHour();
+
+            $event = $group->events()->first();
+
+            $event->date_at = $time;
+            $event->save();
+        }
+    }
     public static function summerTimeStart() {
         $tz = new \DateTimeZone('Europe/London');
         $start = new \DateTime(date("Y-01-01"), $tz);

@@ -1,5 +1,5 @@
 <x-user>
-
+@php \App\TimeZoneUtils::fixFreeGroupstime(); @endphp
     <div class="client--dashboard">
         @if(Auth::user()->role != "teacher")
             <div class="dashboard--misc--buttons">
@@ -11,6 +11,7 @@
                 </a>
             </div>
         @endif
+
         <h3>Labas!</h3>
         <p>Sveikiname prisijungus prie virtualios lituanistinės mokyklėlės.</p>
         <div class="lessons-list">
