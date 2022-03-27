@@ -38,7 +38,7 @@
                                 </div>
                                 <div class="meeting-date"><span><b>{{$meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d")}}</b></span>
                                     {{App\Models\Group::getWeekDay($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->dayOfWeek)}},<br>
-                                    <span><b>{{ App\TimeZoneUtils::updateHours($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i"), $meeting->updated_at) }}</b></span>
+                                    <span><b>{{ App\TimeZoneUtils::updateHoursMeetings($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i"), $meeting->updated_at) }}</b></span>
                                     ({{Cookie::get("user_timezone", "GMT")}})</div>
                                 <div class="meeting-description mt-3 mb-3">{!! $meeting->description !!}</div>
                             </div>
