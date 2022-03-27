@@ -1,5 +1,4 @@
 <x-user>
-@php \App\TimeZoneUtils::fixFreeGroupstime(); @endphp
     <div class="client--dashboard">
         @if(Auth::user()->role != "teacher")
             <div class="dashboard--misc--buttons">
