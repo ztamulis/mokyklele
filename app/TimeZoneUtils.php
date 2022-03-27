@@ -28,7 +28,7 @@ class TimeZoneUtils
     }
 
     public static function dateGmtModifierText($date) {
-        if(Carbon::parse($date)->timezone(\Cookie::get("user_timezone", "GMT"))->isDST()){
+        if(Carbon::parse($date)->timezone('Europe/London')->isDST()){
             return "GMT+1";
         }
         return "GMT+0";
@@ -41,18 +41,19 @@ class TimeZoneUtils
      * @return string
      */
     public static function updateTime($date, $updatedAt) {
+//        Carbon::setTestNow('2022-03-23');
 
         $summerStarts = Carbon::parse(self::summerTimeStart()." 5:00");
         $summerEnds = Carbon::parse(self::summerTimeEnd()." 5:00");
         if (($summerStarts < $updatedAt
             && $updatedAt < $summerEnds)
-            && !Carbon::parse($date)->timezone(\Cookie::get("user_timezone", "GMT"))->isDST()) {
+            && !Carbon::parse($date)->timezone('Europe/London')->isDST()) {
 
             return Carbon::createFromDate($date)->addHour()->format('Y-m-d H:i');
         }
         if (($summerStarts > $updatedAt
                 && $updatedAt < $summerEnds)
-        && Carbon::parse($date)->timezone(\Cookie::get("user_timezone", "GMT"))->isDST()) {
+        && Carbon::parse($date)->timezone('Europe/London')->isDST()) {
 
             return Carbon::createFromDate($date)->subhour()->format('Y-m-d H:i');
         }
@@ -82,25 +83,49 @@ class TimeZoneUtils
      * @param $date
      * @return string
      */
-    public static function updateHours($date, $updatedAt) {
+    public static function updateHoursMeetings($date, $updatedAt) {
+//        Carbon::setTestNow('2022-03-23');
         $summerStarts = Carbon::parse(self::summerTimeStart()." 5:00");
         $summerEnds = Carbon::parse(self::summerTimeEnd()." 5:00");
 //        var_dump($date, $updatedAt);
         if (($summerStarts < $updatedAt
                 && $updatedAt < $summerEnds)
-            && !Carbon::parse($date)->timezone(\Cookie::get("user_timezone", "GMT"))->isDST()) {
+            && !Carbon::parse($date)->timezone('Europe/London')->isDST()) {
 
             return Carbon::createFromDate($date)->addHour()->format('H:i');
         }
 //        var_dump($summerStarts > $updatedAt
 //            && $updatedAt < $summerEnds)
-//        && Carbon::parse($date)->timezone(\Cookie::get("user_timezone", "GMT"))->isDST();die();
+//        && Carbon::parse($date)->timezone('Europe/London')->isDST();die();
 //        if (($summerStarts > $updatedAt
 //                && $updatedAt < $summerEnds)
-//            && Carbon::parse($date)->timezone(\Cookie::get("user_timezone", "GMT"))->isDST()) {
+//            && Carbon::parse($date)->timezone('Europe/London')->isDST()) {
 //
 //            return Carbon::createFromDate($date)->subhour()->format('H:i');
 //        }
+        return Carbon::createFromDate($date)->format('H:i');
+    }
+
+    public static function updateHours($date, $updatedAt) {
+//        Carbon::setTestNow('2022-03-23');
+        $summerStarts = Carbon::parse(self::summerTimeStart()." 5:00");
+        $summerEnds = Carbon::parse(self::summerTimeEnd()." 5:00");
+//        var_dump($date, $updatedAt);
+        if (($summerStarts < $updatedAt
+                && $updatedAt < $summerEnds)
+            && !Carbon::parse($date)->timezone('Europe/London')->isDST()) {
+
+            return Carbon::createFromDate($date)->addHour()->format('H:i');
+        }
+//        var_dump($summerStarts > $updatedAt
+//            && $updatedAt < $summerEnds)
+//        && Carbon::parse($date)->timezone('Europe/London')->isDST();die();
+        if (($summerStarts > $updatedAt
+                && $updatedAt < $summerEnds)
+            && Carbon::parse($date)->timezone('Europe/London')->isDST()) {
+
+            return Carbon::createFromDate($date)->subhour()->format('H:i');
+        }
         return Carbon::createFromDate($date)->format('H:i');
     }
 
