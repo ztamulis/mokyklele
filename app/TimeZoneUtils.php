@@ -41,8 +41,6 @@ class TimeZoneUtils
      * @return string
      */
     public static function updateTime($date, $updatedAt) {
-//        Carbon::setTestNow('2022-03-23');
-
         $summerStarts = Carbon::parse(self::summerTimeStart()." 5:00");
         $summerEnds = Carbon::parse(self::summerTimeEnd()." 5:00");
         if (($summerStarts < $updatedAt
