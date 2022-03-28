@@ -37,8 +37,7 @@
         </div>
 
             <div class="message--text" style="word-wrap: break-word;">
-                <?php $messageText = strip_tags($message->message) ?>
-                <?php $messageText = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $messageText); ?>
+                <?php $messageText = $message->message ?>
                     <?php echo  $messageText ?>
             </div>
         @if($message->file)
