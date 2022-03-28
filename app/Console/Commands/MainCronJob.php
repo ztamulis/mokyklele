@@ -97,7 +97,7 @@ class MainCronJob extends Command {
             $email_content = "<p>Sveiki,<br>gavote žinutę Pasakos paskyroje nuo ".($message->author->role == "admin" ? "Pasakos" :  $message->author->name." ". $message->author->surname).
                 "<br>Pranešimą galite peržiūrėti čia: <a href='".\Config::get('app.url')."/dashboard/messages/".$message->id."'>".\Config::get('app.url')."/dashboard/messages/".$message->id."</a>";
             if (!empty($message->message)) {
-                $email_content .= "<br>Žinutė: <p>" . strip_tags($message->message)."</p>";
+                $email_content .= "<br>Žinutė: <p>" . $message->message."</p>";
             }
             if (!empty($message->file)) {
                 $email_content .= "<br>Prisegtas dokumentas: <a href='".\Config::get('app.url')."/uploads/messages/".$message->file."'>".\Config::get('app.url')."/uploads/messages/".$message->file."</a>";
