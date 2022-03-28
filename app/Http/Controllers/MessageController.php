@@ -134,9 +134,6 @@ class MessageController extends Controller
             if($userId != Auth::user()->id){
                 $message = new Message;
                 $message->message = $request->input("text");
-                if(Auth::user()->role == "user") {
-                    $message->message = strip_tags($message->message);
-                }
                 $message->file = $newfilename;
                 $message->author_id = Auth::user()->id;
                 $message->user_id = $userId;
