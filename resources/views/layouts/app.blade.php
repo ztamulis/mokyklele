@@ -275,6 +275,7 @@
                 ['style', ['bold', 'italic', 'underline', 'clear']],
                 ['font', ['strikethrough', 'superscript', 'subscript']],
                 ['fontname', ['fontname']],
+                ['insert', ['link', 'picture', 'video']],
 
                 ['fontsize', ['fontsize']],
                 ['color', ['color']],

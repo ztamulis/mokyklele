@@ -236,6 +236,7 @@
                 ['insert', ['link', 'picture', 'video']],
                 ['fontsize', ['fontsize']],
                 ['color', ['color']],
+                ['insert', ['link', 'picture', 'video']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['height', ['height']]
             ],
