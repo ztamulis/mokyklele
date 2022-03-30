@@ -269,6 +269,8 @@
                         var table = $('#dataTable').DataTable( {
                             orderCellsTop: true,
                             fixedHeader: true,
+                            scrollY: "600px",
+                            scrollCollapse: true,
                             paging: false,
                             columnDefs : [
                                 { targets: 0, sortable: false},
