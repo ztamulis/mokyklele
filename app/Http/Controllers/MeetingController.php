@@ -53,8 +53,12 @@ class MeetingController extends Controller
         $meeting->join_link = $request->input("join_link");
 
         $date = Carbon::parse($request->input("date_at"), 'Europe/London');
-        $date->setTimezone('GMT');
-        
+
+        $isDst = Carbon::now()->setTimezone('Europe/London')->isDST();
+        if($isDst){
+            $date = $date->subHour();
+        }
+
         $meeting->date_at = $date;
 
         $file = $request->file('file');

@@ -34,7 +34,7 @@ class TimeZoneUtils
     }
 
     public static function currentGmtModifierText() {
-        if(TimeZoneUtils::isSummerTime()){
+        if(Carbon::now()->timezone('Europe/London')->isDST()){
             return "GMT+1";
         }
         return "GMT+0";
@@ -56,17 +56,20 @@ class TimeZoneUtils
     public static function updateTime($date, $updatedAt) {
         $summerStarts = Carbon::parse(self::summerTimeStart()." 5:00");
         $summerEnds = Carbon::parse(self::summerTimeEnd()." 5:00");
+        $datedst = Carbon::parse($date)->timezone('Europe/London')->isDST();
         if (($summerStarts < $updatedAt
             && $updatedAt < $summerEnds)
             && !Carbon::parse($date)->timezone('Europe/London')->isDST()) {
 
-            return Carbon::createFromDate($date)->addHour()->format('Y-m-d H:i');
+            return Carbon::createFromDate($date)->addHour();
         }
+        $aaa = $summerStarts > $updatedAt;
+        $bb = $updatedAt < $summerEnds;
         if (($summerStarts > $updatedAt
                 && $updatedAt < $summerEnds)
         && Carbon::parse($date)->timezone('Europe/London')->isDST()) {
 
-            return Carbon::createFromDate($date)->subhour()->format('Y-m-d H:i');
+            return Carbon::createFromDate($date)->subhour();
         }
         return $date;
     }

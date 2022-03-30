@@ -40,8 +40,8 @@
                         {{-- @if(old('create_method') != 'multi')--}}
                             {{--<div class="form-group create--method--multi" @if(old('create_method') != 'multi') style="display: none;" @endif >--}}
                             <div class="form-group">
-                                <small class="form-text text-muted">Data ({{ date("Y-m-d H:i") }} formatu, {{ \App\TimeZoneUtils::currentGmtModifierText() }})</small>
-                                <input class="form-control" type="datetime-local" name="date_at" placeholder="{{ date("Y-m-d\TH:i") }}" value="{{ old("date_at") }}">
+                                <small class="form-text text-muted">Data ({{ Carbon\Carbon::now()->timezone('Europe/London')->format('Y-m-d H:i') }} formatu, {{ \App\TimeZoneUtils::currentGmtModifierText() }})</small>
+                                <input class="form-control" type="datetime-local" name="date_at" placeholder="{{ Carbon\Carbon::now()->timezone('Europe/London')->format('Y-m-d\TH:i') }}" value="{{ Carbon\Carbon::parse(old("date_at"))->timezone('Europe/London')->format('Y-m-d\TH:i') }}">
                             </div>
                             <div class="form-group create--method--multi" @if(old('create_method') != 'multi') style="display: none;" @endif >
                                 <small class="form-text text-muted">Pamokų skaičius</small>
