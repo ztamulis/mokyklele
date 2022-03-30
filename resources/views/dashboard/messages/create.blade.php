@@ -80,7 +80,7 @@
                     Pasirinkite gavėjus iš sąrašo (privaloma pasirinkti bent vieną gavėją).<br>
                 </p>
                 @php
-                    $users = Auth::user()->getUsersListToSend($users);
+                    $users = Auth::user()->getUsersListToSend(Request::input("to"));
                 @endphp
                 @if(Auth::user()->role != "user")
                 <table class="table" id="dataTable">
@@ -269,6 +269,8 @@
                         var table = $('#dataTable').DataTable( {
                             orderCellsTop: true,
                             fixedHeader: true,
+                            scrollY: "600px",
+                            scrollCollapse: true,
                             paging: false,
                             columnDefs : [
                                 { targets: 0, sortable: false},
