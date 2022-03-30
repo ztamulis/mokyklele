@@ -56,6 +56,9 @@ class GroupController extends Controller
         if($request->input("search")){
             $groups= $groups->where("name", "LIKE", "%" . $request->input("search") . "%");
         }
+        if($request->input("id")){
+            $groups= $groups->where("id", "LIKE", "%" . $request->input("id") . "%");
+        }
         return view("dashboard.groups.index")->with("groups", $groups->paginate(15)->withQueryString());
     }
 
