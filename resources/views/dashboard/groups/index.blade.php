@@ -31,7 +31,8 @@
         <div class="card-body">
             <form method="GET">
                 <div class="form-row">
-                    <div class="col-md-6 col-xl-4 text-nowrap"><input class="form-control" type="text" name="search" placeholder="Ieškoti" value="{{ request()->input("search") }}"></div>
+                    <div class="col-md-6 col-xl-4 text-nowrap"><input class="form-control" type="text" name="search" placeholder="Grupė" value="{{ request()->input("search") }}"></div>
+                    <div class="col-md-6 col-xl-4 text-nowrap"><input class="form-control" type="text" name="id" placeholder="ID" value="{{ request()->input("id") }}"></div>
                     <div class="col-xl-3">
                         <button class="btn btn-success" type="submit">Paieška</button>
                     </div>
@@ -68,10 +69,10 @@
                             <td>{{ $group->display_name }}</td>
                             <td>{{ $group->students()->count() }} / {{ $group->slots }}</td>
                             <td>£{{ $group->price }}</td>
-                            <td>{{ $group->time ? $group->adminTime->format("H:i") : "" }}</td>
-                            <td>{{ $group->time_2 ? $group->adminTime2->format("H:i") : "" }}</td>
-                            <td>{{ $group->start_date ? \Carbon\Carbon::parse($group->start_date)->format("Y-m-d") : "00:00" }}</td>
-                            <td>{{ $group->end_date ? \Carbon\Carbon::parse($group->end_date)->format("Y-m-d") : "00:00" }}</td>
+                            <td>{{ !empty($group->time) ? \App\TimeZoneUtils::updateTime(Carbon\Carbon::parse(Carbon\Carbon::parse($group->updated_at)->format('Y-m-d').$group->time->format('H:i'))->timezone('Europe/London'), $group->updated_at)->format('H:i') : "" }}</td>
+                            <td>{{ !empty($group->time_2) ? \App\TimeZoneUtils::updateTime(Carbon\Carbon::parse(Carbon\Carbon::parse($group->updated_at)->format('Y-m-d ').$group->time_2->format('H:i'))->timezone('Europe/London'), $group->updated_at)->format('H:i') : "" }}</td>
+                            <td>{{ $group->start_date ? \App\TimeZoneUtils::updateTime(Carbon\Carbon::parse($group->start_date)->timezone('Europe/London'), $group->updated_at)->format('Y-m-d H:i') : "00:00" }}</td>
+                            <td>{{ $group->end_date ? \App\TimeZoneUtils::updateTime(Carbon\Carbon::parse($group->end_date)->timezone('Europe/London'), $group->updated_at)->format('Y-m-d H:i') : "00:00" }}</td>
                             <td>{{ $group->hidden ? "Ne" : "Taip" }}</td>
                             <td>{{ $group->paid ? "Taip" : "Ne" }}</td>
                             <td>{{ App\Models\Group::$FOR_TRANSLATE[$group->age_category]}}</td>
