@@ -226,8 +226,10 @@ class User extends Authenticatable
         return $students;
     }
 
-    public function getUsersListToSend() {
-
+    public function getUsersListToSend($userTo=null) {
+        if (!empty($userTo)) {
+            return User::where('id', '=', $userTo)->get();
+        }
         if ($this->role === 'admin') {
             return User::where('id', '!=', $this->id)->get();
         }

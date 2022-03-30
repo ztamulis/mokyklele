@@ -80,7 +80,7 @@
                     Pasirinkite gavėjus iš sąrašo (privaloma pasirinkti bent vieną gavėją).<br>
                 </p>
                 @php
-                    $users = Auth::user()->getUsersListToSend($users);
+                    $users = Auth::user()->getUsersListToSend(Request::input("to"));
                 @endphp
                 @if(Auth::user()->role != "user")
                 <table class="table" id="dataTable">
