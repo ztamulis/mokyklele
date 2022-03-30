@@ -72,7 +72,7 @@
                         Vietų nebėra
                     </a>
                 @else
-                    <a href="/select-group/order/free/{{ $group->slug }}" class="button course--select--button">
+                    <a href="/select-group/order/free/{{ $group->slug }}" class="button course--select--button text-white">
                         Pasirinkti
                     </a>
                 @endif

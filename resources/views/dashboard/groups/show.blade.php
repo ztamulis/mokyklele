@@ -21,7 +21,7 @@
                     </a>
 
                     @if ($nextLesson)
-                        <div class="time">{{ App\TimeZoneUtils::updateTime($nextLesson->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i"), $nextLesson->updated_at) }} {{ Cookie::get("user_timezone", "GMT") }}</div>
+                        <div class="time">{{ App\TimeZoneUtils::updateTime($nextLesson->date_at->timezone(Cookie::get("user_timezone", "GMT")), $nextLesson->updated_at)->format('Y-m-d H:i') }} {{ Cookie::get("user_timezone", "GMT") }}</div>
                     @endif
                     <small></small>
 
@@ -188,7 +188,8 @@
                                         <div class="schedule-block">
                                             <div class="dashboard--block">
                                                 <h3>Tvarkaraštis</h3>
-                                                @if (!$events->isEmpty())
+
+                                            @if (!$events->isEmpty())
 
                                                 <div class="dashboard--timetable">
                                                     @foreach($events as $event)
@@ -199,7 +200,7 @@
                                                             <div class="dashboard--time--date">{{ mb_strtoupper(mb_substr($eventDate->translatedFormat("F"),0,3)) }}<br><span>{{ $eventDate->format("d") }}</span></div>
                                                             <div class="dashboard--time--info">
                                                                 <b>{{ $event->name }}</b> ∙ {{ $event->teacher->name }} {{ $event->teacher->surname }}<br>
-                                                                {{\App\TimeZoneUtils::updateTime($eventDate, $event->updated_at)}}                                                    </div>
+                                                                {{\App\TimeZoneUtils::updateTime($eventDate, $event->updated_at)->format('Y-m-d H:i')}}                                                    </div>
                                                         </div>
                                                     @endforeach
                                                 @else

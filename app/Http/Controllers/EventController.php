@@ -24,6 +24,7 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
+
         if(Auth::user()->role == "user"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
@@ -49,6 +50,7 @@ class EventController extends Controller
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
+
         return view("dashboard.events.create")->with("groups", Group::all())->with("teachers", User::where("role","LIKE","teacher")->get());
     }
 
@@ -75,7 +77,7 @@ class EventController extends Controller
         $create_method = $request->input("create_method");
 
         $date = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"));
-        $isDst = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"))->timezone('Europe/London')->isDST();
+        $isDst = Carbon::now()->timezone('Europe/London')->isDST();
         if($isDst){
             $date = $date->subHour();
         }
@@ -127,6 +129,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
+
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
@@ -139,8 +142,8 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function edit(Event $event)
-    {
+    public function edit(Event $event) {
+
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
@@ -175,7 +178,8 @@ class EventController extends Controller
         $event->join_link = $request->input("join_link");
 
         $date = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"));
-        $isDst = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"))->timezone('Europe/London')->isDST();
+
+        $isDst = Carbon::now()->timezone('Europe/London')->isDST();
         if($isDst){
             $date = $date->subHour();
         }

@@ -1,4 +1,5 @@
 <x-user>
+{{--@php \App\Http\Controllers\GroupController::fixFreeGroupstime(); @endphp--}}
     <div class="client--dashboard">
         @if(Auth::user()->role != "teacher")
             <div class="dashboard--misc--buttons">
@@ -22,7 +23,7 @@
                     <div class="lesson-area {{ $group->type }}">
                         <a href="/dashboard/groups/{{$group->slug}}"><h3>{{Auth::user()->role !== 'user' ? '#'.$group->id : ''}} {{$group->name}}</h3></a>
                         @if($nextLesson)
-                            <div class="info">{{ App\TimeZoneUtils::updateTime($nextLesson->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i"), $nextLesson->updated_at) }} ({{ Cookie::get("user_timezone", "GMT") }})</div>
+                            <div class="info">{{ App\TimeZoneUtils::updateTime($nextLesson->date_at->timezone(Cookie::get("user_timezone", "GMT")), $nextLesson->updated_at)->format('Y-m-d H:i') }} ({{ Cookie::get("user_timezone", "GMT") }})</div>
                         @else
                             <div class="info">Kita pamoka: nėra</div>
                         @endif

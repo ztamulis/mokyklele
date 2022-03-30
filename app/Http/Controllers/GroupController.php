@@ -30,6 +30,17 @@ use Stripe\Stripe;
 
 class GroupController extends Controller
 {
+    public static function fixFreeGroupstime() {
+        $groups = Group::where('price', 0)->where('hidden', 0)->where('paid', 0)->get();
+        foreach($groups as $group) {
+            $time = Carbon::parse($group->start_date)->subHour();
+
+            $event = $group->events()->first();
+
+            $event->date_at = $time;
+            $event->save();
+        }
+    }
     /**
      * Display a listing of the resource.
      *
@@ -54,6 +65,7 @@ class GroupController extends Controller
      * @return Response
      */
     public function create() {
+
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
@@ -106,16 +118,23 @@ class GroupController extends Controller
         if($request->input("start_date")){
             $group->start_date = Carbon::parse($request->input("start_date"));
         }
+
         if($request->input("end_date")){
             $group->end_date = Carbon::parse($request->input("end_date"));
         }
+        $isDst = Carbon::now()->timezone('Europe/London')->isDST();
 
-        if(TimeZoneUtils::isSummerTime()){
+        if($isDst){
             $time = $time->subHour();
+            $group->start_date;
+            if (!empty($group->end_date)) {
+                $group->end_date->subHour();
+            }
             if(!empty($request->input("time_2"))){
                 $time_2 = $time_2->subHour();
             }
         }
+
         $group->time = $time;
         if(empty($request->input("time_2"))){
             $group->time_2 = null;
@@ -245,12 +264,15 @@ class GroupController extends Controller
             $time_2 = Carbon::parse(date("Y-m-d") . " " . $request->input("time_2"));
         }
 
-        if(TimeZoneUtils::isSummerTime()){
+        $isDst = Carbon::now()->timezone('Europe/London')->isDST();
+
+        if($isDst){
             $time = $time->subHour();
             if(!empty($request->input("time_2"))){
                 $time_2 = $time_2->subHour();
             }
         }
+
         $group->time = $time;
         if(empty($request->input("time_2"))){
             $group->time_2 = null;

@@ -71,10 +71,10 @@
                                 <tr>
                                     <td><input type="checkbox" data-select value="{{ $event->id }}"></td>
                                     <td>{{ $event->name }}</td>
-                                    <td>{{\App\TimeZoneUtils::updateTime($event->date_at->timezone(\App\TimeZoneUtils::currentGmtModifierText()), $event->updated_at) }}</td>
+                                    <td>{{ \App\TimeZoneUtils::updateTime($event->date_at->timezone('Europe/London'), $event->updated_at)->format('Y-m-d H:i') }}</td>
                                     <td>
                                         @foreach($event->groups as $group)
-                                            <div class="color--small background--{{ $group->type }}"></div> <small>#g{{ $group->id }}</small> {{ $group->name }} <small>{{ \App\TimeZoneUtils::updateHours($event->date_at, $event->updated_at) }}</small>
+                                            <div class="color--small background--{{ $group->type }}"></div> <small>#g{{ $group->id }}</small> {{ $group->name }} <small>{{ \App\TimeZoneUtils::updateTime($event->date_at->timezone('Europe/London'), $event->updated_at)->format('H:i') }}</small>
                                         @endforeach
                                     </td>
                                     <td>@if($event->teacher){{ $event->teacher->name }} {{ $event->teacher->surname }} @else ? @endif</td>

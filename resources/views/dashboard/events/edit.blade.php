@@ -29,8 +29,8 @@
                         @csrf
                         @method("PUT")
                         <div class="form-group"><small class="form-text text-muted">Pavadinimas</small><input class="form-control" type="text" name="name" placeholder="Pamoka" value="{{ $event->name }}"></div>
-                        <div class="form-group"><small class="form-text text-muted">Data ({{ date("Y-m-d H:i") }} formatu, {{ \App\TimeZoneUtils::dateGmtModifierText($event->date_at) }})</small>
-                            <input class="form-control" type="datetime-local" name="date_at" placeholder="{{ date("Y-m-d\TH:i") }}" value="{{ $event->adminTime->format("Y-m-d\TH:i") }}">
+                        <div class="form-group"><small class="form-text text-muted">Data ({{ Carbon\Carbon::now()->timezone('Europe/London')->format('Y-m-d H:i') }} formatu, {{ \App\TimeZoneUtils::currentGmtModifierText() }})</small>
+                            <input class="form-control" type="datetime-local" name="date_at" placeholder="{{ \App\TimeZoneUtils::updateTime($event->date_at->timezone('Europe/London'), $event->updated_at)->format('Y-m-d\TH:i')}}" value="{{ \App\TimeZoneUtils::updateTime($event->date_at->timezone('Europe/London'), $event->updated_at)->format('Y-m-d\TH:i')}}">
                         </div>
                         <div class="form-group">
                             <small class="form-text text-muted">Aprašymas</small>
