@@ -129,7 +129,7 @@ class GroupController extends Controller
 
         if($isDst){
             $time = $time->subHour();
-            $group->start_date;
+            $group->start_date->subHour();
             if (!empty($group->end_date)) {
                 $group->end_date->subHour();
             }
@@ -144,7 +144,12 @@ class GroupController extends Controller
         }else{
             $group->time_2 = $time_2;
         }
-
+        if($request->input("start_date")) {
+            $group->start_date = $group->start_date->format('Y-m-d H:i');
+        }
+        if($request->input("end_date")) {
+            $group->end_date = $group->end_date->format('Y-m-d H:i');
+        }
         $group->save();
 
         foreach($request->input("weight") as $w) {
@@ -243,10 +248,10 @@ class GroupController extends Controller
         ]);
 
         if($request->input("start_date")){
-            $group->start_date = Carbon::parse($request->input("start_date"))->format('Y-m-d H:i');
+            $group->start_date = Carbon::parse($request->input("start_date"));
         }
         if($request->input("end_date")){
-            $group->end_date = Carbon::parse($request->input("end_date"))->format('Y-m-d H:i');
+            $group->end_date = Carbon::parse($request->input("end_date"));
         }
 
         $group->name = $request->input("name");
@@ -271,6 +276,11 @@ class GroupController extends Controller
 
         if($isDst){
             $time = $time->subHour();
+            $group->start_date->subHour();
+
+            if (!empty($group->end_date)) {
+                $group->end_date->subHour();
+            }
             if(!empty($request->input("time_2"))){
                 $time_2 = $time_2->subHour();
             }
@@ -281,6 +291,13 @@ class GroupController extends Controller
             $group->time_2 = null;
         }else{
             $group->time_2 = $time_2;
+        }
+
+        if($request->input("start_date")) {
+            $group->start_date = $group->start_date->format('Y-m-d H:i');
+        }
+        if($request->input("end_date")) {
+            $group->end_date = $group->end_date->format('Y-m-d H:i');
         }
         $group->save();
 
@@ -306,8 +323,7 @@ class GroupController extends Controller
      * @param Group $group
      * @return Response
      */
-    public function destroy(Group $group)
-    {
+    public function destroy(Group $group) {
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
