@@ -64,17 +64,12 @@ Route::get('/', function () {
 Route::get('/apie-pamokas', function () {
     return view('landing.apie_pamokas');
 });
-//Route::get('/test-patarimai-tevams', function () {
-//    return view('landing.patarimai_tėvams');
-//});
+
 Route::get('/kaina', function () {
     return view('landing_new.kaina_naujas')->with('siteContent',  app(PricePageContent::class)->getPageContent());
 
 });
 
-//Route::get('/kaina', function () {
-//    return view('landing.kaina');
-//});
 Route::get('/susitikimai', function () {
     return view('landing.susitikimai');
 });
@@ -99,17 +94,10 @@ Route::get('/patarimai-tevams', function () {
         ->with("suggestions", \App\Models\Suggestion::orderBy('created_at', 'desc')->get())
         ->with('siteContent',  app(SuggestionPageContent::class)->getPageContent());
 });
-//Route::get('/nemokama-pamoka', function () {
-//    return view('landing.nemokama_pamoka');
-//});
 
 Route::get('/nemokama-pamoka', function () {
     return view('landing_new.nemokama_pamoka_naujas')->with('siteContent',  app(FreeLessonPageContent::class)->getPageContent());
 });
-//
-//Route::get('/komanda', function () {
-//    return view('landing.komanda');
-//});
 Route::get('/komanda', function () {
     return view('landing_new.komanda_naujas')->with('teamMembers', TeamMember::ordered()->get());
 });
@@ -344,9 +332,6 @@ Route::post('/lietuviu-kalbos-pamokos/perkrauti', [GroupQuestFormController::cla
             });
         });
     }
-
-
-
 
 
 require __DIR__.'/auth.php';
