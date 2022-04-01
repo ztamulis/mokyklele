@@ -7,7 +7,6 @@ use App\Models\Student;
 use App\Models\Group;
 use App\Models\File;
 use App\Models\Message;
-use App\TimeZoneUtils;
 use Carbon\Carbon;
 use Config;
 use Illuminate\Contracts\View\Factory;
@@ -34,12 +33,24 @@ class GroupController extends Controller
         $groups = Group::where('price', 0)->where('hidden', 0)->where('paid', 0)->get();
         foreach($groups as $group) {
             $time = Carbon::parse($group->start_date)->subHour();
-
             $event = $group->events()->first();
-
             $event->date_at = $time;
             $event->save();
         }
+    }
+
+
+    public static function fixPaidGroupsTime() {
+        $groups = Group::where('id','>', 503)->get();
+        foreach ($groups as $group) {
+            $startDate = $group->events()->first()->date_at->format('Y-m-d H:i');
+            $group->start_date = $startDate;
+            $endDate = $group->events()->orderBy('date_at', 'desc')->first()->date_at->addHour()->format('Y-m-d H:i');
+            $group->end_date = $endDate;
+            $group->save();
+//            var_dump($group->id, $startDate, $endDate);
+        }
+//        die();
     }
     /**
      * Display a listing of the resource.
