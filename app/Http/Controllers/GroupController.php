@@ -109,6 +109,7 @@ class GroupController extends Controller
             'course_length' => 'required|integer|max:52|min:1',
             'time' => 'required',
             'age_category' => 'required',
+            'start_date' => 'required',
         ]);
         $group = new Group;
         $group->name = $request->input("name");
@@ -256,6 +257,7 @@ class GroupController extends Controller
             'course_length' => 'required|integer|max:52|min:1',
             'time' => 'required',
             'age_category' => 'required',
+            'start_date' => 'required',
         ]);
 
         if($request->input("start_date")){
