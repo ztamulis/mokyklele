@@ -8,6 +8,12 @@ use Illuminate\Support\Str;
 
 class Message extends Model
 {
+
+    public function setCreatedAt($value)
+    {
+        // to Disable created_at
+    }
+
     public function user(){
         return $this->belongsTo(User::class);
     }
