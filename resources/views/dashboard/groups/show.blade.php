@@ -53,7 +53,7 @@
             <section class="main-tabs-area">
                 <div class="tabs">
                     <button class="tablinks active" data-country="tab-1">Namų darbai</button>
-                    <button class="tablinks" data-country="tab-2">Pokalbiai ir nariai</button>
+                    <button class="tablinks" data-country="tab-2">Žodynas</button>
                     <button class="tablinks d-lg-none" data-country="tab-3">Informacija</button>
                     <button class="tablinks" data-country="tab-4">Apdovanojimai</button>
                 </div>
@@ -72,7 +72,7 @@
                                                 <div class="author-comment pl-0">
                                                     <form action="{{route('homework-store')}}" new-homework-file method="POST" enctype="multipart/form-data">
                                                         @csrf
-                                                        <textarea class="editor" placeholder="komentuoti" name="file_name" rows="1" id="ckeditor" style="width: 100%;overflow-y: hidden; border: 0px"></textarea>
+                                                        <textarea class="editor" placeholder="komentuoti" name="file_name" rows="1" id="ckeditor-voc" style="width: 100%;overflow-y: hidden; border: 0px"></textarea>
                                                         <input type="hidden" name="group_id" value="{{$group->id}}">
                                                         <div class="edit-buttons" id="home-work-main-store">
                                                             <div class="left-col mt-2">
@@ -219,25 +219,26 @@
                             <div class="row no-gutters w-100">
                                 <div class="main-tab-area col-lg-7 col-sm-12 col-12">
                                     <div class="main-info">
-                                        <h3>Pokalbiai ir nariai</h3>
-                                        <div class="subtitle">Bendraukite su grupės draugais</div>
+                                        <h3>Žodynas</h3>
+                                        <div class="subtitle">Kurso temos ir žodynas</div>
                                     </div>
 
                                     <div class="chat-form">
+                                        <div class="mb-5">
+                                            <form  method="POST" class="align-bottom" new-group-message action="{{ route('create-message-conversations') }}" id="group-message-store" enctype="multipart/form-data">
+                                                @csrf
+                                                @method("OPTIONS")
+                                                <div class="comment-form">
+                                                    <textarea class="editor" placeholder="komentuoti" name="text" rows="1" id="ckeditor" style="width: 100%;overflow-y: hidden; border: 0px"></textarea>
+                                                    <input type="hidden" name="groupID" value="{{$group->id}}">
+                                                    <label onclick="addCommentFile('group-message-store')" class="file"></label>
+                                                    <input  type="file" name="file" id="file-attachment-group-message-store" class="file-attachment" />
+                                                    <button type="submit" class="submit" id="submit"></button>
+                                                </div>
+                                            </form>
+                                        </div>
                                         <div class="comments-list">
-                                            <div class="mb-5">
-                                                <form  method="POST" class="align-bottom" new-group-message action="{{ route('create-message-conversations') }}" id="group-message-store" enctype="multipart/form-data">
-                                                    @csrf
-                                                    @method("OPTIONS")
-                                                    <div class="comment-form">
-                                                        <textarea type="text" class="comment" placeholder="Rašyti"  name="text" style="width: 100%;overflow-y: hidden; border: 0px"></textarea>
-                                                        <input type="hidden" name="groupID" value="{{$group->id}}">
-                                                        <label onclick="addCommentFile('group-message-store')" class="file"></label>
-                                                        <input  type="file" name="file" id="file-attachment-group-message-store" class="file-attachment" />
-                                                        <button type="submit" class="submit" id="submit">
-                                                    </div>
-                                                </form>
-                                            </div>
+
                                             @php $messages = $group->group_message()->orderBy("id", "Desc")->get(); @endphp
                                             @if (!$messages->isEmpty())
                                                 @foreach($messages as $msg)
@@ -521,7 +522,8 @@
         $( document ).ready(function() {
             CKEDITOR.replace( 'ckeditor', {
             } );
-
+            CKEDITOR.replace( 'ckeditor-voc', {
+            } );
             var groupMessage = @json($groupMessage);
                 if(groupMessage == true) {
                 $('[data-country="tab-2"]').click();
