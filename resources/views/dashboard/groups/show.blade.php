@@ -225,17 +225,23 @@
 
                                     <div class="chat-form">
                                         <div class="mb-5">
-                                            <form  method="POST" class="align-bottom" new-group-message action="{{ route('create-message-conversations') }}" id="group-message-store" enctype="multipart/form-data">
-                                                @csrf
-                                                @method("OPTIONS")
-                                                <div class="comment-form">
-                                                    <textarea class="editor" placeholder="komentuoti" name="text" rows="1" id="ckeditor" style="width: 100%;overflow-y: hidden; border: 0px"></textarea>
-                                                    <input type="hidden" name="groupID" value="{{$group->id}}">
-                                                    <label onclick="addCommentFile('group-message-store')" class="file"></label>
-                                                    <input  type="file" name="file" id="file-attachment-group-message-store" class="file-attachment" />
-                                                    <button type="submit" class="submit" id="submit"></button>
+                                            <button  class="btn-groups btn blue new-post" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample1">Naujas įrašas</button>
+                                            <div class="collapse multi-collapse" id="multiCollapseExample2">
+                                                <div class="author-comment pl-0">
+                                                    <form  method="POST" class="align-bottom" new-group-message action="{{ route('create-message-conversations') }}" id="group-message-store" enctype="multipart/form-data">
+                                                        @csrf
+                                                        @method("OPTIONS")
+                                                        <div class="comment-form">
+                                                            <textarea class="editor" placeholder="komentuoti" name="text" rows="1" id="ckeditor" style="width: 100%;overflow-y: hidden; border: 0px"></textarea>
+                                                            <input type="hidden" name="groupID" value="{{$group->id}}">
+                                                            <label onclick="addCommentFile('group-message-store')" class="file"></label>
+                                                            <input  type="file" name="file" id="file-attachment-group-message-store" class="file-attachment" />
+                                                            <button type="submit" class="submit" id="submit"></button>
+                                                        </div>
+                                                    </form>
                                                 </div>
-                                            </form>
+                                            </div>
+
                                         </div>
                                         <div class="comments-list">
 
