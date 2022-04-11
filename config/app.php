@@ -58,6 +58,7 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 
     'stripe_secret' => env("STRIPE_SECRET"),
+    'stripe_key' => env("STRIPE_KEY"),
 
 
     'asset_url' => env('ASSET_URL', null),

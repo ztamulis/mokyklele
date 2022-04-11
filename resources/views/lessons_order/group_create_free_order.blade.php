@@ -258,100 +258,99 @@
                 return day > 0 && day <= monthLength[month - 1];
             }
         </script>
-        <script src="https://js.stripe.com/v3/"></script>
+{{--        <script src="https://js.stripe.com/v3/"></script>--}}
+{{--        <script>--}}
+{{--            const stripe = Stripe("{{ \Config::get('app.stripe_key') }}");--}}
 
-        <script>
-            const stripe = Stripe("{{ env("STRIPE_KEY") }}");
+{{--            const elements = stripe.elements();--}}
 
-            const elements = stripe.elements();
+{{--            var elementStyles = {--}}
+{{--                base: {--}}
+{{--                    color: '#fff',--}}
+{{--                    fontFamily: 'Arial, sans-serif',--}}
+{{--                    fontSize: '16px',--}}
+{{--                    fontSmoothing: 'antialiased',--}}
+{{--                    padding: '10px',--}}
+{{--                    color: "#000",--}}
 
-            var elementStyles = {
-                base: {
-                    color: '#fff',
-                    fontFamily: 'Arial, sans-serif',
-                    fontSize: '16px',
-                    fontSmoothing: 'antialiased',
-                    padding: '10px',
-                    color: "#000",
+{{--                    ':focus': {--}}
+{{--                        color: '#000',--}}
+{{--                    },--}}
 
-                    ':focus': {
-                        color: '#000',
-                    },
+{{--                    '::placeholder': {--}}
+{{--                        color: '#aaaaaa',--}}
+{{--                    },--}}
 
-                    '::placeholder': {
-                        color: '#aaaaaa',
-                    },
+{{--                    ':focus::placeholder': {--}}
+{{--                        color: '#aaaaaa',--}}
+{{--                    },--}}
+{{--                },--}}
+{{--                invalid: {--}}
+{{--                    color: '#ccc',--}}
+{{--                    ':focus': {--}}
+{{--                        color: '#FA755A',--}}
+{{--                    },--}}
+{{--                    '::placeholder': {--}}
+{{--                        color: '#FFCCA5',--}}
+{{--                    },--}}
+{{--                },--}}
+{{--            };--}}
 
-                    ':focus::placeholder': {
-                        color: '#aaaaaa',
-                    },
-                },
-                invalid: {
-                    color: '#ccc',
-                    ':focus': {
-                        color: '#FA755A',
-                    },
-                    '::placeholder': {
-                        color: '#FFCCA5',
-                    },
-                },
-            };
+{{--            var elementClasses = {--}}
+{{--                focus: 'focus',--}}
+{{--                empty: 'empty',--}}
+{{--                invalid: 'invalid',--}}
+{{--            };--}}
 
-            var elementClasses = {
-                focus: 'focus',
-                empty: 'empty',
-                invalid: 'invalid',
-            };
+{{--            var cardNumber = elements.create('cardNumber', {--}}
+{{--                style: elementStyles,--}}
+{{--                classes: elementClasses,--}}
+{{--            });--}}
+{{--            cardNumber.mount('#card-number');--}}
 
-            var cardNumber = elements.create('cardNumber', {
-                style: elementStyles,
-                classes: elementClasses,
-            });
-            cardNumber.mount('#card-number');
+{{--            var cardExpiry = elements.create('cardExpiry', {--}}
+{{--                style: elementStyles,--}}
+{{--                classes: elementClasses,--}}
+{{--            });--}}
+{{--            cardExpiry.mount('#card-expiry');--}}
 
-            var cardExpiry = elements.create('cardExpiry', {
-                style: elementStyles,
-                classes: elementClasses,
-            });
-            cardExpiry.mount('#card-expiry');
+{{--            var cardCvc = elements.create('cardCvc', {--}}
+{{--                style: elementStyles,--}}
+{{--                classes: elementClasses,--}}
+{{--            });--}}
+{{--            cardCvc.mount('#card-cvc');--}}
 
-            var cardCvc = elements.create('cardCvc', {
-                style: elementStyles,
-                classes: elementClasses,
-            });
-            cardCvc.mount('#card-cvc');
+{{--            const cardHolderName = document.getElementById('card-holder-name');--}}
+{{--            const cardButton = document.getElementById('card-button');--}}
+{{--            const clientSecret = cardButton.dataset.secret;--}}
 
-            const cardHolderName = document.getElementById('card-holder-name');
-            const cardButton = document.getElementById('card-button');
-            const clientSecret = cardButton.dataset.secret;
+{{--            cardButton.addEventListener('click', async (e) => {--}}
+{{--                const { setupIntent, error } = await stripe.confirmCardSetup(--}}
+{{--                    clientSecret, {--}}
+{{--                        payment_method: {--}}
+{{--                            card: cardNumber,--}}
+{{--                            billing_details: { name: cardHolderName.value }--}}
+{{--                        }--}}
+{{--                    }--}}
+{{--                );--}}
 
-            cardButton.addEventListener('click', async (e) => {
-                const { setupIntent, error } = await stripe.confirmCardSetup(
-                    clientSecret, {
-                        payment_method: {
-                            card: cardNumber,
-                            billing_details: { name: cardHolderName.value }
-                        }
-                    }
-                );
+{{--                if (error) {--}}
+{{--                    alert(error.message);--}}
+{{--                } else {--}}
+{{--                    $(".payment--loading").show();--}}
 
-                if (error) {
-                    alert(error.message);
-                } else {
-                    $(".payment--loading").show();
-
-                    $("[name=payment_method], .add_payment_method").css({
-                        "opacity": "0",
-                        "pointer-events": "none",
-                        "height": 0,
-                        "overflow": "hidden",
-                    })
-                    $.post("/dashboard/profile/update-card", {_token: "{{ csrf_token() }}", payment_method: setupIntent.payment_method}, function (data){
-                        data = JSON.parse(data);
-                        $(".payment--loading").html("Kortelė: <b>**** **** **** " + data.card_last + "</b>");
-                        $(".payment--loading-buy-notification").show();
-                    });
-                }
-            });
-        </script>
+{{--                    $("[name=payment_method], .add_payment_method").css({--}}
+{{--                        "opacity": "0",--}}
+{{--                        "pointer-events": "none",--}}
+{{--                        "height": 0,--}}
+{{--                        "overflow": "hidden",--}}
+{{--                    })--}}
+{{--                    $.post("/dashboard/profile/update-card", {_token: "{{ csrf_token() }}", payment_method: setupIntent.payment_method}, function (data){--}}
+{{--                        data = JSON.parse(data);--}}
+{{--                        $(".payment--loading").html("Kortelė: <b>**** **** **** " + data.card_last + "</b>");--}}
+{{--                        $(".payment--loading-buy-notification").show();--}}
+{{--                    });--}}
+{{--                }--}}
+{{--            });--}}
+{{--        </script>--}}
 @endsection
