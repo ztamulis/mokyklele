@@ -82,13 +82,13 @@
 
             if ('{{$group->age_category}}' === 'children') {
                 studentsHtml += '<option value="new">Pridėti vaiką</option></select>';
-                studentsHtml += '<input type="text" name="new_student_name" data-new-student-input="0" placeholder="Vaiko vardas, pavardė">';
-                studentsHtml += '<small data-birthday-label=0 style="display: none;">Vaiko gimtadienis:</small><input required type="date" name="new_student_birthday" data-new-student-input-age="0" placeholder="{{ date("Y-m-d") }}"></div>';
+                studentsHtml += '<input type="text" name="new_student_name" data-new-student-input="0"  placeholder="Vaiko vardas, pavardė">';
+                studentsHtml += '<small data-birthday-label=0 style="display: none;">Vaiko gimtadienis:</small><input type="date" name="new_student_birthday" value="'+student.birthday+'" data-new-student-input-age="0" placeholder="{{ date("Y-m-d") }}"></div>';
 
             } else {
                 studentsHtml += '<option value="new">Pridėti vartotoja</option></select>';
-                studentsHtml += '<input type="text" name="new_student_name" data-new-student-input="0" placeholder="Vartotojo(-os) vardas, pavardė">';
-                studentsHtml += '<small data-birthday-label=0 style="display: none;">Vartotojo(-os) gimtadienis:</small><input required type="date" name="new_student_birthday" data-new-student-input-age="0" placeholder="{{ date("Y-m-d") }}"></div>';
+                studentsHtml += '<input type="text" name="new_student_name" data-new-student-input="0" value="'+student.name+'" placeholder="Vartotojo(-os) vardas, pavardė">';
+                studentsHtml += '<small data-birthday-label=0 style="display: none;">Vartotojo(-os) gimtadienis:</small><input type="date" value="'+student.birthday+'" name="new_student_birthday" data-new-student-input-age="0" placeholder="{{ date("Y-m-d") }}"></div>';
             }
 
             $(".student--select").html(studentsHtml);
@@ -118,7 +118,7 @@
 
                 studentsHtml += '<option value="new">Pridėti vaiką</option></select>';
                 studentsHtml += '<input type="text" name="new_student_name" data-new-student-input="'+selectIndex+'" placeholder="Vaiko vardas, pavardė">';
-                studentsHtml += '<small data-birthday-label='+selectIndex+' style="display: none;">Vaiko gimtadienis:</small><input type="date" name="new_student_birthday" data-new-student-input-age="'+selectIndex+'" placeholder="{{ date("Y-m-d") }}"></div>';
+                studentsHtml += '<small data-birthday-label='+selectIndex+' style="display: none;">Vaiko gimtadienis:</small><input type="date"  value="'+student.birthday+'" name="new_student_birthday" data-new-student-input-age="'+selectIndex+'" placeholder="{{ date("Y-m-d") }}"></div>';
                 $(".student--select").append(studentsHtml);
                 // var studentsCount = $(".student--select select").length;
                 // var price = $('#single-student-price').val();
