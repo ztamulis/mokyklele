@@ -88,6 +88,7 @@ trait CheckoutEmailsTrait
         $email_content_admin = "<h1>Kurso užsakymas</h1><p> Klientas ".  $user->name. " " .$user->surname .
             "<br> El. paštas: ".$user->email.
             "<br>Grupė: ".$group->name .
+            "<br>Šalis: ".$user->country .
             "<br>Grupės ID: ".$group->id .
             "<br>Grupės tipas: ".$group->type .
             "<br>Mokama: ".$paid .
