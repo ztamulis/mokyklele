@@ -8,6 +8,7 @@ class CoursesAdultsPageContent extends Settings {
     public string $main_title;
     public string $main_description;
     public string $main_component;
+    public string $second_component;
     public string $main_img;
 
     public static function group(): string {
@@ -22,8 +23,9 @@ class CoursesAdultsPageContent extends Settings {
         return [
             'main_title' => $this->main_title,
             'main_description' => $this->main_description,
-            'main_img' => $this->main_img,
+            'second_component' => $this->second_component,
             'main_component' => $this->main_component,
+            'main_img' => $this->main_img,
         ];
     }
 

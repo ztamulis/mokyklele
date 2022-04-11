@@ -41,6 +41,7 @@ class CoursesAdultsPageController extends Controller {
         $coursesAdultsPageContent->main_title = !empty($request->input('main_title')) ? $request->input('main_title') : '';
         $coursesAdultsPageContent->main_description = !empty($request->input('main_description')) ? $request->input('main_description') : '';
         $coursesAdultsPageContent->main_component = !empty($request->input('main_component')) ? $request->input('main_component') : '';
+        $coursesAdultsPageContent->second_component = !empty($request->input('second_component')) ? $request->input('second_component') : '';
 
 
         $file = $request->file('file');
