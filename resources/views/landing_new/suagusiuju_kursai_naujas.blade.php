@@ -17,6 +17,10 @@
         @if(!empty($siteContent['main_component']))
                 @include(\App\Http\Helpers\PageContentHelper::getComponent($siteContent['main_component']))
         @endif
+
+        @if(!empty($siteContent['second_component']))
+            @include(\App\Http\Helpers\PageContentHelper::getComponent($siteContent['second_component']))
+        @endif
     </div>
 @endsection
 

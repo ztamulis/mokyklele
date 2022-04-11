@@ -38,9 +38,21 @@
                                 <textarea class="form-control summernote" name="main_description">{!! $coursesPageContent['main_description'] !!}</textarea>
                             </div>
                             <div class="form-group">
+                                <small class="form-text text-muted">Pirma forma</small>
                                 <select class="custom-select" name="main_component">
                                     @foreach(\App\Http\Helpers\PageContentHelper::getComponentsNames() as $value  => $name)
                                     <option {{ $coursesPageContent['main_component'] == $value ? 'selected' : ''}} value="{{$value}}" >{{$name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <small class="form-text text-muted">Antra forma</small>
+                                <select class="custom-select" name="second_component">
+                                    @foreach(\App\Http\Helpers\PageContentHelper::getComponentsNames() as $value  => $name)
+{{--                                        <option value="{{$value}}" >{{$name}}</option>--}}
+
+                                        <option {{ $coursesPageContent['second_component'] == $value ? 'selected' : ''}} value="{{$value}}" >{{$name}}</option>
                                     @endforeach
                                 </select>
                             </div>
