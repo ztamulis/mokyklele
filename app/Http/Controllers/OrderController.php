@@ -117,6 +117,12 @@ class OrderController extends Controller {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
         }
         $json_students = json_decode($request->input("students"));
+        if(empty($json_students)) {
+            return view("lessons_order.group_create_free_order")
+                ->with("group", $group)
+                ->with("error",  'Nepasirinkti studentai');
+        }
+
         $students = [];
         $dublicatedUsers = [];
 
