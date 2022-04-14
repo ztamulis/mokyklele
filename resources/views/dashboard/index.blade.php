@@ -6,7 +6,7 @@
                     Apdovanojimai
                 </a>
                 <a href="/lietuviu_kalbos_pamokos" class="dashboard--button dashboard--button--main">
-                    <img src="/images/icons/plus.svg"> Užsakyti kursą
+                    <img src="/images/icons/plus.svg"> Lietuvių kalbos pamokos
                 </a>
             </div>
         @endif
