@@ -38,6 +38,10 @@
                                 <textarea class="form-control summernote" name="main_description">{!! $coursesPageContent['main_description'] !!}</textarea>
                             </div>
                             <div class="form-group">
+                                <small class="form-text text-muted">Apatinis puslapio tekstas</small>
+                                <textarea class="form-control summernote" name="bottom_description">{!! $coursesPageContent['bottom_description'] !!}</textarea>
+                            </div>
+                            <div class="form-group">
                                 <small class="form-text text-muted">Pirma forma</small>
                                 <select class="custom-select" name="main_component">
                                     @foreach(\App\Http\Helpers\PageContentHelper::getComponentsNames() as $value  => $name)

@@ -22,5 +22,12 @@
             @include(\App\Http\Helpers\PageContentHelper::getComponent($siteContent['second_component']))
         @endif
     </div>
+    <div class="row mt-5 mb-5">
+        @if(!empty($siteContent['bottom_description']))
+            <div>
+                <div class="meeting-description mt-3">{!! $siteContent['bottom_description'] !!}</div>
+            </div>
+        @endif
+    </div>
 @endsection
 

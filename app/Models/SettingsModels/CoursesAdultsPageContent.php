@@ -10,6 +10,7 @@ class CoursesAdultsPageContent extends Settings {
     public string $main_component;
     public string $second_component;
     public string $main_img;
+    public string $bottom_description;
 
     public static function group(): string {
         return 'courses_adults';
@@ -26,6 +27,7 @@ class CoursesAdultsPageContent extends Settings {
             'second_component' => $this->second_component,
             'main_component' => $this->main_component,
             'main_img' => $this->main_img,
+            'bottom_description' => $this->bottom_description,
         ];
     }
 
