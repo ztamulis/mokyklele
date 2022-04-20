@@ -36,7 +36,7 @@ class NotificationsController extends Controller
             $notifications = $notifications->where("email", "LIKE", "%" . $request->input("search") . "%");
         }
 
-        $notifications = $notifications->orderBy("send_from_time", "ASC");
+        $notifications = $notifications->has('group')->orderBy("send_from_time", "ASC");
         return view("dashboard.notifications.index")->with("notifications", $notifications->paginate(15)->withQueryString());
     }
 

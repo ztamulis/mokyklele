@@ -42,8 +42,7 @@ class IntroductionController extends Controller
      *
      * @return Response
      */
-    public function create()
-    {
+    public function create() {
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
@@ -55,6 +54,7 @@ class IntroductionController extends Controller
      *
      * @param Request $request
      * @return Response
+     * @throws InvalidManipulation
      */
     public function store(Request $request)
     {
