@@ -349,7 +349,7 @@ class GroupController extends Controller
 
     public function createMessage(Request $request){
         $request->validate([
-            'text' => 'required|string|max:2000',
+            'text' => 'required|string|max:20000',
             'groupID' => 'required|int'
         ]);
 

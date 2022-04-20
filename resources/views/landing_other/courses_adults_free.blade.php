@@ -75,11 +75,11 @@
             </div>
             <div class="actions">
                 @if($group->students()->count() >= $group->slots)
-                    <a class="button button-disabled course--select--button">
+                    <a class="button button-disabled course--select--button text-white">
                         Vietų nebėra
                     </a>
                 @else
-                    <a href="/select-group/order/free/{{ $group->slug }}" class="button course--select--button">
+                    <a href="/select-group/order/free/{{ $group->slug }}" class="button course--select--button text-white">
                         Pasirinkti
                     </a>
                 @endif
