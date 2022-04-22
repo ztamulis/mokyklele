@@ -57,6 +57,9 @@ class Group extends Model
 
         foreach ($students as $student) {
             $user = $student->user()->first();
+            if (empty($user)) {
+                continue;
+            }
             foreach($user->rewards()->get() as $key => $reward) {
                 $reward->user_name = $user->name.' '.$user->surname;
                 $rewards[$key] = $reward;
