@@ -65,7 +65,7 @@
                             <h3>{{$meeting->name}}</h3>
                             <div class="info"><span>{{$meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d")}}</span>
                                 {{App\Models\Group::getWeekDay($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->dayOfWeek)}},
-                                <span>{{ App\TimeZoneUtils::updateHoursMeetings($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT+1")), $meeting->updated_at) }}</span>
+                                <span>{{ App\TimeZoneUtils::updateTime($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT")), $meeting->updated_at)->format('H:i') }}</span>
                                 ({{Cookie::get("user_timezone", "GMT")}})</div>
                             <div class="desc">{!! strip_tags($meeting->description) !!}</div>
                             <a href="{{ $meeting->join_link }}">
