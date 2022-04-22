@@ -94,7 +94,6 @@ class sendUserNotification extends Command
     }
 
     private function getEmailType(Group $group) {
-
         if (!$group->paid
             && $group->age_category === 'children'
             && ($group->type === 'yellow' || $group->type === 'green')
