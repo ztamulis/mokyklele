@@ -21,7 +21,7 @@ class UserNotificationEmailHelper {
         \Carbon\Carbon::setLocale('lt');
 
         $firstEvent = $group->events()->orderBy('date_at', 'asc')->first();
-        $firstEventDate = TimeZoneUtils::updateTime($firstEvent->date_at, $firstEvent->created_at)->setTimezone($user->time_zone);
+        $firstEventDate = TimeZoneUtils::updateTime($firstEvent->date_at, $firstEvent->updated_at)->setTimezone($user->time_zone);
         $dayOfWeekKey = $firstEventDate->dayOfWeek;
         $emailContent = str_replace('{grupe}', $group->color(), $emailContent);
         $emailContent = str_replace('{grupes-savaites-diena}', $group->getWeekDayGramCase($dayOfWeekKey), $emailContent);
