@@ -54,7 +54,7 @@
                 <div class="tabs">
                     <button class="tablinks active" data-country="tab-1">Namų darbai</button>
                     <button class="tablinks" data-country="tab-2">Žodynas</button>
-                    <button class="tablinks d-lg-none" data-country="tab-3">Informacija</button>
+                    <button class="tablinks d-lg-none" data-country="tab-3">Pranešimai</button>
                     <button class="tablinks" data-country="tab-4">Apdovanojimai</button>
                 </div>
 
@@ -69,7 +69,7 @@
                                         @if(Auth::user()->role != "user")
                                             <button  class="btn-groups btn blue new-post" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Naujas įrašas</button>
                                             <div class="collapse multi-collapse" id="multiCollapseExample1">
-                                                <div class="author-comment pl-0">
+                                                <div class="author-comment pl-0" style="border: 1px solid #dee2e6;">
                                                     <form action="{{route('homework-store')}}" new-homework-file method="POST" enctype="multipart/form-data">
                                                         @csrf
                                                         <textarea class="editor" placeholder="komentuoti" name="file_name" rows="1" id="ckeditor-voc" style="width: 100%;overflow-y: hidden; border: 0px"></textarea>
@@ -157,7 +157,7 @@
                                             </div>
                                             <form  method="POST" action="{{ route('comments.store') }}" comments-form id="comment-post-{{$file->id}}" enctype="multipart/form-data">
                                                 @csrf
-                                                <div class="comment-form">
+                                                <div class="comment-form" style="border: 1px solid #dee2e6;">
                                                     <input type="hidden" name="commentable_encrypted_key" value="{{ $file->getEncryptedKey() }}"/>
                                                     <textarea name="message" class="comment" rows="1" cols="50" placeholder="komentuoti"></textarea>
     {{--                                                <input type="text" class="comment" placeholder="Komentuoti" value="" name="message">--}}
@@ -181,7 +181,7 @@
                                 </div>
                                 <div class="sidebar-area col-lg-5 col-sm-12 col-12">
                                     <div class="information-block tab-content-display-none">
-                                        <h3>Informacija</h3>
+                                        <h3>Pranešimai</h3>
                                         <div class="desc">{!! $group->information !!}</div>
                                     </div>
                                     @php $events = $group->events()->where("date_at", ">" ,\Carbon\Carbon::now('utc')->subMinutes(30)->format('Y-m-d H:i:s'))->orderBy("date_at","ASC")->get(); @endphp
@@ -394,7 +394,7 @@
                             <div class="row mt-5 no-gutters">
                                 <div class="sidebar-area col-lg-5 col-sm-12 col-12">
                                     <div class="information-block">
-                                        <h3>Informacija</h3>
+                                        <h3>Pranešimai</h3>
                                         <div class="desc">{!! $group->information !!}</div>
                                     </div>
                             </div>
