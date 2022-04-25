@@ -37,14 +37,15 @@ class OrderController extends Controller {
 
     public function selectGroupOrder(Request $request, $slug) {
         $group = Group::where('slug', $slug)->first();
-
+        
+        if(!$group) {
+            return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
+        }
         if ($group->slots <= $group->students()->count()) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė pilna.");
         }
 
-        if(!$group) {
-            return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
-        }
+
         $coupon = $request->input('coupon');
         if (isset($coupon)) {
             $coupon = Coupon::where('code', $coupon)->first();
