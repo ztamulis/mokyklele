@@ -19,7 +19,6 @@ class Group extends Model
          'Kursai suaugusiems' => 'adults',
          'Kursai vaikams' => 'children',
     ];
-//    public static $FILE_PATH = 'uploads/homework-comments';
 
     protected $dates = ['time' , 'time_2'];
 
