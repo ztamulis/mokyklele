@@ -5,7 +5,7 @@
                 <a href="/dashboard/user-rewards" class="dashboard--button">
                     Apdovanojimai
                 </a>
-                <a href="/lietuviu_kalbos_pamokos" class="dashboard--button dashboard--button--main">
+                <a href="/lietuviu-kalbos-pamokos" class="dashboard--button dashboard--button--main">
                     <img src="/images/icons/plus.svg"> Lietuvių kalbos pamokos
                 </a>
             </div>
