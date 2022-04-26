@@ -277,9 +277,9 @@
                                                         </div>
                                                         <div class="comment">
                                                             <div class="text">
-                                                                <?php $msg->message = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $msg->message);
-                                                                 ?>
-                                                                    <div class="desc edit">{!! nl2br($msg->message) !!}</div>
+<!--                                                                --><?php //$msg->message = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $msg->message);
+//                                                                 ?>
+                                                                    <div class="desc edit">{!! $msg->message     !!}</div>
                                                             </div>
                                                             @if($msg->file)
                                                             <div class="attachments">
@@ -534,6 +534,18 @@
                 if(groupMessage == true) {
                 $('[data-country="tab-2"]').click();
             }
+            CKEDITOR.on("instanceReady", function(event) {
+                event.editor.on("beforeCommandExec", function(event) {
+                    // Show the paste dialog for the paste buttons and right-click paste
+                    if (event.data.name == "paste") {
+                        event.editor._.forcePasteDialog = true;
+                    }
+                    // Don't show the paste dialog for Ctrl+Shift+V
+                    if (event.data.name == "pastetext" && event.data.commandData.from == "keystrokeHandler") {
+                        event.cancel();
+                    }
+                })
+            });
         });
 
         //
