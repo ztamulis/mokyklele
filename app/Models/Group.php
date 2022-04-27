@@ -188,7 +188,8 @@ class Group extends Model
         $eventsCount = count($events);
         $startDate = $events[0];
         return ['eventsCount' => $eventsCount,
-            'startDate' => $startDate['date_at']
+            'startDate' => $startDate['date_at'],
+            'event_update_at' => $startDate['updated_at']
         ];
     }
 

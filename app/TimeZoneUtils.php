@@ -71,7 +71,7 @@ class TimeZoneUtils
 
             return Carbon::createFromDate($date)->subhour();
         }
-        return $date;
+        return Carbon::createFromDate($date);
     }
 
     public static function updateTimeWithGmt($date, $updatedAt) {
