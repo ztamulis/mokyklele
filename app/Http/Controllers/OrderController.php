@@ -10,6 +10,7 @@ use App\Models\Group;
 use App\Models\Payment;
 use App\Models\Student;
 use App\Models\UserCoupon;
+use App\TimeZoneUtils;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -513,7 +514,8 @@ class OrderController extends Controller {
         $studentsName = join("; ", $student_names);
         $groupData = $group->getGroupStartDateAndCount();
         if (isset($groupData['startDate'])) {
-            $startDate = \Carbon\Carbon::parse($groupData['startDate'])->format('Y-m-d');
+
+            $startDate = TimeZoneUtils::updateTime($groupData['startDate'], $groupData['event_update_at'])->format('Y-m-d');
         } else {
             $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
         }
