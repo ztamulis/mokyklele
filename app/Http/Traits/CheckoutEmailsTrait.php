@@ -6,6 +6,7 @@ namespace App\Http\Traits;
 
 use App\Models\Group;
 use App\Models\UserNotifications;
+use App\TimeZoneUtils;
 use Carbon\Carbon;
 
 trait CheckoutEmailsTrait
@@ -20,7 +21,7 @@ trait CheckoutEmailsTrait
 
         $groupData = $group->getGroupStartDateAndCount();
         if (isset($groupData['startDate'])) {
-            $startDate = \Carbon\Carbon::parse($groupData['startDate'])->format("m.d");
+            $startDate = TimeZoneUtils::updateTime($groupData['startDate'], $groupData['event_update_at'])->format('Y-m-d');
         } else {
             $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format("m.d");
         }
@@ -30,7 +31,7 @@ trait CheckoutEmailsTrait
             "džiaugiamės, kad prisijungsite prie Pasakos pamokų!<br>".
             "Jūsų detalės apačioje:<br>".
             $group->name."<br>".
-            $group->display_name." ".$group->time->timezone($timezone)->format("H:i")." (".$timezone.")<br>".
+            $group->display_name." ".TimeZoneUtils::updateTime($groupData['startDate'], $groupData['event_update_at'])->timezone($timezone)->format('H:i')." (".$timezone.")<br>".
             "Kursas vyks  ". $startDate." - ". \Carbon\Carbon::parse($group->end_date)->format("m.d")." (".$group->course_length." sav.)<br>".
             "Savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyroje</a> patogiai prisijungsite į pamokas, rasite namų darbus ir galėsite bendrauti su kitais nariais. </p>".
             "<p>Iki pasimatymo,<br> Pasakos komanda </p>";
@@ -49,13 +50,13 @@ trait CheckoutEmailsTrait
         if (!empty($user->time_zone)) {
             $timezone = $user->time_zone;
         }
-
+        $groupData = $group->getGroupStartDateAndCount();
 
         $email_title = "Registracijos į nemokamą pamoką patvirtinimas";
         $email_content = "<p>Sveiki,<br>".
             "ačiū, kad registravotės į nemokamą Pasakos pamoką! Jūsų nemokamos pamokos detalės čia:<br>".
             $group->name."<br>".
-            $group->display_name." ".$group->time->timezone($timezone)->format("H:i")." (".$timezone.")<br>".
+            $group->display_name." ".TimeZoneUtils::updateTime($groupData['startDate'], $groupData['event_update_at'])->timezone($timezone)->format("H:i")." (".$timezone.")<br>".
             "Į pamoką prisijungsite iš savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyros</a>.</p>".
             "<p>Grupes tolimesniam mokymuisi skirstome ne tik pagal amžių, bet ir pagal kalbos mokėjimo lygį - taip galime užtikrinti, kad mokiniai pasieks geriausių rezultatų ir drąsiau jausis pamokoje.<br>".
             "Nemokamos pamokos metu mokytoja įvertins vaiko kalbos mokėjimo lygį ir vėliau mes pasiūlysime tinkamiausią grupę jūsų vaikui.<br>".
@@ -76,11 +77,11 @@ trait CheckoutEmailsTrait
         } else {
             $paid = 'Ne';
         }
-        $time = $group->time->timezone('Europe/London')->format("H:i");
-
         $groupData = $group->getGroupStartDateAndCount();
+        $time = TimeZoneUtils::updateTime($groupData['startDate'], $groupData['event_update_at'])->timezone('Europe/London')->format('H:i');
+
         if (isset($groupData['startDate'])) {
-            $startDate = \Carbon\Carbon::parse($groupData['startDate'])->format('Y-m-d');
+            $startDate = TimeZoneUtils::updateTime($groupData['startDate'], $groupData['event_update_at'])->format('Y-m-d');
         } else {
             $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
         }
