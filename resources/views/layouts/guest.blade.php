@@ -60,7 +60,7 @@
                                             @endif
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right dropdown-list dropdown-menu-right animated--grow-in">
-                                            <h6 class="dropdown-header">Žinutės</h6>
+                                            <h6 class="dropdown-header text-white">Žinutės</h6>
                                             @foreach(\App\Http\Controllers\MessageController::messages() as $message)
                                                 <a class="d-flex align-items-center dropdown-item" href="/dashboard/messages/{{$message->id}}">
                                                     <div class="font-weight-bold">
