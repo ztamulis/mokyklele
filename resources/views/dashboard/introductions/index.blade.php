@@ -1,6 +1,5 @@
 <x-user>
     <div class="container--other">
-
         @if(isset($message))
             <div class="row">
                 <div class="col-xl-8 offset-xl-2">
@@ -51,6 +50,9 @@
                                 <tr>
                                     <th></th>
                                     <th>Pavadinimas</th>
+                                    <th>Rodyti datą</th>
+                                    <th>Privatus</th>
+                                    <th>Viešas</th>
                                     <th>Laikas ({{ \App\TimeZoneUtils::currentGmtModifierText() }})</th>
                                     <th></th>
                                 </tr>
@@ -60,6 +62,9 @@
                                     <tr>
                                         <td><div class="color--small background--blue" @if($meeting->photo) style="background-image: url('/uploads/introductions/{{ $meeting->photo }}')" @endif ></div></td>
                                         <td>{{ $meeting->name }}</td>
+                                        <td>{{ $meeting->show_date ? 'Taip' : 'Ne' }}</td>
+                                        <td>{{ $meeting->is_private ? 'Taip' : 'Ne' }}</td>
+                                        <td>{{ $meeting->is_public ? 'Taip' : 'Ne' }}</td>
                                         <td>{{ \Carbon\Carbon::parse($meeting->date_at)->timezone('Europe/London') }}</td>
                                         <td class="text-right">
                                             @if(Auth::user()->role == "admin")

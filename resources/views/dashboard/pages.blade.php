@@ -30,29 +30,29 @@
         <h1 class="text-center">Puslapių informacijos redagavimas</h1>
         <div class="row mt-5 text-center">
             <div class="col-lg-3 col-md-12 mb-3">
-                <a href="{{route('pages.lithuanian-courses-children.edit')}}">
-                    <button class="button btn-primary">
+                <a href="{{route('pages.lithuanian-courses-children.edit')}}" >
+                    <button class="btn-groups btn blue mx-1 btn-block">
                         <i class="fa fa-cc-discover"></i><span>Lietuvių kalbos kursų puslapis</span>
                     </button>
                 </a>
             </div>
-            <div class="col-lg-3 col-md-12 mb-3">
+            <div class="col-lg-3 col-md-12 mb-3 ">
                 <a href="{{route('pages.home-page.edit')}}">
-                    <button class="button btn-primary">
+                    <button class="btn-groups btn blue mx-1 btn-block">
                         <i class="fa fa-cc-discover"></i><span>Pagrindinis puslapis</span>
                     </button>
                 </a>
             </div>
             <div class="col-lg-3 col-md-12 mb-3">
                 <a href="{{route('pages.suggestions-config.list.index')}}">
-                    <button class="button btn-primary">
+                    <button class="btn-groups btn blue mx-1 btn-block">
                         <i class="fa fa-cc-discover"></i><span>Patarimai tėvams</span>
                     </button>
                 </a>
             </div>
             <div class="col-lg-3 col-md-12">
                 <a href="{{route('pages.introductions-config.introductions.index')}}">
-                <button class="button btn-primary">
+                <button class="btn-groups btn blue mx-1 btn-block">
                     <i class="fa fa-cc-discover"></i><span>Vieši susitikimai</span>
                 </button>
                 </a>
@@ -61,22 +61,29 @@
             <div class="row mt-5 text-center">
                 <div class="col-lg-3 col-md-12 mb-3">
                     <a href="{{route('pages.courses-adults.edit')}}">
-                        <button class="button btn-primary">
+                        <button class="btn-groups btn blue mx-1 btn-block">
                             <i class="fa fa-cc-discover"></i><span>Suaugusiųjų kursai</span>
                         </button>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-12 mb-3">
                     <a href="{{route('pages.team-member.index')}}">
-                        <button class="button btn-primary">
+                        <button class="btn-groups btn blue mx-1 btn-block">
                             <i class="fa fa-cc-discover"></i><span>Komanda</span>
                         </button>
                     </a>
                 </div>
                 <div class="col-lg-3 col-md-12 mb-3">
                     <a href="{{route('pages.free-lessons.edit')}}">
-                        <button class="button btn-primary">
+                        <button class="btn-groups btn blue mx-1 btn-block">
                             <i class="fa fa-cc-discover"></i><span>Nemokama pamoka</span>
+                        </button>
+                    </a>
+                </div>
+                <div class="col-lg-3 col-md-12 mb-3">
+                    <a href="{{route('pages.prices.edit')}}">
+                        <button class="btn-groups btn blue mx-1 btn-block">
+                            <i class="fa fa-cc-discover"></i><span>Kaina</span>
                         </button>
                     </a>
                 </div>
@@ -84,15 +91,8 @@
 
             <div class="row mt-5 text-center">
                 <div class="col-lg-3 col-md-12 mb-3">
-                    <a href="{{route('pages.prices.edit')}}">
-                        <button class="button btn-primary">
-                            <i class="fa fa-cc-discover"></i><span>Kaina</span>
-                        </button>
-                    </a>
-                </div>
-                <div class="col-lg-3 col-md-12 mb-3">
                     <a href="{{route('pages.contacts.edit')}}">
-                        <button class="button btn-primary">
+                        <button class="btn-groups btn blue mx-1 btn-block">
                             <i class="fa fa-cc-discover"></i><span>Kontaktai</span>
                         </button>
                     </a>

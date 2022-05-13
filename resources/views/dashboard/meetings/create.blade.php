@@ -48,7 +48,14 @@
                         <div class="form-group"><small class="form-text text-muted">Susitikimo nuotrauka (.jpg, .png, .svg, .gif)</small>
                             <input name="file" type="file" class="form-control-file" accept=".jpg,.jpeg,.png,.svg,.gif"/>
                         </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="show_date" value="1" checked  id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Rodyti laiką
+                            </label>
+                        </div>
                         <div class="form-group"><button class="btn btn-primary" type="submit">Pridėti susitikimą</button></div>
+
                     </form>
                 </div>
             </div>

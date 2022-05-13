@@ -21,3 +21,9 @@ u794216831_laravel.sql
 .idea/runConfigurations/Unnamed.xml
 composer.lock
 vendor_newest/asm89/stack-cors/composer.json
+*.sql
+*.xml
+composer.lock
+.editorconfig
+.idea/runConfigurations/Unnamed.xml
+database/migrations/2022_03_01_144803_create_settings_table.php

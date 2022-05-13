@@ -63,10 +63,12 @@
                                 @endif
                             </div>
                             <h3>{{$meeting->name}}</h3>
-                            <div class="info"><span>{{$meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d")}}</span>
-                                {{App\Models\Group::getWeekDay($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->dayOfWeek)}},
-                                <span>{{ App\TimeZoneUtils::updateTime($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT")), $meeting->updated_at)->format('H:i') }}</span>
-                                ({{Cookie::get("user_timezone", "GMT")}})</div>
+                            @if ($meeting->show_date)
+                                <div class="info"><span>{{$meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d")}}</span>
+                                    {{App\Models\Group::getWeekDay($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->dayOfWeek)}},
+                                    <span>{{ App\TimeZoneUtils::updateTime($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT")), $meeting->updated_at)->format('H:i') }}</span>
+                                    ({{Cookie::get("user_timezone", "GMT")}})</div>
+                            @endif
                             <div class="desc">{!! strip_tags($meeting->description) !!}</div>
                             <a href="{{ $meeting->join_link }}">
                                 <button class="btn-groups btn green">Prisijungti</button>

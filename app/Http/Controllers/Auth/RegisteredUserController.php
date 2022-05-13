@@ -48,7 +48,7 @@ class RegisteredUserController extends Controller
             'country' => $request->country,
             'terms' => $request->terms,
             'newsletter' => $request->newsletter,
-            'time_zone' => \Cookie::get("user_timezone", "GMT"),
+            'time_zone' => \Cookie::get("user_timezone", "Europe/London"),
         ]));
 
 

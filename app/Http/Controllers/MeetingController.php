@@ -51,6 +51,7 @@ class MeetingController extends Controller
         $meeting->name = $request->input("name");
         $meeting->description = $request->input("description");
         $meeting->join_link = $request->input("join_link");
+        $meeting->show_date = $request->input("show_date");
 
         $date = Carbon::parse($request->input("date_at"), 'Europe/London');
 
@@ -83,7 +84,7 @@ class MeetingController extends Controller
 
     public function update(Request $request, Meeting $meeting)
     {
-        if(Auth::user()->role != "admin"){
+        if(Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $request->validate([
@@ -96,9 +97,15 @@ class MeetingController extends Controller
         $meeting->name = $request->input("name");
         $meeting->description = $request->input("description");
         $meeting->join_link = $request->input("join_link");
+        $meeting->show_date = $request->input("show_date");
 
         $date = Carbon::parse($request->input("date_at"), 'Europe/London');
-        $date->setTimezone('GMT');
+
+        $isDst = Carbon::now()->setTimezone('Europe/London')->isDST();
+        if($isDst){
+            $date = $date->subHour();
+        }
+
         $meeting->date_at = $date;
 
         $file = $request->file('file');
