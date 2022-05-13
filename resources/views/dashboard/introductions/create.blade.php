@@ -1,4 +1,6 @@
 <x-user>
+    <div class="container--other">
+
     @if(isset($message))
         <div class="row">
             <div class="col-xl-8 offset-xl-2">
@@ -45,6 +47,24 @@
                         <div class="form-group"><small class="form-text text-muted">Zoom nuoroda</small>
                             <input class="form-control" type="text" name="join_link" placeholder="https://" value="{{ old("join_link") }}">
                         </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="show_date" value="1" checked  id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Rodyti laiką
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="is_private" value="0"  id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Privatus
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="is_public" value="1" checked  id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Viešas
+                            </label>
+                        </div>
                         <div class="form-group"><small class="form-text text-muted">Susitikimo nuotrauka (.jpg, .png, .svg, .gif)</small>
                             <input name="file" type="file" class="form-control-file" accept=".jpg,.jpeg,.png,.svg,.gif"/>
                         </div>
@@ -54,5 +74,5 @@
             </div>
         </div>
     </div>
-
+    </div>
 </x-user>

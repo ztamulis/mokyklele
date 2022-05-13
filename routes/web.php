@@ -70,9 +70,6 @@ Route::get('/kaina', function () {
 
 });
 
-Route::get('/susitikimai', function () {
-    return view('landing.susitikimai');
-});
 Route::get('/suaugusiuju-kursai', function () {
     return view('landing_new.suagusiuju_kursai_naujas')->with('siteContent',  app(CoursesAdultsPageContent::class)->getPageContent());
 
@@ -89,7 +86,6 @@ Route::get('/susitikimai', function () {
 });
 
 Route::get('/patarimai-tevams', function () {
-
     return view('landing_new.patarimai_naujas')
         ->with("suggestions", \App\Models\Suggestion::orderBy('created_at', 'desc')->get())
         ->with('siteContent',  app(SuggestionPageContent::class)->getPageContent());

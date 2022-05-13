@@ -28,13 +28,13 @@ class IntroductionController extends Controller
         if(Auth::user()->role == "user"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        $meetings = Introduction::where("id", ">", 0);
+        $introductions = Introduction::where("id", ">", 0);
         if($request->input("search")){
-            $meetings = $meetings->where("name", "LIKE", "%" . $request->input("search") . "%");
+            $introductions = $introductions->where("name", "LIKE", "%" . $request->input("search") . "%");
         }
 
-        $meetings = $meetings->orderBy("id", "ASC");
-        return view("dashboard.meetings_public.index")->with("meetings", $meetings->paginate(15)->withQueryString());
+        $introductions = $introductions->orderBy("id", "ASC");
+        return view("dashboard.introductions.index")->with("meetings", $introductions->paginate(15)->withQueryString());
     }
 
     /**
@@ -46,7 +46,7 @@ class IntroductionController extends Controller
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        return view("dashboard.meetings_public.create");
+        return view("dashboard.introductions.create");
     }
 
     /**
@@ -68,26 +68,30 @@ class IntroductionController extends Controller
             'date_at' => 'required|string'
         ]);
 
-        $meeting = new Introduction;
-        $meeting->name = $request->input("name");
-        $meeting->description = $request->input("description");
-        $meeting->join_link = $request->input("join_link");
+        $introduction = new Introduction;
+        $introduction->name = $request->input("name");
+        $introduction->description = $request->input("description");
+        $introduction->join_link = $request->input("join_link");
+        
 
-        $date = Carbon::parse($request->input("date_at"), 'Europe/London');
-        $date->setTimezone('GMT');
-
-        $meeting->date_at = $date;
+        $date = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"));
+        $isDst = Carbon::now()->timezone('Europe/London')->isDST();
+        if($isDst){
+            $date = $date->subHour();
+        }
+        
+        $introduction->date_at = $date;
 
         $file = $request->file('file');
         if($file) {
             $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
             $file->storeAs("uploads/introductions", $newfilename);
-            $meeting->photo = $newfilename;
+            $introduction->photo = $newfilename;
             Image::load("uploads/introductions/".$newfilename)
                 ->height(560, 840)
                 ->save();
         }
-        $meeting->save();
+        $introduction->save();
 
         Session::flash('message', "Susitikimas sėkmingai sukurtas");
         return Redirect::to('dashboard/introductions');
@@ -110,12 +114,11 @@ class IntroductionController extends Controller
      * @param Introduction $introduction
      * @return Response
      */
-    public function edit(Introduction $introduction)
-    {
+    public function edit(Introduction $introduction) {
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        return view("dashboard.meetings_public.edit")->with("meeting", $introduction);
+        return view("dashboard.introductions.edit")->with("meeting", $introduction);
     }
 
     /**
@@ -141,9 +144,16 @@ class IntroductionController extends Controller
         $introduction->name = $request->input("name");
         $introduction->description = $request->input("description");
         $introduction->join_link = $request->input("join_link");
+        $introduction->is_public = $request->input("is_public");
+        $introduction->is_private = $request->input("is_private");
+        $introduction->show_date = $request->input("show_date");
 
-        $date = Carbon::parse($request->input("date_at"), 'Europe/London');
-        $date->setTimezone('GMT');
+        $date = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"));
+        $isDst = Carbon::now()->timezone('Europe/London')->isDST();
+        if($isDst){
+            $date = $date->subHour();
+        }
+
         $introduction->date_at = $date;
 
         $file = $request->file('file');

@@ -341,6 +341,7 @@ class EventController extends Controller
         }
 
         $teachers = [];
+
         foreach (User::where("role", "teacher")->get() as $teacher) {
             $days = [];
             foreach (Event::where("teacher_id", $teacher->id)->where("date_at", ">", $startDate)->where("date_at", "<", $endDate)->get() as $event) {
@@ -348,7 +349,6 @@ class EventController extends Controller
             }
             $teachers[$teacher->name." ".$teacher->surname] = $days;
         }
-        // dd($teachers);
 
         setlocale(LC_TIME, 'lt_LT');
         \Carbon\Carbon::setLocale('lt');
