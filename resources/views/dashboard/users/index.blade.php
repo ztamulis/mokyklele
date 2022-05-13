@@ -50,7 +50,7 @@
                             <th>ID</th>
                             <th>Naudotojas</th>
                             <th>Mokiniai</th>
-                            <th>Apdovanojimai</th>
+                            <th>Laiko juosta</th>
                             <th class="text-center">Veiksmai</th>
                         </tr>
                     </thead>
@@ -70,9 +70,7 @@
                                     @endforeach
                                 </td>
                                 <td>
-                                    @foreach($user->rewards as $reward)
-                                        <img src="/uploads/rewards/{{ $reward->file }}" style="height: 25px"> {{ $reward->name }}<br>
-                                    @endforeach
+                                    {{$user->time_zone}}
                                 </td>
                                 <td class="{{Auth::user()->role === 'teacher' ? 'text-center' : 'text-right'}}">
                                     @if(Auth::user()->role === "admin")
