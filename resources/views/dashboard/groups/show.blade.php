@@ -21,7 +21,7 @@
                     </a>
 
                     @if ($nextLesson)
-                        <div class="time">{{ App\TimeZoneUtils::updateTime($nextLesson->date_at->timezone(Cookie::get("user_timezone", "GMT")), $nextLesson->updated_at)->format('Y-m-d H:i') }} {{ Cookie::get("user_timezone", "GMT") }}</div>
+                        <div class="time">{{ App\TimeZoneUtils::updateTime($nextLesson->date_at->timezone(Cookie::get("user_timezone", "Europe/London")), $nextLesson->updated_at)->format('Y-m-d H:i') }} {{ Cookie::get("user_timezone", "Europe/London") }}</div>
                     @endif
                     <small></small>
 
@@ -96,7 +96,7 @@
                                         <li class="homework-list" style=" display:none;">
                                         <div class="author-comment" id="homework-file-main-{{$file->id}}">
                                             <div class="author">{{$file->user->name}} {{$file->user->surname}}</div>
-                                            <div class="date">{{ $file->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d") }}</div>
+                                            <div class="date">{{ $file->created_at->timezone(Cookie::get("user_timezone", "Europe/London"))->format("Y-m-d") }}</div>
     <!--                                        --><?php //$displayName = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>', $file->display_name); ?>
                                             <div class="desc">@php echo $file->display_name; @endphp</div>
                                             @if (!empty($file->name))
@@ -127,7 +127,7 @@
                                                         <form action="{{route('homework-edit', $file->id)}}" homework-edit-file method="POST" enctype="multipart/form-data">
                                                             <div class="author-comment">
                                                                 <div class="author">{{$file->user->name}} {{$file->user->surname}}</div>
-                                                                <div class="date mb-2">{{ $file->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</div>
+                                                                <div class="date mb-2">{{ $file->created_at->timezone(Cookie::get("user_timezone", "Europe/London"))->format("Y-m-d H:i") }}</div>
                                                                 <input type="hidden" name="group_id" value="{{$group->id}}">
                                                                 <div class="desc edit">
                                                                     <textarea name="file_name" id="text-area-edit-{{$file->id}}" class="editor" rows="5" style="width: 100%;overflow-y: hidden; border: 0px" >{{$file->display_name}}</textarea>
@@ -195,7 +195,7 @@
                                                     @foreach($events as $event)
                                                         <div class="dashboard--time">
                                                             <?php
-                                                            $eventDate = $event->date_at->timezone(Cookie::get("user_timezone", "GMT"));
+                                                            $eventDate = $event->date_at->timezone(Cookie::get("user_timezone", "Europe/London"));
                                                             ?>
                                                             <div class="dashboard--time--date">{{ mb_strtoupper(mb_substr($eventDate->translatedFormat("F"),0,3)) }}<br><span>{{ $eventDate->format("d") }}</span></div>
                                                             <div class="dashboard--time--info">
@@ -315,7 +315,7 @@
                                                                     <form action="{{route('edit-group-message', $msg->id)}}" edit-group-message-form  method="POST" enctype="multipart/form-data">
                                                                         <div class="author-comment">
                                                                             <div class="author">{{$msg->author->name}} {{$msg->author->surname}}</div>
-                                                                            <div class="date mb-2">{{ $msg->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</div>
+                                                                            <div class="date mb-2">{{ $msg->created_at->timezone(Cookie::get("user_timezone", "Europe/London"))->format("Y-m-d H:i") }}</div>
                                                                             <input type="hidden" name="group_id" value="{{$group->id}}">
                                                                             <div class="desc edit" style="word-break: break-word;"><textarea name="message" id="text-area-group-message-{{$msg->id}}" rows="5" style="width: 100%;overflow-y: hidden; border: 0px">{!! nl2br($msg->message) !!}</textarea></div>
                                                                             <div class="edit-buttons mt-2" id="group-message-add-file-{{$msg->id}}">
@@ -526,6 +526,8 @@
 
         }
         $( document ).ready(function() {
+            CKEDITOR.config.font_defaultLabel = 'Roboto';
+            CKEDITOR.config.font_names = 'Roboto;Arial;Arial Black;Comic Sans MS;Courier New;Helvetica;Impact;Tahoma;Times New Roman;Verdana';
             CKEDITOR.replace( 'ckeditor', {
             } );
             CKEDITOR.replace( 'ckeditor-voc', {

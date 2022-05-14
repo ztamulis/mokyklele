@@ -22,7 +22,7 @@
                     <div class="lesson-area {{ $group->type }}">
                         <a href="/dashboard/groups/{{$group->slug}}"><h3>{{Auth::user()->role !== 'user' ? '#'.$group->id : ''}} {{$group->name}}</h3></a>
                         @if($nextLesson)
-                            <div class="info">{{ App\TimeZoneUtils::updateTime($nextLesson->date_at->timezone(Cookie::get("user_timezone", "GMT")), $nextLesson->updated_at)->format('Y-m-d H:i') }} ({{ Cookie::get("user_timezone", "GMT") }})</div>
+                            <div class="info">{{ App\TimeZoneUtils::updateTime($nextLesson->date_at->timezone(Cookie::get("user_timezone", "Europe/London")), $nextLesson->updated_at)->format('Y-m-d H:i') }} ({{ Cookie::get("user_timezone", "Europe/London") }})</div>
                         @else
                             <div class="info">Kita pamoka: nėra</div>
                         @endif
@@ -64,10 +64,10 @@
                             </div>
                             <h3>{{$meeting->name}}</h3>
                             @if ($meeting->show_date)
-                                <div class="info"><span>{{$meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d")}}</span>
-                                    {{App\Models\Group::getWeekDay($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT"))->dayOfWeek)}},
-                                    <span>{{ App\TimeZoneUtils::updateTime($meeting->date_at->timezone(Cookie::get("user_timezone", "GMT")), $meeting->updated_at)->format('H:i') }}</span>
-                                    ({{Cookie::get("user_timezone", "GMT")}})</div>
+                                <div class="info"><span>{{$meeting->date_at->timezone(Cookie::get("user_timezone", "Europe/London"))->format("Y-m-d")}}</span>
+                                    {{App\Models\Group::getWeekDay($meeting->date_at->timezone(Cookie::get("user_timezone", "Europe/London"))->dayOfWeek)}},
+                                    <span>{{ App\TimeZoneUtils::updateTime($meeting->date_at->timezone(Cookie::get("user_timezone", "Europe/London")), $meeting->updated_at)->format('H:i') }}</span>
+                                    ({{Cookie::get("user_timezone", "Europe/London")}})</div>
                             @endif
                             <div class="desc">{!! strip_tags($meeting->description) !!}</div>
                             <a href="{{ $meeting->join_link }}">

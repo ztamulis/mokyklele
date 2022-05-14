@@ -38,7 +38,7 @@
                 </tr>
                 <tr>
                     <th scope="row" class="text-align-left">Laikas: </th>
-                    <td>{{$paymentInfo['time']->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i")}}</td>
+                    <td>{{$paymentInfo['time']->timezone(Cookie::get("user_timezone", "Europe/London"))->format("H:i")}}</td>
                 </tr>
 
                 <tr>

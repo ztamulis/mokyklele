@@ -37,9 +37,9 @@
                     </p>
                 </div>
                 <div class="group--students text--center">
-                    <span>{{$message->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i")}}</span>
+                    <span>{{$message->created_at->timezone(Cookie::get("user_timezone", "Europe/London"))->format("Y-m-d H:i")}}</span>
                     <br>
-                    {{ Cookie::get("user_timezone", "GMT") }}
+                    {{ Cookie::get("user_timezone", "Europe/London") }}
                 </div>
                 <div class="group--actions">
                     <div class="group--actions--button">

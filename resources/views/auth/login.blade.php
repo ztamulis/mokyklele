@@ -28,7 +28,7 @@
                 <input id="time_zone" class="block mt-1 w-full"
                          type="hidden"
                          name="time_zone"
-                         value="{{ \Cookie::get("user_timezone", "GMT") }}" />
+                         value="{{ \Cookie::get("user_timezone", "Europe/London") }}" />
 
             <!-- Remember Me -->
             <div class="block mt-4">

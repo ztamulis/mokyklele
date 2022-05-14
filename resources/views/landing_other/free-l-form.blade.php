@@ -16,14 +16,14 @@
                 <label><input type="radio" name="student_age" value="2-4" required> 2-4 metai</label><br>
                 <label><input type="radio" name="student_age" value="5-6"> 5-6 metai</label><br>
                 <label><input type="radio" name="student_age" value="7-9"> 7-9 metai</label><br>
-                <label><input type="radio" name="student_age" value="10-13"> 10-13 metų</label><br>
-                <label><input type="radio" name="student_age" value="14>"> 14 ir daugiau metų</label><br>
+                <label><input type="radio" name="student_age" value="10-13"> 10-14 metų</label><br>
+                <label><input type="radio" name="student_age" value="14>"> 15 ir daugiau metų</label><br>
             </div>
             <div class="col-md-6 col-sm-12">
                 <input type="email" name="email" placeholder="El. pašto adresas" required  value="{{ old("email") }}">
                 <br>
                 <?php
-                $country = 'Lithuania';
+                    $country = 'Lithuania';
                 ?>
                 Gyvenamoji šalis<br>
                 <select name="country" required>

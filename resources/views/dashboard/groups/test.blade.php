@@ -28,7 +28,7 @@
                             $nextLesson = \App\Http\Controllers\GroupController::nextLesson($group);
                         @endphp
                         @if (!empty($nextLesson))
-                            {{ \App\Http\Controllers\GroupController::nextLesson($group)->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }} <small>({{ Cookie::get("user_timezone", "GMT") }})</small>
+                            {{ \App\Http\Controllers\GroupController::nextLesson($group)->date_at->timezone(Cookie::get("user_timezone", "Europe/London"))->format("H:i") }} <small>({{ Cookie::get("user_timezone", "Europe/London") }})</small>
                         @endif
                     </small>
                 </h3>
@@ -97,7 +97,7 @@
                                             <div class="col-md-12" style="padding-left: 30px;<?= Auth::user()->role == 'user' ? 'margin-bottom: 12px;' : ''?>">
                                                 <div class="row">
                                                     <div class="col-md-6 chat--div">
-                                                        <span class="timezone-group-span">{{ $file->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</span>
+                                                        <span class="timezone-group-span">{{ $file->created_at->timezone(Cookie::get("user_timezone", "Europe/London"))->format("Y-m-d H:i") }}</span>
                                                     </div>
                                                     <div class="col-md-6 chat--div" id="add-document-{{$file->id}}">
                                                         @if (!empty($file->name))
@@ -368,14 +368,14 @@
                         @foreach($group->events()->where("date_at", ">" ,\Carbon\Carbon::now('utc')->addHours(3))->orderBy("date_at","ASC")->get() as $event)
                             <div class="dashboard--time">
                                 <?php
-                                $eventDate = $event->date_at->timezone(Cookie::get("user_timezone", "GMT"));
+                                $eventDate = $event->date_at->timezone(Cookie::get("user_timezone", "Europe/London"));
                                 /*$today = date("Y-m-d H:i");
                                 $summerday = date("Y-03-28 5:00");
                                 $winterday = date("Y-10-31 5:00");
                                 if($today >= $summerday){
-                                    $eventDate = $event->date_at->timezone(Cookie::get("user_timezone", "GMT"))->subHour();
+                                    $eventDate = $event->date_at->timezone(Cookie::get("user_timezone", "Europe/London"))->subHour();
                                 }else if($today == $winterday){
-                                    $eventDate = $event->date_at->timezone(Cookie::get("user_timezone", "GMT"))->addHour();
+                                    $eventDate = $event->date_at->timezone(Cookie::get("user_timezone", "Europe/London"))->addHour();
                                 }*/
                                 ?>
                                 <div class="dashboard--time--date">{{ mb_strtoupper(mb_substr($eventDate->translatedFormat("F"),0,3)) }}<br><span>{{ $eventDate->format("d") }}</span></div>

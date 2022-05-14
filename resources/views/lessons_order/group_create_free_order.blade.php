@@ -5,7 +5,7 @@
 @section("content")
     <h2 class="content--title">Registracija į nemokamą pamoką</h2>
     <div class="text--center">
-        <b>{{\Carbon\Carbon::parse($group->start_date)->format("m.d")}}d., {{ $group->name }} {{ $group->time->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }} (laikas nurodomas jūsų vietiniu laiku <small>({{ Cookie::get("user_timezone", "GMT") }})</small>)</b>
+        <b>{{\Carbon\Carbon::parse($group->start_date)->format("m.d")}}d., {{ $group->name }} {{ $group->time->timezone(Cookie::get("user_timezone", "Europe/London"))->format("H:i") }} (laikas nurodomas jūsų vietiniu laiku <small>({{ Cookie::get("user_timezone", "Europe/London") }})</small>)</b>
         <br>
         {{ $group->display_name }}
         <br>
