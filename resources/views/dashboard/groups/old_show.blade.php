@@ -23,7 +23,7 @@
                     </div>
                 @endif
                 <div class="group--color group--color--big floating group--{{ $group->type }}"></div>
-                <h3 class="text-dark mt-4">{{$group->name}}  <small>{{ \App\Http\Controllers\GroupController::nextLesson($group)->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</small></h3>
+                <h3 class="text-dark mt-4">{{$group->name}}  <small>{{ \App\Http\Controllers\GroupController::nextLesson($group)->date_at->timezone(Cookie::get("user_timezone", "Europe/London"))->format("H:i") }}</small></h3>
                 <div>{!! $group->display_name !!}</div>
             </div>
             <div class="row mt-4">
@@ -277,7 +277,7 @@
                                     <tbody>
                                     @foreach($group->events()->where("date_at", ">" ,\Carbon\Carbon::now('utc')->addHours(3))->orderBy("date_at","ASC")->get() as $event)
                                         <tr>
-                                            <td>{{ $event->date_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }}</td>
+                                            <td>{{ $event->date_at->timezone(Cookie::get("user_timezone", "Europe/London"))->format("Y-m-d H:i") }}</td>
                                             <td>{{ $event->name }}</td>
                                             <td>{{ $event->teacher->name }} {{ $event->teacher->surname }}</td>
                                         </tr>

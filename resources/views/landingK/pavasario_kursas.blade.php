@@ -47,7 +47,7 @@
             <div class="learning--group--select--row" data-group="{{ $group->type }}">
                 <div class="color background--{{ $group->type }}"></div>
                 <div class="text">
-                    <a href="/select-group/{{ $group->id }}">{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a><br>
+                    <a href="/select-group/{{ $group->id }}">{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "Europe/London"))->format("H:i") }}</b></a><br>
                     <span>{{ $group->display_name }}</span>
                 </div>
                 <div class="price">

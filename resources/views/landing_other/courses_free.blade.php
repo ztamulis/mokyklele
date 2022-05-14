@@ -2,7 +2,7 @@
 <div class="learning--group--select--wrapper" data-vvveb-disabled>
     <div class="learning--group--select--title">
         <h2>Išsirinkite grupę</h2>
-        <b>Svarbu:</b> Laikas nurodomas jūsų vietiniu laiku <small>({{ Cookie::get("user_timezone", "GMT") }})</small> 24 val. formatas
+        <b>Svarbu:</b> Laikas nurodomas jūsų vietiniu laiku <small>({{ Cookie::get("user_timezone", "Europe/London") }})</small> 24 val. formatas
     </div>
     <div class="learning--group--select--selector">
         @php
@@ -58,7 +58,7 @@
         <div class="learning--group--select--row" data-group-free="{{ $group->type }}">
             <div class="color background--{{ $group->type }}"></div>
             <div class="text">
-                <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else href="/select-group/order/free/{{ $group->slug }}" @endif >{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b></a><br>
+                <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else href="/select-group/order/free/{{ $group->slug }}" @endif >{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "Europe/London"))->format("H:i") }}</b></a><br>
                 <span>{{ $group->display_name }}</span>
             </div>
             <div class="date">

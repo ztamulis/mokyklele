@@ -209,7 +209,7 @@ class CronjobController extends Controller {
     }
 
     private function getCheckoutSessionSucceededUserMessage($group, $user) {
-        $timezone = \Cookie::get("user_timezone", "GMT");
+        $timezone = \Cookie::get("user_timezone", "Europe/London");
         if (!empty($user->time_zone)) {
             $timezone = $user->time_zone;
         }

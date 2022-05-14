@@ -789,7 +789,7 @@ class UserController extends Controller {
             "džiaugiamės, kad prisijungsite prie Pasakos pamokų!<br>".
             "Jūsų detalės apačioje:<br>".
             $group->name."<br>".
-            $group->display_name." ".$group->time->timezone(\Cookie::get("user_timezone", "GMT"))->format("H:i")."<br>".
+            $group->display_name." ".$group->time->timezone(\Cookie::get("user_timezone", "Europe/London"))->format("H:i")."<br>".
             "Kursas vyks  ". \Carbon\Carbon::parse($group->start_date)->format("m.d")." - ". \Carbon\Carbon::parse($group->start_date)->format("m.d")." (".$group->course_length." sav.<br>".
             "Savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyroje</a> patogiai prisijungsite į pamokas, rasite namų darbus ir galėsite bendrauti su kitais nariais. </p>".
             "<p>Iki pasimatymo,<br> Pasakos komanda </p>";
@@ -799,7 +799,7 @@ class UserController extends Controller {
             $email_content = "<p>Sveiki,<br>".
                 "ačiū, kad registravotės į nemokamą Pasakos pamoką! Jūsų nemokamos pamokos detalės čia:<br>".
                 $group->name."<br>".
-                $group->display_name." ".$group->time->timezone(\Cookie::get("user_timezone", "GMT"))->format("H:i")."<br>".
+                $group->display_name." ".$group->time->timezone(\Cookie::get("user_timezone", "Europe/London"))->format("H:i")."<br>".
                 "Į pamoką prisijungsite iš savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyros</a>.</p>".
                 "<p>Grupes tolimesniam mokymuisi skirstome ne tik pagal amžių, bet ir pagal kalbos mokėjimo lygį - taip galime užtikrinti, kad vaikai pasieks geriausių rezultatų ir drąsiau jausis pamokoje.<br>".
                 "Nemokamos pamokos metu mokytoja įvertins vaiko kalbos mokėjimo lygį ir vėliau mes pasiūlysime tinkamiausią grupę jūsų vaikui.<br>".

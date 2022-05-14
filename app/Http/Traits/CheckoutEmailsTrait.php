@@ -13,7 +13,7 @@ trait CheckoutEmailsTrait
 {
 
     private function sendCheckoutSessionSucceededUserMessage($group, $user) {
-        $timezone = \Cookie::get("user_timezone", "GMT");
+        $timezone = \Cookie::get("user_timezone", "Europe/London");
         if (!empty($user->time_zone)) {
             $timezone = $user->time_zone;
         }
@@ -46,7 +46,7 @@ trait CheckoutEmailsTrait
 
     private function getRegisterFreeUserMessage($group, $user) {
 
-        $timezone = \Cookie::get("user_timezone", "GMT");
+        $timezone = \Cookie::get("user_timezone", "Europe/London");
         if (!empty($user->time_zone)) {
             $timezone = $user->time_zone;
         }

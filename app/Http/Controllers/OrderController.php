@@ -211,7 +211,7 @@ class OrderController extends Controller {
         $payment->students = json_encode($student_ids);
         $payment->save();
 
-        $user->time_zone = Cookie::get("user_timezone", "GMT");
+        $user->time_zone = Cookie::get("user_timezone", "Europe/London");
         $user->save();
 
 
@@ -382,7 +382,7 @@ class OrderController extends Controller {
         }
         $payment->save();
 
-        $user->time_zone = Cookie::get("user_timezone", "GMT");
+        $user->time_zone = Cookie::get("user_timezone", "Europe/London");
         $user->save();
 
         return Redirect::to('/select-group/order/'.$group->slug.'/confirm')->with('paymentInfo', $payment)->with('checkoutUrl', $payment->url);

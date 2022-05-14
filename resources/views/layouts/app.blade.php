@@ -163,41 +163,6 @@
                                                 Kontaktai
                                             </a>
                                         </li>
-                          {{--   <li>
-                                <a href="/apie-pamokas">
-                                    Apie pamokas
-                                </a><div class="dropdown"><a href="/apie-pamokas">
-                                    </a><ul><a href="/apie-pamokas">
-                                        </a><li><a href="/apie-pamokas">
-                                            </a><a href="/pavasario-kursas">Pavasario kursas</a>
-                                        </li>
-                                        <li>
-                                            <a href="/kaina">Kaina</a>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                            </li>
-                            <li>
-                                <a href="/susitikimai">
-                                    Susitikimai
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/nemokama-pamoka">
-                                    Nemokama pamoka
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/komanda">
-                                    Komanda
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/kontaktai">
-                                    Kontaktai
-                                </a>
-                            </li> --}}
                         </ul>
                     </nav>
                     <ul class="nav navbar-nav flex-nowrap">
@@ -264,7 +229,7 @@
 <script>
     $(document).ready(function() {
         $('.summernote').summernote({
-            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana', 'Roboto'],
+            fontNames: ['Roboto', 'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Helvetica', 'Impact', 'Tahoma', 'Times New Roman', 'Verdana'],
             fontNamesIgnoreCheck: ['Roboto'],
             height: 300,
             fontSizes: ['8', '9', '10', '11', '12', '14', '16', '18', '24', '36', '48' , '64', '82', '150'],

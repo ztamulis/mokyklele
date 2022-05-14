@@ -5,7 +5,7 @@
 @section("content")
     <h1 class="content--title">Užsakymas</h1>
     <div class="text--center">
-        <b>{{ $group->name }} {{ $group->time->timezone(Cookie::get("user_timezone", "GMT"))->format("H:i") }}</b>
+        <b>{{ $group->name }} {{ $group->time->timezone(Cookie::get("user_timezone", "Europe/London"))->format("H:i") }}</b>
         <br>
         {{ $group->display_name }}
         <br>

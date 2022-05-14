@@ -1,5 +1,5 @@
 <x-user>
-    <div class="client--dashboard">
+<div class="client--dashboard">
 
     @foreach($messages as $message)
         @if($loop->first)
@@ -32,7 +32,7 @@
                     @if(Auth::user()->role === 'admin' && Auth::user()->id !== $message->user->id )
                         {{ $message->user->email }}
                     @endif
-                ∙ @endif {{$message->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i")}}
+                ∙ @endif {{$message->created_at->timezone(Cookie::get("user_timezone", "Europe/London"))->format("Y-m-d H:i")}}
             </p>
         </div>
 
@@ -55,7 +55,7 @@
                 <a href="{{ url("/uploads/messages/".$message->file) }}" target="_blank" class="dashboard--media">
                     <img src="/images/icons/next-arrow.svg" class="dashboard--media--arrow">
                     <b>{{str_replace(".".$fileExtension, "", $message->file) }}</b><br>
-                    {{ $message->created_at->timezone(Cookie::get("user_timezone", "GMT"))->format("Y-m-d H:i") }} ∙ {{ mb_strtoupper($fileExtension) }} dokumentas
+                    {{ $message->created_at->timezone(Cookie::get("user_timezone", "Europe/London"))->format("Y-m-d H:i") }} ∙ {{ mb_strtoupper($fileExtension) }} dokumentas
                 </a>
                 <div class="clear--fix"></div>
             </div>
