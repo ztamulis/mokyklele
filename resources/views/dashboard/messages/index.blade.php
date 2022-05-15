@@ -23,7 +23,16 @@
                 </div>
             </div>
         @endif
-
+        <form method="GET" href="/dashboard/messages">
+            <div class="row mt-4 mb-4">
+                <div class="col-md-4 offset-6 text-nowrap">
+                    <input class="input-text" type="text" name="search" placeholder="Elektroninis paštas"  style="outline: unset;" value="{{ request()->input("search") }}">
+                </div>
+                <div class="col-md-2 text-nowrap mt-2 ml-0 text-right">
+                    <button class="dashboard--button dashboard--button--main" type="submit">Paieška</button>
+                </div>
+            </div>
+        </form>
         <div class="group--list">
             @foreach($messages as $message)
                 @php
