@@ -15,24 +15,28 @@ class MessageController extends Controller
 {
 
     public function index(Request $request) {
-            $messages = Message::where('id', '>', 0);
-            if($request->input("search")) {
-                $messages = $messages->whereHas('author', function ($query) use ($request) {
-                    return $query->where("email", "LIKE", "%" . $request->input("search") . "%");
-                });
-            } else {
-                $messages = $messages->has('author');
-            }
-
+        $messages = Message::where('id', '>', 0);
+        if($request->input("search")) {
             $messages = $messages->where(
-                function($query) {
-                    return $query
-                        ->where('user_id', Auth::user()->id)
-                        ->orWhere('author_id', Auth::user()->id);
-                })
+                function ($query) use ($request) {
+                    return $query->whereHas('author', function ($query) use ($request) {
+                        return $query->where("email", "LIKE", "%" . $request->input("search") . "%");
+                    });
+                });
+        } else {
+            $messages = $messages->has('author');
+        }
+
+        $messages = $messages->where(
+            function($query) {
+                return $query
+                    ->where('user_id', Auth::user()->id)
+                    ->orWhere('author_id', Auth::user()->id);
+            })
             ->orderByDesc('created_at')
             ->get()
             ->groupBy('author_id');
+
         return view("dashboard.messages.index")->with("messages", $messages);
     }
 
