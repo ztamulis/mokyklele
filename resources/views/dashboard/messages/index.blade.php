@@ -37,7 +37,6 @@
             @foreach($messages as $message)
                 @php
                     $message = $message[0];
-
                 @endphp
             @if(empty($message))
                 @continue;
