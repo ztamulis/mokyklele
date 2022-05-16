@@ -33,32 +33,22 @@ class LithuanianCoursesController extends Controller
         return view("lithuanian_language.index");
     }
 
-//    /**
-//     * Show the form for creating a new resource.
-//     *
-//     * @return Response
-//     */
-//    public function create() {
-//        if(Auth::user()->role != "admin"){
-//            return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
-//        }
-//        return view('suggestions.create');
-//    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return void
+     */
+    public function create() {
+
+    }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreSuggestionRequest $storeSuggestionRequest
-     * @return RedirectResponse
+     * @return void
      */
-    public function store(StoreSuggestionRequest $storeSuggestionRequest) {
-        $suggestion = new Suggestion();
-        $suggestion->title = $storeSuggestionRequest->validated()['title'];
-        $suggestion->description = $storeSuggestionRequest->validated()['description'];
-        $suggestion->save();
+    public function store() {
 
-        Session::flash('message', "Patarimas sėkmingai sukurtas");
-        return Redirect::route('pages.index');
     }
 
     /**
@@ -122,6 +112,7 @@ class LithuanianCoursesController extends Controller
         $lithuanianLanguagePageContent->third_box_title = !empty($request->all()['third_box_title']) ? $request->all()['third_box_title'] : '';
         $lithuanianLanguagePageContent->third_box_content = $request->all()['third_box_content'];
         $lithuanianLanguagePageContent->main_component_questions = !empty($request->all()['main_component_questions']) ? $request->all()['main_component_questions'] : '';
+        $lithuanianLanguagePageContent->main_component_courses = !empty($request->all()['main_component_courses']) ? $request->all()['main_component_courses'] : '';
         $lithuanianLanguagePageContent->save();
         Session::flash('message', "Lietuvių kalbos puslapis sėkmingai readaguotas");
         return Redirect::route('pages.index');

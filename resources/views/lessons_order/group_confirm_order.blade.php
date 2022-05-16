@@ -38,9 +38,8 @@
                 </tr>
                 <tr>
                     <th scope="row" class="text-align-left">Laikas: </th>
-                    <td>{{$paymentInfo['time']->timezone(Cookie::get("user_timezone", "Europe/London"))->format("H:i")}}</td>
+                    <td>{{App\TimeZoneUtils::updateTime($paymentInfo['time']->timezone(Cookie::get("user_timezone", "Europe/London")), $paymentInfo['group_updated_at'])->format("H:i")}} ({{Auth::user()->time_zone ? Auth::user()->time_zone : 'Europe/London'}})</td>
                 </tr>
-
                 <tr>
                     <th scope="row" class="text-align-left">Kaina:</th>
                     <td>£{{$paymentInfo['price']}}</td>

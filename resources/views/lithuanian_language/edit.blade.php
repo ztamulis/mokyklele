@@ -20,7 +20,7 @@
                 </div>
             </div>
         @endif
-        <h3 class="text-dark mb-4">Sukurti patarimą</h3>
+        <h3 class="text-dark mb-4">Redaguoti Lietuvių kalbos puslapį</h3>
         <div class="card"></div>
         <div class="card">
             <div class="card-body">
@@ -63,7 +63,14 @@
                                 <small class="form-text text-muted">Ketvirtas aprašymas</small>
                                 <textarea class="form-control summernote" name="first_box_array[]">{{isset($lithuanianLanguagePageContent->first_box_array[3]) ? $lithuanianLanguagePageContent->first_box_array[3] : ''}}</textarea>
                             </div>
-
+                            <div class="form-group">
+                                <legend><b>Kursų blokas</b></legend>
+                                <select class="custom-select" name="main_component_courses">
+                                    @foreach(\App\Http\Helpers\PageContentHelper::getComponentsNames() as $value  => $name)
+                                        <option {{ $lithuanianLanguagePageContent->main_component_questions == $value ? 'selected' : ''}} value="{{$value}}" >{{$name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <h4 class="mt-5 mb-5">Antras blokas (Kalbos mokėjimo lygiai)</h4>
 
                             <div class="form-group">
