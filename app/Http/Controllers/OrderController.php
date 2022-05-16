@@ -532,6 +532,7 @@ class OrderController extends Controller {
             'group_starts' => $startDate,
             'group_ends' => $endDate,
             'time' => $group->time,
+            'group_updated_at' => $group->updated_at,
             'price' => $payment->amount / 100,
             'url' => $payment->url,
             'session_id' => $payment->session_id,

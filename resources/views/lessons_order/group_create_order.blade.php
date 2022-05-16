@@ -5,7 +5,9 @@
 @section("content")
     <h1 class="content--title">Užsakymas</h1>
     <div class="text--center">
-        <b>{{ $group->name }} {{ $group->time->timezone(Cookie::get("user_timezone", "Europe/London"))->format("H:i") }}</b>
+        <b>{{ $group->name }}
+            {{ App\TimeZoneUtils::updateTime($group->time->timezone(Cookie::get("user_timezone", "Europe/London")), $group->updated_at)->format('H:i') }}
+            ({{Auth::user()->time_zone ? Auth::user()->time_zone : 'Europe/London'}})</b>
         <br>
         {{ $group->display_name }}
         <br>

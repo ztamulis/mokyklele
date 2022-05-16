@@ -44,7 +44,9 @@
            </div>
        </div>
        <div id="courses-buy" class="w-100">
-            @include('landing_other.courses')
+           @if(!empty($siteContent['main_component_courses']))
+                   @include(\App\Http\Helpers\PageContentHelper::getComponent($siteContent['main_component_courses']))
+           @endif
        </div>
        <div class="row mt-5">
            <div class="col-md-12 col-sm-12 justify-content-center align-self-center">
