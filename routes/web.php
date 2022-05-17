@@ -15,6 +15,7 @@ use App\Http\Controllers\Pages\NotificationsController;
 use App\Http\Controllers\Pages\PricePageController;
 use App\Http\Controllers\Pages\SuggestionController;
 use App\Http\Controllers\Pages\SuggestionsPageController;
+use App\Http\Controllers\Pages\ZoomPageController;
 use App\Http\Controllers\QuestionFormController;
 use App\Http\Controllers\RegisterFreeController;
 use App\Http\Controllers\TeamMemberController;
@@ -27,6 +28,7 @@ use App\Models\SettingsModels\LithuanianLanguagePageContent;
 use App\Models\SettingsModels\MeetingPageContent;
 use App\Models\SettingsModels\PricePageContent;
 use App\Models\SettingsModels\SuggestionPageContent;
+use App\Models\SettingsModels\ZoomPageContent;
 use App\Models\TeamMember;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\InfoChangeController;
@@ -104,8 +106,12 @@ Route::get('/kontaktai', function () {
 Route::get('/privatumo-politika', function () {
     return view('landing.privatumo_politika');
 });
+//Route::get('/zoom-naudojimas', function () {
+//    return view('landing.zoom_naudojimas');
+//});
+
 Route::get('/zoom-naudojimas', function () {
-    return view('landing.zoom_naudojimas');
+    return view('landing_new.zoom_naujas')->with('siteContent',  app(ZoomPageContent::class)->getPageContent());
 });
 
 Route::get('lietuviu-kalbos-pamokos', function () {
@@ -281,6 +287,10 @@ Route::post('/lietuviu-kalbos-pamokos/perkrauti', [GroupQuestFormController::cla
             Route::group(['prefix' => 'home-page', 'as' => 'home-page.'], static function () {
                 Route::get('/', [HomePageController::class, 'edit'])->name('edit');
                 Route::put('/update', [HomePageController::class, 'update'])->name('update');
+            });
+            Route::group(['prefix' => 'zoom-page', 'as' => 'zoom-page.'], static function () {
+                Route::get('/', [ZoomPageController::class, 'edit'])->name('edit');
+                Route::put('/update', [ZoomPageController::class, 'update'])->name('update');
             });
             Route::group(['prefix' => 'courses-adults', 'as' => 'courses-adults.'], static function () {
                 Route::get('/', [CoursesAdultsPageController::class, 'edit'])->name('edit');
