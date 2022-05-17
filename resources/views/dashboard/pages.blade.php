@@ -97,6 +97,13 @@
                         </button>
                     </a>
                 </div>
+                <div class="col-lg-3 col-md-12 mb-3">
+                    <a href="{{route('pages.zoom-page.edit')}}">
+                        <button class="btn-groups btn blue mx-1 btn-block">
+                            <i class="fa fa-cc-discover"></i><span>Zoom</span>
+                        </button>
+                    </a>
+                </div>
             </div>
     </div>
 </x-user>
