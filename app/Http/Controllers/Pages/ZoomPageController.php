@@ -41,10 +41,10 @@ class ZoomPageController extends Controller {
         $contactsPageContent->second_block_left = !empty($request->input('second_block_left')) ? $request->input('second_block_left') : '';
         $contactsPageContent->video_url = !empty($request->input('video_url')) ? $request->input('video_url') : '';
 
-        
+
 
         $contactsPageContent->save();
-        Session::flash('message', "Kontaktų puslapis sėkmingai atnaujintas");
+        Session::flash('message', "Zoom puslapis sėkmingai atnaujintas");
         return Redirect::route('pages.index');
     }
 }

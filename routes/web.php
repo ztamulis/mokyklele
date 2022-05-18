@@ -3,6 +3,7 @@
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\GroupQuestFormController;
+use App\Http\Controllers\Pages\AboutLessonsPageController;
 use App\Http\Controllers\Pages\ContactsPageController;
 use App\Http\Controllers\Pages\CoursesAdultsPageController;
 use App\Http\Controllers\Pages\FreeLessonPageController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\QuestionFormController;
 use App\Http\Controllers\RegisterFreeController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\WebhookController;
+use App\Models\SettingsModels\AboutLessonPageContent;
 use App\Models\SettingsModels\ContactsPageContent;
 use App\Models\SettingsModels\CoursesAdultsPageContent;
 use App\Models\SettingsModels\FreeLessonPageContent;
@@ -63,8 +65,9 @@ Route::post(
 Route::get('/', function () {
     return view('landing.main_new')->with('siteContent',  app(HomePageContent::class)->getPageContent());
 })->name('index');
+
 Route::get('/apie-pamokas', function () {
-    return view('landing.apie_pamokas');
+    return view('landing_new.apie_pamokas_naujas')->with('siteContent',  app(AboutLessonPageContent::class)->getPageContent());
 });
 
 Route::get('/kaina', function () {
@@ -291,6 +294,10 @@ Route::post('/lietuviu-kalbos-pamokos/perkrauti', [GroupQuestFormController::cla
             Route::group(['prefix' => 'zoom-page', 'as' => 'zoom-page.'], static function () {
                 Route::get('/', [ZoomPageController::class, 'edit'])->name('edit');
                 Route::put('/update', [ZoomPageController::class, 'update'])->name('update');
+            });
+            Route::group(['prefix' => 'about-us', 'as' => 'about-us.'], static function () {
+                Route::get('/', [AboutLessonsPageController::class, 'edit'])->name('edit');
+                Route::put('/update', [AboutLessonsPageController::class, 'update'])->name('update');
             });
             Route::group(['prefix' => 'courses-adults', 'as' => 'courses-adults.'], static function () {
                 Route::get('/', [CoursesAdultsPageController::class, 'edit'])->name('edit');
