@@ -40,9 +40,20 @@ class MessageController extends Controller
         return view("dashboard.messages.index")->with("messages", $messages);
     }
 
-    public function sentMessages() {
+    public function sentMessages(Request $request) {
+        $messages = Auth::user()->sentMessages();
+        if($request->input("search")) {
+            $messages = $messages->where(
+                function ($query) use ($request) {
+                    return $query->whereHas('user', function ($query) use ($request) {
+                        return $query->where("email", "LIKE", "%" . $request->input("search") . "%");
+                    });
+                });
+        } else {
+            $messages = $messages->has('user');
+        }
 
-        $messages = Auth::user()->sentMessages()->has('user')->orderBy("id", "DESC");
+        $messages = $messages->orderBy("created_at", "DESC")->groupBy('user_id');
         return view("dashboard.messages.sent")->with("messages", $messages->paginate(200)->withQueryString());
     }
 
