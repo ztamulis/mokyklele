@@ -41,8 +41,9 @@ class MessageController extends Controller
     }
 
     public function sentMessages() {
-        $message = Message::where("author_id", Auth::user()->id);
-        return view("dashboard.messages.sent")->with("messages", $message->get());
+
+        $messages = Auth::user()->sentMessages()->has('user')->orderBy("id", "DESC");
+        return view("dashboard.messages.sent")->with("messages", $messages->paginate(200)->withQueryString());
     }
 
     public function show(Message $message) {
