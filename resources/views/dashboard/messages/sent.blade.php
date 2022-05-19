@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-user>
     <div class="client--dashboard">
         <div class="dashboard--misc--buttons">
             <a href="/dashboard/messages" class="dashboard--button">
@@ -25,7 +25,7 @@
         @endif
 
         <div class="group--list">
-            @foreach(Auth::user()->sentMessages()->has('user')->orderBy("id", "DESC")->get() as $message)
+            @foreach($messages as $message)
             <div class="group--item" data-href="/dashboard/messages/{{ $message->id }}">
                 <div class="group--icon">
                     <div class="color background--blue" style="background-image: url('{{ $message->author && count($message->author->students) && $message->author->students[0] && $message->author->students[0]->photo ? "/uploads/students/".$message->author->students[0]->photo : "/images/icons/avatar.png" }}')"></div>
@@ -78,6 +78,11 @@
                 </div>
             </div>
             @endforeach
+        </div>
+        <div class="col-md-6 offset-xl-3">
+            <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                {{ $messages->links('components.pagination') }}
+            </nav>
         </div>
 
     </div>
@@ -136,4 +141,4 @@
 {{--            </nav>--}}
 {{--        </div>--}}
 {{--    </div>--}}
-</x-app-layout>
+</x-user>

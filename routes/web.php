@@ -72,7 +72,6 @@ Route::get('/apie-pamokas', function () {
 
 Route::get('/kaina', function () {
     return view('landing_new.kaina_naujas')->with('siteContent',  app(PricePageContent::class)->getPageContent());
-
 });
 
 Route::get('/suaugusiuju-kursai', function () {
