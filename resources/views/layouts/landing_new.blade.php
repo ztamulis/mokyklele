@@ -46,7 +46,20 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="msapplication-config" content="/favicon/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
+    @section('meta_tags')
+            <meta property="og:title" content="Mokyklelė pasaka" />
+            <meta property="og:url" content="{{url()->current()}}" />
+            <meta property="og:type" content="article" />
+            <meta property="og:locale" content="en-us" />
+            <meta property="og:locale:alternate" content="en-us" />
+            <meta property="og:site_name" content="Mokyklelė pasaka" />
+{{--            @foreach($obj->images as $image)--}}
+{{--                <meta property="og:image" content="{{$image->url}}" />--}}
+{{--            @endforeach--}}
+            <meta property="og:image:url" content="/uploads/pages/home/23-5Duuc6ESZrQn5ko7.png" />
+            <meta property="og:image:size" content="300" />
 
+    @endsection
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>    <script src="{{asset('assets/js/jquery.min.js')}}"></script>
@@ -191,7 +204,6 @@
                                             <a class=" @if(Request::is('dashboard/tableData')) active @endif " href="/dashboard/tableData"><i class="fa fa-files-o"></i><span>Duomenų lentelė</span></a>
                                             <a class=" @if(Request::is('dashboard/payments')) active @endif " href="/dashboard/payments"><i class="fas fa-money-bill"></i><span>Apmokėjimai</span>
                                                 <a class=" @if(Request::is('dashboard/meetings')) active @endif " href="/dashboard/meetings"><i class="fa fa-calendar-check-o"></i><span>Susitikimai</span></a>
-                                                <a class=" @if(Request::is('dashboard/wbuilder')) active @endif " href="/dashboard/wbuilder"><i class="fa fa-database"></i><span>Redaguoti puslapius</span></a>
                                                 <a class=" @if(Request::is(route('pages.index'))) active @endif " href="{{route('pages.index')}}"><span>Redaguoti puslapių informacija</span></a>
                                                 <a class=" @if(Request::is('dashboard/teacher-statistics')) active @endif " href="/dashboard/teacher-statistics"><i class="fa fa-bell"></i><span>Mokytojų statistika</span></a>
                                                 <a class=" @if(Request::is('dashboard/coupons')) active @endif " href="/dashboard/coupons"><i class="fa fa-cc-discover"></i><span>Nuolaidų kuponai</span></a>
