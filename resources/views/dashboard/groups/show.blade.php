@@ -463,13 +463,17 @@
             var name = $(this).attr("data-user-name");
             var id = $(this).attr("data-user-id");
             var html = "<p>Žinutė naudotojui "+name+":</p>";
-            html += "<textarea class='form-control' id='messagenote'></textarea>";
+            // html += "<textarea class='editor' id='messagenote'></textarea>";
+            html += '<textarea class="editor" placeholder="komentuoti" rows="1" id="messagenote" style="width: 100%;overflow-y: hidden; border: 0px"></textarea>\n';
             html += "<br><p>Prisegti dokumentą (maksimalus dokumento dydis - 20 Mb):</p>";
             html += '<input type="file" name="file" id="user_message_file" class="form-control-file mt-3" accept=".doc,.docx,.xls,.xlsx,.pdf,.ppt,.pptx,.jpg,.jpeg,.png,.gif,.mp4">';
             $("#sendMessageModal .modal-body").html(html);
+            CKEDITOR.replace( 'messagenote', {
+            } );
             $("#sendMessageModal .modal-footer").show();
 
             var uploadField = document.getElementById("user_message_file");
+
 
             uploadField.onchange = function() {
                 if(this.files[0].size > 20971520){
@@ -489,7 +493,7 @@
                 $("#sendMessageModal .modal-footer").hide();
                 var message = $("#sendMessageModal .modal-body textarea").val();
                 $("#sendMessageModal .modal-body").html("Žinutė siunčiama <i class='fas fa-spinner fa-spin'></i>");
-                $('#messagenote').summernote();
+
                 <?php
                 $student_names = [];
                 foreach(Auth::user()->students()->where("group_id", $group->id)->get() as $student){
@@ -532,6 +536,7 @@
             } );
             CKEDITOR.replace( 'ckeditor-voc', {
             } );
+
             var groupMessage = @json($groupMessage);
                 if(groupMessage == true) {
                 $('[data-country="tab-2"]').click();
