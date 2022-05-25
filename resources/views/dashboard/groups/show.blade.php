@@ -491,9 +491,9 @@
                 }
 
                 $("#sendMessageModal .modal-footer").hide();
-                var message = $("#sendMessageModal .modal-body textarea").val();
-                $("#sendMessageModal .modal-body").html("Žinutė siunčiama <i class='fas fa-spinner fa-spin'></i>");
+                var message = CKEDITOR.instances["messagenote"].getData();
 
+                $("#sendMessageModal .modal-body").html("Žinutė siunčiama <i class='fas fa-spinner fa-spin'></i>");
                 <?php
                 $student_names = [];
                 foreach(Auth::user()->students()->where("group_id", $group->id)->get() as $student){
