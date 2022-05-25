@@ -761,7 +761,7 @@ class GroupController extends Controller
         }
 
         $message = new Message;
-        $message->message = "<b>Žinutė nuo " . $request->input("user_from") . ":</b><p>" . strip_tags($request->input("message")."</p>");
+        $message->message = "<b>Žinutė nuo " . $request->input("user_from") . ":</b>" . $request->input("message");
         $message->author_id = Auth::user()->id;
         if($request->file("file")){
             $request->validate([
