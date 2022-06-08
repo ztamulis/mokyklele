@@ -53,6 +53,7 @@
                                 <option @if(old('type') == "blue") selected @endif value="blue">Mėlyna (7-9m.)</option>
                                 <option @if(old('type') == "red") selected @endif value="red">Raudona (10-13m.)</option>
                                 <option @if(old('type') == "individual") selected @endif value="individual">Individualios pamokos</option>
+                                <option @if(old('type') == "bilingualism_consultation") selected @endif value="bilingualism_consultation">Dvikalbystės konsultacija</option>
                                 <option @if(old('type') == "no_type") selected @endif value="no_type">Be tipo</option>
                             </select>
                         </div>
