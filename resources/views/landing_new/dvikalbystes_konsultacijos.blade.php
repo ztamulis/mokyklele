@@ -5,7 +5,7 @@
             <div class="lithuanian-description">{!! $siteContent['description'] !!}</div>
         </div>
         <div class="col-md-6 col-sm-12  justify-content-center align-self-center">
-            <img class="img-fluid suggestion-main-photo" src="/uploads/pages/languagecourses/{{ $siteContent['img'] }}">
+            <img class="img-fluid suggestion-main-photo" src="/uploads/pages/bilingualismconsultation/{{ $siteContent['img'] }}">
         </div>
     </div>
 
