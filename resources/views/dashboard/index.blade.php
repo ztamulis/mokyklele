@@ -51,36 +51,38 @@
                     </div>
                 @endforeach
             @endforeach
-
+                @php $bilingualismGroups = Auth::user()->getGroupedConsultationGroups()  @endphp
+                @if(!empty($bilingualismGroups))
                 <h3 class="day mt-2">Dvikalbystės konsulstacijos</h3>
-                @foreach(Auth::user()->getGroupedConsultationGroups() as $weekday => $groups)
-                    @foreach($groups as $group)
-                        @php
-                            $nextLesson = \App\Http\Controllers\GroupController::nextLesson($group);
-                        @endphp
-                        <div class="lesson-area {{ $group->type }}">
-                            <a href="{{route('groups-consultation', $group->slug)}}"><h3>{{Auth::user()->role !== 'user' ? '#'.$group->id : ''}} {{$group->name}}</h3></a>
-                            @if($nextLesson)
-                                <div class="info">{{ App\TimeZoneUtils::updateTime(
-                                $nextLesson->date_at->timezone(Cookie::get("user_timezone", "Europe/London")), $nextLesson->updated_at)
-                                ->format('Y-m-d H:i') }} ({{ Cookie::get("user_timezone", "Europe/London") }})
-                                </div>
-                            @else
-                                <div class="info">Kita pamoka: nėra</div>
-                            @endif
-                            <div class="row d-flex justify-content-center">
-                                <a href="{{route('groups-consultation', $group->slug)}}">
-                                    <button class="btn-groups btn blue mx-1">Informacija</button>
-                                </a>
+                    @foreach($bilingualismGroups as $weekday => $groups)
+                        @foreach($groups as $group)
+                            @php
+                                $nextLesson = \App\Http\Controllers\GroupController::nextLesson($group);
+                            @endphp
+                            <div class="lesson-area {{ $group->type }}">
+                                <a href="{{route('groups-consultation', $group->slug)}}"><h3>{{Auth::user()->role !== 'user' ? '#'.$group->id : ''}} {{$group->name}}</h3></a>
                                 @if($nextLesson)
-                                    <a @if($nextLesson->join_link) href="{{ $nextLesson->join_link }}" target="_blank" @else href="/dashboard/groups/{{$group->id}}#joinmeeting" @endif>
-                                        <button class="btn-groups btn green mx-1">Prisijungti</button>
-                                    </a>
+                                    <div class="info">{{ App\TimeZoneUtils::updateTime(
+                                    $nextLesson->date_at->timezone(Cookie::get("user_timezone", "Europe/London")), $nextLesson->updated_at)
+                                    ->format('Y-m-d H:i') }} ({{ Cookie::get("user_timezone", "Europe/London") }})
+                                    </div>
+                                @else
+                                    <div class="info">Kita pamoka: nėra</div>
                                 @endif
+                                <div class="row d-flex justify-content-center">
+                                    <a href="{{route('groups-consultation', $group->slug)}}">
+                                        <button class="btn-groups btn blue mx-1">Informacija</button>
+                                    </a>
+                                    @if($nextLesson)
+                                        <a @if($nextLesson->join_link) href="{{ $nextLesson->join_link }}" target="_blank" @else href="/dashboard/groups/{{$group->id}}#joinmeeting" @endif>
+                                            <button class="btn-groups btn green mx-1">Prisijungti</button>
+                                        </a>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
+                        @endforeach
                     @endforeach
-                @endforeach
+                @endif
             @if((\App\Http\Controllers\UserController::hasGroup() && !\App\Http\Controllers\UserController::hasDemoLesson())
     || (!empty($meetings)))
                 <div class="meetings">
