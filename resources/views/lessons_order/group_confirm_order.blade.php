@@ -28,6 +28,13 @@
                     <th scope="row" class="text-align-left">Grupės pabaiga:</th>
                     <td>{{$paymentInfo['group_ends']}}</td>
                 </tr>
+                @if(isset($paymentInfo['bilingualism_consultation_note'])
+                && !empty($paymentInfo['bilingualism_consultation_note']))
+                <tr>
+                    <th scope="row" class="text-align-left">Trumpas aprašas</th>
+                    <td>@php echo $paymentInfo['bilingualism_consultation_note'] @endphp</td>
+                </tr>
+                @endif
                 <tr>
                     @if($paymentInfo['age_category'] === 'adults')
                         <th scope="row" class="text-align-left">Vartotojas(-a):</th>

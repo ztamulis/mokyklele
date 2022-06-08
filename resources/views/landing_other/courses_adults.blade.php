@@ -6,7 +6,11 @@
     </div>
     <div class="learning--group--select--selector">
         @php
-            $groupsGrouped  = \App\Models\Group::where("paid", 1)->where("hidden", 0)->where("age_category", '=', 'adults')->get()->groupBy("type");
+            $groupsGrouped  = \App\Models\Group::where("paid", 1)->where("hidden", 0)
+            ->where("age_category", '=', 'adults')
+            ->where("type", '!=', 'bilingualism_consultation')
+            ->get()
+            ->groupBy("type");
             $type = ' ';
             if (isset($groupsGrouped['yellow'])) {
             $type = 'yellow';
@@ -62,7 +66,11 @@
 
 
     </div>
-    @foreach(\App\Models\Group::where("paid", 1)->where("hidden",0)->where("age_category", '=', 'adults')->orderBy("weight","ASC")->get() as $group)
+    @foreach(\App\Models\Group::where("paid", 1)->where("hidden",0)
+    ->where("type", '!=', 'bilingualism_consultation')
+    ->where("age_category", '=', 'adults')
+    ->orderBy("weight","ASC")
+    ->get() as $group)
         <div class="learning--group--select--row" data-group-adults="{{ $group->type }}">
             <div class="color background--{{ $group->type }}"></div>
             <div class="text">

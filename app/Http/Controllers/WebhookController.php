@@ -10,8 +10,7 @@ use App\Models\Student;
 use App\Models\UserCoupon;
 use Laravel\Cashier\Http\Controllers\WebhookController as CashierController;
 
-class WebhookController extends CashierController
-{
+class WebhookController extends CashierController {
     use NotificationsTrait;
     use CheckoutEmailsTrait;
 
@@ -24,7 +23,7 @@ class WebhookController extends CashierController
             $students = Student::whereIn('id', $studentsIds)->get();
             $group = $payment->group()->first();
             $user = $payment->user()->first();
-            foreach ($students as $student){
+            foreach ($students as $student) {
                 $student->group_id = $group->id;
                 $student->save();
                 $student_names[] = $student->name;
@@ -44,12 +43,11 @@ class WebhookController extends CashierController
         $this->sendCheckoutSessionSucceededUserMessage($group, $user);
 
         //find a better solution;
-        if ($group->type !=='individual') {
+        if ($group->type !== 'individual') {
             $this->insertUserNotification($user, $group);
         }
 
-        $this->sendOrderConfirmAdminEmail($group, $student_names, $student_birthDays, $user);
-
+        $this->sendOrderConfirmAdminEmail($group, $student_names, $student_birthDays, $user, $payment);
 
 
     }
@@ -78,7 +76,7 @@ class WebhookController extends CashierController
             $students = Student::whereIn('id', $studentsIds)->get();
             $group = $payment->group()->first();
             $user = $payment->user()->first();
-            foreach ($students as $student){
+            foreach ($students as $student) {
                 $student->group_id = $group->id;
                 $student->save();
                 $student_names[] = $student->name;
@@ -99,11 +97,11 @@ class WebhookController extends CashierController
 
         $this->sendCheckoutSessionSucceededUserMessage($group, $user);
 
-        if ($group->type !=='individual') {
+        if ($group->type !== 'individual') {
             $this->insertUserNotification($user, $group);
         }
 
-        $this->sendOrderConfirmAdminEmail($group, $student_names, $student_birthDays, $user);
+        $this->sendOrderConfirmAdminEmail($group, $student_names, $student_birthDays, $user, $payment);
     }
 
 }
