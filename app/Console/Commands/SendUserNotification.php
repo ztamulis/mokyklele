@@ -11,8 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
-class sendUserNotification extends Command
-{
+class sendUserNotification extends Command {
     /**
      * The name and signature of the console command.
      *
@@ -32,8 +31,7 @@ class sendUserNotification extends Command
      *
      * @return void
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
@@ -71,17 +69,17 @@ class sendUserNotification extends Command
 
             $subject = $this->getEmailSubject($notificationEmailContent, $emailType);
             Mail::send([], [], function ($message) use ($html, $email, $subject) {
-                    $message
-                        ->to($email)
-                        ->subject($subject)
-                        ->setBody($html, 'text/html');
-                });
+                $message
+                    ->to($email)
+                    ->subject($subject)
+                    ->setBody($html, 'text/html');
+            });
             $notification->is_sent = 1;
             $notification->save();
         }
     }
 
-    private function getEmailSubject(array $notificationEmailContent, string $emailType):string {
+    private function getEmailSubject(array $notificationEmailContent, string $emailType): string {
         return $notificationEmailContent[$emailType.'_subject'];
     }
 
@@ -94,6 +92,9 @@ class sendUserNotification extends Command
     }
 
     private function getEmailType(Group $group) {
+        if ($group->type == 'bilingualism_consultation') {
+            return 'bilingualism_consultation';
+        }
         if (!$group->paid
             && $group->age_category === 'children'
             && ($group->type === 'yellow' || $group->type === 'green')

@@ -23,6 +23,9 @@ class NotificationEmailContent extends Settings {
     public string $paid_lesson_adults;
     public int $paid_lesson_adults_meeting_id;
     public string $paid_lesson_adults_subject;
+    public string $bilingualism_consultation;
+    public int $bilingualism_consultation_meeting_id;
+    public string $bilingualism_consultation_subject;
 
 
     public static function group(): string
@@ -54,7 +57,9 @@ class NotificationEmailContent extends Settings {
             'paid_lesson_adults' => $this->paid_lesson_adults,
             'paid_lesson_adults_meeting_id' => $this->paid_lesson_adults_meeting_id,
             'paid_lesson_adults_subject' => $this->paid_lesson_adults_subject,
-
+            'bilingualism_consultation_subject' => $this->bilingualism_consultation_subject,
+            'bilingualism_consultation_meeting_id' => $this->bilingualism_consultation_meeting_id,
+            'bilingualism_consultation' => $this->bilingualism_consultation,
         ];
     }
 
