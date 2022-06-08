@@ -162,8 +162,9 @@ class User extends Authenticatable
             return $this->groupByWeekDays(Group::whereIn($group_ids)->where('type', '!=',  'bilingualism_consultation')->get());
         }
 
-        $groupIds = $this->students()->groupBy("group_id")->pluck("group_id");
-        return $this->groupByWeekDays(Group::whereIn($groupIds)->where('type', '!=',  'bilingualism_consultation')->get());
+        $groupIds = $this->students()->pluck("group_id");
+
+        return $this->groupByWeekDays(Group::whereIn('id', $groupIds)->where('type', '!=',  'bilingualism_consultation')->get());
     }
 
     public function getGroupedConsultationGroups(){
@@ -185,7 +186,7 @@ class User extends Authenticatable
         }
 
         $groupIds = $this->students()->groupBy("group_id")->pluck("group_id");
-        return $this->groupByWeekDays(Group::whereIn($groupIds)->where('type', '=',  'bilingualism_consultation')->get());
+        return $this->groupByWeekDays(Group::whereIn('id', $groupIds)->where('type', '=',  'bilingualism_consultation')->get());
     }
 
     private function groupByWeekDays($groups) {
