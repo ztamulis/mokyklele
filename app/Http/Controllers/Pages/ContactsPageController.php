@@ -18,17 +18,18 @@ class ContactsPageController extends Controller {
      * @return Response
      */
     public function edit() {
-        if(Auth::user()->role != "admin"){
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        return view("dashboard.contacts.edit")->with("contactsPageContent", app(ContactsPageContent::class)->getPageContent());
+        return view("dashboard.cms-pages.contacts.edit")->with("contactsPageContent",
+            app(ContactsPageContent::class)->getPageContent());
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param ContactsPageContent $contactsPageContent
+     * @param  Request  $request
+     * @param  ContactsPageContent  $contactsPageContent
      * @return RedirectResponse
      */
     public function update(Request $request, ContactsPageContent $contactsPageContent) {
@@ -40,7 +41,6 @@ class ContactsPageController extends Controller {
         $contactsPageContent->second_block_third_content = !empty($request->input('second_block_third_content')) ? $request->input('second_block_third_content') : '';
         $contactsPageContent->end_text = !empty($request->input('end_text')) ? $request->input('end_text') : '';
 
-        
 
         $contactsPageContent->save();
         Session::flash('message', "Kontaktų puslapis sėkmingai atnaujintas");

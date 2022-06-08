@@ -18,18 +18,19 @@ class ZoomPageController extends Controller {
      * @return Response
      */
     public function edit() {
-        if(Auth::user()->role != "admin"){
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
 
-        return view("dashboard.zoom.edit")->with("zoomPageContent", app(ZoomPageContent::class)->getPageContent());
+        return view("dashboard.cms-pages.zoom.edit")->with("zoomPageContent",
+            app(ZoomPageContent::class)->getPageContent());
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param ZoomPageContent $contactsPageContent
+     * @param  Request  $request
+     * @param  ZoomPageContent  $contactsPageContent
      * @return RedirectResponse
      */
     public function update(Request $request, ZoomPageContent $contactsPageContent) {
@@ -40,7 +41,6 @@ class ZoomPageController extends Controller {
         $contactsPageContent->second_block_right = !empty($request->input('second_block_right')) ? $request->input('second_block_right') : '';
         $contactsPageContent->second_block_left = !empty($request->input('second_block_left')) ? $request->input('second_block_left') : '';
         $contactsPageContent->video_url = !empty($request->input('video_url')) ? $request->input('video_url') : '';
-
 
 
         $contactsPageContent->save();

@@ -22,17 +22,18 @@ class CoursesAdultsPageController extends Controller {
      * @return Response
      */
     public function edit() {
-        if(Auth::user()->role != "admin"){
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        return view("dashboard.courses_adults.edit")->with("coursesPageContent", app(CoursesAdultsPageContent::class)->getPageContent());
+        return view("dashboard.cms-pages.courses_adults.edit")->with("coursesPageContent",
+            app(CoursesAdultsPageContent::class)->getPageContent());
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param CoursesAdultsPageContent $coursesAdultsPageContent
+     * @param  Request  $request
+     * @param  CoursesAdultsPageContent  $coursesAdultsPageContent
      * @return RedirectResponse
      * @throws InvalidManipulation
      */
@@ -46,12 +47,12 @@ class CoursesAdultsPageController extends Controller {
 
 
         $file = $request->file('file');
-        if($file) {
+        if ($file) {
             if (!empty($coursesAdultsPageContent->main_img)) {
                 Storage::delete("uploads/pages/courses_adults/".$coursesAdultsPageContent->main_img);
             }
 
-            $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
+            $newfilename = Auth::user()->id."-".Str::random(16).".".$file->getClientOriginalExtension();
             $file->storeAs("uploads/pages/courses_adults", $newfilename);
             $coursesAdultsPageContent->main_img = $newfilename;
             Image::load("uploads/pages/courses_adults/".$newfilename)

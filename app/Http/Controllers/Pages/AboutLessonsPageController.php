@@ -18,18 +18,19 @@ class AboutLessonsPageController extends Controller {
      * @return Response
      */
     public function edit() {
-        if(Auth::user()->role != "admin"){
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
 
-        return view("dashboard.about-lessons.edit")->with("aboutUsPageContent", app(AboutLessonPageContent::class)->getPageContent());
+        return view("dashboard.cms-pages.about-lessons.edit")->with("aboutUsPageContent",
+            app(AboutLessonPageContent::class)->getPageContent());
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param AboutLessonPageContent $aboutUsPageContent
+     * @param  Request  $request
+     * @param  AboutLessonPageContent  $aboutUsPageContent
      * @return RedirectResponse
      */
     public function update(Request $request, AboutLessonPageContent $aboutUsPageContent) {
@@ -53,7 +54,6 @@ class AboutLessonsPageController extends Controller {
         $aboutUsPageContent->second_block_second_right = !empty($request->input('second_block_second_right')) ? $request->input('second_block_second_right') : '';
         $aboutUsPageContent->second_block_third_left = !empty($request->input('second_block_third_left')) ? $request->input('second_block_third_left') : '';
         $aboutUsPageContent->second_block_third_right = !empty($request->input('second_block_third_right')) ? $request->input('second_block_third_right') : '';
-
 
 
         $aboutUsPageContent->save();

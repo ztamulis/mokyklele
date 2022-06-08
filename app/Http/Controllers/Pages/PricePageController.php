@@ -22,17 +22,18 @@ class PricePageController extends Controller {
      * @return Response
      */
     public function edit() {
-        if(Auth::user()->role != "admin"){
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        return view("dashboard.price.edit")->with("pricePageContent", app(PricePageContent::class)->getPageContent());
+        return view("dashboard.cms-pages.price.edit")->with("pricePageContent",
+            app(PricePageContent::class)->getPageContent());
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param PricePageContent $pricePageContent
+     * @param  Request  $request
+     * @param  PricePageContent  $pricePageContent
      * @return RedirectResponse
      * @throws InvalidManipulation
      */
@@ -48,12 +49,12 @@ class PricePageController extends Controller {
 
 
         $firstFile = $request->file('first_block_first_img');
-        if($firstFile) {
+        if ($firstFile) {
             if (!empty($pricePageContent->main_img)) {
                 Storage::delete("uploads/pages/price/".$pricePageContent->first_block_first_img);
             }
 
-            $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $firstFile->getClientOriginalExtension();
+            $newfilename = Auth::user()->id."-".Str::random(16).".".$firstFile->getClientOriginalExtension();
             $firstFile->storeAs("uploads/pages/price", $newfilename);
             $pricePageContent->first_block_first_img = $newfilename;
             Image::load("uploads/pages/price/".$newfilename)
@@ -62,12 +63,12 @@ class PricePageController extends Controller {
         }
 
         $secondFile = $request->file('first_block_second_img');
-        if($secondFile) {
+        if ($secondFile) {
             if (!empty($pricePageContent->first_block_second_img)) {
                 Storage::delete("uploads/pages/price/".$pricePageContent->first_block_second_img);
             }
 
-            $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $secondFile->getClientOriginalExtension();
+            $newfilename = Auth::user()->id."-".Str::random(16).".".$secondFile->getClientOriginalExtension();
             $secondFile->storeAs("uploads/pages/price", $newfilename);
             $pricePageContent->first_block_second_img = $newfilename;
             Image::load("uploads/pages/price/".$newfilename)
@@ -76,12 +77,12 @@ class PricePageController extends Controller {
         }
 
         $thirdFile = $request->file('first_block_third_img');
-        if($thirdFile) {
+        if ($thirdFile) {
             if (!empty($pricePageContent->first_block_third_img)) {
                 Storage::delete("uploads/pages/price/".$pricePageContent->first_block_third_img);
             }
 
-            $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $thirdFile->getClientOriginalExtension();
+            $newfilename = Auth::user()->id."-".Str::random(16).".".$thirdFile->getClientOriginalExtension();
             $thirdFile->storeAs("uploads/pages/price", $newfilename);
             $pricePageContent->first_block_third_img = $newfilename;
             Image::load("uploads/pages/price/".$newfilename)

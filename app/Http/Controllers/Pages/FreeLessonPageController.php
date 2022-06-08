@@ -22,17 +22,18 @@ class FreeLessonPageController extends Controller {
      * @return Response
      */
     public function edit() {
-        if(Auth::user()->role != "admin"){
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        return view("dashboard.free_lesson.edit")->with("freeLessonPageContent", app(FreeLessonPageContent::class)->getPageContent());
+        return view("dashboard.cms-pages.free_lesson.edit")->with("freeLessonPageContent",
+            app(FreeLessonPageContent::class)->getPageContent());
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param FreeLessonPageContent $freeLessonPageContent
+     * @param  Request  $request
+     * @param  FreeLessonPageContent  $freeLessonPageContent
      * @return RedirectResponse
      * @throws InvalidManipulation
      */
@@ -45,12 +46,12 @@ class FreeLessonPageController extends Controller {
 
 
         $file = $request->file('file');
-        if($file) {
+        if ($file) {
             if (!empty($freeLessonPageContent->main_img)) {
                 Storage::delete("uploads/pages/courses_adults/".$freeLessonPageContent->main_img);
             }
 
-            $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
+            $newfilename = Auth::user()->id."-".Str::random(16).".".$file->getClientOriginalExtension();
             $file->storeAs("uploads/pages/free_lesson", $newfilename);
             $freeLessonPageContent->main_img = $newfilename;
             Image::load("uploads/pages/free_lesson/".$newfilename)

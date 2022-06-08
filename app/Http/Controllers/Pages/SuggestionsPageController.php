@@ -22,17 +22,18 @@ class SuggestionsPageController extends Controller {
      * @return Response
      */
     public function edit() {
-        if(Auth::user()->role != "admin"){
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        return view("dashboard.suggestions.edit")->with("pageContent", app(SuggestionPageContent::class)->getPageContent());
+        return view("dashboard.cms-pages.suggestions.edit")->with("pageContent",
+            app(SuggestionPageContent::class)->getPageContent());
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param SuggestionPageContent $suggestionPageContent
+     * @param  Request  $request
+     * @param  SuggestionPageContent  $suggestionPageContent
      * @return RedirectResponse
      * @throws InvalidManipulation
      */
@@ -40,12 +41,12 @@ class SuggestionsPageController extends Controller {
         $suggestionPageContent->site_name = $request->input('name');
         $suggestionPageContent->description = $request->input('description');
         $file = $request->file('file');
-        if($file) {
+        if ($file) {
             if (!empty($suggestionPageContent->img)) {
                 Storage::delete("uploads/pages/suggestions/".$suggestionPageContent->img);
             }
 
-            $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
+            $newfilename = Auth::user()->id."-".Str::random(16).".".$file->getClientOriginalExtension();
             $file->storeAs("uploads/pages/suggestions", $newfilename);
             $suggestionPageContent->img = $newfilename;
             Image::load("uploads/pages/suggestions/".$newfilename)
