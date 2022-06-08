@@ -22,17 +22,18 @@ class HomePageController extends Controller {
      * @return Response
      */
     public function edit() {
-        if(Auth::user()->role != "admin"){
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        return view("dashboard.home.edit")->with("homePageContent", app(HomePageContent::class)->getPageContent());
+        return view("dashboard.cms-pages.home.edit")->with("homePageContent",
+            app(HomePageContent::class)->getPageContent());
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param HomePageContent $homePageContent
+     * @param  Request  $request
+     * @param  HomePageContent  $homePageContent
      * @return RedirectResponse
      * @throws InvalidManipulation
      */
@@ -56,12 +57,12 @@ class HomePageController extends Controller {
         $homePageContent->third_block_button_url = !empty($request->input('third_block_button_url')) ? $request->input('third_block_button_url') : '';
 
         $file = $request->file('main_img');
-        if($file) {
+        if ($file) {
             if (!empty($homePageContent->main_img)) {
                 Storage::delete("uploads/pages/home/".$homePageContent->main_img);
             }
 
-            $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
+            $newfilename = Auth::user()->id."-".Str::random(16).".".$file->getClientOriginalExtension();
             $file->storeAs("uploads/pages/home", $newfilename);
             $homePageContent->main_img = $newfilename;
             Image::load("uploads/pages/home/".$newfilename)

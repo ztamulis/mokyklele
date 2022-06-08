@@ -22,17 +22,18 @@ class MeetingsPageController extends Controller {
      * @return Response
      */
     public function edit() {
-        if(Auth::user()->role != "admin"){
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        return view("dashboard.generalsettings.edit")->with("pageContent", app(MeetingPageContent::class)->getPageContent());
+        return view("dashboard.cms-pages.meetings.edit")->with("pageContent",
+            app(MeetingPageContent::class)->getPageContent());
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param MeetingPageContent $meetingsPageContent
+     * @param  Request  $request
+     * @param  MeetingPageContent  $meetingsPageContent
      * @return RedirectResponse
      * @throws InvalidManipulation
      */
@@ -40,12 +41,12 @@ class MeetingsPageController extends Controller {
         $meetingsPageContent->site_name = $request->input('name');
         $meetingsPageContent->description = $request->input('description');
         $file = $request->file('file');
-        if($file) {
+        if ($file) {
             if (!empty($meetingsPageContent->img)) {
                 Storage::delete("uploads/pages/introduction/".$meetingsPageContent->img);
             }
 
-            $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
+            $newfilename = Auth::user()->id."-".Str::random(16).".".$file->getClientOriginalExtension();
             $file->storeAs("uploads/pages/introduction", $newfilename);
             $meetingsPageContent->img = $newfilename;
             Image::load("uploads/pages/introduction/".$newfilename)

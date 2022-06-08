@@ -15,26 +15,25 @@ use Illuminate\Support\Str;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\Image\Image;
 
-class IntroductionController extends Controller
-{
+class IntroductionController extends Controller {
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      */
-    public function index(Request $request)
-    {
-        if(Auth::user()->role == "user"){
+    public function index(Request $request) {
+        if (Auth::user()->role == "user") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $introductions = Introduction::where("id", ">", 0);
-        if($request->input("search")){
-            $introductions = $introductions->where("name", "LIKE", "%" . $request->input("search") . "%");
+        if ($request->input("search")) {
+            $introductions = $introductions->where("name", "LIKE", "%".$request->input("search")."%");
         }
 
         $introductions = $introductions->orderBy("id", "ASC");
-        return view("dashboard.introductions.index")->with("meetings", $introductions->paginate(15)->withQueryString());
+        return view("dashboard.cms-pages.introductions.index")->with("meetings",
+            $introductions->paginate(15)->withQueryString());
     }
 
     /**
@@ -43,7 +42,7 @@ class IntroductionController extends Controller
      * @return Response
      */
     public function create() {
-        if(Auth::user()->role != "admin"){
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         return view("dashboard.introductions.create");
@@ -52,20 +51,19 @@ class IntroductionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
      * @throws InvalidManipulation
      */
-    public function store(Request $request)
-    {
-        if(Auth::user()->role != "admin"){
+    public function store(Request $request) {
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'join_link' => 'required|string',
-            'date_at' => 'required|string'
+            'date_at' => 'required|string',
         ]);
 
         $introduction = new Introduction;
@@ -79,15 +77,15 @@ class IntroductionController extends Controller
 
         $date = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"));
         $isDst = Carbon::now()->timezone('Europe/London')->isDST();
-        if($isDst){
+        if ($isDst) {
             $date = $date->subHour();
         }
-        
+
         $introduction->date_at = $date;
 
         $file = $request->file('file');
-        if($file) {
-            $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
+        if ($file) {
+            $newfilename = Auth::user()->id."-".Str::random(16).".".$file->getClientOriginalExtension();
             $file->storeAs("uploads/introductions", $newfilename);
             $introduction->photo = $newfilename;
             Image::load("uploads/introductions/".$newfilename)
@@ -103,22 +101,21 @@ class IntroductionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Introduction $introduction
+     * @param  Introduction  $introduction
      * @return void
      */
-    public function show(Introduction $introduction)
-    {
+    public function show(Introduction $introduction) {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Introduction $introduction
+     * @param  Introduction  $introduction
      * @return Response
      */
     public function edit(Introduction $introduction) {
-        if(Auth::user()->role != "admin"){
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         return view("dashboard.introductions.edit")->with("meeting", $introduction);
@@ -127,21 +124,20 @@ class IntroductionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Introduction $introduction
+     * @param  Request  $request
+     * @param  Introduction  $introduction
      * @return Response
      * @throws InvalidManipulation
      */
-    public function update(Request $request, Introduction $introduction)
-    {
-        if(Auth::user()->role != "admin"){
+    public function update(Request $request, Introduction $introduction) {
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'join_link' => 'required|string',
-            'date_at' => 'required|string'
+            'date_at' => 'required|string',
         ]);
 
         $introduction->name = $request->input("name");
@@ -153,18 +149,18 @@ class IntroductionController extends Controller
 
         $date = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"));
         $isDst = Carbon::now()->timezone('Europe/London')->isDST();
-        if($isDst){
+        if ($isDst) {
             $date = $date->subHour();
         }
 
         $introduction->date_at = $date;
 
         $file = $request->file('file');
-        if($file) {
+        if ($file) {
             if (!empty($introduction->photo)) {
                 Storage::delete("uploads/pages/introduction/".$introduction->photo);
             }
-            $newfilename = Auth::user()->id . "-" . Str::random(16) . "." . $file->getClientOriginalExtension();
+            $newfilename = Auth::user()->id."-".Str::random(16).".".$file->getClientOriginalExtension();
             $file->storeAs("uploads/introductions", $newfilename);
             $introduction->photo = $newfilename;
             Image::load("uploads/introductions/".$newfilename)
@@ -181,12 +177,11 @@ class IntroductionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Introduction $introduction
+     * @param  Introduction  $introduction
      * @return Response
      */
-    public function destroy(Introduction $introduction)
-    {
-        if(Auth::user()->role != "admin"){
+    public function destroy(Introduction $introduction) {
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $introduction->delete();

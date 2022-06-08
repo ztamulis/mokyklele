@@ -121,6 +121,7 @@ class Group extends Model
             'green' => 'žalių',
             'red' => 'raudonų',
             'no_type' => 'suaugusiųjų',
+            'bilingualism_consultation' => 'dvikalbystės kursų',
         ];
         return $genetiveCases[$this->type];
     }
@@ -148,6 +149,10 @@ class Group extends Model
         }
         if($this->type == "red") {
             return "Raudona";
+        }
+
+        if($this->type == "bilingualism_consultation") {
+            return "Dvikalbystės";
         }
 
         if($this->type == "no_type") {

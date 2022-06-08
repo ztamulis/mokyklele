@@ -13,22 +13,21 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
-class SuggestionController extends Controller
-{
+class SuggestionController extends Controller {
     /**
      * Display a listing of the resource.
      *
-     * @param SuggestionPageContent $suggestionPageContent
+     * @param  SuggestionPageContent  $suggestionPageContent
      * @return Response
      */
-    public function index(SuggestionPageContent $suggestionPageContent)
-    {
-        if(Auth::user()->role != "admin"){
+    public function index(SuggestionPageContent $suggestionPageContent) {
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $suggestions = Suggestion::orderBy("created_at", "desc")->get();
 
-        return view("suggestions.index")->with("suggestions", $suggestions)->with("suggestionPageContent", $suggestionPageContent);
+        return view("suggestions.index")->with("suggestions", $suggestions)->with("suggestionPageContent",
+            $suggestionPageContent);
     }
 
     /**
@@ -36,9 +35,8 @@ class SuggestionController extends Controller
      *
      * @return Response
      */
-    public function create()
-    {
-        if(Auth::user()->role != "admin"){
+    public function create() {
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         return view('suggestions.create');
@@ -47,7 +45,7 @@ class SuggestionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreSuggestionRequest $storeSuggestionRequest
+     * @param  StoreSuggestionRequest  $storeSuggestionRequest
      * @return RedirectResponse
      */
     public function store(StoreSuggestionRequest $storeSuggestionRequest) {
@@ -63,38 +61,35 @@ class SuggestionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Suggestion $suggestion
+     * @param  Suggestion  $suggestion
      * @return Response
      */
-    public function show(Suggestion $suggestion)
-    {
+    public function show(Suggestion $suggestion) {
         //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Suggestion $suggestion
+     * @param $id
      * @return Response
      */
-    public function edit($id)
-    {
-        if(Auth::user()->role != "admin"){
+    public function edit($id) {
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $suggestion = Suggestion::findOrFail($id);
-        return view('suggestions.edit')->with("suggestion", $suggestion);
+        return view('dashboard.cms-pages.suggestions.edit')->with("suggestion", $suggestion);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateSuggestionRequest $updateSuggestionRequest
-     * @param Suggestion $suggestion
+     * @param  UpdateSuggestionRequest  $updateSuggestionRequest
+     * @param $id
      * @return RedirectResponse
      */
-    public function update(UpdateSuggestionRequest $updateSuggestionRequest, $id)
-    {
+    public function update(UpdateSuggestionRequest $updateSuggestionRequest, $id) {
         $suggestion = Suggestion::findOrFail($id);
         $suggestion->update($updateSuggestionRequest->validated());
         Session::flash('message', "Patarimas sėkmingai readaguotas");
@@ -104,7 +99,7 @@ class SuggestionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Suggestion $suggestion
+     * @param $id
      * @return RedirectResponse
      */
     public function destroy($id) {

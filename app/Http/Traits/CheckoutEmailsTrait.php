@@ -69,7 +69,7 @@ trait CheckoutEmailsTrait
         ];
     }
 
-    private function sendOrderConfirmAdminEmail($group, $student_names, $student_birthDays, $user) {
+    private function sendOrderConfirmAdminEmail($group, $student_names, $student_birthDays, $user, $payment) {
         $teachers = $this->getTeachersWithLessons($group);
         $email_title_admin = "Kurso užsakymas";
         if ($group->paid) {
@@ -86,12 +86,22 @@ trait CheckoutEmailsTrait
             $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
         }
 
+        if ($group->type == 'bilingualism_consultation') {
+
+        }
+
         $email_content_admin = "<h1>Kurso užsakymas</h1><p> Klientas ".  $user->name. " " .$user->surname .
             "<br> El. paštas: ".$user->email.
             "<br>Grupė: ".$group->name .
             "<br>Šalis: ".$user->country .
-            "<br>Grupės ID: ".$group->id .
-            "<br>Grupės tipas: ".$group->type .
+            "<br>Grupės ID: ".$group->id;
+
+        if ($group->type == 'bilingualism_consultation') {
+            $email_content_admin .= "<br>Dvikalbystės komentaras: ".$payment->bilingualism_consultation_note;
+        }
+
+
+        $email_content_admin .= "<br>Grupės tipas: ".$group->type .
             "<br>Mokama: ".$paid .
             "<br>Skirta: ".Group::$FOR_TRANSLATE[$group->age_category] .
             "<br>laikas: ".$time .

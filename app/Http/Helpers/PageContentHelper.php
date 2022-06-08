@@ -16,6 +16,7 @@ class PageContentHelper
             'free-l-form' => 'landing_other.free-l-form',
             'question-form-main' => 'landing_other.question-form-main',
             'question_form' => 'landing_other.question_form',
+            'consultations_adults' => 'landing_other.consultations_adults',
         ];
 
         return $list[$name];
@@ -31,6 +32,7 @@ class PageContentHelper
             'courses_free' => 'Kursai Nemokamai',
             'question-form-main' => 'Grupės nustatymo testas',
             'question_form' => 'Suaugusiu kursu anketa',
+            'consultations_adults' => 'Dvikalbystės konsultacijos',
         ];
     }
 

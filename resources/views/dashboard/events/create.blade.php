@@ -105,6 +105,7 @@
                                 <option value="lesson">Pamoka</option>
                                 <option value="individual">Individuali pamoka</option>
                                 <option value="free">Nemokama pamoka</option>
+                                <option value="bilingualism_consultation">Dvikalbystės konsultacija</option>
                             </select>
                         </div>
                         <div class="form-group"><button class="btn btn-primary" type="submit">Pridėti naują užsiėmimą</button></div>

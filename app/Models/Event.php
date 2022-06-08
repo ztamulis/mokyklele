@@ -24,6 +24,9 @@ class Event extends Model
         if($this->type == "lesson") {
             return "Pamoka";
         }
+        if($this->type == "bilingualism_consultation") {
+            return "Dvikalbystės kursai";
+        }
         if($this->type == "individual") {
             return "Ind. pamoka";
         }

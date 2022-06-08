@@ -26,10 +26,10 @@ class OrderController extends Controller {
     public function selectFreeOrder($slug) {
 
         $group = Group::where('slug', $slug)->first();
-        if(!$group) {
+        if (!$group) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
         }
-        if ($group->students()->count() >=  $group->slots) {
+        if ($group->students()->count() >= $group->slots) {
             return view("landing_other.error")->with("error", "Grupė pilna.");
         }
 
@@ -38,8 +38,8 @@ class OrderController extends Controller {
 
     public function selectGroupOrder(Request $request, $slug) {
         $group = Group::where('slug', $slug)->first();
-        
-        if(!$group) {
+
+        if (!$group) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
         }
         if ($group->slots <= $group->students()->count()) {
@@ -59,7 +59,7 @@ class OrderController extends Controller {
             }
             if (!empty($coupon->expires_at)
                 && Carbon::createFromDate($coupon->expires_at)->timestamp < Carbon::now()->timestamp
-            || !$coupon->active) {
+                || !$coupon->active) {
                 $coupon = [];
                 return view("lessons_order.group_create_order")
                     ->with("group", $group)
@@ -102,7 +102,7 @@ class OrderController extends Controller {
 
     public function showSuccessPage($slug) {
         $group = Group::where('slug', $slug)->first();
-        if(!$group) {
+        if (!$group) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
         }
 
@@ -115,14 +115,14 @@ class OrderController extends Controller {
         $group = Group::where('slug', $slug)->first();
 
         $user = Auth::user();
-        if(!$group) {
+        if (!$group) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
         }
         $json_students = json_decode($request->input("students"));
-        if(empty($json_students)) {
+        if (empty($json_students)) {
             return view("lessons_order.group_create_free_order")
                 ->with("group", $group)
-                ->with("error",  'Nepasirinkti studentai');
+                ->with("error", 'Nepasirinkti studentai');
         }
 
         $students = [];
@@ -133,10 +133,10 @@ class OrderController extends Controller {
         if ($groupNewCount > $group->slots) {
             return view("lessons_order.group_create_free_order")
                 ->with("group", $group)
-                ->with("error",  $this->getFullGroupErrorText($groupCount, $group->slots));
+                ->with("error", $this->getFullGroupErrorText($groupCount, $group->slots));
         }
         foreach ($json_students as $student_id) {
-            if(Str::startsWith($student_id, "new_")){
+            if (Str::startsWith($student_id, "new_")) {
                 $student_info = explode("_", str_replace("new_", "", $student_id));
                 $studentCheck = Student::where('name', $student_info)->where('user_id', $user->id)
                     ->where('group_id', $group->id)
@@ -152,9 +152,9 @@ class OrderController extends Controller {
                 $student->birthday = \Carbon\Carbon::parse($student_info[1]);
                 $student->save();
                 $students[] = $student;
-            } else{
+            } else {
                 $student = Student::find($student_id);
-                if(!$student) {
+                if (!$student) {
                     return view("lessons_order.group_create_free_order")
                         ->with("group", $group)
                         ->with("error", "Klaida studentų pateikime");
@@ -169,7 +169,7 @@ class OrderController extends Controller {
                 }
 
 
-                if($student->group_id != -1) {
+                if ($student->group_id != -1) {
                     $student = $student->replicate();
                     $student->group_id = -1;
                     $student->save();
@@ -188,12 +188,12 @@ class OrderController extends Controller {
         $student_ids = [];
         $student_birthDays = [];
 
-        foreach ($students as $student){
+        foreach ($students as $student) {
             $student->group_id = $group->id;
             $student->save();
             $student_names[] = $student->name;
             $student_ids[] = $student->id;
-            if(!empty($student->birthday)) {
+            if (!empty($student->birthday)) {
 
                 $student_birthDays[] = $student->birthday->format('Y-m-d');
             }
@@ -215,7 +215,7 @@ class OrderController extends Controller {
         $user->save();
 
 
-        if ($group->type !=='individual') {
+        if ($group->type !== 'individual') {
             $this->insertUserNotification($user, $group);
         }
 
@@ -229,7 +229,7 @@ class OrderController extends Controller {
                 ->setBody($messageArray['email_content'], 'text/html');
         });
 
-        $this->sendOrderConfirmAdminEmail($group, $student_names, $student_birthDays, $user);
+        $this->sendOrderConfirmAdminEmail($group, $student_names, $student_birthDays, $user, $payment);
         return redirect()->route('orderFreeSuccess', ['slug' => $group->slug])->withInput();
     }
 
@@ -237,10 +237,10 @@ class OrderController extends Controller {
         $freeSlots = $slots - $groupCount;
         $text = '';
         if ($freeSlots == 1) {
-            $text = 'Grupėje laisva tik '.$freeSlots. ' vieta';
+            $text = 'Grupėje laisva tik '.$freeSlots.' vieta';
         }
         if ($freeSlots > 1) {
-            $text = 'Grupėje laisvos tik '.$freeSlots. ' vietos';
+            $text = 'Grupėje laisvos tik '.$freeSlots.' vietos';
 
         }
         if ($freeSlots == 0) {
@@ -251,16 +251,14 @@ class OrderController extends Controller {
     }
 
 
-
-
     public function createOrderCheckout(Request $request, $slug) {
         $group = Group::where('slug', $slug)->first();
-        if(!$group) {
+        if (!$group) {
             return view("landing_other.error")->with("error", "Pasirinkta grupė nerasta.");
         }
         $json_students = json_decode($request->input("students"));
         $students = [];
-        $user= Auth::user();
+        $user = Auth::user();
         $dublicatedUsers = [];
         $coupon = Coupon::where('code', $request->input('coupon-code'))->first();
 
@@ -270,13 +268,12 @@ class OrderController extends Controller {
         if ($groupNewCount > $group->slots) {
             return view("lessons_order.group_create_order")
                 ->with("group", $group)
-                ->with("error",  $this->getFullGroupErrorText($groupCount, $group->slots));
+                ->with("error", $this->getFullGroupErrorText($groupCount, $group->slots));
         }
 
 
-
         foreach ($json_students as $student_id) {
-            if(Str::startsWith($student_id, "new_")){
+            if (Str::startsWith($student_id, "new_")) {
                 $student_info = explode("_", str_replace("new_", "", $student_id));
                 $studentCheck = Student::where('name', $student_info)->where('user_id', $user->id)
                     ->where('group_id', $group->id)
@@ -300,9 +297,9 @@ class OrderController extends Controller {
                 }
                 $student->save();
                 $students[] = $student;
-            }else{
+            } else {
                 $student = Student::find($student_id);
-                if(!$student) {
+                if (!$student) {
                     return view("lessons_order.group_create_order")
                         ->with("group", $group)
                         ->with("coupon", $coupon)
@@ -316,13 +313,11 @@ class OrderController extends Controller {
                     continue;
                 }
 
-
-                if($student->group_id != -1) {
+                if ($student->group_id != -1) {
                     $student = $student->replicate();
                     $student->group_id = -1;
                     $student->save();
                 }
-
                 $students[] = $student;
             }
         }
@@ -347,14 +342,15 @@ class OrderController extends Controller {
             } catch (IncompletePayment $exception) {
                 $transaction = $exception->payment;
                 if ($exception->payment->status !== 'succeeded') {
-                    return view("landing_other.group_order")->with("group", $group)->with("error", "Užsakymo įvykdyti NEPAVYKO!");
+                    return view("landing_other.group_order")->with("group", $group)->with("error",
+                        "Užsakymo įvykdyti NEPAVYKO!");
                 }
             }
         }
 
         $student_ids = [];
 
-        foreach ($students as $student){
+        foreach ($students as $student) {
             $student_ids[] = $student->id;
         }
 
@@ -378,18 +374,22 @@ class OrderController extends Controller {
             $payment->url = route('index').'/payments/checkout/response?session_id='.$code;
             $payment->session_id = $code;
             $payment->payment_id = 0;
-
         }
+        if ($group->type == 'bilingualism_consultation') {
+            $payment->bilingualism_consultation_note = $request->input('bilingualism_consultation_note');
+        }
+
         $payment->save();
 
         $user->time_zone = Cookie::get("user_timezone", "Europe/London");
         $user->save();
 
-        return Redirect::to('/select-group/order/'.$group->slug.'/confirm')->with('paymentInfo', $payment)->with('checkoutUrl', $payment->url);
+        return Redirect::to('/select-group/order/'.$group->slug.'/confirm')->with('paymentInfo',
+            $payment)->with('checkoutUrl', $payment->url);
     }
 
     private function getFreeTransactionCode() {
-        $code = md5(substr(md5(uniqid(mt_rand(), true)) , 0, 8));
+        $code = md5(substr(md5(uniqid(mt_rand(), true)), 0, 8));
         $code = 'free_'.$code;
         if (empty(Payment::where('session_id', $code)->first())) {
             return $code;
@@ -406,7 +406,7 @@ class OrderController extends Controller {
 
         if (
             empty($coupon)
-            ||  ((!empty($coupon->expires_at) && Carbon::createFromDate($coupon->expires_at)->timestamp < Carbon::now()->timestamp))
+            || ((!empty($coupon->expires_at) && Carbon::createFromDate($coupon->expires_at)->timestamp < Carbon::now()->timestamp))
             || $coupon->use_limit <= $coupon->used
             || $coupon->userCoupons->where('user_id', Auth::user()->id)->count() >= 2
             || (!empty($coupon->groups) && !isset(array_flip($coupon->groups)[$group->id]))
@@ -431,11 +431,13 @@ class OrderController extends Controller {
             ->first();
 
         if (empty($payment) || $payment->user_id !== Auth::user()->id) {
-            return view("lessons_order.group_order_succeeded")->with("error", 1)->with("message", "Užsakymas nerastas.");
+            return view("lessons_order.group_order_succeeded")->with("error", 1)->with("message",
+                "Užsakymas nerastas.");
         }
         $group = $payment->group()->first();
         if ($payment->payment_status === 'paid' || $payment->payment_status === 'free_lesson') {
-            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message", "Ačiū, lauksime pamokose!");
+            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message",
+                "Ačiū, lauksime pamokose!");
 
         }
         if (empty($payment->payment_id)) {
@@ -446,12 +448,15 @@ class OrderController extends Controller {
         if (!empty($request->input('payment'))) {
             $payment->payment_status = 'canceled';
             $payment->save();
-            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message", "Užsakymas nutrauktas.");
+            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message",
+                "Užsakymas nutrauktas.");
         }
         if ($payment->payment_status == 'paid' || $payment->payment_status == 'free_lesson') {
-            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message", "Ačiū, lauksime pamokose!");
+            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message",
+                "Ačiū, lauksime pamokose!");
         } else {
-            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message", "Užsakymas jau įvykdytas!");
+            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message",
+                "Užsakymas jau įvykdytas!");
         }
 
     }
@@ -459,17 +464,17 @@ class OrderController extends Controller {
 
     private function checkoutResponseZeroValue($payment, $group, $user) {
         $students = Student::whereIn('id', json_decode($payment->students))->get();
-        foreach ($students as $student){
+        foreach ($students as $student) {
             $student->group_id = $group->id;
             $student->save();
             $student_names[] = $student->name;
             $student_ids[] = $student->id;
-            if(!empty($student->birthday)) {
+            if (!empty($student->birthday)) {
                 $student_birthDays[] = $student->birthday->format('Y-m-d');
             }
         }
 
-        if ($group->type !=='individual') {
+        if ($group->type !== 'individual') {
             $this->insertUserNotification($user, $group);
         }
 
@@ -477,7 +482,7 @@ class OrderController extends Controller {
             $this->registerUserCoupon($payment);
         }
 
-        $this->sendOrderConfirmAdminEmail($group, $student_names, $student_birthDays, $user);
+        $this->sendOrderConfirmAdminEmail($group, $student_names, $student_birthDays, $user, $payment);
         $this->sendCheckoutSessionSucceededUserMessage($group, $user);
         $payment->payment_status = 'free_lesson';
         $payment->save();
@@ -499,14 +504,14 @@ class OrderController extends Controller {
 
     public function orderConfirmation(Request $request, $id) {
         $user = Auth::user();
-        $payment = session()->get( 'paymentInfo');
+        $payment = session()->get('paymentInfo');
         if (empty($payment)) {
             $payment = Payment::where('user_id', $user->id)->latest()->first();
         }
 
 
         $students = Student::whereIn('id', json_decode($payment->students))->get();
-        foreach ($students as $student){
+        foreach ($students as $student) {
             $student_names[] = $student->name;
         }
 
@@ -515,14 +520,15 @@ class OrderController extends Controller {
         $groupData = $group->getGroupStartDateAndCount();
         if (isset($groupData['startDate'])) {
 
-            $startDate = TimeZoneUtils::updateTime($groupData['startDate'], $groupData['event_update_at'])->format('Y-m-d');
+            $startDate = TimeZoneUtils::updateTime($groupData['startDate'],
+                $groupData['event_update_at'])->format('Y-m-d');
         } else {
-            $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+            $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $group->start_date)->format('Y-m-d');
         }
         if (isset($group->end_date)) {
-            $endDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->end_date)->format('Y-m-d');
+            $endDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $group->end_date)->format('Y-m-d');
         } else {
-            $endDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+            $endDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $group->start_date)->format('Y-m-d');
         }
 
         $data = [
@@ -539,9 +545,12 @@ class OrderController extends Controller {
             'age_category' => $group->age_category,
 
         ];
+        if ($group->type === 'bilingualism_consultation' && !empty($payment->bilingualism_consultation_note)) {
+            $data['bilingualism_consultation_note'] = $payment->bilingualism_consultation_note;
+        }
+
         return view("lessons_order.group_confirm_order")->with('paymentInfo', $data);
     }
-
 
 
     private function countPriceByStudentsAmount($students, $price): float {
@@ -560,8 +569,6 @@ class OrderController extends Controller {
     }
 
 
-
-
     public function sendPaymentEmail($paymentId) {
         $payment = Payment::where('payment_id', $paymentId)->first();
         if ($payment->payment_status === 'paid') {
@@ -569,7 +576,7 @@ class OrderController extends Controller {
             $students = Student::whereIn('id', $studentsIds)->get();
             $group = $payment->group()->first();
             $user = $payment->user()->first();
-            foreach ($students as $student){
+            foreach ($students as $student) {
                 $student_names[] = $student->name;
                 $student_ids[] = $student->id;
                 $student_birthDays[] = $student->birthday;
@@ -594,17 +601,17 @@ class OrderController extends Controller {
         if (isset($groupData['startDate'])) {
             $startDate = \Carbon\Carbon::parse($groupData['startDate'])->format('Y-m-d');
         } else {
-            $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+            $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $group->start_date)->format('Y-m-d');
         }
 
-        $email_content_admin = "<h1>Kurso užsakymas</h1><p> Klientas ".  $user->name. " " .$user->surname .
+        $email_content_admin = "<h1>Kurso užsakymas</h1><p> Klientas ".$user->name." ".$user->surname.
             "<br> El. paštas: ".$user->email.
-            "<br>Grupė: ".$group->name .
-            "<br>Grupės ID: ".$group->id .
-            "<br>Grupės tipas: ".$group->type .
-            "<br>Mokama: ".$paid .
-            "<br>laikas: ".$time .
-            "<br>Pradžia: ".$startDate .
+            "<br>Grupė: ".$group->name.
+            "<br>Grupės ID: ".$group->id.
+            "<br>Grupės tipas: ".$group->type.
+            "<br>Mokama: ".$paid.
+            "<br>laikas: ".$time.
+            "<br>Pradžia: ".$startDate.
             "<br>Mokytoja(-os): ".join(" ", $teachers).
             " <br>Vaikas(-ai): ".join(" ", $student_names).
             " <br>Amžius: ".join(" ", $student_birthDays).
@@ -617,7 +624,6 @@ class OrderController extends Controller {
                 ->setBody($email_content_admin, 'text/html');
         });
     }
-    
 
 
 }

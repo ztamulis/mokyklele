@@ -88,6 +88,7 @@
                                 <option @if($event->type == "lesson") selected @endif value="lesson">Pamoka</option>
                                 <option @if($event->type == "individual") selected @endif value="individual">Individuali pamoka</option>
                                 <option @if($event->type == "free") selected @endif value="free">Nemokama pamoka</option>
+                                <option @if($event->type == "bilingualism_consultation") selected @endif value="free">Dvikalbystės konsultacija</option>
                             </select>
                         </div>
                         <div class="form-group"><button class="btn btn-primary" type="submit">Atnaujinti užsiėmimą</button></div>

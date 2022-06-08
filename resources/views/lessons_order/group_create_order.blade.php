@@ -69,7 +69,13 @@
                     </div>
                 @endif
                 <br><br>
-
+                @if($group->type == 'bilingualism_consultation')
+                    <div class="mb-3">
+                        <label for="exampleFormControlTextarea1" class="form-label">Trumpai įvardinkite situaciją, kurią norite aptarti. Norodykite vaiko amžių ir kalbos įgūdžius.</label>
+                        <textarea name="bilingualism_consultation_note" class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                    </div>
+                @endif
+                <br><br>
                 @if($group->type !=='free' && empty($coupon))
                         <div class="row" style="margin-bottom: 20px;">
                             Nuolaidos kodas:

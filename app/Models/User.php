@@ -144,11 +144,11 @@ class User extends Authenticatable
         return Group::find($this->students()->groupBy("group_id")->pluck("group_id"));
     }
 
-    public function getGroupedGroups(){
+    public function getGroupedCoursesGroups(){
         if($this->role == "admin") {
-            return $this->groupByWeekDays(Group::all());
-  
+            return $this->groupByWeekDays(Group::where('type', '!=', 'bilingualism_consultation')->get());
         }
+
         if($this->role == "teacher"){
             $group_ids = [];
             foreach(Event::where("teacher_id",$this->id)->get() as $event) {
@@ -159,9 +159,33 @@ class User extends Authenticatable
                 }
             }
 
-            return $this->groupByWeekDays(Group::find($group_ids));
+            return $this->groupByWeekDays(Group::whereIn($group_ids)->where('type', '!=',  'bilingualism_consultation')->get());
         }
-        return $this->groupByWeekDays(Group::find($this->students()->groupBy("group_id")->pluck("group_id")));
+
+        $groupIds = $this->students()->groupBy("group_id")->pluck("group_id");
+        return $this->groupByWeekDays(Group::whereIn($groupIds)->where('type', '!=',  'bilingualism_consultation')->get());
+    }
+
+    public function getGroupedConsultationGroups(){
+        if($this->role == "admin") {
+            return $this->groupByWeekDays(Group::where('type', '=', 'bilingualism_consultation')->get());
+        }
+
+        if($this->role == "teacher"){
+            $group_ids = [];
+            foreach(Event::where("teacher_id",$this->id)->get() as $event) {
+                foreach ($event->groups as $group){
+                    if(!in_array($group->id, $group_ids)){
+                        $group_ids[] = $group->id;
+                    }
+                }
+            }
+
+            return $this->groupByWeekDays(Group::whereIn($group_ids)->where('type', '=',  'bilingualism_consultation')->get());
+        }
+
+        $groupIds = $this->students()->groupBy("group_id")->pluck("group_id");
+        return $this->groupByWeekDays(Group::whereIn($groupIds)->where('type', '=',  'bilingualism_consultation')->get());
     }
 
     private function groupByWeekDays($groups) {
@@ -199,21 +223,6 @@ class User extends Authenticatable
         ];
 
         return $weekMap[$key];
-    }
-
-    private function getGroupsOrderedByDate($groups) {
-        $data = [];
-        if (empty($groups)) {
-            return [];
-        }
-        foreach ($groups as $group) {
-            if (!empty($group->events[0])) {
-
-                $data[$group->events[0]->date_at->timestamp] = $group;
-            }
-        }
-        ksort($data);
-        return $data;
     }
 
     public function studentsInGroup($group) {

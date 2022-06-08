@@ -148,9 +148,25 @@
                             <input class="form-control" type="text" name="paid_lesson_red_and_blue_subject" value="{{ $notificationEmailContent->free_lesson_yellow_and_green_subject }}" >
                         </div>
 
+                        <div class="form-group mt-5">
+                            <p class="lh-1"><b>Kintamieji</b>: {pamokos-diena-angliskai}; {grupe}; {grupes-savaites-diena}; {pamokos-laikas}; {vartotojo-laiko-juosta}; </p>
+                            <p class="lh-1"><b>Kintamuosius būtina atskirti laužtiniais skliaustais {} ir negali būti rašomi lietuviškomis raidėmis. Tiksliai kaip nurodyta pasirinkimuose.</b></p>
+                            <span class="form-text text-danger bold">Dvikalbystės kursai</span>
+                            <textarea class="form-control summernote" name="bilingualism_consultation">{!! $notificationEmailContent->bilingualism_consultation !!}</textarea>
+                        </div>
+                        <small class="form-text text-muted">Susitikimas</small>
+                        <select class="form-control" name="bilingualism_consultation_meeting_id" aria-label="Default select example">
+                            <option {{old('bilingualism_consultation_meeting_id') || $notificationEmailContent->bilingualism_consultation_meeting_id === '' ? 'selected' : ''}} value="0">Jokio</option>
+                            @foreach($meetings as $meeting)
+                                <option {{old('bilingualism_consultation_meeting_id') || $meeting->id === $notificationEmailContent->bilingualism_consultation_meeting_id ? 'selected' : ''}} value="{{$meeting->id}}">
+                                    {{$meeting->name}}</option>
+                            @endforeach
+                        </select>
+                        <div class="form-group"><small class="form-text text-muted">Laiško tema</small>
+                            <input class="form-control" type="text" name="bilingualism_consultation_subject" value="{{ $notificationEmailContent->bilingualism_consultation_subject }}" >
+                        </div>
 
-
-                        <div class="form-group mt-5"><button class="btn btn-primary" type="submit">Atnaujinti susitikimą</button></div>
+                        <div class="form-group mt-5"><button class="btn btn-primary" type="submit">Atnaujinti automatinius laiškus</button></div>
                     </form>
                 </div>
             </div>
