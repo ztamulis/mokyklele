@@ -334,7 +334,7 @@ class EventController extends Controller {
             $allStudents = Student::has('group')->whereIn('id', $allStudents)->get();
         } else {
             $allStudents = Student::has('group')->get();
-            $groups = Group::select('id, name, display_name');
+            $groups = Group::select(['id', 'name', 'display_name', 'time'])->get();
 
         }
 
