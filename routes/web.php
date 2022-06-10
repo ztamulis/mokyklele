@@ -128,7 +128,7 @@ Route::get('lietuviu-kalbos-pamokos', function () {
         ->with('siteContent', app(LithuanianLanguagePageContent::class)->getPageContent());
 });
 
-Route::get('test-dvikalbystės-konsultacijos', function () {
+Route::get('test-dvikalbystes-konsultacijos', function () {
     return view('landing_new.dvikalbystes_konsultacijos')
         ->with('siteContent', app(BilingualismConsultationPageContent::class)->getPageContent());
 });
@@ -254,6 +254,7 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth']], static functio
     Route::get('/teacher-statistics', [EventController::class, 'teacherCalendar']);
     Route::get('/events/{id}/attendances', [EventController::class, 'attendances']);
     Route::post('/events/{id}/attendances', [EventController::class, 'attendancesPost']);
+    Route::post('/events/attendances/add', [EventController::class, 'storeAttendace']);
     Route::get('/events/{id}/clone', [EventController::class, 'clone']);
     Route::get('/events/deleteEvents', [EventController::class, 'deleteEvent']);
     Route::post('/groups/upload', [GroupController::class, 'uploadFile'])->name('homework-store')->middleware('auth');
