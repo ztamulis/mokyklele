@@ -9,7 +9,7 @@
                         <a href="/dashboard/attendance/?date={{ $startDate->addMonths(2)->startOfMonth()->format("Y-m-d") }}" class="btn btn-primary">Kitas mėn. ></a>
                         <select class="form-control" data-group-filter style="display: inline-block;width: 350px;">
                             <option value="-1">Pasirinkite grupę</option>
-                            @foreach(auth()->user()->role == 'teacher' ? auth()->user()->getGroups() : \App\Models\Group::all() as $group)
+                            @foreach($groups as $group)
                                 <option value="{{ $group->id }}">#g{{ $group->id }} {{ $group->name }} ∙ {{ $group->display_name }} ∙ {{ $group->adminTime->format("H:i") }}</option>
                             @endforeach
                         </select>

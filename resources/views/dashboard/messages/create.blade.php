@@ -53,7 +53,7 @@
             @csrf
 
             <div class="dashboard--block no--padding message--input--block">
-                <textarea class="message--input @if(Auth::user()->role != "user") summernote @endif " name="text" placeholder="Įrašykite žinutės tekstą..."></textarea>
+                <textarea class="editor" id="ckeditor" name="text" placeholder="Įrašykite žinutės tekstą..."></textarea>
             </div>
 
             <div class="dashboard--block">

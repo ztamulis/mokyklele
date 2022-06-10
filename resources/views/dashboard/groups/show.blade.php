@@ -34,11 +34,16 @@
                 @php  \Carbon\Carbon::setLocale('lt'); @endphp
 
                 <div class="login-btn-area">
+
                     @if($nextLesson && $nextLesson->zoom_meeting_id)
-                        <a href="#" zoom-join>Prisijungti į pamoką</a>
+                        <input type="hidden" name="event_id" value="{{$nextLesson->id}}">
+                        <input type="hidden" name="group_id" value="{{$group->id}}">
+                        <a href="#" onclick="addAttendance(this)" zoom-join>Prisijungti į pamoką</a>
                     @endif
                     @if($nextLesson && $nextLesson->join_link)
-                        <a href="{{ $nextLesson->join_link }}" target="_blank">Prisijungti į pamoką</a>
+                        <input type="hidden" name="event_id" value="{{$nextLesson->id}}">
+                        <input type="hidden" name="group_id" value="{{$group->id}}">
+                        <a href="{{ $nextLesson->join_link }}" onclick="addAttendance(this)" target="_blank">Prisijungti į pamoką</a>
                     @endif
 
                 </div>
@@ -442,7 +447,6 @@
             </div>
         </div>
     </div>
-    <script src="//cdn.ckeditor.com/4.16.2/full/ckeditor.js"></script>
     <script>
         $(document).ready(function () {
             var size_li = $("#homework-list-main li.homework-list").length;
@@ -456,9 +460,16 @@
                 x=(x-3<0) ? 3 : x-3;
                 $('#homework-list-main li.homework-list').not(':lt('+x+')').hide();
             });
+            var groupMessage = @json($groupMessage);
+            if(groupMessage == true) {
+                $('[data-country="tab-2"]').click();
+            }
+
+
+            CKEDITOR.replace( 'ckeditor-voc', {
+            } );
         });
-    </script>
-    <script>
+
         $('[data-target="#sendMessageModal"]').click(function () {
             var name = $(this).attr("data-user-name");
             var id = $(this).attr("data-user-id");
@@ -529,31 +540,6 @@
             }
 
         }
-        $( document ).ready(function() {
-            CKEDITOR.config.font_defaultLabel = 'Roboto';
-            CKEDITOR.config.font_names = 'Roboto;Arial;Arial Black;Comic Sans MS;Courier New;Helvetica;Impact;Tahoma;Times New Roman;Verdana';
-            CKEDITOR.replace( 'ckeditor', {
-            } );
-            CKEDITOR.replace( 'ckeditor-voc', {
-            } );
-
-            var groupMessage = @json($groupMessage);
-                if(groupMessage == true) {
-                $('[data-country="tab-2"]').click();
-            }
-            CKEDITOR.on("instanceReady", function(event) {
-                event.editor.on("beforeCommandExec", function(event) {
-                    // Show the paste dialog for the paste buttons and right-click paste
-                    if (event.data.name == "paste") {
-                        event.editor._.forcePasteDialog = true;
-                    }
-                    // Don't show the paste dialog for Ctrl+Shift+V
-                    if (event.data.name == "pastetext" && event.data.commandData.from == "keystrokeHandler") {
-                        event.cancel();
-                    }
-                })
-            });
-        });
 
         //
         $("[comments-form],[homework-edit-file], [edit-group-message-form], [new-group-message], [delete-homework], [delete-group-message], [delete-comment], [comment-reply], [comment-edit]").submit(function() {
