@@ -65,6 +65,8 @@
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+    <script src="//cdn.ckeditor.com/4.16.2/full/ckeditor.js"></script>
+
 
     <script id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/ba87b46b2fade810dbf4e011d/126d0ec7c020f24a27f2bb97d.js");</script>
 </head>
@@ -253,11 +255,50 @@
             }
         });
 
+        CKEDITOR.replace( 'ckeditor', {
+        } );
+        CKEDITOR.config.font_defaultLabel = 'Roboto';
+        CKEDITOR.config.font_names = 'Roboto;Arial;Arial Black;Comic Sans MS;Courier New;Helvetica;Impact;Tahoma;Times New Roman;Verdana';
+
+
+
+
+        CKEDITOR.on("instanceReady", function(event) {
+            event.editor.on("beforeCommandExec", function(event) {
+                // Show the paste dialog for the paste buttons and right-click paste
+                if (event.data.name == "paste") {
+                    event.editor._.forcePasteDialog = true;
+                }
+                // Don't show the paste dialog for Ctrl+Shift+V
+                if (event.data.name == "pastetext" && event.data.commandData.from == "keystrokeHandler") {
+                    event.cancel();
+                }
+            })
+        });
         setTimeout(function(){
             $("#flash-message").remove();
         }, 3000 );
 
     });
+
+    function addAttendance(item) {
+        var event_id = $(item).parent().find('input[name="event_id"]').val();
+        var group_id = $(item).parent().find('input[name="group_id"]').val();
+        var fd = new FormData();
+        fd.append("_token", "{{ csrf_token() }}");
+        fd.append("user_id", {{Auth::user()->id}});
+        fd.append("event_id", event_id);
+        fd.append("group_id", group_id);
+        $.ajax({
+            url: "/dashboard/events/attendances/add",
+            type: 'post',
+            data: fd,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+            }
+        });
+    }
 </script>
     <footer>
         <div class="container">

@@ -53,23 +53,23 @@ class MainCronJob extends Command {
 
     public function main() {
         echo "Automatic attendance set started<br>";
-        foreach (Event::where("attendance_auto_set", 0)->where("date_at", "<", \Carbon\Carbon::now()->subMinutes(10))->get() as $event) { // automatic attendance set
-            $students = [];
-            foreach ($event->groups as $group) {
-                foreach ($group->students as $student){
-                    $attendance = new Attendance;
-                    $attendance->student_id = $student->id;
-                    $attendance->event_id = $event->id;
-                    $attendance->save();
-                    echo "Set " . $student->name . " attended in " . $event->name . "<br>";
-                }
-            }
-
-            $event->attendance_auto_set = 1;
-            $event->save();
-
-            echo "Event " . $event->name . " updated.<br><br>";
-        }
+//        foreach (Event::where("attendance_auto_set", 0)->where("date_at", "<", \Carbon\Carbon::now()->subMinutes(10))->get() as $event) { // automatic attendance set
+//            $students = [];
+//            foreach ($event->groups as $group) {
+//                foreach ($group->students as $student){
+//                    $attendance = new Attendance;
+//                    $attendance->student_id = $student->id;
+//                    $attendance->event_id = $event->id;
+//                    $attendance->save();
+//                    echo "Set " . $student->name . " attended in " . $event->name . "<br>";
+//                }
+//            }
+//
+//            $event->attendance_auto_set = 1;
+//            $event->save();
+//
+//            echo "Event " . $event->name . " updated.<br><br>";
+//        }
         echo "Automatic attendance set ended<br>";
 
         echo "Automatic reward set started<br>";

@@ -7,33 +7,29 @@ use App\Models\Student;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\Event;
-use App\TimeZoneUtils;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
-class EventController extends Controller
-{
+class EventController extends Controller {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
 
-        if(Auth::user()->role == "user"){
+        if (Auth::user()->role == "user") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $events = Event::where("id", ">", 0)->with('teacher')
             ->with('groups');
-        if($request->input("search")){
-             $events = $events->where("name", "LIKE", "%" . $request->input("search") . "%");
+        if ($request->input("search")) {
+            $events = $events->where("name", "LIKE", "%".$request->input("search")."%");
         }
-        if(Auth::user()->role == "teacher"){
+        if (Auth::user()->role == "teacher") {
             $events = $events->where("teacher_id", Auth::user()->id);
         }
         $events = $events->orderBy("id", "DESC");
@@ -45,13 +41,13 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        if(Auth::user()->role != "admin"){
+    public function create() {
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
 
-        return view("dashboard.events.create")->with("groups", Group::all())->with("teachers", User::where("role","LIKE","teacher")->get());
+        return view("dashboard.events.create")->with("groups", Group::all())->with("teachers",
+            User::where("role", "LIKE", "teacher")->get());
     }
 
     /**
@@ -60,9 +56,8 @@ class EventController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        if(Auth::user()->role != "admin"){
+    public function store(Request $request) {
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $request->validate([
@@ -78,11 +73,11 @@ class EventController extends Controller
 
         $date = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"));
         $isDst = Carbon::now()->timezone('Europe/London')->isDST();
-        if($isDst){
+        if ($isDst) {
             $date = $date->subHour();
         }
 
-        if($create_method == "multi"){
+        if ($create_method == "multi") {
             $request->validate([
                 'date_at_count' => 'required|int',
                 'date_at_interval' => 'required|int',
@@ -102,7 +97,7 @@ class EventController extends Controller
                 $event->groups()->sync($request->input("groups"));
                 $date = $date->addDays($request->input("date_at_interval"));
             }
-        }else{
+        } else {
             $event = new Event;
             $event->name = $request->input("name");
             $event->description = $request->input("description");
@@ -127,10 +122,9 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function show(Event $event)
-    {
+    public function show(Event $event) {
 
-        if(Auth::user()->role != "admin"){
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         return view("dashboard.events.show")->with("group", $event);
@@ -144,10 +138,11 @@ class EventController extends Controller
      */
     public function edit(Event $event) {
 
-        if(Auth::user()->role != "admin"){
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        return view("dashboard.events.edit")->with("event", $event)->with("groups", Group::all())->with("teachers", User::where("role","LIKE","teacher")->get());
+        return view("dashboard.events.edit")->with("event", $event)->with("groups", Group::all())->with("teachers",
+            User::where("role", "LIKE", "teacher")->get());
     }
 
     /**
@@ -157,9 +152,8 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Event $event)
-    {
-        if(Auth::user()->role != "admin"){
+    public function update(Request $request, Event $event) {
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $request->validate([
@@ -180,7 +174,7 @@ class EventController extends Controller
         $date = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"));
 
         $isDst = Carbon::now()->timezone('Europe/London')->isDST();
-        if($isDst){
+        if ($isDst) {
             $date = $date->subHour();
         }
 
@@ -200,9 +194,8 @@ class EventController extends Controller
      * @param  \App\Models\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Event $event)
-    {
-        if(Auth::user()->role != "admin"){
+    public function destroy(Event $event) {
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $event->delete();
@@ -211,17 +204,17 @@ class EventController extends Controller
     }
 
     public function clone(Request $request, $id) {
-        if(Auth::user()->role != "admin"){
+        if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $event = Event::find($id);
-        if(!$event) {
+        if (!$event) {
             return view("dashboard.error")->with("error", "Užsiėmimas nerastas.");
         }
 
         $new_event = $event->replicate();
         $new_event->save();
-        foreach ($event->groups as $group){
+        foreach ($event->groups as $group) {
             $new_event->groups()->attach($group->id);
         }
 
@@ -229,18 +222,18 @@ class EventController extends Controller
     }
 
     public function attendances(Request $request, $id) {
-        if(Auth::user()->role == "user"){
+        if (Auth::user()->role == "user") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
 
         $event = Event::find($id);
-        if(!$event){
+        if (!$event) {
             return view("dashboard.error")->with("message", "Užsiėmimas nerastas");
         }
 
         $students = [];
         foreach ($event->groups as $group) {
-            foreach ($group->students as $student){
+            foreach ($group->students as $student) {
                 $students[] = $student;
             }
         }
@@ -248,28 +241,57 @@ class EventController extends Controller
         return view("dashboard.events.attendances")->with("students", $students)->with("event", $event);
     }
 
+    public function storeAttendace(Request $request) {
+        $students = Student::select('id')->where('user_id', $request->input('user_id'))
+            ->where('group_id', $request->input('group_id'))
+            ->get()
+            ->toArray();
+
+        if (empty($students)) {
+            return;
+        }
+        $eventId = $request->input('event_id');
+        $eventDate = Event::select('date_at')->where('id', $eventId)->first();
+        $eventDateMinusHour = Carbon::parse($eventDate->date_at)->timestamp - 3600;
+        $eventDatePlusHour = Carbon::parse($eventDate->date_at)->timestamp + 3600;
+        if ($eventDateMinusHour <= Carbon::now()->timestamp && Carbon::now()->timestamp <= $eventDatePlusHour) {
+            foreach ($students as $student) {
+                if (!Attendance::where('student_id', $student['id'])->where('event_id', $eventId)->exists()) {
+                    $attendance = new Attendance;
+                    $attendance->student_id = $student['id'];
+                    $attendance->event_id = $eventId;
+                    $attendance->save();
+                }
+            }
+        }
+
+
+        return;
+    }
+
     public function attendancesPost(Request $request, $id) {
-        if(Auth::user()->role == "user"){
+        if (Auth::user()->role == "user") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
 
         $event = Event::find($id);
-        if(!$event){
+        if (!$event) {
             return view("dashboard.error")->with("message", "Užsiėmimas nerastas");
         }
 
         Attendance::where("event_id", $event->id)->delete();
 
         $students = $request->input("students");
-        if(!$students) {
+        if (!$students) {
             Session::flash('message', "Užsiėmimo lankomumas sėkmingai atnaujintas");
             return Redirect::to('dashboard/events');
         }
 //        $studentsReturn = [];
         foreach ($students as $student) {
             $student = Student::find($student);
-            if(!$student)
+            if (!$student) {
                 continue;
+            }
             $attendance = new Attendance;
             $attendance->student_id = $student->id;
             $attendance->event_id = $event->id;
@@ -293,32 +315,35 @@ class EventController extends Controller
         $daysInMonth = \Carbon\Carbon::now()->daysInMonth;
         $startDate = \Carbon\Carbon::now()->startOfMonth();
         $endDate = \Carbon\Carbon::now()->endOfMonth();
-        if($request->input("date")) {
+        if ($request->input("date")) {
             $daysInMonth = \Carbon\Carbon::parse($request->input("date"))->daysInMonth;
             $startDate = \Carbon\Carbon::parse($request->input("date"))->startOfMonth();
             $endDate = \Carbon\Carbon::parse($request->input("date"))->endOfMonth();
         }
 
-        if(Auth::user()->role == "teacher" || Auth::user()->role == "user") {
+        if (Auth::user()->role == "teacher" || Auth::user()->role == "user") {
             $allStudents = [];
-            foreach(Auth::user()->getGroups() as $group){
-                foreach($group->students()->pluck("id") as $studentId) {
-                    if(!in_array($studentId, $allStudents)){
+            $groups = Auth::user()->getGroups();
+            foreach ($groups as $group) {
+                foreach ($group->students()->pluck("id") as $studentId) {
+                    if (!in_array($studentId, $allStudents)) {
                         $allStudents[] = $studentId;
                     }
                 }
             }
-            $allStudents = Student::find($allStudents);
-        }else{
-            $allStudents = Student::all();
+            $allStudents = Student::has('group')->whereIn('id', $allStudents)->get();
+        } else {
+            $allStudents = Student::has('group')->get();
+            $groups = Group::select('id, name, display_name');
+
         }
 
         $students = [];
+
         foreach ($allStudents as $student) {
             $days = [];
-            foreach (Attendance::where("student_id", $student->id)->where("created_at", ">", $startDate)->where("created_at", "<", $endDate)->get() as $attendance) {
-                if(!$attendance->event)
-                    continue;
+            foreach (Attendance::where("student_id", $student->id)->where("created_at", ">",
+                $startDate)->where("created_at", "<", $endDate)->has('event')->get() as $attendance) {
                 $days[] = $attendance->event->date_at->format("d");
             }
             $students[$student->name."|".($student->group ? $student->group->id : -1)] = $days;
@@ -327,14 +352,15 @@ class EventController extends Controller
         setlocale(LC_TIME, 'lt_LT');
         \Carbon\Carbon::setLocale('lt');
 
-        return view("dashboard.attendance")->with("daysInMonth", $daysInMonth)->with("students", $students)->with("startDate", $startDate);
+        return view("dashboard.attendance")->with("daysInMonth", $daysInMonth)->with("students",
+            $students)->with("startDate", $startDate)->with('groups', $groups);
     }
 
     public function teacherCalendar(Request $request) {
         $daysInMonth = \Carbon\Carbon::now()->daysInMonth;
         $startDate = \Carbon\Carbon::now()->startOfMonth();
         $endDate = \Carbon\Carbon::now()->endOfMonth();
-        if($request->input("date")) {
+        if ($request->input("date")) {
             $daysInMonth = \Carbon\Carbon::parse($request->input("date"))->daysInMonth;
             $startDate = \Carbon\Carbon::parse($request->input("date"))->startOfMonth();
             $endDate = \Carbon\Carbon::parse($request->input("date"))->endOfMonth();
@@ -344,7 +370,8 @@ class EventController extends Controller
 
         foreach (User::where("role", "teacher")->get() as $teacher) {
             $days = [];
-            foreach (Event::where("teacher_id", $teacher->id)->where("date_at", ">", $startDate)->where("date_at", "<", $endDate)->get() as $event) {
+            foreach (Event::where("teacher_id", $teacher->id)->where("date_at", ">", $startDate)->where("date_at", "<",
+                $endDate)->get() as $event) {
                 $days[] = $event->date_at->format("d")."|".$event->type;
             }
             $teachers[$teacher->name." ".$teacher->surname] = $days;
@@ -353,11 +380,12 @@ class EventController extends Controller
         setlocale(LC_TIME, 'lt_LT');
         \Carbon\Carbon::setLocale('lt');
 
-        return view("dashboard.teacher_statistics")->with("daysInMonth", $daysInMonth)->with("teachers", $teachers)->with("startDate", $startDate);
+        return view("dashboard.teacher_statistics")->with("daysInMonth", $daysInMonth)->with("teachers",
+            $teachers)->with("startDate", $startDate);
     }
 
     public function createZoomMetting(Request $request, $id) {
-        if(Auth::user()->role == "user"){
+        if (Auth::user()->role == "user") {
             return view("dashboard.error")->with("error", "Not allowed");
         }
 

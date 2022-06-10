@@ -11,8 +11,7 @@ use Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
-class MessageController extends Controller
-{
+class MessageController extends Controller  {
 
     public function index(Request $request) {
         $messages = Message::where('id', '>', 0);
