@@ -26,7 +26,7 @@ class StudentController extends Controller
         if(Auth::user()->role != "admin"){
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        $students = Student::where("id", ">", 0);
+        $students = Student::where("id", ">", 0)->has('user');
         if($request->input("search")){
             $students = $students->where("name", "LIKE", "%" . $request->input("search") . "%");
         }
