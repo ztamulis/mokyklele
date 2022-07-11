@@ -31,7 +31,7 @@
                             @method("PUT")
                             <div class="form-group">
                                 <small class="form-text text-muted">Pavadinimas</small>
-                                <input class="form-control" type="text" name="name" placeholder="Susitikimai" value="{{ $pageContent['title'] }}">
+                                <input class="form-control" type="text" name="name" placeholder="Susitikimai" value="{{ $suggestion['title'] }}">
                             </div>
                             <div class="form-group"><small class="form-text text-muted">Susitikimo nuotrauka (.jpg, .png, .svg, .gif)</small>
                                 <input name="file" type="file" class="form-control-file" accept=".jpg,.jpeg,.png,.svg,.gif"/>

@@ -79,7 +79,7 @@ class SuggestionController extends Controller {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
         $suggestion = Suggestion::findOrFail($id);
-        return view('dashboard.cms-pages.suggestions.edit')->with("suggestion", $suggestion);
+        return view('suggestions.edit')->with("suggestion", $suggestion);
     }
 
     /**
