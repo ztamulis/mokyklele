@@ -45,7 +45,7 @@ class IntroductionController extends Controller {
         if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        return view("dashboard.introductions.create");
+        return view("dashboard.cms-pages.introductions.create");
     }
 
     /**
@@ -118,7 +118,7 @@ class IntroductionController extends Controller {
         if (Auth::user()->role != "admin") {
             return view("dashboard.error")->with("error", "Neturite teisių pasiekti šį puslapį.");
         }
-        return view("dashboard.introductions.edit")->with("meeting", $introduction);
+        return view("dashboard.cms-pages.introductions.edit")->with("meeting", $introduction);
     }
 
     /**
