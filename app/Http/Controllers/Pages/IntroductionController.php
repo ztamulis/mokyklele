@@ -71,9 +71,9 @@ class IntroductionController extends Controller {
         $introduction->name = $request->input("name");
         $introduction->description = $request->input("description");
         $introduction->join_link = $request->input("join_link");
-        $introduction->is_public = $request->input("is_public");
-        $introduction->is_private = $request->input("is_private");
-        $introduction->show_date = $request->input("show_date");
+        $introduction->is_public = $request->input("is_public") ? $request->input("is_public") : 0;
+        $introduction->is_private = $request->input("is_private") ? $request->input("is_private") : 0;
+        $introduction->show_date = $request->input("show_date") ? $request->input("show_date") : 0;
 
         $date = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"));
         $isDst = Carbon::now()->timezone('Europe/London')->isDST();
@@ -143,9 +143,9 @@ class IntroductionController extends Controller {
         $introduction->name = $request->input("name");
         $introduction->description = $request->input("description");
         $introduction->join_link = $request->input("join_link");
-        $introduction->is_public = $request->input("is_public");
-        $introduction->is_private = $request->input("is_private");
-        $introduction->show_date = $request->input("show_date");
+        $introduction->is_public = $request->input("is_public") ? $request->input("is_public") : 0;
+        $introduction->is_private = $request->input("is_private") ? $request->input("is_private") : 0;
+        $introduction->show_date = $request->input("show_date") ? $request->input("show_date") : 0;
 
         $date = Carbon::createFromFormat("Y-m-d\TH:i", $request->input("date_at"));
         $isDst = Carbon::now()->timezone('Europe/London')->isDST();
