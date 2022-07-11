@@ -65,7 +65,7 @@
                                         <td>{{ $meeting->show_date ? 'Taip' : 'Ne' }}</td>
                                         <td>{{ $meeting->is_private ? 'Taip' : 'Ne' }}</td>
                                         <td>{{ $meeting->is_public ? 'Taip' : 'Ne' }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($meeting->date_at)->timezone('Europe/London') }}</td>
+                                        <td>{{ App\TimeZoneUtils::updateTime($meeting->date_at, $meeting->updated_at)->format('Y-m-d H:i') }}</td>
                                         <td class="text-right">
                                             @if(Auth::user()->role == "admin")
                                                 <a href="/dashboard/introductions/{{ $meeting->id }}/edit" class="btn btn-warning" type="button" style="margin: 0px 4px 0px;">Redaguoti</a>
