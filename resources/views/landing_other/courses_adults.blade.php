@@ -83,7 +83,6 @@
                         '{{$group->type}}',
                 {{$key+1}},
                         '/select-group/order/{{$group->slug }}',
-                {{$group->type}},
                         '{{$group->time->timezone("Europe/London")->format("H:i")}}',
                         '{{ $group->display_name }}',
                         '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}')" @endif >{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "Europe/London"))->format("H:i") }}</b></a>
@@ -144,9 +143,9 @@
                                 '{{$group->type}}',
                         {{$key+1}},
                                 '/select-group/order/{{$group->slug }}',
-                        {{$group->type}},
-                                '{{$group->time->timezone("Europe/London")->format("H:i")}}',
                                 '{{ $group->display_name }}',
+                                '{{$group->time->timezone("Europe/London")->format("H:i")}}',
+                                '{{$group->description}}',
                                 '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}')" class="button course--select--button text-white">
                             Pasirinkti
                         </a>
@@ -158,9 +157,9 @@
                                 '{{$group->type}}',
                         {{$key+1}},
                                 '/select-group/order/free/{{$group->slug }}',
-                        {{$group->type}},
-                                '{{$group->time->timezone("Europe/London")->format("H:i")}}',
                                 '{{ $group->display_name }}',
+                                '{{$group->time->timezone("Europe/London")->format("H:i")}}',
+                                '{{$group->description}}',
                                 '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}')" class="button course--select--button text-white">
                             Pasirinkti
                         </a>

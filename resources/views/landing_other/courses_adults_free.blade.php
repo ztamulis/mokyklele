@@ -82,9 +82,9 @@
                         '{{$group->type}}',
                 {{$key+1}},
                         '/select-group/order/free/{{$group->slug }}',
-                {{$group->type}},
-                        '{{$group->time->timezone("Europe/London")->format("H:i")}}',
                         '{{ $group->display_name }}',
+                        '{{$group->time->timezone("Europe/London")->format("H:i")}}',
+                        '{{$group->description}}',
                         '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}')" @endif >{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "Europe/London"))->format("H:i") }}</b></a><br>
                 <span>{{ $group->display_name }}</span>
             </div>
@@ -106,9 +106,9 @@
                             '{{$group->type}}',
                     {{$key+1}},
                             '/select-group/order/free/{{$group->slug }}',
-                    {{$group->type}},
-                            '{{$group->time->timezone("Europe/London")->format("H:i")}}',
                             '{{ $group->display_name }}',
+                            '{{$group->time->timezone("Europe/London")->format("H:i")}}',
+                            '{{$group->description}}',
                             '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}')" class="button course--select--button text-white">
                         Pasirinkti
                     </a>
@@ -211,6 +211,7 @@
 
     function addOneCategory(category) {
         document.cookie = "groupAdultsFreeType="+category;
+        @if (!isset($_COOKIE['groupAdultsFreeType']))
         dataLayer.push({ ecommerce: null });
         dataLayer.push({
             'event': 'eec.impressions',
@@ -238,6 +239,7 @@
                 ]
             }
         });
+        @endif
     }
 
 </script>
