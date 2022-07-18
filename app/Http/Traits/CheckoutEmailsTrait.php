@@ -57,12 +57,15 @@ trait CheckoutEmailsTrait
         } else {
             $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format("m.d");
         }
-
+        $time = Carbon::parse($startDate)->format('H:i');
+        if (isset($groupData['event_update_at'])) {
+            $time = TimeZoneUtils::updateTime($startDate, $groupData['event_update_at'])->timezone($timezone)->format("H:i");
+        }
         $email_title = "Registracijos į nemokamą pamoką patvirtinimas";
         $email_content = "<p>Sveiki,<br>".
             "ačiū, kad registravotės į nemokamą Pasakos pamoką! Jūsų nemokamos pamokos detalės čia:<br>".
             $group->name."<br>".
-            $group->display_name." ".TimeZoneUtils::updateTime($startDate, $groupData['event_update_at'])->timezone($timezone)->format("H:i")." (".$timezone.")<br>".
+            $group->display_name." ".$time." (".$timezone.")<br>".
             "Į pamoką prisijungsite iš savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyros</a>.</p>".
             "<p>Grupes tolimesniam mokymuisi skirstome ne tik pagal amžių, bet ir pagal kalbos mokėjimo lygį - taip galime užtikrinti, kad mokiniai pasieks geriausių rezultatų ir drąsiau jausis pamokoje.<br>".
             "Nemokamos pamokos metu mokytoja įvertins vaiko kalbos mokėjimo lygį ir vėliau mes pasiūlysime tinkamiausią grupę jūsų vaikui.<br>".
@@ -84,12 +87,16 @@ trait CheckoutEmailsTrait
             $paid = 'Ne';
         }
         $groupData = $group->getGroupStartDateAndCount();
-        $time = TimeZoneUtils::updateTime($groupData['startDate'], $groupData['event_update_at'])->timezone('Europe/London')->format('H:i');
 
         if (isset($groupData['startDate'])) {
             $startDate = TimeZoneUtils::updateTime($groupData['startDate'], $groupData['event_update_at'])->format('Y-m-d');
         } else {
             $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
+        }
+
+        $time = Carbon::parse($startDate)->format('H:i');
+        if (isset($groupData['event_update_at'])) {
+            $time = TimeZoneUtils::updateTime($startDate, $groupData['event_update_at'])->timezone('Europe/London')->format("H:i");
         }
 
         if ($group->type == 'bilingualism_consultation') {

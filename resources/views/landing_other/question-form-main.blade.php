@@ -243,6 +243,12 @@
 </div>
 <script>
     $(document).ready(function() {
+        @if(isset(Session::get('lithuania-language-form-group-data')['name']))
+        dataLayer.push({
+            'event' : 'calculator-completed',
+            'level' : '{{Session::get('lithuania-language-form-group-data')['name']}}'
+        });
+        @endif
         var btnFinish = $('<button type="submit"></button>').text('Pateikti').attr('id', 'finish-button')
             .addClass('btn btn-primary btn-sm ml-sm-1 mt-xs-3 mt-1 d-none');
         var wizard = $('#smartwizard').smartWizard({
