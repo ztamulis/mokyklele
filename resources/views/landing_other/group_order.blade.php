@@ -1,4 +1,4 @@
-color background--yellow@extends("layouts.landing")
+@extends("layouts.landing")
 
 @section("title", "Komanda")
 
@@ -95,7 +95,15 @@ color background--yellow@extends("layouts.landing")
                 <div class="payment--loading-buy-notification" style="display: none; color: red">
                     <h4>Ačiū, kad patvirtinote mokėjimą. Norėdami pabaigti užsakymą, spauskite "Pirkti"</h4>
                 </div>
-                <button id="price-button" type="submit">Pirkti (£{{ $group->adjustedPrice() }})</button>
+                <button id="price-button" onclick="onBuy(
+                        '{{$group->name}}',
+                {{$group->id}},
+                {{$group->adjustedPrice()}},
+                        '{{$group->type}}',
+                {{$key+1}},
+                        '{{$group->type}}',
+                        '{{$group->time->timezone("Europe/London")->format("H:i")}}', '{{ $group->display_name }}',
+                        '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}')" type="submit">Pirkti (£{{ $group->adjustedPrice() }})</button>
             </form>
         </div>
 
@@ -156,7 +164,7 @@ color background--yellow@extends("layouts.landing")
 
             $("[data-add-student]").click(function() {
                 var studentsCount = parseInt($(".student--select select").length);
-                var availableSlots = {{$group->slots - $group->students()->count() }} ;
+                var availableSlots = {{$group->slots - $group->students()->count() }};
                 if ((availableSlots - studentsCount) <=  0) {
                     alert('Grupė pilna!');
                     return;
@@ -276,8 +284,31 @@ color background--yellow@extends("layouts.landing")
                 $("[name='students']").val(JSON.stringify(students));
             });
 
-            function isValidDate(dateString)
-            {
+            function onBuy(name, id, price, category, position, level, hour, description, dates) {
+                dataLayer.push({
+                    event: 'eec.checkout',
+                    ecommerce: {
+                        checkout: {
+                            'actionField': {'step': 1},
+                            'products': [
+                                {
+                                    'name': name,   // Replace XXX with a name of a class (example: Antradieniais (1 lygis))
+                                    'id': id,   // Replace XXX with ID of selected class
+                                    'category': category,   // Please replace XXX with category of selected class (Should be either 'Mokama' or 'Nemokama')
+                                    'quantity': 1,   // Please replace XXX with a quantity of hours of a selected class (only numbers are allowed. For example, if there is a text '2 pamokos', insert only number 2)
+                                    'price': price,   // Replace XXX with price of a selected class (example: 111.00 (it is mandatory to use a dot in the price and .00 if neccessary))
+                                    'level': level,   // Replace XXX with a level of a group in which class is (examples: Mėlyna (7-9m.), Raudona (10-14m.))
+                                    'hour': hour,   // Replace XXX with a hour of a class (examples: 09:00, 19:00)
+                                    'description': description,   // Replace XXX with a description of a class (example: Pamokos 7-9 m. vaikams)
+                                    'dates': dates   // Replace XXX with a dates of a class (example: 07.12 - 07.12)
+                                }
+                            ]
+                        }
+                    }
+                });
+            }
+
+            function isValidDate(dateString) {
                 // First check for the pattern
                 var regex_date = /^\d{4}\-\d{1,2}\-\d{1,2}$/;
 

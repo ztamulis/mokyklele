@@ -67,7 +67,7 @@
                                 <legend><b>Kursų blokas</b></legend>
                                 <select class="custom-select" name="main_component_courses">
                                     @foreach(\App\Http\Helpers\PageContentHelper::getComponentsNames() as $value  => $name)
-                                        <option {{ $lithuanianLanguagePageContent->main_component_questions == $value ? 'selected' : ''}} value="{{$value}}" >{{$name}}</option>
+                                        <option {{ $lithuanianLanguagePageContent->main_component_courses == $value ? 'selected' : ''}} value="{{$value}}" >{{$name}}</option>
                                     @endforeach
                                 </select>
                             </div>

@@ -448,14 +448,16 @@ class OrderController extends Controller {
         if (!empty($request->input('payment'))) {
             $payment->payment_status = 'canceled';
             $payment->save();
-            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message",
-                "Užsakymas nutrauktas.");
+            return view("lessons_order.group_order_succeeded")->with("group", $group)
+                ->with('payment', $payment)
+                ->with("message", "Užsakymas nutrauktas.");
         }
         if ($payment->payment_status == 'paid' || $payment->payment_status == 'free_lesson') {
-            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message",
-                "Ačiū, lauksime pamokose!");
+            return view("lessons_order.group_order_succeeded")->with("group", $group)
+                ->with('payment', $payment)->with("message", "Ačiū, lauksime pamokose!");
         } else {
-            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message",
+            return view("lessons_order.group_order_succeeded")->with("group", $group)->with('payment',
+                $payment)->with("message",
                 "Užsakymas jau įvykdytas!");
         }
 
@@ -533,6 +535,9 @@ class OrderController extends Controller {
 
         $data = [
             'students' => $studentsName,
+            'group_id' => $group->id,
+            'group_type' => $group->type,
+            'group_description' => $group->description,
             'full_name' => $user->fullName(),
             'group_name' => $group->name,
             'group_starts' => $startDate,
