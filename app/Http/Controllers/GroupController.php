@@ -783,4 +783,28 @@ class GroupController extends Controller {
         //return signature, url safe base64 encoded
         return rtrim(strtr(base64_encode($_sig), '+/', '-_'), '=');
     }
+
+    public function getDataLayerDataByType(Request $request) {
+        $groups  = \App\Models\Group::where("paid", $request->input()['paid'])->where("hidden", 0)
+            ->where("type", $request->input()['type'])
+            ->where("age_category", $request->input()['age_category'])
+            ->get();
+        $data = [];
+        foreach ($groups as $key => $group) {
+            $descriptionData = $group->getGroupStartDateAndCount();
+            $data[] = [
+                'name' => $group->name,
+                'id' => $group->id,
+                'category' => $group->paid ? 'Mokama' : 'Nemokama',
+                'quantity' => isset($descriptionData['eventsCount']) ? $descriptionData['eventsCount'] : '0',
+                'price' => $group->adjustedPrice(),
+                'position' => $key+1,
+                'level' => $group::getGroupTypeTranslated($group->type),
+                'hour' => $group->time->timezone("Europe/London")->format("H:i"),
+                'description' => $group->display_name,
+                'dates' => isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'. ' - '. \Carbon\Carbon::parse($group->end_date)->format("m.d"),
+            ];
+        }
+        return $data;
+    }
 }
