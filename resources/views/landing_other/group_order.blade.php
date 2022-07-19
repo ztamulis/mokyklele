@@ -95,7 +95,8 @@
                 <div class="payment--loading-buy-notification" style="display: none; color: red">
                     <h4>Ačiū, kad patvirtinote mokėjimą. Norėdami pabaigti užsakymą, spauskite "Pirkti"</h4>
                 </div>
-                <button id="price-button" onclick="onBuy(
+                <button id="price-button"
+                        onclick="onBuy(
                         '{{$group->name}}',
                 {{$group->id}},
                 {{$group->adjustedPrice()}},
@@ -103,11 +104,36 @@
                 {{$key+1}},
                         '{{$group->type}}',
                         '{{$group->time->timezone("Europe/London")->format("H:i")}}', '{{ $group->display_name }}',
-                        '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}')" type="submit">Pirkti (£{{ $group->adjustedPrice() }})</button>
+                        '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}')" type="submit">Pirkti (£{{ $group->adjustedPrice() }})
+                </button>
             </form>
         </div>
 
         <script>
+            function onBuy(name, id, price, category, position, level, hour, description, dates) {
+                console.log('aaaaaa');
+                dataLayer.push({
+                    event: 'eec.checkout',
+                    ecommerce: {
+                        checkout: {
+                            'actionField': {'step': 1},
+                            'products': [
+                                {
+                                    'name': name,   // Replace XXX with a name of a class (example: Antradieniais (1 lygis))
+                                    'id': id,   // Replace XXX with ID of selected class
+                                    'category': category,   // Please replace XXX with category of selected class (Should be either 'Mokama' or 'Nemokama')
+                                    'quantity': 1,   // Please replace XXX with a quantity of hours of a selected class (only numbers are allowed. For example, if there is a text '2 pamokos', insert only number 2)
+                                    'price': price,   // Replace XXX with price of a selected class (example: 111.00 (it is mandatory to use a dot in the price and .00 if neccessary))
+                                    'level': level,   // Replace XXX with a level of a group in which class is (examples: Mėlyna (7-9m.), Raudona (10-14m.))
+                                    'hour': hour,   // Replace XXX with a hour of a class (examples: 09:00, 19:00)
+                                    'description': description,   // Replace XXX with a description of a class (example: Pamokos 7-9 m. vaikams)
+                                    'dates': dates   // Replace XXX with a dates of a class (example: 07.12 - 07.12)
+                                }
+                            ]
+                        }
+                    }
+                });
+            }
             // $("[name=student_id]").change(function () {
             //     if($(this).val() == "new"){
             //         $(".new_student").show();
@@ -284,30 +310,6 @@
                 $("[name='students']").val(JSON.stringify(students));
             });
 
-            function onBuy(name, id, price, category, position, level, hour, description, dates) {
-                dataLayer.push({
-                    event: 'eec.checkout',
-                    ecommerce: {
-                        checkout: {
-                            'actionField': {'step': 1},
-                            'products': [
-                                {
-                                    'name': name,   // Replace XXX with a name of a class (example: Antradieniais (1 lygis))
-                                    'id': id,   // Replace XXX with ID of selected class
-                                    'category': category,   // Please replace XXX with category of selected class (Should be either 'Mokama' or 'Nemokama')
-                                    'quantity': 1,   // Please replace XXX with a quantity of hours of a selected class (only numbers are allowed. For example, if there is a text '2 pamokos', insert only number 2)
-                                    'price': price,   // Replace XXX with price of a selected class (example: 111.00 (it is mandatory to use a dot in the price and .00 if neccessary))
-                                    'level': level,   // Replace XXX with a level of a group in which class is (examples: Mėlyna (7-9m.), Raudona (10-14m.))
-                                    'hour': hour,   // Replace XXX with a hour of a class (examples: 09:00, 19:00)
-                                    'description': description,   // Replace XXX with a description of a class (example: Pamokos 7-9 m. vaikams)
-                                    'dates': dates   // Replace XXX with a dates of a class (example: 07.12 - 07.12)
-                                }
-                            ]
-                        }
-                    }
-                });
-            }
-
             function isValidDate(dateString) {
                 // First check for the pattern
                 var regex_date = /^\d{4}\-\d{1,2}\-\d{1,2}$/;
@@ -341,103 +343,7 @@
                 return day > 0 && day <= monthLength[month - 1];
             }
         </script>
-        <script src="https://js.stripe.com/v3/"></script>
 
-        <script>
-            const stripe = Stripe("{{ env("STRIPE_KEY") }}");
-
-            const elements = stripe.elements();
-
-            var elementStyles = {
-                base: {
-                    color: '#fff',
-                    fontFamily: 'Arial, sans-serif',
-                    fontSize: '16px',
-                    fontSmoothing: 'antialiased',
-                    padding: '10px',
-                    color: "#000",
-
-                    ':focus': {
-                        color: '#000',
-                    },
-
-                    '::placeholder': {
-                        color: '#aaaaaa',
-                    },
-
-                    ':focus::placeholder': {
-                        color: '#aaaaaa',
-                    },
-                },
-                invalid: {
-                    color: '#ccc',
-                    ':focus': {
-                        color: '#FA755A',
-                    },
-                    '::placeholder': {
-                        color: '#FFCCA5',
-                    },
-                },
-            };
-
-            var elementClasses = {
-                focus: 'focus',
-                empty: 'empty',
-                invalid: 'invalid',
-            };
-
-            var cardNumber = elements.create('cardNumber', {
-                style: elementStyles,
-                classes: elementClasses,
-            });
-            cardNumber.mount('#card-number');
-
-            var cardExpiry = elements.create('cardExpiry', {
-                style: elementStyles,
-                classes: elementClasses,
-            });
-            cardExpiry.mount('#card-expiry');
-
-            var cardCvc = elements.create('cardCvc', {
-                style: elementStyles,
-                classes: elementClasses,
-            });
-            cardCvc.mount('#card-cvc');
-
-            const cardHolderName = document.getElementById('card-holder-name');
-            const cardButton = document.getElementById('card-button');
-            const clientSecret = cardButton.dataset.secret;
-
-            cardButton.addEventListener('click', async (e) => {
-                const { setupIntent, error } = await stripe.confirmCardSetup(
-                    clientSecret, {
-                        payment_method: {
-                            card: cardNumber,
-                            billing_details: { name: cardHolderName.value }
-                        }
-                    }
-                );
-
-                if (error) {
-                    alert(error.message);
-                } else {
-                    $(".payment--loading").show();
-
-                    $("[name=payment_method], .add_payment_method").css({
-                        "opacity": "0",
-                        "pointer-events": "none",
-                        "height": 0,
-                        "overflow": "hidden",
-                    })
-                    $.post("/dashboard/profile/update-card", {_token: "{{ csrf_token() }}", payment_method: setupIntent.payment_method}, function (data){
-                        data = JSON.parse(data);
-                        $(".payment--loading").html("Kortelė: <b>**** **** **** " + data.card_last + "</b>");
-                        $(".payment--loading-buy-notification").show();
-
-                    });
-                }
-            });
-        </script>
     @else
         <div class="landing--col--even-1">
             <h2>Jau užsiregistravęs narys</h2>

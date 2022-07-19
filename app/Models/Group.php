@@ -68,6 +68,29 @@ class Group extends Model
         return $rewards;
     }
 
+    public static function getGroupTypeTranslated(string $type): string {
+        if ($type === 'yellow') {
+            return 'Geltona (2-4m.)';
+        }
+        if ($type === 'green') {
+            return 'Žalia (5-6m.)';
+        }
+        if ($type === 'blue') {
+            return 'Mėlyna (7-9m.)';
+        }
+        if ($type === 'red') {
+            return 'Raudona (10-13m.)';
+        }
+
+        if ($type === 'no_type') {
+            return 'Kursai suaugusiems';
+        }
+        if ($type === 'individual') {
+            return 'Individualios pamokos';
+        }
+        return 'Nėra grupės';
+    }
+
     public static function getWeekDay($key) {
             $weekMap = [
                 1 => 'Pirmadienis',
