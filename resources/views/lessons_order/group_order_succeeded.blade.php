@@ -64,7 +64,7 @@
                                 'price': '{{$group->price}}',   // Replace XXX with price of a selected class (example: 111.00 (it is mandatory to use a dot in the price and .00 if neccessary))
                                 'level': '{{$group::getGroupTypeTranslated($group->type)}}',   // Replace XXX with a level of a group in which class is (examples: Mėlyna (7-9m.), Raudona (10-14m.))
                                 'hour': '{{ App\TimeZoneUtils::updateTime($group->time->timezone("Europe/London"), $group->updated_at)->format('H:i')}}',   // Replace XXX with a hour of a class (examples: 09:00, 19:00)
-                                'description': '{{ $group->description }}',   // Replace XXX with a description of a class (example: Pamokos 7-9 m. vaikams)
+                                'description': '{{ $group->display_name }}',   // Replace XXX with a description of a class (example: Pamokos 7-9 m. vaikams)
                                 'dates': '{{isset($group->startDate) ? \Carbon\Carbon::parse($group->startDate)->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}'   // Replace XXX with a dates of a class (example: 07.12 - 07.12)
                             }
                         ]

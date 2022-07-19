@@ -80,7 +80,7 @@
                         '/select-group/order/free/{{$group->slug }}',
                         '{{$group::getGroupTypeTranslated($group->type)}}',
                         '{{$group->time->timezone("Europe/London")->format("H:i")}}',
-                        '{{ $group->description }}',
+                        '{{ $group->display_name }}',
                         '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}',
                         '{{isset($group->getGroupStartDateAndCount()['eventsCount']) ? $group->getGroupStartDateAndCount()['eventsCount'] : '0'}}'
                         )"
@@ -108,7 +108,7 @@
                             '/select-group/order/free/{{$group->slug }}',
                             '{{$group::getGroupTypeTranslated($group->type)}}',
                             '{{$group->time->timezone("Europe/London")->format("H:i")}}',
-                            '{{ $group->description }}',
+                            '{{ $group->display_name }}',
                             '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}',
                             '{{isset($group->getGroupStartDateAndCount()['eventsCount']) ? $group->getGroupStartDateAndCount()['eventsCount'] : '0'}}'
                             )"

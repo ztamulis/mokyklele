@@ -100,10 +100,9 @@
                                 {{$group->id}},
                                 {{$group->adjustedPrice()}},
                                 '{{$group->paid ? 'Mokama' : 'Nemokama'}}',
-                                '/select-group/order/{{$group->slug }}',
                                 '{{$group::getGroupTypeTranslated($group->type)}}',
                                 '{{$group->time->timezone("Europe/London")->format("H:i")}}',
-                                '{{ $group->description }}',
+                                '{{ $group->display_name }}',
                                 '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}',
                                 '{{isset($group->getGroupStartDateAndCount()['eventsCount']) ? $group->getGroupStartDateAndCount()['eventsCount'] : '0'}}'
                                 )"
@@ -118,6 +117,7 @@
                 });
             });
             function onBuy(name, id, price, category, level, hour, description, dates, quantity) {
+                console.log(name, id, price, category, level, hour, description, dates, quantity);
                 dataLayer.push({
                     event: 'eec.checkout',
                     ecommerce: {

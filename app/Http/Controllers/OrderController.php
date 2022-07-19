@@ -537,7 +537,7 @@ class OrderController extends Controller {
             'students' => $studentsName,
             'group_id' => $group->id,
             'group_type' => $group::getGroupTypeTranslated($group->type),
-            'group_description' => $group->description,
+            'group_description' => $group->display_name,
             'full_name' => $user->fullName(),
             'group_name' => $group->name,
             'group_starts' => $startDate,

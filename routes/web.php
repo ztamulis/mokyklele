@@ -393,6 +393,7 @@ if (config('comments.route.custom') !== null) {
         });
     });
 }
+Route::post('/groups/datalayer/type/data', [GroupController::class, 'getDataLayerDataByType'])->name('dataLayerDataByType')->middleware('auth');
 
 
 require __DIR__.'/auth.php';
