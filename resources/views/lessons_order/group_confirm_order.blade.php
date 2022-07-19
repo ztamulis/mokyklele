@@ -64,16 +64,19 @@
                 <button onclick="onConfirm('{{$paymentInfo['group_name']}}',
                         '{{$paymentInfo['group_id']}}',
                         '{{$paymentInfo['price']}}',
+                        '{{$paymentInfo['paid_type']}}',
                         '{{$paymentInfo['group_type']}}',
                         '{{App\TimeZoneUtils::updateTime($paymentInfo['time']->timezone("Europe/London"), $paymentInfo['group_updated_at'])->format("H:i")}}',
                         '{{$paymentInfo['group_description']}}',
                         '{{$paymentInfo['group_starts']}} - {{$paymentInfo['group_ends']}}',
+                        '{{$paymentInfo['quantity']}}',
                         )" type="submit">Patvirtinti (£{{$paymentInfo['price']}})</button>
             </form>
         </div>
     </div>
     <script>
-        function onConfirm(name, id, price, category, level, hour, description, dates) {
+        function onConfirm(name, id, price, category, level, hour, description, dates, quantity) {
+            console.log(name, id, category, quantity, price, level, hour, description, dates);
             dataLayer.push({
                 event: 'eec.checkout',
                 ecommerce: {
@@ -84,7 +87,7 @@
                                 'name': name,   // Replace XXX with a name of a class (example: Antradieniais (1 lygis))
                                 'id': id,   // Replace XXX with ID of selected class
                                 'category': category,   // Please replace XXX with category of selected class (Should be either 'Mokama' or 'Nemokama')
-                                'quantity': 1,   // Please replace XXX with a quantity of hours of a selected class (only numbers are allowed. For example, if there is a text '2 pamokos', insert only number 2)
+                                'quantity': quantity,   // Please replace XXX with a quantity of hours of a selected class (only numbers are allowed. For example, if there is a text '2 pamokos', insert only number 2)
                                 'price': price,   // Replace XXX with price of a selected class (example: 111.00 (it is mandatory to use a dot in the price and .00 if neccessary))
                                 'level': level,   // Replace XXX with a level of a group in which class is (examples: Mėlyna (7-9m.), Raudona (10-14m.))
                                 'hour': hour,   // Replace XXX with a hour of a class (examples: 09:00, 19:00)

@@ -536,18 +536,20 @@ class OrderController extends Controller {
         $data = [
             'students' => $studentsName,
             'group_id' => $group->id,
-            'group_type' => $group->type,
+            'group_type' => $group::getGroupTypeTranslated($group->type),
             'group_description' => $group->description,
             'full_name' => $user->fullName(),
             'group_name' => $group->name,
             'group_starts' => $startDate,
             'group_ends' => $endDate,
             'time' => $group->time,
+            'paid_type' => $group->paid ? 'Mokama' : 'Nemokama',
             'group_updated_at' => $group->updated_at,
             'price' => $payment->amount / 100,
             'url' => $payment->url,
             'session_id' => $payment->session_id,
             'age_category' => $group->age_category,
+            'quantity' => isset($group->getGroupStartDateAndCount()['eventsCount']) ? $group->getGroupStartDateAndCount()['eventsCount'] : '0',
 
         ];
         if ($group->type === 'bilingualism_consultation' && !empty($payment->bilingualism_consultation_note)) {

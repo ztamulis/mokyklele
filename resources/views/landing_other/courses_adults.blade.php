@@ -76,28 +76,37 @@
         <div class="learning--group--select--row" data-group-adults="{{ $group->type }}">
             <div class="color background--{{ $group->type }}"></div>
             <div class="text">
-                <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else onclick="chooseLessonDataLayer(
+                <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else
+                onclick="chooseLessonDataLayer(
                         '{{$group->name}}',
-                {{$group->id}},
-                {{$group->adjustedPrice()}},
-                        '{{$group->type}}',
-                {{$key+1}},
+                        {{$group->id}},
+                        {{$group->adjustedPrice()}},
+                        '{{$group->paid ? 'Mokama' : 'Nemokama'}}',
+                        {{$key+1}},
                         '/select-group/order/{{$group->slug }}',
+                        '{{$group::getGroupTypeTranslated($group->type)}}',
                         '{{$group->time->timezone("Europe/London")->format("H:i")}}',
-                        '{{ $group->display_name }}',
-                        '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}')" @endif >{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "Europe/London"))->format("H:i") }}</b></a>
+                        '{{ $group->description }}',
+                        '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}',
+                        '{{isset($group->getGroupStartDateAndCount()['eventsCount']) ? $group->getGroupStartDateAndCount()['eventsCount'] : '0'}}'
+                        )"
+                        @endif >{{ $group->name }} <b>{{ $group->time->timezone(Cookie::get("user_timezone", "Europe/London"))->format("H:i") }}</b></a>
                 @if($group->time_2)
-                    / <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else onclick="chooseLessonDataLayer(
+                    / <a @if($group->students()->count() >= $group->slots) href="javascript:;" @else
+                    onclick="chooseLessonDataLayer(
                             '{{$group->name}}',
-                    {{$group->id}},
-                    {{$group->adjustedPrice()}},
-                            '{{$group->type}}',
-                    {{$key+1}},
+                            {{$group->id}},
+                            {{$group->adjustedPrice()}},
+                            '{{$group->paid ? 'Mokama' : 'Nemokama'}}',
+                            {{$key+1}},
                             '/select-group/order/{{$group->slug }}',
-                    {{$group->type}},
+                            '{{$group::getGroupTypeTranslated($group->type)}}',
                             '{{$group->time->timezone("Europe/London")->format("H:i")}}',
-                            '{{ $group->display_name }}',
-                            '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}')" @endif ><b>{{ $group->time_2->timezone(Cookie::get("user_timezone", "Europe/London"))->format("H:i") }}</b></a>
+                            '{{ $group->description }}',
+                            '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}',
+                            '{{isset($group->getGroupStartDateAndCount()['eventsCount']) ? $group->getGroupStartDateAndCount()['eventsCount'] : '0'}}'
+                            )"
+                            @endif ><b>{{ $group->time_2->timezone(Cookie::get("user_timezone", "Europe/London"))->format("H:i") }}</b></a>
                 @endif
                 <br>
                 <span>{{ $group->display_name }}</span>
@@ -136,31 +145,39 @@
                     </a>
                 @else
                     @if ($group->adjustedPrice() > 0)
-                        <a onclick="chooseLessonDataLayer(
-                                '{{$group->name}}',
-                        {{$group->id}},
-                        {{$group->adjustedPrice()}},
-                                '{{$group->type}}',
-                        {{$key+1}},
-                                '/select-group/order/{{$group->slug }}',
-                                '{{ $group->display_name }}',
-                                '{{$group->time->timezone("Europe/London")->format("H:i")}}',
-                                '{{$group->description}}',
-                                '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}')" class="button course--select--button text-white">
+                        <a
+                            onclick="chooseLessonDataLayer(
+                                    '{{$group->name}}',
+                                    {{$group->id}},
+                                    {{$group->adjustedPrice()}},
+                                    '{{$group->paid ? 'Mokama' : 'Nemokama'}}',
+                                    {{$key+1}},
+                                    '/select-group/order/{{$group->slug }}',
+                                    '{{$group::getGroupTypeTranslated($group->type)}}',
+                                    '{{$group->time->timezone("Europe/London")->format("H:i")}}',
+                                    '{{ $group->description }}',
+                                    '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}',
+                                    '{{isset($group->getGroupStartDateAndCount()['eventsCount']) ? $group->getGroupStartDateAndCount()['eventsCount'] : '0'}}'
+                                    )"
+                                class="button course--select--button text-white">
                             Pasirinkti
                         </a>
                     @else
-                        <a onclick="chooseLessonDataLayer(
-                                '{{$group->name}}',
-                        {{$group->id}},
-                        {{$group->adjustedPrice()}},
-                                '{{$group->type}}',
-                        {{$key+1}},
-                                '/select-group/order/free/{{$group->slug }}',
-                                '{{ $group->display_name }}',
-                                '{{$group->time->timezone("Europe/London")->format("H:i")}}',
-                                '{{$group->description}}',
-                                '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}')" class="button course--select--button text-white">
+                        <a
+                                onclick="chooseLessonDataLayer(
+                                        '{{$group->name}}',
+                                        {{$group->id}},
+                                        {{$group->adjustedPrice()}},
+                                        '{{$group->paid ? 'Mokama' : 'Nemokama'}}',
+                                        {{$key+1}},
+                                        '/select-group/order/free/{{$group->slug }}',
+                                        '{{$group::getGroupTypeTranslated($group->type)}}',
+                                        '{{$group->time->timezone("Europe/London")->format("H:i")}}',
+                                        '{{ $group->description }}',
+                                        '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}',
+                                        '{{isset($group->getGroupStartDateAndCount()['eventsCount']) ? $group->getGroupStartDateAndCount()['eventsCount'] : '0'}}'
+                                        )"
+                           class="button course--select--button text-white">
                             Pasirinkti
                         </a>
                     @endif
@@ -177,7 +194,6 @@
         $("[data-filter-adults='"+group+"']").addClass("active");
     }
     $(document).ready(function() {
-
         document.cookie = "groupAdultsType={{$type}}";
     $("[data-filter-adults]").click(function () {
         filterByAdults($(this).attr("data-filter-adults"));
@@ -185,7 +201,7 @@
 
     });
     filterByAdults('{{$type}}');
-    addAll();
+    addOneCategory('{{$type}}');
     });
 
     function chooseLessonDataLayer(name, id, price, category, position, url, level, hour, description, dates) {
@@ -227,36 +243,6 @@
             },
             'eventCallback': function() {
                 document.location = url
-            }
-        });
-    }
-
-    function addAll() {
-        dataLayer.push({ ecommerce: null });
-        dataLayer.push({
-            'event': 'eec.impressions',
-            'ecommerce': {
-                'currencyCode': 'XXX',   // Replace XXX with local currency code (EUR, USD, GBP, other 3-letter currency code)
-                'impressions': [
-                        @php foreach ($groups as $key => $group) {
-                             $descriptionData = $group->getGroupStartDateAndCount();
-                        @endphp
-
-                    {
-                        'name': '{{$group->name}}',   // Replace XXX with a name of a class (example: Antradieniais (1 lygis))
-                        'id': '{{$group->id}} ',   // Replace XXX with ID of selected class
-                        'category': '{{$group->paid ? 'Mokama' : 'Nemokama'}}',   // Please replace XXX with category of selected class (Should be either 'Mokama' or 'Nemokama')
-                        'quantity': '{{isset($descriptionData['eventsCount']) ? $descriptionData['eventsCount'] : ''}}',   // Please replace XXX with a quantity of hours of a selected class (only numbers are allowed. For example, if there is a text '2 pamokos', insert only number 2)
-                        'price': '{{$group->adjustedPrice()}}',   // Replace XXX with price of a selected class (example: 111.00 (it is mandatory to use a dot in the price and .00 if neccessary))
-                        'list': 'Kursai suagusiems',   // Replace XXX with a place where the class is visible (example: lietuvių kalbos pamokos, kursai suaugusiems, nemokama pamoka,
-                        'position':'{{$key +1}}' ,   // Example of position=1 if this class is in first place
-                        'level': '{{$group->type}}',   // Replace XXX with a level of a group in which class is (examples: Mėlyna (7-9m.), Raudona (10-14m.))
-                        'hour': '{{$group->time->timezone("Europe/London")->format("H:i")}}',   // Replace XXX with a hour of a class (examples: 09:00, 19:00)
-                        'description': '{{ $group->display_name }}',   // Replace XXX with a description of a class (example: Pamokos 7-9 m. vaikams)
-                        'dates': '{{isset($descriptionData['startDate']) ? \Carbon\Carbon::parse($descriptionData['startDate'])->format("m.d") : '0'}} - {{\Carbon\Carbon::parse($group->end_date)->format("m.d")}}'   // Replace XXX with a dates of a class (example: 07.12 - 07.12)
-                    },
-                    @php } @endphp
-                ]
             }
         });
     }
