@@ -108,6 +108,7 @@ class OrderController extends Controller {
 
         return view("lessons_order.group_free_order_succeeded")
             ->with("group", $group)
+            ->with("payment", $group)
             ->with("message", "Ačiū, lauksime pamokoje!");
     }
 
@@ -437,7 +438,7 @@ class OrderController extends Controller {
         }
         $group = $payment->group()->first();
         if ($payment->payment_status === 'paid' || $payment->payment_status === 'free_lesson') {
-            return view("lessons_order.group_order_succeeded")->with("group", $group)->with("message",
+            return view("lessons_order.group_order_succeeded")->with("group", $group)->with('payment', $payment)->with("message",
                 "Ačiū, lauksime pamokose!");
 
         }
