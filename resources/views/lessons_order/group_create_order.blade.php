@@ -243,7 +243,6 @@
             function recalculatePrice() {
                 var studentsCount = $(".student--select select").length;
                 var price = $('#single-student-price').val();
-                console.log(price);
                 var discountedPrice = parseFloat(price) / 2;
 
                 var newPrice = parseFloat(price) + ((parseInt(studentsCount) - 1) * discountedPrice);
