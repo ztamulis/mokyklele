@@ -420,7 +420,8 @@ class OrderController extends Controller {
         }
 
         if ($coupon->type === 'percent') {
-            return $price - ($price * $coupon->discount / 100);
+            $price = $price - ($price * $coupon->discount / 100);
+            return round($price, 2);
         }
     }
 

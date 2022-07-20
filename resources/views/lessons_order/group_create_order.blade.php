@@ -248,6 +248,10 @@
                 if ($("#coupon-type").val() === 'fixed') {
                     newPrice = newPrice - parseInt(($("#coupon-discount").val()));
                 }
+                if ($("#coupon-type").val() === 'percent') {
+                    newPrice = newPrice - (newPrice* parseInt(($("#coupon-discount").val())) / 100);
+                    newPrice = parseFloat(newPrice).toFixed(2)
+                }
 
                 return newPrice
             }
