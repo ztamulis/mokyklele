@@ -108,7 +108,6 @@ class OrderController extends Controller {
 
         return view("lessons_order.group_free_order_succeeded")
             ->with("group", $group)
-            ->with("payment", $group)
             ->with("message", "Ačiū, lauksime pamokoje!");
     }
 
