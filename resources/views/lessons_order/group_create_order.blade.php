@@ -243,15 +243,10 @@
             function recalculatePrice() {
                 var studentsCount = $(".student--select select").length;
                 var price = $('#single-student-price').val();
-                var discountedPrice = parseInt(price) / 2;
-                var newPrice = parseInt(price) + ((parseInt(studentsCount) - 1) * discountedPrice);
-                if ($("#coupon-type").val() === 'fixed') {
-                    newPrice = newPrice - parseInt(($("#coupon-discount").val()));
-                }
-                if ($("#coupon-type").val() === 'percent') {
-                    newPrice = newPrice - (newPrice* parseInt(($("#coupon-discount").val())) / 100);
-                    newPrice = parseFloat(newPrice).toFixed(2)
-                }
+                var discountedPrice = parseFloat(price) / 2;
+
+                var newPrice = parseFloat(price) + ((parseInt(studentsCount) - 1) * discountedPrice);
+                newPrice = parseFloat(newPrice).toFixed(2);
 
                 return newPrice
             }
