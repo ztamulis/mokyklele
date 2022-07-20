@@ -136,8 +136,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/komanda">
-                        Komanda
+                    <a href="/mokytojai">
+                        Mokytojai
                     </a>
                 </li>
                 <li>
