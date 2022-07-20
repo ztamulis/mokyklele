@@ -200,9 +200,7 @@
         var indexOfUrl = hash.indexOf('-');
         if (parseInt(indexOfUrl) < 0) {
             filterBy(hash);
-
             addOneCategory(hash)
-
         } else {
             filterBy('{{$type}}');
             addOneCategory('{{$type}}')

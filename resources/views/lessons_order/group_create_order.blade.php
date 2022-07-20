@@ -117,7 +117,6 @@
                 });
             });
             function onBuy(name, id, price, category, level, hour, description, dates, quantity) {
-                console.log(name, id, price, category, level, hour, description, dates, quantity);
                 dataLayer.push({
                     event: 'eec.checkout',
                     ecommerce: {
