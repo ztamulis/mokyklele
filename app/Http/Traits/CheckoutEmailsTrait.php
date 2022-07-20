@@ -5,7 +5,6 @@ namespace App\Http\Traits;
 
 
 use App\Models\Group;
-use App\Models\UserNotifications;
 use App\TimeZoneUtils;
 use Carbon\Carbon;
 
@@ -45,7 +44,6 @@ trait CheckoutEmailsTrait
     }
 
     private function getRegisterFreeUserMessage($group, $user) {
-
         $timezone = \Cookie::get("user_timezone", "Europe/London");
         if (!empty($user->time_zone)) {
             $timezone = $user->time_zone;
@@ -57,7 +55,7 @@ trait CheckoutEmailsTrait
         } else {
             $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format("m.d");
         }
-        $time = Carbon::parse($startDate)->format('H:i');
+        $time = Carbon::parse($group->time)->format('H:i');
         if (isset($groupData['event_update_at'])) {
             $time = TimeZoneUtils::updateTime($startDate, $groupData['event_update_at'])->timezone($timezone)->format("H:i");
         }
@@ -94,7 +92,7 @@ trait CheckoutEmailsTrait
             $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
         }
 
-        $time = Carbon::parse($startDate)->format('H:i');
+        $time = Carbon::parse($group->time)->format('H:i');
         if (isset($groupData['event_update_at'])) {
             $time = TimeZoneUtils::updateTime($startDate, $groupData['event_update_at'])->timezone('Europe/London')->format("H:i");
         }

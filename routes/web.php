@@ -105,8 +105,8 @@ Route::get('/nemokama-pamoka', function () {
     return view('landing_new.nemokama_pamoka_naujas')->with('siteContent',
         app(FreeLessonPageContent::class)->getPageContent());
 });
-Route::get('/komanda', function () {
-    return view('landing_new.komanda_naujas')->with('teamMembers', TeamMember::ordered()->get());
+Route::get('/mokytojai', function () {
+    return view('landing_new.mokytojai_naujas')->with('teamMembers', TeamMember::ordered()->get());
 });
 Route::get('/kontaktai', function () {
     return view('landing_new.kontaktai_naujas')->with('siteContent', app(ContactsPageContent::class)->getPageContent());
