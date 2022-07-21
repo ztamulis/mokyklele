@@ -30,11 +30,10 @@ trait CheckoutEmailsTrait
             "džiaugiamės, kad prisijungsite prie Pasakos pamokų!<br>".
             "Jūsų detalės apačioje:<br>".
             $group->name."<br>".
-            $group->display_name." ".TimeZoneUtils::updateTime($startDate, $groupData['event_update_at'])->timezone($timezone)->format('H:i')." (".$timezone.")<br>".
+            $group->display_name." ".TimeZoneUtils::updateTime($groupData['startDate'], $groupData['event_update_at'])->timezone($timezone)->format('H:i')." (".$timezone.")<br>".
             "Kursas vyks  ". $startDate." - ". \Carbon\Carbon::parse($group->end_date)->format("m.d")." (".$group->course_length." sav.)<br>".
             "Savo <a href='".\Config::get('app.url')."/login'>Pasakos paskyroje</a> patogiai prisijungsite į pamokas, rasite namų darbus ir galėsite bendrauti su kitais nariais. </p>".
             "<p>Iki pasimatymo,<br> Pasakos komanda </p>";
-
         \Mail::send([], [], function ($message) use ($email_title, $email_content, $user) {
             $message
                 ->to($user->email)
@@ -50,15 +49,11 @@ trait CheckoutEmailsTrait
         }
         $groupData = $group->getGroupStartDateAndCount();
 
-        if (isset($groupData['startDate'])) {
-            $startDate = TimeZoneUtils::updateTime($groupData['startDate'], $groupData['event_update_at'])->format('Y-m-d');
-        } else {
-            $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format("m.d");
-        }
-        $time = Carbon::parse($group->time)->format('H:i');
+        $time = Carbon::parse($group->time)->timezone($timezone)->format('H:i');
         if (isset($groupData['event_update_at'])) {
-            $time = TimeZoneUtils::updateTime($startDate, $groupData['event_update_at'])->timezone($timezone)->format("H:i");
+            $time = TimeZoneUtils::updateTime($groupData['startDate'], $groupData['event_update_at'])->timezone($timezone)->format("H:i");
         }
+
         $email_title = "Registracijos į nemokamą pamoką patvirtinimas";
         $email_content = "<p>Sveiki,<br>".
             "ačiū, kad registravotės į nemokamą Pasakos pamoką! Jūsų nemokamos pamokos detalės čia:<br>".
@@ -92,9 +87,9 @@ trait CheckoutEmailsTrait
             $startDate = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',  $group->start_date)->format('Y-m-d');
         }
 
-        $time = Carbon::parse($group->time)->format('H:i');
+        $time = Carbon::parse($group->time)->timezone('Europe/London')->format('H:i');
         if (isset($groupData['event_update_at'])) {
-            $time = TimeZoneUtils::updateTime($startDate, $groupData['event_update_at'])->timezone('Europe/London')->format("H:i");
+            $time = TimeZoneUtils::updateTime($groupData['startDate'], $groupData['event_update_at'])->timezone('Europe/London')->format("H:i");
         }
 
         if ($group->type == 'bilingualism_consultation') {
